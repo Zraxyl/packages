@@ -1,0 +1,41 @@
+pkgname=drunk-desktop-plasma
+pkgver=2022.3
+pkgrel=4
+arch=('x86_64')
+install=plasma.install
+depends=(
+	# Login ( suggest sddm as wayland can be launched here + theming )
+	sddm
+
+	# Framework + desktop
+	ark kauth kdav kdesu ki18n kjobwidgets kparts ksystemstats kxmlrpcclient plasma-desktop
+	purpose attica kbookmarks kdbusaddons kdewebkit kiconthemes kjs kpeople ktexteditor
+	layer-shell-qt plasma-framework qca-qt5 baloo kcalendarcore kdeclarative kdnssd kidletime kjsembed kplotting
+	ktextwidgets libkipi plasma-integration qqc2-desktop-style bluez-qt extra-cmake-modules kcmutils
+	kdecoration kdoctools kimageformats kpty kunitconversion libkscreen sddm-kcm
+	breeze frameworkintegration kcodecs kded kemoticons kinfocenter kmenuedit kquickcharts kwallet
+	libksysguard plasma-wayland-protocols solid breeze-gtk kactivities kcompletion kfilemetadata
+	kinit kross kwayland modemmanager-qt plasma-workspace sonnet breeze-icons kactivities-stats
+	kconfig kdelibs4support kglobalaccel kio knewstuff krunner kwayland-server networkmanager-qt
+	plasma-workspace-wallpapers kactivitymanagerd kconfigwidgets kguiaddons kio-extras
+	knotifications kscreen kwidgetsaddons oxygen-icons5 polkit-kde-agent syndication kapidox kcontacts
+	kdeplasma-addons kholidays kirigami2 knotifyconfig kscreenlocker kwin phonon polkit-qt syntax-highlighting
+	karchive kcoreaddons khotkeys kitemmodels kservice kwindowsystem phonon-backend-gstreamer
+	systemsettings discover kcrash kdesignerplugin khtml kitemviews kpackage ksysguard kxmlgui prison threadweaver
+	kwayland-integration double-conversion
+
+	# Applications
+	konsole spectacle dolphin kate firefox gwenview okular
+	elisa
+
+	# Other
+	powerdevil plasma-pa plasma-nm plymouth
+	avahi print-manager wireplumber)
+
+build() {
+	echo "[*]: It's a metapackage"
+}
+
+package() {
+	echo "[*]: It's a metapackage"
+}

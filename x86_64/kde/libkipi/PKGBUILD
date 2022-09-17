@@ -1,0 +1,23 @@
+pkgname=libkipi
+pkgver=22.04.1
+pkgrel=1
+arch=(x86_64)
+depends=(kxmlgui kservice hicolor-icon-theme)
+makedepends=(extra-cmake-modules)
+source=(https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz)
+
+build() {
+	cmake -B build -S $pkgname-$pkgver \
+	-DBUILD_TESTING=OFF
+
+	cmake --build build
+}
+
+package() {
+	DESTDIR="$pkgdir" cmake --install build
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}

@@ -1,0 +1,49 @@
+diff --git a/hw/xfree86/common/xf86Events.c b/hw/xfree86/common/xf86Events.c
+index 05fa2bb902896390eadd5578329495e741e54830..53ddae432a33442f6c6cab5003d13f425f547f97 100644
+--- a/hw/xfree86/common/xf86Events.c
++++ b/hw/xfree86/common/xf86Events.c
+@@ -485,6 +485,7 @@ xf86VTEnter(void)
+     xf86UpdateHasVTProperty(TRUE);
+ 
+     input_unlock();
++    XkbPushLockedStateToAll();
+ }
+ 
+ /*
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index fbb5427e1ca20f73a7cfe2a32ef06671d503a5dd..69c9580ef703ce91e5aad51e0666efcbb248724c 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -655,6 +655,9 @@ extern void XkbPushLockedStateToSlaves(DeviceIntPtr /* master */,
+                                        int /* evtype */,
+                                        int /* key */);
+ 
++extern void XkbPushLockedStateToAll(void
++    );
++
+ extern _X_EXPORT Bool XkbEnableDisableControls(XkbSrvInfoPtr /* xkbi */ ,
+                                                unsigned long /* change */ ,
+                                                unsigned long /* newValues */ ,
+diff --git a/xkb/xkbActions.c b/xkb/xkbActions.c
+index db29091e7e4abd563cac045dc953d9c99652fb04..c0a9464abd06da37809eb0182e65cc7a8f6303f6 100644
+--- a/xkb/xkbActions.c
++++ b/xkb/xkbActions.c
+@@ -1239,6 +1239,18 @@ XkbPushLockedStateToSlaves(DeviceIntPtr master, int evtype, int key)
+     }
+ }
+ 
++void
++XkbPushLockedStateToAll(void)
++{
++    DeviceIntPtr dev;
++    Bool genStateNotify;
++
++    nt_list_for_each_entry(dev, inputInfo.devices, next) {
++        if (dev->kbdfeed)
++            (*dev->kbdfeed->CtrlProc) (dev, &dev->kbdfeed->ctrl);
++    }
++}
++
+ static void
+ XkbActionGetFilter(DeviceIntPtr dev, DeviceEvent *event, KeyCode key,
+                    XkbAction *act, int *sendEvent)

@@ -1,0 +1,15 @@
+pkgname=base-devel
+pkgver=1.0
+pkgrel=3
+arch=('x86_64')
+source=(tmpfile)
+depends=('autoconf' 'automake' 'make' 'meson' 'ninja' 'perl' 'ruby3' 'git' 'patch' 'cmake' 'fakeroot')
+
+build() {
+	mkdir -p $pkgname-$pkgver
+        cd $pkgname-$pkgver
+}
+
+package() {
+	cd $pkgname-$pkgver
+}

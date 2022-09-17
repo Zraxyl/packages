@@ -1,0 +1,19 @@
+pkgname=flatpak
+pkgver=1.12.7
+pkgrel=1
+arch=(x86_64)
+depends=(glib2 libsoup polkit libxau json-glib python3 appstream)
+makedepends=(intltool gobject-introspection git xmlto)
+source=()
+
+build() {
+	cd $pkgname-$pkgver
+
+	
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	
+}

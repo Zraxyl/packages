@@ -1,0 +1,11 @@
+--- discover/qml/UpdatesPage.qml	2022-05-03 13:02:17.000000000 +0300
++++ discover/qml/UpdatesPage.qml	2022-05-20 22:45:13.398365153 +0300
+@@ -156,7 +156,7 @@
+                 ReadFile {
+                     id: log
+                     filter: ".*ALPM-SCRIPTLET\\] .*"
+-                    path: "/var/log/pacman.log"
++                    path: "/var/log/bottle.log"
+                 }
+             }
+         }

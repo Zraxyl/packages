@@ -1,0 +1,33 @@
+pkgname=wireplumber
+pkgver=0.4.11_master
+pkgrel=1
+arch=(x86_64)
+depends=(doxygen pipewire systemd glib2 lua gobject-introspection)
+makedepends=(git meson python3-pip python3-sphinx)
+install=wireplumber.install
+commitid=b1b5bf2f5f001078daf058488ed7d02101cddcf9
+source=(git+https://gitlab.freedesktop.org/pipewire/$pkgname.git#commit=$commitid)
+
+prepare() {
+	mkdir -p build
+	cd build
+
+	# Lets configure wireplumber here
+	meson ../$pkgname/ \
+	--prefix=/usr \
+	-D elogind=disabled \
+	-D system-lua=true \
+	-D doc=disabled
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	meson install --destdir $pkgdir
+}

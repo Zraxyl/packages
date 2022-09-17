@@ -1,0 +1,32 @@
+pkgname=gst-plugins-good
+pkgver=1.18.5
+pkgrel=1
+arch=('x86_64')
+depends=(gst-plugins-base cairo gdk-pixbuf lame libsoup libvpx nasm
+	gtk3+ pulseaudio qt5 valgrind wayland)
+makedepends=(gcc)
+source=(https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	meson                   \
+	--prefix=/usr           \
+	--buildtype=release     \
+	--wrap-mode=nodownload  \
+	-D package-origin=http://drunk.epizy.com \
+	-D package-name="[GStreamer]: $pkgver - DRUNK"
+
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	DESTDIR=$pkgdir ninja install
+}

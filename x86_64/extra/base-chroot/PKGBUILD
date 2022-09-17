@@ -1,0 +1,14 @@
+pkgname=base-chroot
+pkgver=2022.1
+pkgrel=1
+arch=('x86_64')
+depends=(bash pacman glibc gcc)
+
+
+build() {
+	echo "Nothing"
+}
+
+package() {
+	echo "Nothing"
+}

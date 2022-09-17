@@ -1,0 +1,26 @@
+pkgname=qca-qt5
+pkgver=2.3.4
+pkgrel=1
+arch=(x86_64)
+depends=(qt5 nss)
+makedepends=(cmake doxygen pkcs11-helper qt5)
+source=(https://download.kde.org/stable/qca/$pkgver/qca-$pkgver.tar.xz)
+
+build() {
+	cmake -B build-qt5 -S qca-$pkgver \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DBUILD_TESTS=OFF \
+	-DQCA_INSTALL_IN_QT_PREFIX=ON \
+	-DQCA_MAN_INSTALL_DIR=/usr/share/man
+
+	cmake --build build-qt5
+}
+
+package() {
+	DESTDIR="$pkgdir" cmake --install build-qt5
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}

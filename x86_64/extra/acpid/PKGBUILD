@@ -1,0 +1,23 @@
+pkgname=acpid
+pkgver=2.0.33
+pkgrel=2
+arch=('x86_64')
+depends=('which')
+source=(https://downloads.sourceforge.net/acpid2/$pkgname-$pkgver.tar.xz)
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure		\
+	--prefix=/usr
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+
+	install -v -m755 -d $pkgdir/etc/acpi/events
+}

@@ -1,0 +1,20 @@
+pkgname=thunar-volman
+pkgver=4.16.0
+pkgrel=2
+arch=('x86_64')
+depends=(exo thunar libgudev xfce4-notifyd gvfs)
+source=(https://archive.xfce.org/src/xfce/$pkgname/4.16/$pkgname-$pkgver.tar.bz2)
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure --prefix=/usr --sysconfdir=/etc
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

@@ -1,0 +1,41 @@
+diff -Naur wine/dlls/server/esync.c wine/dlls/server/esync.c
+--- wine/dlls/server/esync.c	2022-07-06 20:07:08.000000000 +0300
++++ wine/dlls/server/esync.c	2022-07-10 20:22:20.830809959 +0300
+@@ -43,6 +43,7 @@
+ #include "file.h"
+ #include "esync.h"
+ #include "fsync.h"
++#include <stdint.h>
+ 
+ int do_esync(void)
+ {
+diff -Naur wine/dlls/winevulkan/vulkan.c wine/dlls/winevulkan/vulkan.c
+--- wine/dlls/winevulkan/vulkan.c	2022-07-10 19:08:55.065279093 +0300
++++ wine/dlls/winevulkan/vulkan.c	2022-07-10 19:00:24.790129994 +0300
+@@ -37,6 +37,8 @@
+ #include "vulkan_private.h"
+ #include "winreg.h"
+ #include "ntuser.h"
++#include <vulkan/vulkan_core.h>
++#include <vulkan/vk_layer.h>
+ 
+ WINE_DEFAULT_DEBUG_CHANNEL(vulkan);
+ 
+@@ -3407,7 +3409,7 @@
+     return res;
+ }
+ 
+-static void fixup_pipeline_feedback(VkPipelineCreationFeedback *feedback, uint32_t count)
++static void fixup_pipeline_feedback(VkPipelineCreationFeedbackEXT *feedback, uint32_t count)
+ {
+ #if defined(USE_STRUCT_CONVERSION)
+     struct host_pipeline_feedback
+@@ -3429,7 +3431,7 @@
+ 
+ static void fixup_pipeline_feedback_info(const void *pipeline_info)
+ {
+-    VkPipelineCreationFeedbackCreateInfo *feedback;
++    VkPipelineCreationFeedbackCreateInfoEXT *feedback;
+ 
+     feedback = wine_vk_find_struct(pipeline_info, PIPELINE_CREATION_FEEDBACK_CREATE_INFO);
+ 

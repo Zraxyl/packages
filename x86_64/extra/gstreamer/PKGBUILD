@@ -1,0 +1,32 @@
+pkgname=gstreamer
+pkgver=1.18.5
+pkgrel=1
+arch=('x86_64')
+depends=(glib2 gobject-introspection gtk3+)
+makedepends=(valgrind)
+source=(https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	meson			\
+	--prefix=/usr		\
+	--buildtype=release	\
+	-D gst_debug=false	\
+	-D package-origin=http://drunk.epizy.com \
+	-D package-name="[GStreamer]: $pkgver - DRUNK"
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	DESTDIR=$pkgdir ninja install
+}

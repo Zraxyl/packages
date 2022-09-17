@@ -1,0 +1,40 @@
+pkgname=pipewire
+commitid=f274e53d25ee8f483ac6fce9e516bb1830abe88b  # tags/0.3.56
+pkgver=0.3.56
+pkgrel=1
+arch=(x86_64)
+makedepends=(git meson doxygen python3 valgrind pulseaudio
+ alsa-lib libusb gst-plugins-base dbus sdl2 ncurses
+ libcanberra libsndfile bluez webrtc-audio-processing libx11 libxfixes jack2)
+source=("git+https://gitlab.freedesktop.org/pipewire/pipewire.git#commit=$commitid")
+install=pipewire.install
+
+prepare() {
+	cd pipewire
+
+	# remove export of LD_LIBRARY_PATH for pw-jack as it would add /usr/lib
+	sed -i '/LD_LIBRARY_PATH/d' pipewire-jack/src/pw-jack.in
+}
+
+build() {
+	meson pipewire build \
+	--prefix=/usr \
+	-D docs=enabled \
+	-D jack=enabled \
+	-D jack-devel=true \
+	-D libjack-path=/usr/lib \
+	-D libcamera=disabled \
+	-D udevrulesdir=/usr/lib/udev/rules.d \
+	-D roc=disabled \
+	-D session-managers=[]
+
+	meson compile -C build
+}
+
+package() {
+	meson install -C build --destdir "$pkgdir"
+
+	rm -rf $pkgdir/usr/include/jack
+	rm -rf $pkgdir/usr/lib/libjack*
+	rm -rf $pkgdir/usr/lib/pkgconfig/jack.pc
+}

@@ -1,0 +1,23 @@
+pkgname=kapidox
+pkgver=5.94.0
+pkgrel=1
+arch=('x86_64')
+makedepends=(cmake qt5 extra-cmake-modules docbook-xml docbook-xsl)
+durl=https://download.kde.org/stable/frameworks/5.94
+source=($durl/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	pip3 install build installer wheel setuptools jinja2
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	python -m build --wheel --no-isolation
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	python -m installer --destdir="$pkgdir" dist/*.whl
+}

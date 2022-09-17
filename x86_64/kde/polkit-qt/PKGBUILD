@@ -1,0 +1,30 @@
+pkgname=polkit-qt
+pkgver=0.114.0
+pkgrel=1
+arch=('x86_64')
+depends=(polkit qt5)
+makedepends=(cmake)
+source=(https://download.kde.org/stable/polkit-qt-1/polkit-qt-1-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-1-$pkgver
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-1-$pkgver/build
+
+	cmake				\
+	-D CMAKE_INSTALL_PREFIX=/usr	\
+	-D CMAKE_BUILD_TYPE=Release	\
+	-Wno-dev ..
+
+	make
+}
+
+package() {
+	cd $pkgname-1-$pkgver/build
+
+	make DESTDIR=$pkgdir install
+}

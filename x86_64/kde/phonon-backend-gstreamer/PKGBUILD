@@ -1,0 +1,31 @@
+pkgname=phonon-backend-gstreamer
+pkgver=4.10.0
+pkgrel=1
+arch=('x86_64')
+depends=(gstreamer libxml2 phonon
+	gst-plugins-base gst-plugins-good)
+makedepends=(gcc)
+source=(https://download.kde.org/stable/phonon/phonon-backend-gstreamer/$pkgver/phonon-backend-gstreamer-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	cmake				\
+	-D CMAKE_INSTALL_PREFIX=/usr	\
+	-D CMAKE_BUILD_TYPE=Release	\
+	..
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	make DESTDIR=$pkgdir install
+}

@@ -1,0 +1,119 @@
+# Maintainer: Johannes Löthberg <johannes@kyriasis.com>
+# Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
+# Contributor: Alexander F Rødseth <xyproto@archlinux.org>
+# Contributor: Daniel Micay <danielmicay@gmail.com>
+# Contributor: userwithuid <userwithuid@gmail.com>
+
+pkgname=rust-nightly
+epoch=1
+pkgver=2021.12.07
+pkgrel=1
+conflicts=rust
+pkgdesc="Systems programming language focused on safety, speed and concurrency"
+url=https://www.rust-lang.org/
+arch=(x86_64)
+license=(MIT Apache)
+options=(!emptydirs !strip)
+_llvm_ver=13.0.0
+depends=(gcc llvm curl gcc)
+source=(
+  "https://static.rust-lang.org/dist/2021-12-07/rustc-nightly-src.tar.xz"
+  "https://github.com/llvm/llvm-project/releases/download/llvmorg-$_llvm_ver/compiler-rt-$_llvm_ver.src.tar.xz"
+  0001-cargo-Change-libexec-dir.patch
+  0001-bootstrap-Change-libexec-dir.patch
+  0002-compiler-Change-LLVM-targets.patch
+  0003-compiler-Use-wasm-ld-for-wasm-targets.patch
+)
+
+prepare() {
+  cd rustc-$pkgver-src
+
+  # Patch bootstrap and cargo so credential helpers
+  # are in /usr/lib instead of /usr/libexec
+  patch -d src/tools/cargo -Np1 < ../0001-cargo-Change-libexec-dir.patch
+  patch -Np1 -i ../0001-bootstrap-Change-libexec-dir.patch
+
+  # Use our *-pc-linux-gnu targets, making LTO with clang simpler
+  patch -Np1 -i ../0002-compiler-Change-LLVM-targets.patch
+
+  # Use our wasm-ld
+  patch -Np1 -i ../0003-compiler-Use-wasm-ld-for-wasm-targets.patch
+}
+
+build() {
+  cd rustc-$pkgver-src
+
+  rm config.toml
+  cat >config.toml <<END
+changelog-seen = 2
+profile = "user"
+
+[llvm]
+link-shared = true
+
+[build]
+target = [
+  "x86_64-unknown-linux-gnu",
+]
+locked-deps = true
+vendor = true
+tools = ["cargo", "rls", "clippy", "rustfmt", "analysis", "src", "rust-demangler"]
+sanitizers = true
+profiler = true
+
+# Generating docs fails with the wasm32-* targets
+docs = false
+
+[install]
+prefix = "/usr"
+libdir = "/usr/lib"
+
+[rust]
+debuginfo-level-std = 2
+channel = "stable"
+description = "Drunk Linux $epoch:$pkgver-$pkgrel"
+rpath = false
+backtrace-on-ice = true
+remap-debuginfo = true
+jemalloc = true
+incremental = true
+
+# LLVM crashes when passing an object through ThinLTO twice.  This is triggered
+# when using rust code in cross-language LTO if libstd was built using ThinLTO.
+# http://blog.llvm.org/2019/09/closing-gap-cross-language-lto-between.html
+# https://github.com/rust-lang/rust/issues/54872
+codegen-units-std = 1
+
+[dist]
+compression-formats = ["xz"]
+
+[target.x86_64-unknown-linux-gnu]
+llvm-config = "/usr/local/bin/llvm-config"
+END
+
+  export RUST_BACKTRACE=1
+  export RUST_COMPILER_RT_ROOT="$srcdir/compiler-rt-$_llvm_ver.src"
+  [[ -d $RUST_COMPILER_RT_ROOT ]]
+
+  DESTDIR="$srcdir/dest-rust" python ./x.py install -j "$(nproc)"
+
+  cd ../dest-rust
+
+  # delete unnecessary files, e.g. files only used for the uninstall script
+  rm usr/lib/rustlib/{components,install.log,rust-installer-version,uninstall.sh}
+  rm usr/lib/rustlib/manifest-*
+
+  # rustbuild always installs copies of the shared libraries to /usr/lib,
+  # overwrite them with symlinks to the per-architecture versions
+  ln -srft usr/lib   usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/*.so
+
+  mkdir -p usr/share/bash-completion
+  mv etc/bash_completion.d usr/share/bash-completion/completions
+
+  mkdir -p usr/share/licenses/rust
+  mv -t usr/share/licenses/rust usr/share/doc/rust/{COPYRIGHT,LICENSE*}
+}
+
+package() {
+  cp -a dest-rust/* $pkgdir
+}

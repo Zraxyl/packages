@@ -1,0 +1,28 @@
+pkgname=(jack2)
+pkgdesc="The JACK low-latency audio server"
+pkgver=1.9.19
+pkgrel=1
+arch=('x86_64')
+source=("${pkgname}::git+https://github.com/jackaudio/${pkgname}.git#tag=v${pkgver}")
+makedepends=(alsa-lib dbus expat libsndfile)
+
+build() {
+	cd $pkgname
+	export LINKFLAGS="$LDFLAGS"
+	export PYTHONPATH="${PWD}:${PYTHONPATH}"
+
+	python2 ./waf configure --prefix=/usr \
+		--htmldir="/usr/share/doc/${pkgname}/" \
+		--autostart=none \
+		--systemd-unit \
+		--classic \
+		--dbus
+	python2 ./waf build
+}
+
+package() {
+	cd $pkgname
+
+	export PYTHONPATH="${PWD}:${PYTHONPATH}"
+	python2 ./waf install --destdir="${pkgdir}"
+}

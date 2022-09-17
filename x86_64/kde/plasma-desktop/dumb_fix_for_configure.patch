@@ -1,0 +1,11 @@
+--- CMakeLists.txt	2022-05-01 20:12:26.805929958 +0300
++++ CMakeLists.txt	2022-05-01 20:12:48.217641313 +0300
+@@ -19,7 +19,7 @@
+     EXPORT kcm_tablet
+     DESTINATION "${KDE_INSTALL_LOGGINGCATEGORIESDIR}"
+ )
+-qt_add_dbus_interface(common_SRCS "${KWIN_INPUTDEVICE_INTERFACE}" InputDevice_interface)
++#qt_add_dbus_interface(common_SRCS "${KWIN_INPUTDEVICE_INTERFACE}" InputDevice_interface)
+ 
+ kcoreaddons_add_plugin(kcm_tablet INSTALL_NAMESPACE "plasma/kcms/systemsettings")
+ target_sources(kcm_tablet PRIVATE

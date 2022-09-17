@@ -1,0 +1,70 @@
+pkgname=openjdk-17
+pkgver=17.0.3
+pkgrel=1
+arch=('x86_64')
+depends=('alsa-lib' 'cpio' 'cups' 'unzip' 'elfutils' 'libpng' 'harfbuzz' 'freetype2' 'libjpeg' 'which' 'zip' 'xorg-server')
+makedepends=('git')
+options=(!lto)
+source=(https://github.com/openjdk/jdk17u/archive/jdk-$pkgver-ga.tar.gz
+	freedesktop-java.desktop
+	freedesktop-jconsole.desktop
+	freedesktop-jshell.desktop
+	0001-REVERT-8266851-Implement-JEP-403-Strongly-Encapsulat.patch
+	0002-Revert-8256299-Implement-JEP-396-Strongly-Encapsulat.patch)
+install=install_jdk.sh
+
+prepare() {
+	cd jdk17u-jdk-$pkgver-ga
+
+	patch -p1 -i ../0001-REVERT-8266851-Implement-JEP-403-Strongly-Encapsulat.patch
+	patch -p1 -i ../0002-Revert-8256299-Implement-JEP-396-Strongly-Encapsulat.patch
+}
+
+build() {
+	cd jdk17u-jdk-$pkgver-ga
+	unset JAVA_HOME
+
+	bash configure			\
+	--enable-unlimited-crypto	\
+	--with-stdc++lib=dynamic	\
+	--with-lcms=system		\
+	--with-libjpeg=system		\
+	--with-libpng=system		\
+	--with-zlib=system		\
+	--with-version-build="12"	\
+	--prefix=/usr
+
+	make images
+}
+
+package() {
+	cd jdk17u-jdk-$pkgver-ga
+
+	install -vdm755 $pkgdir/opt/jdk-17
+	cp -Rv build/*/images/jdk/* $pkgdir/opt/jdk-17
+
+	# Remove .debuginfo from bins
+	rm $pkgdir/opt/jdk-17/bin/*.debuginfo
+
+	chown -R root:root $pkgdir/opt/jdk-17
+	for s in 16 24 32 48; do
+		install -vDm644 src/java.desktop/unix/classes/sun/awt/X11/java-icon${s}.png \
+		$pkgdir/usr/share/icons/hicolor/${s}x${s}/apps/java.png
+	done
+
+	mkdir -pv $pkgdir/usr/share/applications
+
+	# Icons
+	for s in 16 24 32 48; do
+		install -Dm 644 \
+			"${srcdir}/jdk17u-jdk-$pkgver-ga/src/java.desktop/unix/classes/sun/awt/X11/java-icon${s}.png" \
+			"${pkgdir}/usr/share/icons/hicolor/${s}x${s}/apps/${pkgbase}.png"
+	done
+
+	# Desktop files
+	for f in jconsole java jshell; do
+		install -Dm 644 \
+			"${srcdir}/freedesktop-${f}.desktop" \
+			"${pkgdir}/usr/share/applications/${f}-${pkgbase}.desktop"
+	done
+}

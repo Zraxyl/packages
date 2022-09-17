@@ -1,0 +1,28 @@
+pkgname=libcanberra
+pkgver=0.30
+pkgrel=1
+arch=('x86_64')
+depends=(libvorbis alsa-lib)
+source=(http://0pointer.de/lennart/projects/$pkgname/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	wget https://linuxfromscratch.org/patches/blfs/svn/$pkgname-$pkgver-wayland-1.patch
+	patch -Np1 -i $pkgname-$pkgver-wayland-1.patch
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure		\
+	--prefix=/usr
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

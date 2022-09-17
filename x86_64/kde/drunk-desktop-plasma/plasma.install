@@ -1,0 +1,8 @@
+post_upgrade() {
+  echo "PLYMOUTH is now enabled by default with sddm"
+  systemctl enable sddm-plymouth
+}
+
+post_install() {
+  post_upgrade
+}

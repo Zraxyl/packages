@@ -1,0 +1,48 @@
+pkgname=apper
+pkgver=1.0.0
+pkgrel=1
+arch=('x86_64')
+depends=(packagekit-qt5 kcmutils appstream qt5)
+makedepends=(cmake extra-cmake-modules)
+source=(https://download.kde.org/stable/$pkgname/$pkgver/$pkgname-$pkgver.tar.xz
+	apper-rpath.patch
+        apper-qt5.11.patch::https://invent.kde.org/system/apper/-/commit/d8960ea9.patch
+        apper-qt5.14.patch::https://invent.kde.org/system/apper/-/commit/1815d19f.patch
+        kdebug-401461.patch::https://invent.kde.org/system/apper/-/commit/d486706f.patch
+        apper-qt5.15.patch::https://invent.kde.org/system/apper/-/commit/f2fb923e.patch)
+
+prepare() {
+	mkdir -p $pkgname-$pkgver/build
+
+	patch -d $pkgname-$pkgver -p1 < apper-rpath.patch # Fix RPATH of apper binary
+    patch -d $pkgname-$pkgver -p1 < apper-qt5.11.patch # Fix build with Qt 5.11
+    patch -d $pkgname-$pkgver -p1 < apper-qt5.14.patch # Fix build with Qt 5.14
+    patch -d $pkgname-$pkgver -p1 < kdebug-401461.patch # Fix crash
+    patch -d $pkgname-$pkgver -p1 < apper-qt5.15.patch # Fix build with Qt 5.15
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	cmake				\
+	-D CMAKE_INSTALL_PREFIX=/usr	\
+	-D CMAKE_BUILD_TYPE=Release	\
+	-D APPSTREAM=ON \
+	-Wno-dev ..
+
+	make -j7
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	make DESTDIR=$pkgdir install
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+
+	# fix conflicts with gnome-software
+	mv "$pkgdir"/usr/share/dbus-1/services/{,kde_}org.freedesktop.PackageKit.service
+}

@@ -1,0 +1,44 @@
+pkgname=plasma-desktop
+pkgver=5.24.5
+pkgrel=1
+arch=('x86_64')
+depends=(gawk kdelibs4support polkit-kde-agent kmenuedit systemsettings baloo accountsservice xdg-user-dirs ibus libevdev)
+makedepends=(extra-cmake-modules kdoctools xf86-input-evdev xf86-input-synaptics xf86-input-libinput
+	scim kdesignerplugin intltool qt5 kinit)
+source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz
+	https://invent.kde.org/plasma/plasma-workspace/-/commit/efddc639.patch
+	dumb_fix_for_configure.patch)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build
+
+	cd kcms/tablet
+
+	# Dumb fix to fix cmake configure
+	#patch -i $srcdir/dumb_fix_for_configure.patch
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	cmake				\
+	-D CMAKE_INSTALL_PREFIX=/usr	\
+	-D CMAKE_BUILD_TYPE=Release	\
+	-Wno-dev ..
+
+	make -j7
+	
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	make DESTDIR=$pkgdir install
+
+        # Hacky way but its how i deal with it for now
+        mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+        cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+        rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}

@@ -1,0 +1,21 @@
+pkgname=garcon
+pkgver=4.16.1
+xver=4.16
+pkgrel=1
+arch=('x86_64')
+depends=(libxfce4ui gtk+)
+source=(https://archive.xfce.org/src/xfce/$pkgname/$xver/$pkgname-$pkgver.tar.bz2)
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure --prefix=/usr --sysconfdir=/etc
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

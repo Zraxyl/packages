@@ -1,0 +1,35 @@
+pkgname=gst-plugins-base
+pkgver=1.18.5
+pkgrel=1
+arch=('x86_64')
+depends=(gstreamer alsa-lib gobject-introspection iso-codes
+	libgudev libjpeg libogg libpng libtheora libvorbis
+	mesa pango wayland-protocols xorg-server gtk3+ opus
+	qt5)
+makedepends=(valgrind)
+source=(https://gstreamer.freedesktop.org/src/$pkgname/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	meson			\
+	--prefix=/usr		\
+	--buildtype=release	\
+	--wrap-mode=nodownload	\
+	-D package-origin=http://drunk.epizy.com \
+	-D package-name="[GStreamer]: $pkgver - DRUNK"
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	DESTDIR=$pkgdir ninja install
+}

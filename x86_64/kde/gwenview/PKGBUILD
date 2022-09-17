@@ -1,0 +1,37 @@
+pkgname=gwenview
+pkgver=22.04.3
+pkgrel=1
+arch=('x86_64')
+depends=(kactivities baloo libkdcraw kparts kitemmodels cfitsio phonon purpose perl exiv2)
+makedepends=(cmake extra-cmake-modules kdoctools)
+durl=https://download.kde.org/stable/release-service/$pkgver/src
+source=($durl/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	cmake				\
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D GWENVIEW_SEMANTICINFO_BACKEND="Baloo" \
+	-D CMAKE_BUILD_TYPE=Release	\
+	-Wno-dev ..
+
+	make -j7
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	make DESTDIR=$pkgdir install
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}
