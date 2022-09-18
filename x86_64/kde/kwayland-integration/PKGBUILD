@@ -1,6 +1,6 @@
 pkgname=kwayland-integration
 pkgver=5.24.5
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(kwindowsystem kidletime kwayland kguiaddons)
 makedepends=(cmake extra-cmake-modules wayland-protocols)
@@ -16,9 +16,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7
