@@ -92,6 +92,9 @@ jobs:
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/fix_sudo.sh"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/locale.sh"
         
+        # Make sure to tell the setup that container is ready to be used ( otherwise it will error out )
+        touch /home/runner/work/drunk_pkg/drunk_pkg/DRUNK/setup/checks/docker_ready
+        
     - name: PKG Build
       run: |
         # Perms fix
