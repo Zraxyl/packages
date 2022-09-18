@@ -1,8 +1,8 @@
 pkgname=plasma-wayland-protocols
-pkgver=1.7.0
+pkgver=1.8.0
 pkgrel=1
 arch=('x86_64')
-makedepends=(extra-cmake-modules qt5)
+makedepends=(extra-cmake-modules qt5 wayland)
 source=(https://download.kde.org/stable/plasma-wayland-protocols/plasma-wayland-protocols-$pkgver.tar.xz)
 
 prepare() {
