@@ -1,0 +1,25 @@
+pkgname=hwdata
+pkgver=0.362
+pkgrel=1
+pkgdesc="hardware identification databases"
+makedepends=('git')
+url=https://github.com/vcrhonek/hwdata
+arch=(x86_64)
+source=(https://github.com/vcrhonek/hwdata/archive/refs/tags/v0.${pkgver}.tar.gz)
+
+build() {
+  cd $pkgname
+  
+  ./configure \
+  --prefix=/usr
+  
+  make
+}
+
+package() {
+  cd $pkgname
+  
+  make DESTDIR=$pkgdir install
+
+  rm -rf $pkgdir/usr/lib/modprobe.d
+}
