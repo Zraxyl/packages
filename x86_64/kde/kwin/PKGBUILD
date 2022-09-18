@@ -5,7 +5,8 @@ arch=(x86_64)
 depends=(xcb-util-cursor plasma-framework kcmutils kwayland-server
          lcms kdecoration kscreenlocker kconfigwidgets kcrash
 	 kdbusaddons kglobalaccel kiconthemes knotifications
-	 kpackage kwidgetsaddons plasma-desktop)
+	 kpackage kwidgetsaddons plasma-desktop breeze vulkan-icd-loader
+	 pipewire hwdata)
 makedepends=(extra-cmake-modules qt5 kdoctools krunner)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 install=$pkgname.install
@@ -13,7 +14,9 @@ install=$pkgname.install
 build() {
 	cmake -B build -S $pkgname-$pkgver \
 	-D CMAKE_INSTALL_LIBEXECDIR=lib \
-	-D BUILD_TESTING=OFF
+	-D BUILD_TESTING=OFF \
+	-D QT_MAJOR_VERSION=5 \
+	-D EXCLUDE_DEPRECATED_BEFORE_AND_AT=5.94.0
 
 	cmake --build build
 }
