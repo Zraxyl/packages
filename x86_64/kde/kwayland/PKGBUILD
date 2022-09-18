@@ -1,6 +1,6 @@
 pkgname=kwayland
 pkgver=5.94.0
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 depends=(qt5 qt6)
 makedepends=(wayland-protocols plasma-wayland-protocols cmake extra-cmake-modules)
