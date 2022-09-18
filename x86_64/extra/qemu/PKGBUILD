@@ -11,7 +11,7 @@ depends=(cairo cdrtools gdk-pixbuf glib2
     alsa-lib pulseaudio jack2 libcap-ng libusb mesa
     libiscsi libssh lzo libglvnd
     snappy bzip2 zstd spice spice-protocol)
-makedepends=(curl)
+makedepends=(curl make gcc clang)
 options=(!strip !emptydirs)
 source=(http://download.qemu-project.org/$pkgname-$pkgver.tar.xz
 	65-kvm.rules
