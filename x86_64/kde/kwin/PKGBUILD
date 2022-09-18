@@ -1,6 +1,6 @@
 pkgname=kwin
 pkgver=5.24.5
-pkgrel=1
+pkgrel=2
 arch=(x86_64)
 depends=(xcb-util-cursor plasma-framework kcmutils kwayland-server
          lcms kdecoration kscreenlocker)
@@ -10,8 +10,8 @@ install=$pkgname.install
 
 build() {
 	cmake -B build -S $pkgname-$pkgver \
-	-DCMAKE_INSTALL_LIBEXECDIR=lib \
-	-DBUILD_TESTING=OFF
+	-D CMAKE_INSTALL_LIBEXECDIR=lib \
+	-D BUILD_TESTING=OFF
 
 	cmake --build build
 }
