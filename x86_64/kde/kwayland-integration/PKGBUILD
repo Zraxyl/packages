@@ -19,7 +19,7 @@ build() {
 	cmake \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_BUILD_TYPE=Release \
-	-D QT_MAJOR_VERSION=6 \
+	-D QT_MAJOR_VERSION=5 \
 	-D EXCLUDE_DEPRECATED_BEFORE_AND_AT=5.94.0 \
 	-Wno-dev ..
 
