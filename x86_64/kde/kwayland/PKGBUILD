@@ -2,7 +2,7 @@ pkgname=kwayland
 pkgver=5.94.0
 pkgrel=3
 arch=('x86_64')
-depends=(qt5 qt6)
+depends=(qt5)
 makedepends=(wayland-protocols plasma-wayland-protocols cmake extra-cmake-modules)
 durl=https://download.kde.org/stable/frameworks/5.94
 source=($durl/$pkgname-$pkgver.tar.xz)
@@ -19,8 +19,6 @@ build() {
 	cmake -B build \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_BUILD_TYPE=Release \
-	-D EXCLUDE_DEPRECATED_BEFORE_AND_AT=5.94.0 \
-	-D QT_MAJOR_VERSION=5 \
 	-Wno-dev .
 
 	make -j7 -C build
