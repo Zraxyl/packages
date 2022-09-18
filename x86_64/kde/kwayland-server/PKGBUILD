@@ -10,8 +10,7 @@ build() {
 	cmake -B build -S $pkgname-$pkgver \
 	-D BUILD_TESTING=OFF \
 	-D BUILD_QCH=ON \
-	-D QT_MAJOR_VERSION=6 \
-	-D BUILD_WITH_QT6=ON
+	-D QT_MAJOR_VERSION=5
 
 	cmake --build build -j4
 }
