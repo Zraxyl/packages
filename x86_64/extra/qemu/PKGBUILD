@@ -30,7 +30,6 @@ prepare() {
 	--enable-linux-user \
 	--enable-modules \
 	--disable-werror \
-	--with-opengl \
 	--audio-drv-list=alsa
 }
 
