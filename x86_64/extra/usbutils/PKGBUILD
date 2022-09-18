@@ -1,6 +1,6 @@
 pkgname=usbutils
 pkgver=014
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(libusb)
 makedepends=(glibc wget)
@@ -18,7 +18,4 @@ package() {
 	cd $pkgname-$pkgver
 
 	make DESTDIR=$pkgdir install
-
-	install -dm755 $pkgdir/usr/share/hwdata/
-	wget http://www.linux-usb.org/usb.ids -O $pkgdir/usr/share/hwdata/usb.ids
 }
