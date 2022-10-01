@@ -2,7 +2,7 @@ pkgname=curl
 pkgver=7.85.0
 pkgrel=1
 arch=('x86_64')
-depends=(ca-certificates brotli libidn2 gnutls libpsl openssl zlib zstd)
+depends=(ca-certificates nghttp2 brotli libidn2 gnutls libpsl openssl zlib zstd)
 source=(https://curl.haxx.se/download/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -41,11 +41,11 @@ package() {
 	tmpdir1=$srcdir/tmpdir1
 	make -C lib DESTDIR="${tmpdir1}" install
 
-	mv "${tmpdir1}"/usr/lib/libcurl{,-gnutls}.so.4.7.0
+	mv "${tmpdir1}"/usr/lib/libcurl{,-gnutls}.so.4.8.0
 	rm "${tmpdir1}"/usr/lib/libcurl.{a,so}*
 
-	for version in 3 4 4.0.0 4.1.0 4.2.0 4.3.0 4.4.0 4.5.0 4.6.0; do
-		ln -s libcurl-gnutls.so.4.7.0 "${tmpdir1}"/usr/lib/libcurl-gnutls.so.${version}
+	for version in 3 4 4.0.0 4.1.0 4.2.0 4.3.0 4.4.0 4.5.0 4.6.0 4.7.0; do
+		ln -s libcurl-gnutls.so.4.8.0 "${tmpdir1}"/usr/lib/libcurl-gnutls.so.${version}
 	done
 
 	# Now move tmpdir1 libs to pkgdir
