@@ -1,6 +1,6 @@
 pkgname=curl
-pkgver=7.81.0
-pkgrel=2
+pkgver=7.85.0
+pkgrel=1
 arch=('x86_64')
 depends=(ca-certificates brotli libidn2 gnutls libpsl openssl zlib zstd)
 source=(https://curl.haxx.se/download/$pkgname-$pkgver.tar.xz)
