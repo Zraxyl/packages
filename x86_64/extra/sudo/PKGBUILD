@@ -25,7 +25,7 @@ build() {
 		    --with-env-editor	  \
 		    --enable-tmpfiles.d   \
 		    --docdir=/usr/share/doc/sudo \
-		    --with-passprompt="[sudo]: password for %p: "
+		    --with-passprompt="[ sudo ]: password for %p: "
         make
 }
 
@@ -37,6 +37,8 @@ package() {
 
 	install -Dm644 -t $pkgdir/usr/lib/systemd/system ../sudo_logsrvd.service
 	rm $pkgdir/etc/sudoers.dist
+	
+	install -Dm644 "$srcdir/sudo.pam" "$pkgdir/etc/pam.d/sudo"
 
 	rm -rf $pkgdir/run/sudo
 	rm -rf $pkgdir/run
