@@ -1,6 +1,6 @@
 pkgname=kdeclarative
 pkgver=5.94.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(qt5 kio kpackage libepoxy)
 makedepends=(cmake extra-cmake-modules)
