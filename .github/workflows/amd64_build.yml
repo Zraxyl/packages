@@ -1,4 +1,4 @@
-name: Package build
+name: [ AMD64 ]: Package build
 
 on:
   push:
