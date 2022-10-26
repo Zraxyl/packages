@@ -1,4 +1,4 @@
-name: AMD64 - Package build
+name: ARM64 - Package build
 
 on:
   push:
@@ -130,7 +130,7 @@ jobs:
         echo "[List of pkgs to build]: " && cat pkglist
         echo " "
         
-        ./drunk -d -b $(cat pkglist)
+        ./drunk --aarch64 -d -b $(cat pkglist)
         
         # Now lets move the packages to certain path
         mkdir -p /home/runner/work/drunk_pkg/drunk_pkg/DRUNK/pkgs
