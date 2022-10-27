@@ -1,0 +1,22 @@
+pkgname=zlib
+pkgver=1.2.11
+pkgrel=1
+arch=('aarch64')
+depends=(glibc)
+source=($pkgname-$pkgver.tar.gz::https://github.com/madler/zlib/archive/refs/tags/v1.2.11.tar.gz)
+
+build() {
+        cd $pkgname-$pkgver
+
+        ./configure --prefix=/usr
+        make
+}
+
+package() {
+        cd $pkgname-$pkgver
+        make DESTDIR=$pkgdir install
+
+        mkdir -p $pkgdir/lib
+        mv -v $pkgdir/usr/lib/libz.so.* $pkgdir/lib
+        ln -sfv ../../lib/$(readlink $pkgdir/usr/lib/libz.so) $pkgdir/usr/lib/libz.so
+}

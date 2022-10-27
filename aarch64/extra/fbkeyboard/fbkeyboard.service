@@ -1,0 +1,10 @@
+[Unit]
+Description=Framebuffer keyboard
+After=multi-user.target
+
+[Service]
+Restart=on-failure
+ExecStart=/usr/bin/fbkeyboard
+
+[Install]
+WantedBy=multi-user.target

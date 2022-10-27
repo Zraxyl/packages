@@ -1,0 +1,36 @@
+pkgname=seatd
+pkgver=0.7.0
+pkgrel=1
+arch=('aarch64')
+depends=(systemd)
+makedepends=(meson ninja)
+source=(https://git.sr.ht/~kennylevinsen/seatd/archive/$pkgver.tar.gz
+	sysusers.conf)
+
+prepare() {
+	mkdir -p build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=plain \
+	-D examples="disabled" \
+	-D server="enabled" \
+	-D libseat-logind="systemd" \
+	-D man-pages="disabled" \
+	"$pkgname-$pkgver" \
+	build
+}
+
+build() {
+	ninja -C build
+}
+
+package() {
+	DESTDIR="$pkgdir/" ninja -C build install
+
+	# Allow users in the "seat" group to access seatd, and provide a service
+	# that will be necessary for e.g. wlroots-based seat management
+	install -Dm644 "seatd-$pkgver/contrib/systemd/seatd.service" \
+		-t "$pkgdir/usr/lib/systemd/system/"
+	install -Dm644 "$srcdir/sysusers.conf" "$pkgdir/usr/lib/sysusers.d/seatd.conf"
+}

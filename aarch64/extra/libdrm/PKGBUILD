@@ -1,0 +1,27 @@
+pkgname=libdrm
+pkgver=2.4.113
+pkgrel=1
+arch=('aarch64')
+depends=('libxcb' 'libxau' 'xorgproto' 'libpciaccess')
+source=(https://dri.freedesktop.org/$pkgname/$pkgname-$pkgver.tar.xz)
+
+build() {
+        cd $pkgname-$pkgver
+	mkdir -p build && cd build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D udev=true \
+	-D freedreno-kgsl=true \
+	-D exynos=enabled \
+	-D valgrind=disabled
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver
+	cd build
+	DESTDIR=$pkgdir	ninja install
+}

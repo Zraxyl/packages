@@ -1,0 +1,11 @@
+pkgname=drunk-install-scripts
+pkgver=25
+pkgrel=1
+arch=('aarch64')
+commitid=d7e5454bee5be767f2800bdc565e9ddeac48ac85
+#source=($pkgname.tar.gz::https://git.it-kuny.ch/drunk/source-code/$pkgname/-/archive/$commitid/$pkgname-$commitid.tar.gz)
+source=(usr.tar.xz)
+
+package() {
+        cp -rf $srcdir/usr $pkgdir/
+}

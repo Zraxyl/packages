@@ -1,0 +1,81 @@
+diff --git a/hw/xfree86/common/xf86Helper.c b/hw/xfree86/common/xf86Helper.c
+index 0389945a7cf0e18545cbe101639b62cd01f1e276..505b43814e9c298787f30bb243f021549415e5c1 100644
+--- a/hw/xfree86/common/xf86Helper.c
++++ b/hw/xfree86/common/xf86Helper.c
+@@ -1154,12 +1154,12 @@ xf86LogInit(void)
+     if (xf86LogFileFrom == X_DEFAULT) {
+         /* When not running as root, we won't be able to write to /var/log */
+         if (geteuid() != 0) {
+-            if ((env = getenv("XDG_DATA_HOME")))
++            if ((env = getenv("XDG_STATE_HOME")))
+                 snprintf(buf, sizeof(buf), "%s/%s", env,
+-                         DEFAULT_XDG_DATA_HOME_LOGDIR);
++                         DEFAULT_XDG_STATE_HOME_LOGDIR);
+             else if ((env = getenv("HOME")))
+                 snprintf(buf, sizeof(buf), "%s/%s/%s", env,
+-                         DEFAULT_XDG_DATA_HOME, DEFAULT_XDG_DATA_HOME_LOGDIR);
++                         DEFAULT_XDG_STATE_HOME, DEFAULT_XDG_STATE_HOME_LOGDIR);
+ 
+             if (env) {
+                 xf86_mkdir_p(buf);
+diff --git a/hw/xfree86/man/Xorg.man b/hw/xfree86/man/Xorg.man
+index 3ec6e2c25d16628d0648734ea8957c2b5c158285..d9fbd161a6259deeaeb17a6bc0ac1a69e1c4d7c5 100644
+--- a/hw/xfree86/man/Xorg.man
++++ b/hw/xfree86/man/Xorg.man
+@@ -251,7 +251,7 @@ as the
+ server log file.  The default log file when running as root is
+ .BI @logdir@/Xorg. n .log
+ and for non root it is
+-.BI $XDG_DATA_HOME/xorg/Xorg. n .log
++.BI $XDG_STATE_HOME/xorg/Xorg. n .log
+ where
+ .I n
+ is the display number of the
+diff --git a/hw/xfree86/man/xorg.conf.man b/hw/xfree86/man/xorg.conf.man
+index ac88d7e7acab4e74ec9383ad080a5e6331e3b14a..c68d02765d76ffbbdf6a69a3568e1f53daf81bd1 100644
+--- a/hw/xfree86/man/xorg.conf.man
++++ b/hw/xfree86/man/xorg.conf.man
+@@ -450,7 +450,7 @@ The default log file name when running as root is
+ .RE
+ and for non root it is
+ .RS 11
+-.RI $XDG_DATA_HOME/xorg/Xorg. <n> .log
++.RI $XDG_STATE_HOME/xorg/Xorg. <n> .log
+ .RE
+ .PP
+ .RS 7
+diff --git a/include/meson.build b/include/meson.build
+index 309a5d5b0848ad14ddb580c82e6b13d1c46ae808..5f9cd640a992cf5ce97e07968efc97b51b4b2412 100644
+--- a/include/meson.build
++++ b/include/meson.build
+@@ -362,8 +362,8 @@ xorg_data.set('XORG_VERSION_CURRENT', release)
+ xorg_data.set_quoted('XF86CONFIGFILE', 'xorg.conf')
+ xorg_data.set_quoted('XCONFIGFILE', 'xorg.conf')
+ xorg_data.set_quoted('XCONFIGDIR', 'xorg.conf.d')
+-xorg_data.set_quoted('DEFAULT_XDG_DATA_HOME', '.local/share')
+-xorg_data.set_quoted('DEFAULT_XDG_DATA_HOME_LOGDIR', 'xorg')
++xorg_data.set_quoted('DEFAULT_XDG_STATE_HOME', '.local/state')
++xorg_data.set_quoted('DEFAULT_XDG_STATE_HOME_LOGDIR', 'xorg')
+ xorg_data.set_quoted('DEFAULT_LOGDIR', log_dir)
+ xorg_data.set_quoted('DEFAULT_LOGPREFIX', 'Xorg.')
+ xorg_data.set_quoted('DEFAULT_MODULE_PATH', join_paths(get_option('prefix'), module_dir))
+diff --git a/include/xorg-config.h.meson.in b/include/xorg-config.h.meson.in
+index 59f1c2a8d29991d13cb6670697236f1069d88e4f..3347eaf583129a281315bd26cdb0d8cdd47a7ccd 100644
+--- a/include/xorg-config.h.meson.in
++++ b/include/xorg-config.h.meson.in
+@@ -51,11 +51,11 @@
+ /* Default logfile prefix */
+ #mesondefine DEFAULT_LOGPREFIX
+ 
+-/* Default XDG_DATA dir under HOME */
+-#mesondefine DEFAULT_XDG_DATA_HOME
++/* Default XDG_STATE dir under HOME */
++#mesondefine DEFAULT_XDG_STATE_HOME
+ 
+-/* Default log dir under XDG_DATA_HOME */
+-#mesondefine DEFAULT_XDG_DATA_HOME_LOGDIR
++/* Default log dir under XDG_STATE_HOME */
++#mesondefine DEFAULT_XDG_STATE_HOME_LOGDIR
+ 
+ /* Building DRI-capable DDX. */
+ #mesondefine XF86DRI

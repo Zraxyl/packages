@@ -1,0 +1,36 @@
+pkgname=bottle
+pkgver=2022.3
+pkgrel=2
+arch=('aarch64')
+depends=(zstd bash glibc libarchive curl)
+makesepends=(meson)
+source=(bottle.tar.gz::https://git.it-kuny.ch/drunk/source-code/bottle/-/archive/bottle/bottle-bottle.tar.gz)
+backup=(
+	etc/bottle.conf)
+
+build() {
+	cd $pkgname-$pkgname
+
+	meson \
+	--prefix=/usr \
+	-D doxygen=enabled \
+	-D scriptlet-shell=/bin/bash \
+	-D ldconfig=/usr/bin/ldconfig \
+	build
+
+	ninja -C build
+}
+
+package() {
+	cd $pkgname-$pkgname
+	
+	mkdir -vp $pkgdir
+	export DESTDIR=$pkgdir/
+	
+	ninja -C build install
+
+	# copy our own bottle.conf that has proper server list
+	cp -f ../../bottle.conf $pkgdir/etc/bottle.conf
+	mkdir -p $pkgdir/etc/bottle.d
+	touch $pkgdir/etc/bottle.d/mirrorlist
+}

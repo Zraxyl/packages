@@ -1,0 +1,87 @@
+pkgname=shadow
+pkgver=4.12.3
+pkgrel=2
+pkgdesc="Password and account management tool suite with support for shadow files and PAM"
+arch=('aarch64')
+url='https://github.com/shadow-maint/shadow'
+license=('BSD')
+depends=('linux-pam' 'acl' 'libgcrypt')
+backup=(etc/pam.d/{chage,passwd,shadow,useradd,usermod,userdel}
+        etc/pam.d/{chpasswd,newusers,groupadd,groupdel,groupmod}
+        etc/pam.d/{chgpasswd,groupmems}
+        etc/default/useradd)
+options=(strip)
+source=("https://github.com/shadow-maint/shadow/releases/download/$pkgver/shadow-$pkgver.tar.xz"
+        chgpasswd
+        chpasswd
+        defaults.pam
+        login.defs
+        newusers
+        passwd
+        shadow.{timer,service}
+        useradd.defaults)
+install=shadow.install
+
+prepare() {
+  cd "$pkgname-$pkgver"
+
+  autoreconf -fsiv
+
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --sysconfdir=/etc \
+    --disable-account-tools-setuid \
+    --with-libpam \
+    --with-group-name-max-length=32 \
+    --without-selinux
+}
+
+build() {
+  cd "$pkgname-$pkgver"
+
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+
+  make DESTDIR="$pkgdir" install
+
+  # useradd defaults
+  install -Dm600 "$srcdir/useradd.defaults" "$pkgdir/etc/default/useradd"
+
+  # systemd units
+  install -D -m644 "$srcdir/shadow.timer" "$pkgdir/usr/lib/systemd/system/shadow.timer"
+  install -D -m644 "$srcdir/shadow.service" "$pkgdir/usr/lib/systemd/system/shadow.service"
+  install -d -m755 "$pkgdir/usr/lib/systemd/system/timers.target.wants"
+  ln -s ../shadow.timer "$pkgdir/usr/lib/systemd/system/timers.target.wants/shadow.timer"
+
+  # login.defs
+  install -Dm644 "$srcdir/login.defs" "$pkgdir/etc/login.defs"
+
+  # PAM config - custom
+  rm "$pkgdir/etc/pam.d"/*
+  install -t "$pkgdir/etc/pam.d" -m644 "$srcdir"/{passwd,chgpasswd,chpasswd,newusers}
+
+  # PAM config - from tarball
+  install -Dm644 etc/pam.d/groupmems "$pkgdir/etc/pam.d/groupmems"
+
+  # we use the 'useradd' PAM file for other similar utilities
+  for file in chage groupadd groupdel groupmod shadow \
+      useradd usermod userdel; do
+    install -Dm644 "$srcdir/defaults.pam" "$pkgdir/etc/pam.d/$file"
+  done
+
+  # Remove evil/broken tools
+  rm "$pkgdir"/usr/sbin/logoutd
+
+  # Remove utilities provided by util-linux
+  rm -f $pkgdir/usr/bin/{chsh,chfn,sg}
+  rm -f $pkgdir/usr/sbin/{vipw,vigr}
+  rm -f $pkgdir/sbin/nologin
+
+  # but we keep newgrp, as sg is really an alias to it
+  mv "$pkgdir"/usr/bin/{newgrp,sg}
+}

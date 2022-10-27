@@ -56,7 +56,7 @@ jobs:
         # Clone and install required deps
         mkdir -p /home/runner/work/drunk_pkg/drunk_pkg/DRUNK/
         cd /home/runner/work/drunk_pkg/drunk_pkg/DRUNK
-        git clone https://git.it-kuny.ch/drunk/setup.git setup --depth=10 -b aarch64
+        git clone https://git.it-kuny.ch/drunk/setup.git setup --depth=10
         mkdir -p setup/tmp
         
         # Checkout the changed commitid

@@ -1,0 +1,44 @@
+pkgname=gdb
+pkgver=12.1
+pkgrel=1
+arch=('aarch64')
+depends=(expat xz readline)
+makedepends=(python3)
+source=(https://ftp.gnu.org/gnu/gdb/$pkgname-$pkgver.tar.xz
+	readline-8.2.patch)
+backup=(etc/gdb/gdbinit)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	patch -p1 -i ../readline-8.2.patch
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build && cd build
+
+	../configure \
+	--prefix=/usr \
+	--disable-nls \
+	--with-system-readline \
+	--disable-source-highlight \
+	--with-python=/usr/bin/python3 \
+	--with-system-gdbinit=/etc/gb/gdbinit \
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	make -C gdb/data-directory DESTDIR=$pkgdir install
+
+	make -C gdb DESTDIR=$pkgdir install
+
+	make -C gdbserver DESTDIR=$pkgdir install
+
+	install -dm 755 $pkgdir/etc/gdb
+	touch $pkgdir/etc/gdb/gdbinit
+}

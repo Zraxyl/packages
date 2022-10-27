@@ -1,0 +1,29 @@
+pkgname=fbkeyboard
+pkgver=1.0.0
+pkgrel=2
+arch=('aarch64')
+depends=(freetype2 glibc bash)
+makedepends=(make)
+source=(git+https://github.com/Tooniis/fbkeyboard
+	fbkeyboard.service
+	https://github.com/prawnpdf/prawn/raw/master/data/fonts/DejaVuSans.ttf)
+
+build() {
+	cd $pkgname
+
+	make
+}
+
+package() {
+	cd $pkgname
+
+	mkdir -p $pkgdir/usr/bin
+	cp fbkeyboard $pkgdir/usr/bin/fbkeyboard
+	chmod +x $pkgdir/usr/bin/fbkeyboard
+
+	install -Dm644 $srcdir/fbkeyboard.service $pkgdir/etc/systemd/system/fbkeyboard.service
+
+	# Install the font
+	mkdir -p $pkgdir/usr/share/fonts/ttf-dejavu
+	cp $srcdir/DejaVuSans.ttf $pkgdir/usr/share/fonts/ttf-dejavu/DejaVuSans.ttf
+}

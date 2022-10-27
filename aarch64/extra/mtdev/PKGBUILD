@@ -1,0 +1,24 @@
+pkgname=mtdev
+pkgver=1.1.6
+pkgrel=1
+arch=('aarch64')
+source=(https://bitmath.org/code/mtdev/$pkgname-$pkgver.tar.bz2)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure --prefix=/usr
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

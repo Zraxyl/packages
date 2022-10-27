@@ -1,0 +1,121 @@
+pkgname=glibc
+pkgver=2.35
+pkgrel=2
+arch=('aarch64')
+depends=(filesystem)
+makedepends=()
+options=(!strip emptydirs staticlibs)
+backup=(etc/gai.conf
+	etc/locale.gen
+	etc/nscd.conf)
+install=glibc.install
+source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz)
+
+build() {
+	cd $pkgname-$pkgver
+
+	mkdir -pv build
+	cd       build
+
+	../configure \
+	--prefix=/usr \
+	--disable-werror \
+	--enable-add-ons \
+	--enable-bind-now \
+	--enable-cet \
+	--enable-lock-elision \
+	--enable-stack-protector=strong \
+	--enable-stackguard-randomization \
+	--enable-kernel=4.9 \
+	--enable-stack-protector=strong \
+	--with-headers=/usr/include \
+	--disable-crypt
+
+	make -j6
+}
+
+package() {
+        # 64bit install
+        cd $pkgname-$pkgver
+        cd build
+
+        mkdir -p $pkgdir/lib64
+        ln -sfv ../lib/ld-linux-aarch64.so.2 $pkgdir/lib64/ld-linux-aarch64.so.2
+        ln -sfv ../lib/ld-linux-aarch64.so.2 $pkgdir/lib64/ld-lsb-aarch64.so.3
+
+        mkdir -p $pkgdir/etc
+        touch $pkgdir/etc/ld.so.conf
+        make install_root=$pkgdir install
+
+        cp -v ../nscd/nscd.conf $pkgdir/etc/nscd.conf
+        mkdir -pv $pkgdir/var/cache/nscd
+
+        mkdir -pv $pkgdir/usr/lib/locale
+        make install_root=$pkgdir localedata/install-locales -j2
+
+	install -vdm755 $pkgdir/include/gnu
+	install -vdm755 $pkgdir/etc/ld.so.conf.d
+
+	# Provided by libxcrypt; keep the old shared library for backwards compatibility
+        rm -f "$pkgdir"/usr/include/crypt.h "$pkgdir"/usr/lib/libcrypt.{a,so}
+
+	mkdir -vp $pkgdir/etc/ld.so.conf.d
+	mkdir -vp $pkgdir/lib/
+
+	ln -sf /usr/lib/locale $pkgdir/lib/locale
+
+	# make sure to respect /usr/lib64 symbolic link ( hack )
+	mkdir -p $pkgdir/usr/lib64
+	touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64
+
+	cat > $pkgdir/etc/nsswitch.conf << "EOF"
+# Begin /etc/nsswitch.conf
+
+passwd: files
+group: files
+shadow: files
+
+hosts: files dns
+networks: files
+
+protocols: files
+services: files
+ethers: files
+rpc: files
+
+# End /etc/nsswitch.conf
+EOF
+
+cat > $pkgdir/etc/ld.so.conf << "EOF"
+# Begin /etc/ld.so.conf
+/lib64
+/lib
+/usr/lib
+/usr/local/lib
+/opt/lib
+
+EOF
+
+cat >> $pkgdir/etc/ld.so.conf << "EOF"
+# Add an include directory
+include /etc/ld.so.conf.d/*.conf
+
+EOF
+	mkdir -pv $pkgdir/etc/ld.so.conf.d
+
+	# Stripping
+	if check_option 'debug' n; then
+		find "$pkgdir"/usr/bin -type f -executable -exec strip $STRIP_BINARIES {} + 2> /dev/null || true
+		find "$pkgdir"/usr/lib -name '*.a' -type f -exec strip $STRIP_STATIC {} + 2> /dev/null || true
+
+		# Do not strip these for gdb and valgrind functionality, but strip the rest
+		find "$pkgdir"/usr/lib \
+			-not -name 'ld-*.so' \
+			-not -name 'libc-*.so' \
+			-not -name 'libpthread-*.so' \
+			-not -name 'libthread_db-*.so' \
+			-name '*-*.so' -type f -exec strip $STRIP_SHARED {} + 2> /dev/null || true
+		fi
+}

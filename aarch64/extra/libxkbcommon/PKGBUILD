@@ -1,0 +1,24 @@
+pkgname=libxkbcommon
+pkgver=1.4.1
+pkgrel=1
+arch=('aarch64')
+depends=(xkeyboard-config wayland wayland-protocols libxml2 libxcb)
+source=(https://xkbcommon.org/download/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	mkdir -p $pkgname-$pkgver/build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	meson --prefix=/usr --buildtype=release -Denable-docs=false ..
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	DESTDIR=$pkgdir ninja install
+}

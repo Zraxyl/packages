@@ -1,0 +1,17 @@
+pkgname=kde-dummy
+pkgver=0.0.0
+pkgrel=1
+arch=('aarch64')
+depends=(glibc)
+
+prepare() {
+	echo dummy
+}
+
+build() {
+	echo dummy
+}
+
+package() {
+	echo dummy
+}

@@ -1,0 +1,21 @@
+pkgname=libxaw
+pkgver=1.0.14
+pkgrel=1
+arch=('aarch64')
+depends=('libxmu' 'libxpm')
+makedepends=(util-macros)
+source=(https://gitlab.freedesktop.org/xorg/lib/libxaw/-/archive/libXaw-$pkgver/libXaw-$pkgver.tar.gz)
+
+build() {
+        cd libxaw*
+
+	NOCONFIGURE=1 ./autogen.sh
+
+	./configure --prefix=/usr
+	make
+}
+
+package() {
+	cd libxaw*
+	make DESTDIR=$pkgdir install
+}

@@ -1,0 +1,21 @@
+pkgname=pkgconf
+pkgver=1.8.0
+pkgrel=1
+arch=('aarch64')
+depends=(glibc bash glib2)
+source=(http://distfiles.dereferenced.org/$pkgname/$pkgname-$pkgver.tar.xz)
+
+build() {
+	meson pkgconf-1.8.0 build	\
+	--prefix=/usr		\
+	--buildtype=release	\
+	-Dtests=false
+}
+
+package() {
+        meson install -C build --destdir "$pkgdir"
+
+	ln -s pkgconf "$pkgdir/usr/bin/pkg-config"
+
+	ln -s pkgconf.1 "$pkgdir/usr/share/man/man1/pkg-config.1"
+}

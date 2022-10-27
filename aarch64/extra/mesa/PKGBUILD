@@ -1,0 +1,55 @@
+pkgname=mesa
+pkgver=22.2.1
+pkgrel=1
+arch=('aarch64')
+depends=('libxcb' 'fontconfig' 'libdrm' 'libx11' 'libxext' 'libxfixes' 'libxshmfence' 'libxrender'
+	'wayland' 'wayland-protocols' 'vulkan-icd-loader' 'libomxil-bellagio' 'libclc' 'libglvnd'
+	'valgrind' 'libunwind' 'libpciaccess' 'libxxf86vm' 'elfutils'
+	'vdpau' 'glslang' 'libva' 'llvm' 'libxvmc' 'i2c-tools')
+makedepends=('directx-headers' 'vulkan-headers' 'python3-pip' 'clang' 'cmake' 'byacc' 'bison')
+source=(https://archive.mesa3d.org/mesa-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	# TODO add our own python3-mako pkg so pip wont be used
+	echo "[!]: Installing mako with pip"
+	pip3 install mako
+
+	sed '1s/python/&3/' -i bin/symbols-check.py
+
+	rm -rf build
+}
+
+build() {
+	mkdir -p build && cd build
+
+	meson --reconfigure \
+	--prefix=/usr \
+	--buildtype=release \
+	-D b_lto=true \
+	-D b_ndebug=true \
+	-D platforms=x11,wayland \
+	-D gallium-drivers=freedreno,r600,virgl,zink,swrast \
+	-D vulkan-drivers=amd,freedreno,swrast \
+	-D vulkan-layers=device-select,overlay \
+	-D dri3=enabled \
+	-D egl=enabled \
+	-D gallium-extra-hud=true \
+	-D gallium-vdpau=enabled \
+	-D gallium-omx=bellagio \
+	-D gles1=disabled \
+	-D gles2=enabled \
+	-D glvnd=true \
+	-D glx=dri \
+	-D llvm=enabled \
+	-D valgrind=enabled \
+	../$pkgname-$pkgver/
+
+	ninja -j5
+}
+
+package() {
+	cd build
+	DESTDIR=$pkgdir ninja install
+}

@@ -1,0 +1,24 @@
+pkgname=elfutils
+pkgver=0.187
+pkgrel=1
+arch=('aarch64')
+depends=(glibc)
+makedepends=(bzip2 curl libarchive xz zlib zstd)
+source=(https://sourceware.org/ftp/elfutils/$pkgver/elfutils-$pkgver.tar.bz2)
+
+build() {
+        cd $pkgname-$pkgver
+
+        ./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--program-prefix="eu-" \
+		--disable-debuginfod
+        make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+        make DESTDIR=$pkgdir install
+}

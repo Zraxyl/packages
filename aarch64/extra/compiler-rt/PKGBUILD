@@ -1,0 +1,31 @@
+pkgname=compiler-rt
+pkgver=15.0.2
+pkgrel=1
+makedepends=('cmake' 'python3' 'llvm')
+arch=('aarch64')
+psource=https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver
+source=($psource/llvm-project-$pkgver.src.tar.xz)
+
+prepare() {
+	cd llvm-project-$pkgver.src
+	mkdir -p build
+}
+
+build() {
+	cd llvm-project-$pkgver.src/build
+	
+	cmake ../$pkgname -G Ninja \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D CMAKE_INSTALL_PREFIX=/usr
+	
+	ninja
+}
+
+package() {
+	cd llvm-project-$pkgver.src/build
+
+	DESTDIR=$pkgdir ninja install
+
+	cd $pkgdir/usr/lib
+	ln -sf linux wasi
+}

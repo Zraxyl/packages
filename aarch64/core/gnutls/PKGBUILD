@@ -1,0 +1,22 @@
+pkgname=gnutls
+pkgver=3.7.8
+pkgrel=1
+arch=('aarch64')
+depends=(nettle libunistring libtasn1)
+source=(https://gnupg.org/ftp/gcrypt/$pkgname/v3.7/$pkgname-$pkgver.tar.xz)
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure		\
+	--prefix=/usr		\
+	--without-p11-kit
+
+	# TODO: port/compile over native p11-kit
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

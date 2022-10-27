@@ -1,0 +1,32 @@
+pkgname=i2c-tools
+pkgver=4.3
+pkgrel=1
+arch=('aarch64')
+depends=('perl' 'python3')
+makedepends=('python3' 'git')
+source=("https://www.kernel.org/pub/software/utils/i2c-tools/$pkgname-$pkgver.tar.xz"
+	"https://www.kernel.org/pub/software/utils/i2c-tools/$pkgname-$pkgver.tar.sign"
+	"$pkgname.sysusers"
+	"45-i2c-tools.rules"
+	"python-makefile.patch")
+
+prepare() {
+	cd "${pkgname}-${pkgver}"
+
+	patch -Np1 < "$srcdir/python-makefile.patch"
+}
+
+build() {
+	cd ${pkgname}-${pkgver}
+
+	make EXTRA="eeprog py-smbus"
+}
+
+package() {
+	cd ${pkgname}-${pkgver}
+
+	make EXTRA="eeprog py-smbus" PREFIX="${pkgdir}/usr" sbindir="$pkgdir/usr/bin" install
+
+	install -Dm644 "${srcdir}/$pkgname.sysusers" "${pkgdir}/usr/lib/sysusers.d/$pkgname.conf"
+	install -Dm644 "${srcdir}/45-i2c-tools.rules" "${pkgdir}/usr/lib/udev/rules.d/45-i2c-tools.rules"
+}
