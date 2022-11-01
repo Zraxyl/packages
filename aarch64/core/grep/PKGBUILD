@@ -1,8 +1,8 @@
 pkgname=grep
 pkgver=3.8
-pkgrel=2
+pkgrel=3
 arch=('aarch64')
-depends=(glibc pcre)
+depends=(glibc pcre pcre2)
 source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz)
 
 build() {
