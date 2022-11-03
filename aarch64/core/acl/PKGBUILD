@@ -12,6 +12,7 @@ build() {
 	--prefix=/usr \
 	--bindir=/bin \
 	--libexecdir=/usr/lib
+
         make
 }
 
