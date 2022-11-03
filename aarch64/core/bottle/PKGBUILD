@@ -1,6 +1,6 @@
 pkgname=bottle
 pkgver=2022.3
-pkgrel=2
+pkgrel=3
 arch=('aarch64')
 depends=(zstd bash glibc libarchive curl)
 makesepends=(meson)
