@@ -1,8 +1,8 @@
 pkgname=drunk-base
 pkgver=2022.3
-pkgrel=3
+pkgrel=4
 arch=('aarch64')
-depends=(acl coreutils gettext libgpg-error linux-pam perl
+depends=(acl diff coreutils gettext libgpg-error linux-pam perl
 	attr curl glibc libidn lz4 bash gmp libidn2 readline 
 	binutils expat gnutls libpsl mpc shadow bottle file
 	gzip libtasn1 mpfr util-linux filesystem
