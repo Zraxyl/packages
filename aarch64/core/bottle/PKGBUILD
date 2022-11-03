@@ -3,7 +3,7 @@ pkgver=2022.3
 pkgrel=3
 arch=('aarch64')
 depends=(zstd bash glibc libarchive curl)
-makesepends=(meson)
+makedepends=(meson)
 source=(bottle.tar.gz::https://git.it-kuny.ch/drunk/source-code/bottle/-/archive/bottle/bottle-bottle.tar.gz)
 backup=(
 	etc/bottle.conf)
