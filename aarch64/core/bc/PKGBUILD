@@ -1,6 +1,6 @@
 pkgname=bc
 pkgver=4.0.2
-pkgrel=1
+pkgrel=2
 arch=('aarch64')
 depends=(readline)
 source=(https://github.com/gavinhoward/bc/archive/$pkgver/bc-$pkgver.tar.gz)
