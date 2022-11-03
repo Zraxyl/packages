@@ -1,7 +1,7 @@
 pkgname=attr
 pkgver=2.5.1
 arch=('aarch64')
-pkgrel=1
+pkgrel=2
 depends=(glibc)
 makedepends=(grep gawk file)
 source=(https://download.savannah.gnu.org/releases/$pkgname/$pkgname-$pkgver.tar.gz)
