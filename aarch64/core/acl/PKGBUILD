@@ -1,6 +1,6 @@
 pkgname=acl
 pkgver=2.3.1
-pkgrel=1
+pkgrel=2
 arch=('aarch64')
 depends=(attr)
 source=(https://download.savannah.gnu.org/releases/$pkgname/$pkgname-$pkgver.tar.gz)
@@ -8,9 +8,9 @@ source=(https://download.savannah.gnu.org/releases/$pkgname/$pkgname-$pkgver.tar
 build() {
         cd $pkgname-$pkgver
 
-	./configure	\
-	--prefix=/usr	\
-	--bindir=/bin	\
+	./configure \
+	--prefix=/usr \
+	--bindir=/bin \
 	--libexecdir=/usr/lib
         make
 }
