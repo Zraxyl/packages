@@ -1,6 +1,6 @@
 pkgname=binutils
 pkgver=2.38
-pkgrel=2
+pkgrel=3
 arch=('aarch64')
 depends=(glibc zlib readline flex)
 makedepends=(bc git)
