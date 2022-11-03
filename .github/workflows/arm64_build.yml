@@ -99,7 +99,7 @@ jobs:
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/developer.sh"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bottle -Syu --needed --noconfirm --disable-download-timeout"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/developer.sh"
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bottle --needed --noconfirm --disable-download-timeout -Sy sudo nano mpfr mpc m4 grep sed gawk drunk-dev drunk-install-scripts"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bottle --needed --noconfirm --disable-download-timeout -Sy sudo diffutils mpfr mpc m4 grep sed gawk drunk-dev drunk-install-scripts"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/fix_sudo.sh"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/locale.sh"
         
