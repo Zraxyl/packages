@@ -17,18 +17,17 @@ source=("git+https://gitlab.gnome.org/GNOME/gtk.git#commit=$commitid"
 
 build() {
   CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
-  local meson_options=(
-    --prefix=/usr
-    --wrap-mode=nofallback
-    -D broadway-backend=true
-    -D cloudproviders=disabled
-    -D tracker=disabled
-    -D colord=enabled
-    -D gtk_doc=true
-    -D man-pages=true
-  )
 
-  meson gtk build "${meson_options[@]}"
+  meson gtk build \
+  --prefix=/usr \
+  --wrap-mode=nofallback \
+  -D broadway-backend=true \
+  -D cloudproviders=disabled \
+  -D tracker=disabled \
+  -D colord=enabled \
+  -D gtk_doc=true \
+  -D man-pages=true
+  
   meson compile -C build
 }
 
