@@ -1,0 +1,11 @@
+pkgname=drunk-dev
+pkgver=2022.3
+pkgrel=1
+arch=('aarch64')
+depends=(gcc make automake autoconf m4 flex bison
+	clang fakeroot bc linux-headers)
+source=()
+
+package() {
+        echo "Dev env"
+}
