@@ -7,11 +7,7 @@ depends=(libmd pixman libx11 mesa libxtrans libxkbfile
 	libxi libxaw libxtst libxres xkbcomp util-macros xmessage
 	font-util libepoxy xcb-util xcb-util-image xcb-util-renderutil
 	xcb-util-wm xcb-util-keysyms libxshmfence libunwind systemd libbsd)
-makedepends=(xorgproto pixman libx11 mesa libxtrans libxkbfile
-        libxfont2 libpciaccess libxv libxcvt libxmu libxrender
-        libxi libxaw libxtst libxres xkbcomp util-macros
-        font-util libepoxy xcb-util xcb-util-image xcb-util-renderutil
-        xcb-util-wm xcb-util-keysyms libxshmfence libunwind systemd meson git)
+makedepends=(xorgproto meson git patch meson ninja)
 source=(https://x.org/archive/individual/xserver/$pkgname-$pkgver.tar.xz
 	xvfb-run
 	764.diff
