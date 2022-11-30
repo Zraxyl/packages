@@ -1,9 +1,9 @@
 pkgname=libxfont2
-pkgver=2.0.5
+pkgver=2.0.6
 pkgrel=1
 arch=('aarch64')
 depends=(freetype2 libxtrans xorgproto libfontenc)
-source=(https://xorg.freedesktop.org/archive/individual/lib/libXfont2-$pkgver.tar.bz2)
+source=(https://xorg.freedesktop.org/archive/individual/lib/libXfont2-$pkgver.tar.xz)
 
 build() {
 	cd libXfont2-$pkgver

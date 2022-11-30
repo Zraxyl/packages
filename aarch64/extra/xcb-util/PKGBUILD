@@ -1,0 +1,20 @@
+pkgname=xcb-util
+pkgver=0.4.0
+pkgrel=1
+arch=('aarch64')
+depends=(libxcb)
+source=(https://xcb.freedesktop.org/dist/$pkgname-$pkgver.tar.bz2)
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure --prefix=/usr
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

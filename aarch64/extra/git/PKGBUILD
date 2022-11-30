@@ -1,5 +1,5 @@
 pkgname=git
-pkgver=2.38.0
+pkgver=2.38.1
 pkgrel=1
 arch=('aarch64')
 depends=(pcre pcre2 curl glibc expat shadow perl grep zlib)

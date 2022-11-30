@@ -1,9 +1,10 @@
-pkgname=libfontenc
-pkgver=1.1.6
+pkgname=xcb-util-wm
+pkgver=0.4.2
 pkgrel=1
 arch=('aarch64')
-depends=(freetype2 libxtrans xorgproto)
-source=(https://xorg.freedesktop.org/archive/individual/lib/$pkgname-$pkgver.tar.xz)
+depends=(libxcb)
+makedepends=(util-macros xorgproto)
+source=(https://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
@@ -16,5 +17,6 @@ build() {
 
 package() {
 	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

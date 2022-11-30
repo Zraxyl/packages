@@ -4,12 +4,12 @@ pkgrel=1
 arch=('aarch64')
 depends=(libmd pixman libx11 mesa libxtrans libxkbfile
 	libxfont2 libpciaccess libxv libxcvt libxmu libxrender
-	libxi libxaw libxtst libxres xorg-xkbcomp util-macros xmessage
+	libxi libxaw libxtst libxres xkbcomp util-macros xmessage
 	font-util libepoxy xcb-util xcb-util-image xcb-util-renderutil
 	xcb-util-wm xcb-util-keysyms libxshmfence libunwind systemd libbsd)
 makedepends=(xorgproto pixman libx11 mesa libxtrans libxkbfile
         libxfont2 libpciaccess libxv libxcvt libxmu libxrender
-        libxi libxaw libxtst libxres xorg-xkbcomp util-macros
+        libxi libxaw libxtst libxres xkbcomp util-macros
         font-util libepoxy xcb-util xcb-util-image xcb-util-renderutil
         xcb-util-wm xcb-util-keysyms libxshmfence libunwind systemd meson git)
 source=(https://x.org/archive/individual/xserver/$pkgname-$pkgver.tar.xz

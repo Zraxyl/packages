@@ -1,10 +1,10 @@
 pkgname=xmessage
-pkgver=1.0.5
+pkgver=1.0.6
 pkgrel=1
 arch=('aarch64')
 depends=(libxaw)
 makedepends=(util-macros)
-source=(https://xorg.freedesktop.org/archive/individual/app/xmessage-${pkgver}.tar.bz2)
+source=(https://xorg.freedesktop.org/archive/individual/app/xmessage-${pkgver}.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver

@@ -1,8 +1,7 @@
 pkgname=libxcvt
-pkgver=0.1.1
+pkgver=0.1.2
 pkgrel=1
 arch=('aarch64')
-depends=('glibc')
 makedepends=('meson')
 source=(https://xorg.freedesktop.org/archive/individual/lib/$pkgname-$pkgver.tar.xz)
 
