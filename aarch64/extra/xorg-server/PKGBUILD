@@ -50,8 +50,8 @@ build() {
 
 	mkdir -p build && cd build
 
-	meson		\
-	--prefix=/usr	\
+	meson \
+	--prefix=/usr \
 	-D ipv6=true \
 	-D xvfb=true \
 	-D xnest=true \
@@ -67,13 +67,12 @@ build() {
 	-D xkb_output_dir=/var/lib/xkb \
 	..
 
-	meson configure . > configuration
-
 	ninja
 }
 
 package() {
 	cd $pkgname-$pkgver/build
+
 	DESTDIR=$pkgdir ninja install
 	mkdir -p $pkgdir/etc/X11/xorg.conf.d
 
