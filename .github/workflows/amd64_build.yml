@@ -48,20 +48,20 @@ jobs:
         # Clone and install required deps
         mkdir -p /home/runner/work/drunk_pkg/drunk_pkg/DRUNK/
         cd /home/runner/work/drunk_pkg/drunk_pkg/DRUNK
-        git clone https://git.it-kuny.ch/drunk/setup.git setup --depth=10
-        mkdir -p setup/tmp
+        git clone https://git.it-kuny.ch/drunk/tools.git tools --depth=10
+        mkdir -p tools/tmp
         
         # Checkout the changed commitid
         cd pkgbuild && git reset --hard ${HEAD_COMMIT}
         cd /home/runner/work/drunk_pkg/drunk_pkg/DRUNK
         
-        ln -sf setup/drunk.sh drunk
+        ln -sf tools/drunk.sh drunk
         
-        mkdir -p setup/tmp
+        mkdir -p tools/tmp
         
         # Now prepare drunk build env
         # As were running in ubuntu env then we need to bypass normal checks of script
-        touch setup/checks/is_checked
+        touch tools/checks/is_checked
         
     - name: Setup docker
       run: |
@@ -84,16 +84,16 @@ jobs:
         
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "rm -rf /var/lib/bottle/sync/*"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "useradd developer -m -g wheel"
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/developer.sh"
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "cp -f /home/developer/DRUNK/setup/docker/bottle.conf /etc/bottle.conf"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/tools/docker/developer.sh"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "cp -f /home/developer/DRUNK/tools/docker/bottle.conf /etc/bottle.conf"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bottle -Syu --needed --noconfirm --disable-download-timeout"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/developer.sh"
         sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bottle --needed --noconfirm --disable-download-timeout -Sy sudo autoconf automake grep nano mpfr mpc base-devel m4 git linux"
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/fix_sudo.sh"
-        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/setup/docker/locale.sh"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/tools/docker/fix_sudo.sh"
+        sudo docker exec --tty -e PATH=/bin:/sbin:/usr/bin:/usr/sbin drunk_dev /bin/bash -c "bash -c /home/developer/DRUNK/tools/docker/locale.sh"
         
         # Make sure to tell the setup that container is ready to be used ( otherwise it will error out )
-        touch /home/runner/work/drunk_pkg/drunk_pkg/DRUNK/setup/checks/docker_ready
+        touch /home/runner/work/drunk_pkg/drunk_pkg/DRUNK/tools/checks/docker_ready
         
     - name: PKG Build
       run: |
@@ -103,7 +103,7 @@ jobs:
         sudo chmod -R 777 /home/runner/work/drunk_pkg/drunk_pkg/DRUNK
         
         sudo chmod +x /home/runner/work/drunk_pkg/drunk_pkg/DRUNK/drunk
-        sudo chmod +x /home/runner/work/drunk_pkg/drunk_pkg/DRUNK/setup/drunk.sh
+        sudo chmod +x /home/runner/work/drunk_pkg/drunk_pkg/DRUNK/tools/drunk.sh
         
         # Create pkg list to compile
         cd /home/runner/work/drunk_pkg/drunk_pkg/DRUNK/pkgbuild
