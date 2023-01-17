@@ -1,9 +1,10 @@
 pkgname=xfce4-notifyd
-pkgver=0.6.2
-pkgrel=1
+pkgver=0.6.5
+xver=0.6
+pkgrel=2
 arch=('x86_64')
 depends=(xfce4-panel libnotify libxfce4ui)
-source=(https://archive.xfce.org/src/apps/$pkgname/0.6/$pkgname-$pkgver.tar.bz2)
+source=(https://archive.xfce.org/src/apps/$pkgname/$xver/$pkgname-$pkgver.tar.bz2)
 
 build() {
 	cd $pkgname-$pkgver
