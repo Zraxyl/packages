@@ -1,9 +1,10 @@
 pkgname=kscreen
-pkgver=5.24.5
-pkgrel=2
+pkgver=5.26.3
+pkgrel=1
 arch=(x86_64)
 depends=(libkscreen plasma-framework qt5 kdbusaddons kdeclarative kglobalaccel
-	ki18n kiconthemes kcmutils kxmlgui plasma-framework kservice kpackage double-conversion)
+	ki18n kiconthemes kcmutils kxmlgui plasma-framework kservice kpackage double-conversion
+	layer-shell-qt)
 makedepends=(extra-cmake-modules kcmutils)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 

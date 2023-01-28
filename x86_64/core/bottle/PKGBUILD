@@ -1,11 +1,11 @@
 pkgname=bottle
-pkgver=2022.3
+pkgver=2022.4
 pkgrel=3
 arch=('x86_64')
 depends=(zstd bash glibc libarchive curl gpgme libassuan)
 commitid=21769caf0e603d8d90ba2506bdf582361b7182f5
 replaces=(pacman)
-source=(git+https://git.it-kuny.ch/drunk/source-code/bottle#commit=$commitid)
+source=(git+https://git.martinvlba.eu/DrunkOS/bottle.git#commit=$commitid)
 
 build() {
 	cd $pkgname

@@ -1,6 +1,6 @@
 pkgname=ghostscript
-pkgver=9.56.1
-pkgrel=2
+pkgver=10.0.0
+pkgrel=1
 arch=(x86_64)
 depends=(libxt cups fontconfig zlib libpng libjpeg libtiff
 	lcms dbus libpaper openjpeg libidn jbig2dec)
@@ -11,7 +11,7 @@ prepare() {
     cd ghostpdl-$pkgver
 
     # Force usage of system libs
-    rm -rf cups/libs expat ijs jbig2dec jpeg lcms2mt libpng openjpeg tiff zlib
+    rm -rf tesseract leptonica cups/libs expat ijs jbig2dec jpeg lcms2mt libpng openjpeg tiff zlib
     rm -rf gpdl
 
     # https://bugs.ghostscript.com/show_bug.cgi?id=704405
@@ -37,7 +37,7 @@ prepare() {
 build() {
     cd ghostpdl-$pkgver
 
-    make -j4
+    make
 }
 
 package() {

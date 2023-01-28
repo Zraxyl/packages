@@ -1,8 +1,8 @@
 pkgname=kdecoration
-pkgver=5.24.5
+pkgver=5.26.3
 pkgrel=1
 arch=(x86_64)
-depends=(ki18n)
+depends=(ki18n kcoreaddons)
 makedepends=(extra-cmake-modules)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 

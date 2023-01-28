@@ -1,6 +1,6 @@
 pkgname=appstream
-pkgver=0.15.2
-pkgrel=2
+pkgver=0.15.5
+pkgrel=1
 arch=(x86_64)
 depends=(curl qt5 librsvg yaml libxmlb libsoup nghttp2)
 makedepends=(meson xmlto gobject-introspection gtk-doc qt5 itstool vala gperf)
@@ -11,9 +11,9 @@ build() {
     meson build AppStream-$pkgver \
     --prefix=/usr \
     --libexecdir=lib \
-    -Dqt=true \
-    -Dvapi=true \
-    -Dcompose=true
+    -D qt=true \
+    -D vapi=true \
+    -D compose=true
 
     meson compile -C build
 }

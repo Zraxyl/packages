@@ -1,7 +1,7 @@
 pkgname=llvm
 pkgver=13.0.1
 pkgrel=1
-depends=(libffi libxml2 ncurses perl5 zlib libedit)
+depends=(libffi libxml2 ncurses perl zlib libedit)
 makedepends=('cmake' 'python3')
 arch=('x86_64')
 psource=https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver

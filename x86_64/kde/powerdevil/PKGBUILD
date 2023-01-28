@@ -1,5 +1,5 @@
 pkgname=powerdevil
-pkgver=5.24.5
+pkgver=5.26.3
 pkgrel=1
 arch=(x86_64)
 depends=(plasma-workspace bluez-qt networkmanager-qt)

@@ -1,12 +1,10 @@
 pkgname=kwin
-pkgver=5.24.4
-pkgrel=5
+pkgver=5.26.3
+pkgrel=1
 arch=(x86_64)
-depends=(xcb-util-cursor plasma-framework kcmutils kwayland-server
-         lcms kdecoration kscreenlocker kconfigwidgets kcrash
-	 kdbusaddons kglobalaccel kiconthemes knotifications
-	 kpackage kwidgetsaddons plasma-desktop breeze vulkan-icd-loader
-	 pipewire hwdata)
+depends=(breeze kcmutils kscreenlocker lcms libxcvt
+	wireplumber pipewire xcb-util-cursor krunner
+	plasma-wayland-protocols wayland-protocols hwdata)
 makedepends=(extra-cmake-modules qt5 kdoctools krunner)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 install=$pkgname.install

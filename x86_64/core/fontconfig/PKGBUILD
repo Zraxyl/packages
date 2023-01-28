@@ -34,7 +34,8 @@ build() {
 	#ninja
 
 	./../configure \
-	--prefix=/usr
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }
@@ -45,6 +46,8 @@ package() {
 	export FONTCONFIG_PATH=/etc/fonts
 	#DESTDIR=$pkgdir ninja install
 	make DESTDIR=$pkgdir install
+
+	mkdir -p $pkgdir/etc/fonts/conf.d/
 
 	cd $srcdir
 

@@ -1,17 +1,17 @@
 pkgname=nss
-pkgver=3.82.0
-fver=3.82
+pkgver=3.87.0
+fver=3.87
 pkgrel=1
 pkgdesc="Network Security Services"
 url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS"
 arch=(x86_64)
 depends=(nspr sqlite3 zlib p11-kit gyp)
 makedepends=(perl python3)
-source=("https://archive.mozilla.org/pub/security/$pkgname/releases/NSS_3_82_RTM/src/$pkgname-$fver.tar.gz"
+source=("https://archive.mozilla.org/pub/security/$pkgname/releases/NSS_3_87_RTM/src/$pkgname-$fver.tar.gz"
         certdata2pem.py bundle.sh)
 
 prepare() {
-  mv $pkgname-$fver/$pkgname $pkgname
+  mv $pkgname-$fver/nss/ $pkgname
 
   mkdir -p certs
   ln -srft certs nss/lib/ckfw/builtins/{certdata.txt,nssckbi.h}

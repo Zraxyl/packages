@@ -4,11 +4,12 @@ pkgrel=1
 pkgdesc="GObject-based multi-platform GUI toolkit"
 url="https://www.gtk.org/"
 arch=(x86_64)
-depends=(atk cairo libxcursor libxinerama libxrandr libxi libepoxy gdk-pixbuf
-	dconf libxcomposite libxdamage pango shared-mime-info at-spi2-atk
-	wayland libxkbcommon adwaita-icon-theme json-glib librsvg
-	desktop-file-utils mesa cantarell-fonts colord rest cups
-	fribidi iso-codes graphene gstreamer)
+depends=(glib2 cairo pango harfbuzz fribidi gdk-pixbuf libpng libtiff libjpeg
+         libepoxy libglvnd egl-wayland libxkbcommon graphene iso-codes
+         colord wayland libxrandr libx11 libxrender libxi libxext libxcursor
+         libxdamage libxfixes fontconfig libxinerama cups
+         gstreamer librsvg dconf shared-mime-info desktop-file-utils
+         adwaita-icon-theme cantarell-fonts gst-plugins-bad)
 makedepends=(gobject-introspection gtk-doc git glib2 sassc meson
 	wayland-protocols gi-docgen)
 commitid=1e6bad6c4f412dc0eb7b2f508cb4465929a04303  # tags/4.6.4^0
@@ -17,17 +18,18 @@ source=("git+https://gitlab.gnome.org/GNOME/gtk.git#commit=$commitid"
 
 build() {
   CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
+  local meson_options=(
+    --prefix=/usr
+    --wrap-mode=nofallback
+    -D broadway-backend=true
+    -D cloudproviders=disabled
+    -D tracker=disabled
+    -D colord=enabled
+    -D gtk_doc=false
+    -D man-pages=false
+  )
 
-  meson gtk build \
-  --prefix=/usr \
-  --wrap-mode=nofallback \
-  -D broadway-backend=true \
-  -D cloudproviders=disabled \
-  -D tracker=disabled \
-  -D colord=enabled \
-  -D gtk_doc=true \
-  -D man-pages=true
-  
+  meson gtk build "${meson_options[@]}"
   meson compile -C build
 }
 

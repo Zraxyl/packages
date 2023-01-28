@@ -6,7 +6,7 @@ depends=(libdrm pango systemd ttf-dejavu xf86-video-fbdev cantarell-fonts gtk3+)
 makedepends=(docbook-xml docbook-xsl)
 backup=(etc/plymouth/plymouthd.conf)
 commitid=(bfc3a2dd0fb73ac549c165cb2ff2f1c669888349)
-source=(git+https://github.com/Drunk-Linux/plymouth.git#commit=$commitid
+source=(git+https://git.martinvlba.eu/DrunkOS/plymouth.git#commit=$commitid
 	sddm-plymouth.service
 	lightdm-plymouth.service
 	plymouth-deactivate.service)

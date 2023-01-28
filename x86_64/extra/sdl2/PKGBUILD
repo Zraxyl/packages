@@ -1,5 +1,5 @@
 pkgname=sdl2
-pkgver=2.0.20
+pkgver=2.26.1
 pkgrel=1
 arch=('x86_64')
 depends=('glibc' 'libxext' 'libxrender' 'libx11' 'libglvnd' 'libxcursor' 'ibus' 'libusb')
@@ -11,7 +11,7 @@ build() {
     CFLAGS+=" -ffat-lto-objects"
     cmake -S SDL2-${pkgver} -B build -G Ninja \
     -D CMAKE_INSTALL_PREFIX=/usr \
-    -D SDL_STATIC=OFF \
+    -D SDL_STATIC=ON \
     -D SDL_DLOPEN=ON \
     -D SDL_RPATH=OFF
 

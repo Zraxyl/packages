@@ -1,19 +1,42 @@
 pkgname=flatpak
-pkgver=1.12.7
+pkgver=1.14.1
 pkgrel=1
 arch=(x86_64)
-depends=(glib2 libsoup polkit libxau json-glib python3 appstream)
+depends=(dbus glib2 curl polkit libxau libostree json-glib libarchive
+	python3 appstream systemd fuse3 bubblewrap xdg-dbus-proxy xdg-desktop-portal)
 makedepends=(intltool gobject-introspection git xmlto)
-source=()
+source=(https://github.com/flatpak/flatpak/releases/download/$pkgver/flatpak-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 
-	
+#	meson build \
+#	--prefix=/usr \
+#	-D dbus_config_dir=/usr/share/dbus-1/system.d \
+#	-D selinux_module=disabled \
+#	-D system_bubblewrap=bwrap \
+#	-D system_dbus_proxy=xdg-dbus-proxy
+
+#	ninja -C build
+
+	cd build
+	./../configure \
+	--prefix=/usr \
+	--with-dbus-config-dir=/usr/share/dbus-1/system.d \
+	--disable-selinux-module \
+	--with-system-bubblewrap \
+	--with-system-dbus-proxy=xdg-dbus-proxy
+
+	make
 }
 
 package() {
 	cd $pkgname-$pkgver
 
-	
+	#DESTDIR=$pkgdir ninja install -C build
+
+	make DESTDIR=$pkgdir -C build install
+
+	# Fixup mode to match polkit
+	install -d -o root -g 102 -m 750 "$pkgdir/usr/share/polkit-1/rules.d"
 }

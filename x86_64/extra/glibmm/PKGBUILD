@@ -1,5 +1,5 @@
 pkgname=glibmm
-pkgver=2.66.2
+pkgver=2.74.0
 pkgrel=1
 arch=('x86_64')
 depends=(glib2 libsigc++)

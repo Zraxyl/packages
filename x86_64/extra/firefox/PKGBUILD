@@ -1,6 +1,6 @@
 pkgname=firefox
-pkgver=104.0.0
-fver=104.0
+pkgver=108.0.0
+fver=108.0
 pkgrel=1
 arch=('x86_64')
 depends=(dbus-glib gtk+ gtk2+ libnotify pulseaudio alsa-lib python3 sqlite3 unzip
@@ -62,7 +62,7 @@ END
 	install -Dvm644 /dev/stdin "$distini" <<END
 [Global]
 id=drunklinux
-version=2022.3
+version=2023.1
 about=Mozilla Firefox for Drunk Linux
 [Preferences]
 app.distributor=drunklinux

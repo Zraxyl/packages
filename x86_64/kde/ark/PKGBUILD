@@ -1,5 +1,5 @@
 pkgname=ark
-pkgver=22.04.3
+pkgver=22.08.3
 pkgrel=1
 arch=(x86_64)
 depends=(kparts kpty libarchive zip kitemmodels hicolor-icon-theme)

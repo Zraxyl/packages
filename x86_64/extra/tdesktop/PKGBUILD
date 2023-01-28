@@ -4,7 +4,7 @@ pkgrel=6
 pkgdesc='Official Telegram Desktop client'
 arch=('x86_64')
 url="https://github.com/telegramdesktop/tdesktop"
-commitid=7a9273eca9d6ce639b5ad5ceb3a0159dfb451334
+commitid=4bde87cda482588c528e91038bea388e3da09f54
 depends=('ffmpeg' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal'
     'qt6' 'glibmm' 'rnnoise' 'pipewire' 'libxtst' 'libxrandr'
     'abseil-cpp' 'tg_owt' 'webkit2gtk' 'double-conversion')
@@ -30,9 +30,9 @@ prepare() {
     git submodule foreach --recursive git reset --hard
 
     # Patches
-    patch -p0 -i $srcdir/fix-tgcalls-cstdint.patch
-    patch -p0 -i $srcdir/lib_ui-animations-header-fix.patch
-    patch -p1 -i $srcdir/qt5-wayland-generator.patch -d Telegram/lib_base
+    #patch -p0 -i $srcdir/fix-tgcalls-cstdint.patch
+    #patch -p0 -i $srcdir/lib_ui-animations-header-fix.patch
+    #patch -p1 -i $srcdir/qt5-wayland-generator.patch -d Telegram/lib_base
 
     ##
     # API ID/HASH is only and only allowed to be used by DrunkOS developers

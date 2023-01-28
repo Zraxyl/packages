@@ -1,6 +1,6 @@
 pkgname=drunk-desktop-plasma
-pkgver=2022.3
-pkgrel=4
+pkgver=2022.4
+pkgrel=1
 arch=('x86_64')
 install=plasma.install
 depends=(
@@ -16,7 +16,7 @@ depends=(
 	breeze frameworkintegration kcodecs kded kemoticons kinfocenter kmenuedit kquickcharts kwallet
 	libksysguard plasma-wayland-protocols solid breeze-gtk kactivities kcompletion kfilemetadata
 	kinit kross kwayland modemmanager-qt plasma-workspace sonnet breeze-icons kactivities-stats
-	kconfig kdelibs4support kglobalaccel kio knewstuff krunner kwayland-server networkmanager-qt
+	kconfig kdelibs4support kglobalaccel kio knewstuff krunner networkmanager-qt
 	plasma-workspace-wallpapers kactivitymanagerd kconfigwidgets kguiaddons kio-extras
 	knotifications kscreen kwidgetsaddons oxygen-icons5 polkit-kde-agent syndication kapidox kcontacts
 	kdeplasma-addons kholidays kirigami2 knotifyconfig kscreenlocker kwin phonon polkit-qt syntax-highlighting

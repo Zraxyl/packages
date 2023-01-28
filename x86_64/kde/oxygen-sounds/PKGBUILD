@@ -1,8 +1,7 @@
 pkgname=oxygen-sounds
-pkgver=5.25.4
+pkgver=5.26.4
 pkgrel=1
 arch=('x86_64')
-depends=()
 makedepends=(cmake extra-cmake-modules)
 durl=https://download.kde.org/stable/plasma/$pkgver
 source=($durl/$pkgname-$pkgver.tar.xz)

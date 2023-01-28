@@ -1,9 +1,9 @@
 pkgname=breeze-icons
-pkgver=5.94.0
+pkgver=5.98.0
 pkgrel=1
 arch=('x86_64')
 makedepends=(qt5 cmake extra-cmake-modules python3-pip)
-durl=https://download.kde.org/stable/frameworks/5.94
+durl=https://download.kde.org/stable/frameworks/5.98
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

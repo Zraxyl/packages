@@ -1,19 +1,12 @@
 pkgname=wine
 # Versioning YY/MM/DD/HH YEAR/MONTH/DAY/HOUR ( HOUR = 24H FORMAT ) FROM PATCH FILE
-pkgver=2022.07.4.15
+pkgver=8.0
+ever=rc2
 pkgrel=1
-commitid=cc2253f09c7353cef5156a536ed20b75bad0e589
-source=(https://github.com/ValveSoftware/wine/archive/$commitid.zip
+source=(https://dl.winehq.org/wine/source/8.x/wine-$pkgver-$ever.tar.xz
 	30-win32-aliases.conf
 	wine-binfmt.conf
-	wine-reset
-
-	# patches go here
-	futex_compile.patch
-	openldap.patch
-	amstream_compile_fix.patch
-	amstream_compile_fix_2.patch
-	compile_error_fix.patch)
+	wine-reset)
 pkgdesc="A compatibility layer for running Windows programs"
 url="https://github.com/ValveSoftware/wine"
 arch=(x86_64)
@@ -61,7 +54,7 @@ makedepends=(
 	libxslt lib32-libxslt
 	gst-plugins-base #lib32-gst-plugins-base
 	vulkan-icd-loader lib32-vulkan-icd-loader
-#	vkd3d lib32-vkd3d
+	vkd3d lib32-vkd3d
 	sdl2 lib32-sdl2
 	cups #lib32-cups
 	libgphoto2
@@ -75,22 +68,11 @@ makedepends=(
 install=wine.install
 
 prepare() {
-
-	# START PATCHES
-	cd wine-$commitid
-	patch -Np1 -i ../futex_compile.patch
-	patch -Np1 -i ../openldap.patch
-	patch -Np1 -i ../amstream_compile_fix.patch
-	patch -Np1 -i ../amstream_compile_fix_2.patch
-	patch -Np0 -i ../compile_error_fix.patch
-	cd $srcdir
-	# END OF PATCHES
-
 	# clean if rebuild
 	rm -rf wine
 
 	# Rename wine folder
-	mv wine-$commitid wine
+	mv wine-$pkgver-$ever wine
 
 	sed 's|OpenCL/opencl.h|CL/opencl.h|g' -i $pkgname/configure*
 

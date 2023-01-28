@@ -1,8 +1,8 @@
 pkgname=kde-cli-tools
-pkgver=5.24.5
+pkgver=5.26.3
 pkgrel=1
 arch=('x86_64')
-depends=(kcmutils kactivities kdesu)
+depends=(kcmutils kactivities kdesu kdoctools kparts plasma-workspace)
 makedepends=(cmake qt5 extra-cmake-modules)
 durl=https://download.kde.org/stable/plasma
 source=($durl/$pkgver/$pkgname-$pkgver.tar.xz)

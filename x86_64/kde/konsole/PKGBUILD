@@ -1,5 +1,5 @@
 pkgname=konsole
-pkgver=22.04.1
+pkgver=22.12.0
 pkgrel=1
 arch=(x86_64)
 depends=(knotifyconfig kpty kparts knewstuff)

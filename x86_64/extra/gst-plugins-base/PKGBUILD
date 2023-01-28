@@ -1,35 +1,39 @@
 pkgname=gst-plugins-base
-pkgver=1.18.5
+pkgver=1.21.2
 pkgrel=1
 arch=('x86_64')
-depends=(gstreamer alsa-lib gobject-introspection iso-codes
-	libgudev libjpeg libogg libpng libtheora libvorbis
-	mesa pango wayland-protocols xorg-server gtk3+ opus
-	qt5)
-makedepends=(valgrind)
-source=(https://gstreamer.freedesktop.org/src/$pkgname/$pkgname-$pkgver.tar.xz)
+depends=(
+	# GStreamer family
+	gstreamer
+
+	# base
+	graphene opus libtheora libxv sdl2 qt5
+	zlib libglvnd wayland wayland-protocols libx11 libgudev libdrm)
+makedepends=(valgrind bash-completion python3 mesa ninja bison)
+source=(https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.21.2.tar.xz)
 
 prepare() {
-	cd $pkgname-$pkgver
+	cd "${pkgname}-${pkgver}"
 
-	mkdir build
+	mkdir -p build
 }
 
 build() {
-	cd $pkgname-$pkgver/build
+	cd "${pkgname}-${pkgver}"/build
 
-	meson			\
-	--prefix=/usr		\
+	meson \
+	--wrap-mode=nofallback \
+	--prefix=/usr \
 	--buildtype=release	\
-	--wrap-mode=nodownload	\
-	-D package-origin=http://drunk.epizy.com \
-	-D package-name="[GStreamer]: $pkgver - DRUNK"
+	-D package-origin=https://drunklinux.tk/ \
+	-D gst-plugins-base:package-name="[GStreamer-BAD]: $pkgver - DRUNK" \
+	-D gst-plugins-base:package-origin=https://drunklinux.tk/
 
 	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver/build
+	cd "${pkgname}-${pkgver}"/build
 
 	DESTDIR=$pkgdir ninja install
 }

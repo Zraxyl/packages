@@ -1,5 +1,5 @@
 pkgname=xwayland
-pkgver=21.1.2
+pkgver=22.1.7
 pkgrel=1
 arch=('x86_64')
 depends=('nettle' 'libepoxy' 'systemd' 'libxfont2' 
@@ -8,14 +8,13 @@ makedepends=('meson' 'xorgproto' 'libxtrans' 'libxkbfile' 'dbus'
 	'font-util' 'wayland' 'wayland-protocols'
 	'libdrm' 'mesa' 'systemd'
 )
-source=(https://x.org/pub/individual/xserver/$pkgname-$pkgver.tar.xz
-	render-gcc12.patch)
+source=(https://x.org/pub/individual/xserver/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
 
-	echo "[!]: Patching render-gcc12.patch"
-	patch -Np1 -i ../render-gcc12.patch
+	#echo "[!]: Patching render-gcc12.patch"
+	#patch -Np1 -i $srcdir/render-gcc12.patch
 }
 
 build() {

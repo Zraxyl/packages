@@ -1,9 +1,13 @@
 pkgname=acpid
-pkgver=2.0.33
-pkgrel=2
+pkgver=2.0.34
+pkgrel=1
 arch=('x86_64')
-depends=('which')
-source=(https://downloads.sourceforge.net/acpid2/$pkgname-$pkgver.tar.xz)
+depends=('which' 'bash')
+backup=('etc/acpi/handler.sh' 'etc/acpi/events/anything')
+source=(https://downloads.sourceforge.net/acpid2/$pkgname-$pkgver.tar.xz
+	'acpid.service'
+	'anything'
+	'handler.sh')
 
 build() {
 	cd $pkgname-$pkgver
@@ -20,4 +24,11 @@ package() {
 	make DESTDIR=$pkgdir install
 
 	install -v -m755 -d $pkgdir/etc/acpi/events
+
+	# default config
+	install -Dm644 ../anything "$pkgdir/etc/acpi/events/anything"
+	install -Dm755 ../handler.sh "$pkgdir/etc/acpi/handler.sh"
+
+	# systemd
+	install -Dm644 ../acpid.service "$pkgdir/usr/lib/systemd/system/acpid.service"
 }

@@ -1,6 +1,6 @@
 pkgname=drunk-desktop-plasma-clean
-pkgver=2022.3
-pkgrel=3
+pkgver=2022.4
+pkgrel=2
 arch=('x86_64')
 depends=(
 	# Login ( suggest sddm as wayland can be launched here + theming )
@@ -13,7 +13,7 @@ depends=(
 	kio kpackage ktexteditor libksysguard prison baloo kactivitymanagerd kcrash kemoticons kirigami2 kparts ktextwidgets modemmanager-qt
 	purpose bluez-qt kapidox kdav kfilemetadata kitemmodels kpeople kunitconversion networkmanager-qt qqc2-desktop-style breeze karchive kdbusaddons
 	kglobalaccel kitemviews kplotting kwallet oxygen-icons5 sddm-kcm breeze-icons kauth kguiaddons kjobwidgets kpty kwayland
-	phonon kbookmarks kdeclarative kholidays kjs kquickcharts kwayland-server phonon-backend-gstreamer sonnet kcalendarcore
+	phonon kbookmarks kdeclarative kholidays kjs kquickcharts phonon-backend-gstreamer sonnet kcalendarcore
 	kdecoration khotkeys kjsembed kross kwidgetsaddons plasma-desktop syndication kcmutils kded khtml krunner kwin plasma-framework syntax-highlighting
 	discover kcodecs kdelibs4support ki18n kmenuedit kscreen kwindowsystem plasma-wayland-protocols systemsettings
 	kcompletion kdesignerplugin kiconthemes knewstuff kscreenlocker kxmlgui plasma-workspace threadweaver

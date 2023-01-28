@@ -1,32 +1,38 @@
 pkgname=gstreamer
-pkgver=1.18.5
+pkgver=1.21.2
 pkgrel=1
 arch=('x86_64')
-depends=(glib2 gobject-introspection gtk3+)
-makedepends=(valgrind)
-source=(https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$pkgver.tar.xz)
+depends=(
+	# GStreamer
+	glib2 gobject-introspection gtk3+ libunwind libcap
+
+	# Other
+	ffmpeg libxrandr python3-gobject)
+makedepends=(valgrind bash-completion python3 mesa ninja bison)
+source=(https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.21.2.tar.xz)
 
 prepare() {
-	cd $pkgname-$pkgver
+	cd "${pkgname}-${pkgver}"
 
-	mkdir build
+	mkdir -p build
 }
 
 build() {
-	cd $pkgname-$pkgver/build
+	cd "${pkgname}-${pkgver}"/build
 
-	meson			\
-	--prefix=/usr		\
+	meson \
+	--wrap-mode=nofallback \
+	--prefix=/usr \
 	--buildtype=release	\
-	-D gst_debug=false	\
-	-D package-origin=http://drunk.epizy.com \
-	-D package-name="[GStreamer]: $pkgver - DRUNK"
+	-D package-origin=https://drunklinux.tk/ \
+	-D gst-plugins-bad:package-name="[GStreamer-BAD]: $pkgver - DRUNK" \
+	-D gst-plugins-bad:package-origin=https://drunklinux.tk/
 
 	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver/build
+	cd "${pkgname}-${pkgver}"/build
 
 	DESTDIR=$pkgdir ninja install
 }

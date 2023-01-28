@@ -1,11 +1,13 @@
 pkgname=linux
-pkgver=5.17.8
+pkgver=6.1.0
+rver=6.1
 pkgrel=1
 pkgdesc='Linux'
 arch=('x86_64')
 options=('!strip' 'emptydirs')
-makedepends=(rsync)
-source=(https://github.com/Drunk-Linux/Linux/archive/refs/heads/$pkgver-drunk.tar.gz)
+install=linux.install
+makedepends=(rsync bison)
+source=(https://github.com/Drunk-Linux/Linux/archive/refs/heads/$rver-drunk.tar.gz)
 
 # Deprecated as we ship modules/headers in 1 pkg now
 replaces=(linux-api-headers)
@@ -15,7 +17,7 @@ export KBUILD_BUILD_USER=$pkgname
 export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EPOCH})"
 
 prepare() {
-	cd Linux-$pkgver-drunk
+	cd Linux-$rver-drunk
 
 	echo "[!]: Cleaning src base"
 	make clean
@@ -25,7 +27,7 @@ prepare() {
 }
 
 build() {
-	cd Linux-$pkgver-drunk
+	cd Linux-$rver-drunk
 
 	echo "[!]: Getting up default config of drunk"
 	make drunk_defconfig
@@ -40,7 +42,7 @@ build() {
 package() {
 	pkgdesc="The Linux kernel, modules and headers package"
 
-        cd Linux-$pkgver-drunk
+	cd Linux-$rver-drunk
 
 	echo "[!]: Installing modules"
 	make INSTALL_MOD_PATH=$pkgdir INSTALL_MOD_STRIP=1 modules_install

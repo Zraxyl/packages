@@ -1,17 +1,16 @@
 pkgname=vulkan-icd-loader
-pkgver=1.2.219
+pkgver=1.3.220
 pkgrel=1
 arch=(x86_64)
-makedepends=('cmake' 'libx11' 'libxrandr' 'wayland' 'vulkan-headers')
+makedepends=('mesa' 'cmake' 'libx11' 'libxrandr' 'wayland' 'vulkan-headers')
 depends=('glibc')
-source=(https://github.com/KhronosGroup/Vulkan-Loader/archive/v$pkgver.tar.gz
-	0001-Dont-call-ToolProps-on-drivers-without-support.patch)
+source=(https://github.com/KhronosGroup/Vulkan-Loader/archive/v$pkgver.tar.gz)
 
 prepare() {
 	cd Vulkan-Loader*
 
 	# Fix segfault with mesa drivers
-	patch -Np1 -i ../0001-Dont-call-ToolProps-on-drivers-without-support.patch
+	# patch -Np1 -i ../0001-Dont-call-ToolProps-on-drivers-without-support.patch
 }
 
 build() {
@@ -30,7 +29,7 @@ build() {
 	-D BUILD_WSI_XCB_SUPPORT=On \
 	-D BUILD_WSI_XLIB_SUPPORT=On \
 	-D BUILD_WSI_WAYLAND_SUPPORT=On \
-	-D BUILD_WSI_DIRECTFB_SUPPORT=On \
+	-D BUILD_WSI_DIRECTFB_SUPPORT=Off \
 	-D CMAKE_BUILD_TYPE=Release \
 	..
 

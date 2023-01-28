@@ -1,8 +1,10 @@
 pkgname=extra-cmake-modules
-pkgver=5.94.0
+pkgver=5.100.0
 pkgrel=2
 arch=('x86_64')
-commitid=997bd09f326e065cff6fa58c081f14c1d7aee6e5
+commitid=a40f638383d5530993db7b04168fdd80a99772dd
+depends=(cmake make)
+makdedepends=(python3-sphinx python3-requests qt5 qt6)
 source=("https://github.com/KDE/extra-cmake-modules/archive/$commitid.zip"
 	"ECM-no-init.py.patch")
 
@@ -16,8 +18,7 @@ build() {
 	-S $pkgname-$commitid \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D BUILD_HTML_DOCS=OFF \
-	-D BUILD_QTHELP_DOCS=OFF \
-        -D QT_MAJOR_VERSION=6 
+	-D BUILD_QTHELP_DOCS=OFF
 
 	cmake --build build
 }

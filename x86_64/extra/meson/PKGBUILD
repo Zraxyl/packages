@@ -1,6 +1,6 @@
 pkgname=meson
-pkgver=0.60.2
-pkgrel=3
+pkgver=0.64.1
+pkgrel=1
 arch=('x86_64')
 depends=('python3')
 source=(https://github.com/mesonbuild/meson/releases/download/$pkgver/meson-$pkgver.tar.gz)
