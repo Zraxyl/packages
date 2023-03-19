@@ -1,8 +1,9 @@
 pkgname=wine
-pkgver=8.1
-ever=none
+# Versioning YY/MM/DD/HH YEAR/MONTH/DAY/HOUR ( HOUR = 24H FORMAT ) FROM PATCH FILE
+pkgver=8.0
+ever=
 pkgrel=1
-source=(https://dl.winehq.org/wine/source/8.x/wine-$pkgver.tar.xz
+source=(https://dl.winehq.org/wine/source/8.0/wine-$pkgver.tar.xz
 	30-win32-aliases.conf
 	wine-binfmt.conf
 	wine-reset
@@ -69,10 +70,10 @@ makedepends=(
 install=wine.install
 
 prepare() {
-#	# patch the wine
-#	cd wine-$pkgver
-#	patch -p1 -i $srcdir/83199991ed9df2e3869e60d98b7ead78019caaf2.patch
-#	cd $srcdir
+	# patch the wine
+	cd wine-$pkgver
+	patch -p1 -i $srcdir/83199991ed9df2e3869e60d98b7ead78019caaf2.patch
+	cd $srcdir
 
 	# clean if rebuild
 	rm -rf wine

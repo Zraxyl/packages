@@ -1,5 +1,5 @@
-pkgname=drunk-fonts
-pkgver=2022.3
+pkgname=base-fonts
+pkgver=2023.1
 pkgrel=1
 arch=(x86_64)
 depends=(ttf-bitstream-vera ttf-droid ttf-hack ttf-liberation

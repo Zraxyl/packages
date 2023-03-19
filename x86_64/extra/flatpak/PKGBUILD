@@ -1,12 +1,13 @@
 pkgname=flatpak
 pkgver=1.15.1
-pkgrel=3
+pkgrel=4
 arch=(x86_64)
 depends=(dbus glib2 curl polkit libxau libostree json-glib libarchive socat
 	python3 appstream systemd fuse3 bubblewrap xdg-dbus-proxy xdg-desktop-portal
-	libglnx)
+	libglnx gnupg gpgme)
 makedepends=(intltool gobject-introspection git xmlto bison python3-pip
 	python3-pygments)
+options=(emptydirs)
 source=(https://github.com/flatpak/flatpak/releases/download/$pkgver/flatpak-$pkgver.tar.xz
 	# For desktop entries
 	flatpak.sh
@@ -56,6 +57,6 @@ package() {
 	cp -vf $srcdir/flatpak-system-helper.service $pkgdir/usr/lib/systemd/system/
 
 	# Misc changes
-	mkdir -p $pkgdir/var/lib/
+	mkdir -p $pkgdir/var/lib/ $pkgdir/usr/var/lib/
 	ln -sf /usr/var/lib/flatpak $pkgdir/var/lib/flatpak
 }

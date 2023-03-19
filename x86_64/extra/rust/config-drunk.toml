@@ -11,6 +11,7 @@ link-shared = true
 target = [
   "x86_64-unknown-linux-gnu",
 ]
+
 locked-deps = true
 vendor = true
 tools = ["cargo", "rls", "clippy", "rustfmt", "analysis", "src", "rust-demangler"]
@@ -28,7 +29,7 @@ bindir = "/usr/bin"
 [rust]
 debuginfo-level-std = 2
 channel = "stable"
-description = "Drunk Linux $pkgver-$pkgrel"
+description = "Drunk Linux"
 rpath = false
 backtrace-on-ice = true
 remap-debuginfo = true

@@ -1,7 +1,6 @@
 pkgname=rust
-pkgver=1.66.1
+pkgver=1.68.0
 pkgrel=1
-conflicts=(rust-nightly)
 pkgdesc="Systems programming language focused on safety, speed and concurrency"
 url=https://www.rust-lang.org/
 arch=(x86_64)
@@ -45,5 +44,5 @@ build() {
 }
 
 package() {
-  cp -a dest-rust/* $pkgdir
+  cp -rf dest-rust/* $pkgdir
 }

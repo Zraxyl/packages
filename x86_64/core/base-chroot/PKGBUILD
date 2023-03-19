@@ -1,10 +1,9 @@
 pkgname=base-chroot
-pkgver=2022.3
+pkgver=2023.1
 pkgrel=1
 pkgdesc="Base metapckage alike pkg to give user/dev needed CLI-System"
 arch=('x86_64')
-conflicts=(base-drunk)
-source=(os-release neofetch)
+source=()
 depends=(
 	# Base packages
 	accountsservice ca-certificates diffutils file gnu-efi kmod libnl linux-pam pciutils procps-ng tar xz
@@ -26,12 +25,8 @@ build() {
 
 package() {
 	cd $pkgname-$pkgver
-	
+
 	# Make rootfs structure
 	mkdir -vp $pkgdir/etc/systemd/system/
 	mkdir -vp $pkgdir/usr/bin
-
-	# Copy over needed files
-	cp -rf ../../os-release $pkgdir/etc
-	cp -rf ../../neofetch $pkgdir/usr/bin && chmod +x $pkgdir/usr/bin/neofetch
 }

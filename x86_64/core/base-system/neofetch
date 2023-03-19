@@ -791,7 +791,7 @@ image_source="auto"
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
-#       Hyperbola, iglunix, janus, Kali, Drunk, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
+#       Hyperbola, iglunix, janus, Kali, Evolix, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
 #       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
 #       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui,
 #       Mer, Minix, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
@@ -5148,7 +5148,7 @@ ASCII:
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
-                                GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali, Drunk,
+                                GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali, Evolix,
                                 KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
                                 LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos,
                                 Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui, Mer, Minix, LinuxMint,
@@ -8038,26 +8038,19 @@ ${c1}..............
 EOF
         ;;
 
-	"Drunk"*)
+	"Evolix"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}#########################################
-#########################################
-####/                .  ####*   /########
-##/ ############/              * /#######
-###############                  /#######
-###########*                  ,*/########
-#######/             /######,   #########
-#######*           ,##########*   #######
-###*                ############*   #####
-#/               *#%##############/  ####
-#/   ####      ####################/. ###
-#W    ##/    /######################*## #
-##     ###     /#####################/ /#
-####    ###*     ####################   #
-##/#   ########  *##################   /#
-##############    #######################
-#########################################
+${c1}#_______________________________________________#
+|#$$$$$$$$\~~~~~~~~~~~~~~~~~~$$\.$$\~$$\~~~$$\~#|
+|#$$.._____|~~~~~~~~~~~~~~~~~$$.|\__|$$.|~~$$.|#|
+|#$$.|..$$\~~~~$$\~~$$$$$$\~~$$.|$$\.\$$\~$$..|#|
+|#$$$$$$\$$\~~$$..|$$..__$$\~$$.|$$.|~\$$$$../~#|
+|#$$..__|\$$\$$../~$$./..$$.|$$.|$$.|~$$..$$<~~#|
+|#$$.|....\$$$../~~$$.|..$$.|$$.|$$.|$$../\$$\~#|
+|#$$$$$$$$_\$../~~~\$$$$$$..|$$.|$$.|$$./~~$$.|#|
+|#\________|\_/~~~~~\______/~\__|\__|\__|~~\__|#|
+#_______________________________________________#
 EOF
 	;;
 

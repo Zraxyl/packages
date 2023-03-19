@@ -15,6 +15,7 @@
 **/*asc*
 **/.git
 **/*.dat.gz
+**/*.save
 
 # Ignore all of the extra folders in pkgbuild dir
 */*/*/*/
