@@ -1,8 +1,8 @@
 pkgname=gdb
-pkgver=11.1
-pkgrel=3
+pkgver=13.1
+pkgrel=1
 arch=('x86_64')
-depends=(expat xz)
+depends=(expat xz guile elfutils readline ncurses python3 mpfr)
 source=(https://ftp.gnu.org/gnu/gdb/$pkgname-$pkgver.tar.xz)
 backup=(etc/gdb/gdbinit)
 

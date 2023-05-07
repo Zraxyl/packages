@@ -1,18 +1,18 @@
 post_upgrade() {
   echo "##"
-  echo "# DrunkOS: Making new ramdisk..."
+  echo "# [ EVOLINX ]: Making new ramdisk..."
   echo "##"
 
-  echo "[LINUX-INFO]: Creating new ramdisk with target kernel 6.1.0"
-  dracut --kver 6.1.0-drunk -m "base lvm kernel-modules" --filesystems "ext4 ext3" /boot/initramfs-6.1.0-drunk.img --force
+  echo "[ LINUX-INFO ]: Creating new ramdisk with target kernel 6.2.10"
+  dracut --kver 6.2.10-evolinx -m "base lvm kernel-modules" --filesystems "ext4 ext3" /boot/initramfs-6.2.10.img --force
 
   echo "##"
-  echo "# DrunkOS: Please update now youre systemd-boot config to use"
-  echo "# /boot/initramfs-6.1.0-drunk.img"
+  echo "# [ EVOLINX ]: Please update now youre systemd-boot config to use"
+  echo "# /boot/initramfs-6.2.10.img"
   echo "##"
 
   # Sleep a bit
-  echo "[DRUNKOS]: Sleeping a bit..."
+  echo "[ EVOLINX ]: Sleeping a bit..."
   sleep 20
 }
 

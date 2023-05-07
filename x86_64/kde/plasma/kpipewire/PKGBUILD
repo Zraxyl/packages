@@ -1,6 +1,6 @@
 pkgname=kpipewire
-pkgver=5.26.3
-pkgrel=1
+pkgver=5.27.4
+pkgrel=2
 arch=('x86_64')
 depends=(kwayland ki18n kcoreaddons pipewire libepoxy ffmpeg)
 makedepends=(extra-cmake-modules plasma-wayland-protocols)

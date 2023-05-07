@@ -2,7 +2,8 @@ pkgname=sddm
 pkgver=2023.1
 pkgrel=1
 arch=(x86_64)
-depends=(xauth qt5 xorg-server base-fonts double-conversion drivers-xorg)
+depends=(xauth qt5 xorg-server base-fonts double-conversion drivers-xorg
+	wayland wayland-protocols mesa glu libglvnd)
 makedepends=(extra-cmake-modules python3 qt5)
 backup=('usr/share/sddm/scripts/wayland-session'
 		'usr/share/sddm/scripts/Xsetup'
@@ -14,7 +15,7 @@ source=(https://git.martinvlba.eu/DrunkOS/$pkgname/archive/v${pkgver}.tar.gz)
 options=(!strip)
 
 build() {
-	cmake -B build -S $pkgname-$pkgver \
+	cmake -B build -S $pkgname \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_INSTALL_LIBEXECDIR=/usr/lib/sddm \
 	-D DBUS_CONFIG_DIR=/usr/share/dbus-1/system.d \

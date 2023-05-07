@@ -1,8 +1,9 @@
 pkgname=gwenview
-pkgver=22.04.3
+pkgver=23.04.0
 pkgrel=1
 arch=('x86_64')
-depends=(kactivities baloo libkdcraw kparts kitemmodels cfitsio phonon purpose perl exiv2)
+depends=(kactivities baloo libkdcraw kparts kitemmodels cfitsio phonon purpose
+    perl exiv2 kimageannotator)
 makedepends=(cmake extra-cmake-modules kdoctools)
 durl=https://download.kde.org/stable/release-service/$pkgver/src
 source=($durl/$pkgname-$pkgver.tar.xz)

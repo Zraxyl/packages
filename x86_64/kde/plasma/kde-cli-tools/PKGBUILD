@@ -1,5 +1,5 @@
 pkgname=kde-cli-tools
-pkgver=5.26.3
+pkgver=5.27.4
 pkgrel=1
 arch=('x86_64')
 depends=(kcmutils kactivities kdesu kdoctools kparts plasma-workspace)

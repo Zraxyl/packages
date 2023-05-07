@@ -1,8 +1,8 @@
 pkgname=kdeplasma-addons
-pkgver=5.26.3
-pkgrel=2
+pkgver=5.27.4
+pkgrel=1
 arch=('x86_64')
-depends=(plasma-workspace kunitconversion plasma-desktop)
+depends=(plasma-workspace kunitconversion plasma-desktop purpose)
 makedepends=(extra-cmake-modules qt5-webengine)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 

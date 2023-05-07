@@ -1,9 +1,10 @@
 pkgname=kdevelop
-pkgver=22.04.0
+pkgver=23.04.0
 pkgrel=1
 arch=('x86_64')
-depends=(clang libksysguard kitemmodels knotifyconfig ktexteditor kcmutils threadweaver grantlee)
-makedepends=(extra-cmake-modules kdoctools kdevelop-pg-qt llvm qt5 plasma-framework krunner boost purpose)
+depends=(clang libksysguard kitemmodels knotifyconfig ktexteditor
+	kcmutils threadweaver grantlee kdevelop-pg-qt libkomparediff2)
+makedepends=(extra-cmake-modules kdoctools llvm qt5 plasma-framework krunner boost purpose)
 source=(https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz)
 
 prepare() {

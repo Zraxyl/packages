@@ -1,9 +1,9 @@
 pkgname=kapidox
-pkgver=5.94.0
+pkgver=5.105.0
 pkgrel=1
 arch=('x86_64')
-makedepends=(cmake qt5 extra-cmake-modules docbook-xml docbook-xsl)
-durl=https://download.kde.org/stable/frameworks/5.94
+makedepends=(cmake qt5 python3-pip extra-cmake-modules docbook-xml docbook-xsl)
+durl=https://download.kde.org/stable/frameworks/5.105
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

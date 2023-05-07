@@ -1,5 +1,5 @@
 pkgname=libdrm
-pkgver=2.4.112
+pkgver=2.4.115
 pkgrel=1
 arch=('x86_64')
 depends=('libxcb' 'libxau' 'xorgproto' 'libpciaccess')
@@ -7,12 +7,13 @@ source=(https://dri.freedesktop.org/$pkgname/$pkgname-$pkgver.tar.xz)
 
 build() {
         cd $pkgname-$pkgver
+
 	mkdir -p build && cd build	
-	meson		\
-	--prefix=/usr	\
-	--buildtype=release	\
-	-D udev=true		\
-	-D valgrind=false
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D udev=true
 
 	ninja
 }

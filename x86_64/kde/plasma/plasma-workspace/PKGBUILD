@@ -1,5 +1,5 @@
 pkgname=plasma-workspace
-pkgver=5.26.3
+pkgver=5.27.4.1
 pkgrel=1
 arch=('x86_64')
 depends=(knotifyconfig ktexteditor xrdb kholidays xmessage prison libqalculate
@@ -8,7 +8,7 @@ depends=(knotifyconfig ktexteditor xrdb kholidays xmessage prison libqalculate
 	modemmanager-qt breeze kio-extras kio-fuse kquickcharts layer-shell-qt)
 makedepends=(extra-cmake-modules kdoctools baloo networkmanager-qt plasma-wayland-protocols
 	kunitconversion kinit sddm)
-source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
+source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-${pkgver}.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver

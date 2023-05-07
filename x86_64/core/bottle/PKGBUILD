@@ -1,5 +1,5 @@
 pkgname=bottle
-pkgver=2023.1
+pkgver=2023.2
 pkgrel=1
 arch=('x86_64')
 depends=(zstd bash glibc libarchive curl gpgme libassuan)

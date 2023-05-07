@@ -1,6 +1,6 @@
 pkgname=wayland
-pkgver=1.21.0
-pkgrel=2
+pkgver=1.22.0
+pkgrel=1
 arch=('x86_64')
 depends=('expat' 'glibc' 'libffi' 'libxml2')
 makedepends=('docbook-xsl' 'docbook-xml' 'libxslt' 'meson' 'xmlto' 'wayland-protocols')

@@ -1,9 +1,9 @@
 pkgname=spectacle
-pkgver=22.04.1
+pkgver=23.04.0
 pkgrel=1
 arch=(x86_64)
-depends=(xcb-util-cursor libkipi purpose knewstuff kwayland qt5 kimageannotator)
-makedepends=(extra-cmake-modules kdoctools)
+depends=(xcb-util-cursor libkipi purpose knewstuff kpipewire kwayland qt5 kimageannotator)
+makedepends=(extra-cmake-modules kdoctools plasma-wayland-protocols)
 source=(https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz)
 
 build() {

@@ -1,5 +1,5 @@
 pkgname=plasma-workspace-wallpapers
-pkgver=5.26.4
+pkgver=5.27.4
 pkgrel=1
 arch=(x86_64)
 makedepends=(extra-cmake-modules qt5)

@@ -1,5 +1,5 @@
 pkgname=plasma-pa
-pkgver=5.26.3
+pkgver=5.27.4
 pkgrel=1
 arch=(x86_64)
 depends=(plasma-workspace pulseaudio perl libcanberra
@@ -9,7 +9,8 @@ source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
 build() {
     cmake -B build -S $pkgname-$pkgver \
-    -DBUILD_TESTING=OFF
+    -D CMAKE_BUILD_TYPE=Release \
+    -D BUILD_TESTING=OFF
 
     cmake --build build
 }

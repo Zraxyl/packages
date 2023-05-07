@@ -1,5 +1,5 @@
 pkgname=kate
-pkgver=22.04.1
+pkgver=23.04.0
 pkgrel=1
 arch=('x86_64')
 depends=(plasma-framework knewstuff kitemmodels ktexteditor kactivities)

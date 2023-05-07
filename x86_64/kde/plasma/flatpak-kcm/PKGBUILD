@@ -1,10 +1,10 @@
 pkgname=flatpak-kcm
-pkgver=5.26.90
+pkgver=5.27.4
 pkgrel=1
 arch=('x86_64')
 depends=(flatpak systemsettings kcmutils)
 makedepends=(cmake extra-cmake-modules)
-durl=https://download.kde.org/unstable/plasma/$pkgver
+durl=https://download.kde.org/stable/plasma/$pkgver
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

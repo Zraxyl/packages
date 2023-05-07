@@ -1,5 +1,5 @@
 pkgname=alsa-ucm-conf
-pkgver=1.2.6.3
+pkgver=1.2.9
 pkgrel=1
 arch=(x86_64)
 source=("https://www.alsa-project.org/files/pub/lib/${pkgname}-${pkgver}.tar.bz2")

@@ -1,10 +1,10 @@
 pkgname=qqc2-desktop-style
-pkgver=5.94.0
+pkgver=5.105.0
 pkgrel=1
 arch=('x86_64')
 depends=(kirigami2 kiconthemes sonnet)
-makedepends=(cmake extra-cmake-modules)
-durl=https://download.kde.org/stable/frameworks/5.94
+makedepends=(cmake extra-cmake-modules doxygen)
+durl=https://download.kde.org/stable/frameworks/5.105
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

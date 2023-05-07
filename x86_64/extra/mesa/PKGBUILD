@@ -1,17 +1,17 @@
 pkgname=mesa
-pkgver=22.3.4
+pkgver=23.0.3
+demover=9.0.0
 pkgrel=1
 arch=('x86_64')
 depends=('libxcb' 'fontconfig' 'libdrm' 'libx11' 'libxext' 'libxfixes' 'libxshmfence' 'libxrender'
 	'wayland' 'wayland-protocols' 'vulkan-icd-loader' 'libomxil-bellagio' 'libclc' 'libglvnd'
 	'valgrind' 'libunwind' 'opencl-icd-loader' 'libpciaccess' 'libxxf86vm'
 	'vdpau' 'glslang' 'libva' 'llvm' 'libxvmc' 'lm-sensors' 'spirv-llvm-translator'
-	'libepoxy' 'gtk3+')
-makedepends=('directx-headers' 'vulkan-headers' 'opencl-headers' 'python3-pip' 'clang' 'cmake' 'byacc'
+	'libepoxy' 'gtk3+' 'libc++')
+makedepends=('meson' 'directx-headers' 'vulkan-headers' 'opencl-headers' 'python3-pip' 'clang' 'cmake' 'byacc'
 	'bison' 'rust' 'cbindgen' 'rust-bindgen')
 source=(https://mesa.freedesktop.org/archive/$pkgname-$pkgver.tar.xz
-	https://archive.mesa3d.org/demos/8.5.0/mesa-demos-8.5.0.tar.bz2
-	https://github.com/archlinux/svntogit-packages/raw/packages/mesa-demos/trunk/meson-demos_data_dir.patch)
+	https://archive.mesa3d.org/demos/mesa-demos-$demover.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -21,9 +21,6 @@ prepare() {
 	pip3 install mako
 
 	sed '1s/python/&3/' -i bin/symbols-check.py
-
-	cd $srcdir/mesa-demos-8.5.0
-	patch -Np1 -i $srcdir/meson-demos_data_dir.patch
 }
 
 build() {
@@ -65,7 +62,7 @@ build() {
 	-D valgrind=enabled \
 	../$pkgname-$pkgver/
 
-	ninja -j5
+	ninja -j6
 
 	cd ../build2
 	echo "MESA-DEMOS"
@@ -73,9 +70,9 @@ build() {
 	--prefix=/usr \
 	--buildtype=release \
 	-D with-system-data-files=true \
-	../mesa-demos-8.5.0
+	../mesa-demos-$demover
 
-	ninja -j5
+	ninja -j6
 }
 
 package() {

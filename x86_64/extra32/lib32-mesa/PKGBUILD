@@ -1,6 +1,6 @@
 pkgname=lib32-mesa
 rpkgname=mesa
-pkgver=22.3.4
+pkgver=23.0.3
 pkgrel=1
 arch=('x86_64')
 depends=('glibc' 'lib32-libdrm' 'lib32-llvm' 'lib32-libglvnd' 'lib32-libx11' 'lib32-wayland'

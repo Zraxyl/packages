@@ -1,8 +1,8 @@
 pkgname=print-manager
-pkgver=22.04.2
+pkgver=23.04.0
 pkgrel=1
 arch=('x86_64')
-depends=(kcmutils kirigami2 system-config-printer)
+depends=(kcmutils kirigami2 system-config-printer samba)
 makedepends=(cmake extra-cmake-modules kdoctools plasma-framework)
 durl=https://download.kde.org/stable/release-service/$pkgver/src
 source=($durl/$pkgname-$pkgver.tar.xz)

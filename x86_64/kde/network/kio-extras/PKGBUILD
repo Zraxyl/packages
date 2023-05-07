@@ -1,9 +1,10 @@
 pkgname=kio-extras
-pkgver=22.04.0
-pkgrel=3
+pkgver=23.04.0
+pkgrel=1
 arch=('x86_64')
 depends=(kio libmtp phonon syntax-highlighting libxcursor samba
-	kdsoap-ws-discovery-client)
+	kdsoap-ws-discovery-client kdnssd libkexiv2 libssh kactivities-stats
+	kimageformats openexr perl)
 makedepends=(extra-cmake-modules kdoctools gperf kactivities-stats)
 source=(https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz)
 

@@ -1,8 +1,8 @@
 pkgname=extra-cmake-modules
-pkgver=5.100.0
-pkgrel=2
+pkgver=5.105.0
+pkgrel=1
 arch=('x86_64')
-commitid=a40f638383d5530993db7b04168fdd80a99772dd
+commitid=89249187ca265d2566041332758f5830362bb8f1
 depends=(cmake make)
 makdedepends=(python3-sphinx python3-requests qt5 qt6)
 source=("https://github.com/KDE/extra-cmake-modules/archive/$commitid.zip"

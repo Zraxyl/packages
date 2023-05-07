@@ -1,9 +1,9 @@
 pkgname=qca-qt5
-pkgver=2.3.4
+pkgver=2.3.6
 pkgrel=1
 arch=(x86_64)
-depends=(qt5 nss)
-makedepends=(cmake doxygen pkcs11-helper qt5)
+depends=(qt5 nss pkcs11-helper botan)
+makedepends=(cmake doxygen qt5)
 source=(https://download.kde.org/stable/qca/$pkgver/qca-$pkgver.tar.xz)
 
 build() {

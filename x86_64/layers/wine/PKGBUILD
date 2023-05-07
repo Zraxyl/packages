@@ -1,13 +1,12 @@
 pkgname=wine
 # Versioning YY/MM/DD/HH YEAR/MONTH/DAY/HOUR ( HOUR = 24H FORMAT ) FROM PATCH FILE
-pkgver=8.0
+pkgver=8.5
 ever=
 pkgrel=1
-source=(https://dl.winehq.org/wine/source/8.0/wine-$pkgver.tar.xz
+source=(https://dl.winehq.org/wine/source/8.x/wine-$pkgver.tar.xz
 	30-win32-aliases.conf
 	wine-binfmt.conf
-	wine-reset
-	https://github.com/wine-mirror/wine/commit/83199991ed9df2e3869e60d98b7ead78019caaf2.patch)
+	wine-reset)
 pkgdesc="A compatibility layer for running Windows programs"
 url="https://www.winehq.org/"
 arch=(x86_64)
@@ -29,6 +28,7 @@ depends=(
 #	faudio lib32-faudio
 	desktop-file-utils
 	mesa lib32-mesa
+	procps-ng
 )
 
 makedepends=(
@@ -61,7 +61,6 @@ makedepends=(
 	cups #lib32-cups
 	libgphoto2
 	sane
-#	gsm
 	vulkan-headers
 	samba
 	opencl-headers
@@ -70,11 +69,6 @@ makedepends=(
 install=wine.install
 
 prepare() {
-	# patch the wine
-	cd wine-$pkgver
-	patch -p1 -i $srcdir/83199991ed9df2e3869e60d98b7ead78019caaf2.patch
-	cd $srcdir
-
 	# clean if rebuild
 	rm -rf wine
 

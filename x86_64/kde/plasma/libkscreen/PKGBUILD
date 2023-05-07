@@ -1,8 +1,8 @@
 pkgname=libkscreen
-pkgver=5.26.3
+pkgver=5.27.4
 pkgrel=1
 arch=(x86_64)
-depends=(qt5 libxrandr kwayland)
+depends=(qt5 libxrandr kwayland kconfig)
 makedepends=(extra-cmake-modules doxygen qt5 plasma-wayland-protocols)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 

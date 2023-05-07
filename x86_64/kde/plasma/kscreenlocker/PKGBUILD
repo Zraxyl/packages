@@ -1,10 +1,10 @@
 pkgname=kscreenlocker
-pkgver=5.26.3
+pkgver=5.27.4
 pkgrel=1
 arch=(x86_64)
 depends=(linux-pam kcrash kglobalaccel kidletime kwayland kdeclarative perl kservice
 	ki18n layer-shell-qt knotifications solid kwindowsystem
-	kpackage kxmlgui)
+	kpackage kxmlgui kscreen)
 makedepends=(extra-cmake-modules kdoctools kcmutils libxcursor)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz
 	kde.pam)

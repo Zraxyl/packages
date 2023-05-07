@@ -1,10 +1,10 @@
 pkgname=oxygen
-pkgver=5.26.3
+pkgver=5.27.4
 pkgrel=1
 arch=('x86_64')
 depends=(plasma-workspace oxygen-sounds oxygen-icons5)
 makedepends=(cmake extra-cmake-modules)
-durl=https://download.kde.org/stable/plasma/5.26.3/
+durl=https://download.kde.org/stable/plasma/${pkgver}/
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

@@ -6,8 +6,8 @@ depends=('kconfig' 'kcoreaddons' 'kiconthemes' 'ki18n' 'kio' 'solid' 'yaml' 'dra
          'boost' 'qt5' 'polkit-qt' 'plasma-framework' 'yaml-cpp' 'double-conversion'
          'squashfs-tools' 'libpwquality' 'appstream' 'kpmcore')
 makedepends=('extra-cmake-modules' 'qt5' 'git')
-commitid=1c49648fc5f9264fe4611e5cb17f287f508bfc60 # 3.2.56
-source=($pkgname::"git+https://git.it-kuny.ch/drunk/source-code/calamares.git#commit=$commitid")
+commitid=29ef9e909df58e025868e1f0eea1c4f0fc30cf3a # cal-evo test
+source=($pkgname::"https://git.martinvlba.eu/Evolinx/calamares/archive/$commitid.tar.gz")
 
 prepare() {
 	cd ${srcdir}/calamares

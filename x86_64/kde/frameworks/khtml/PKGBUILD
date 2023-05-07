@@ -1,10 +1,10 @@
 pkgname=khtml
-pkgver=5.94.0
+pkgver=5.105.0
 pkgrel=1
 arch=('x86_64')
 depends=(giflib kparts kjs phonon)
 makedepends=(cmake extra-cmake-modules gperf docbook-xml docbook-xsl)
-durl=https://download.kde.org/stable/frameworks/5.94/portingAids
+durl=https://download.kde.org/stable/frameworks/5.105/portingAids
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

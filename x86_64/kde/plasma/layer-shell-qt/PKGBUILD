@@ -1,5 +1,5 @@
 pkgname=layer-shell-qt
-pkgver=5.26.3
+pkgver=5.27.4
 pkgrel=1
 arch=(x86_64)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)

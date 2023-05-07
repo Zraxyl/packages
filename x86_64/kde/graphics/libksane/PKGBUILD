@@ -1,8 +1,8 @@
 pkgname=libksane
-pkgver=22.04.0
+pkgver=23.04.0
 pkgrel=1
 arch=('x86_64')
-depends=(ktextwidgets kwallet sane)
+depends=(ktextwidgets kwallet sane ksanecore)
 makedepends=(cmake extra-cmake-modules)
 durl=https://download.kde.org/stable/release-service/$pkgver/src
 source=($durl/$pkgname-$pkgver.tar.xz)

@@ -1,10 +1,10 @@
 pkgname=kidletime
-pkgver=5.98.0
+pkgver=5.105.0
 pkgrel=1
 arch=('x86_64')
 depends=(libxss qt5)
-makedepends=(cmake extra-cmake-modules)
-durl=https://download.kde.org/stable/frameworks/5.98
+makedepends=(cmake extra-cmake-modules plasma-wayland-protocols wayland-protocols)
+durl=https://download.kde.org/stable/frameworks/5.105
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -16,9 +16,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

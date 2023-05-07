@@ -1,23 +1,26 @@
 pkgname=linux
-pkgver=6.1.0
-rver=6.1
-pkgrel=1
+pkgver=6.2.10
+pkgdesc="The Linux kernel, modules and headers package"
+rver=6.2
+pkgrel=2
+dirname=$pkgname
 pkgdesc='Linux'
 arch=('x86_64')
 options=('!strip' 'emptydirs')
 install=linux.install
 makedepends=(rsync bison bc)
-source=(https://github.com/Drunk-Linux/Linux/archive/refs/heads/$rver-drunk.tar.gz)
+commitid=5af9cc09e42142810dae6f47bfba5762fa36771e # Dont trim exports
+source=(https://git.martinvlba.eu/Evolinx/linux/archive/$commitid.tar.gz)
 
 # Deprecated as we ship modules/headers in 1 pkg now
 replaces=(linux-api-headers)
 
-export KBUILD_BUILD_HOST=drunk-linux
+export KBUILD_BUILD_HOST=evolinx-linux
 export KBUILD_BUILD_USER=$pkgname
 export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EPOCH})"
 
 prepare() {
-	cd Linux-$rver-drunk
+	cd $dirname
 
 	echo "[!]: Cleaning src base"
 	make clean
@@ -27,10 +30,10 @@ prepare() {
 }
 
 build() {
-	cd Linux-$rver-drunk
+	cd $dirname
 
-	echo "[!]: Getting up default config of drunk"
-	make drunk_defconfig
+	echo "[!]: Getting up default config of evolinx"
+	make evolinx_defconfig
 
 	echo "[!]: Started making all"
 	make all -j7
@@ -40,25 +43,23 @@ build() {
 }
 
 package() {
-	pkgdesc="The Linux kernel, modules and headers package"
-
-	cd Linux-$rver-drunk
+	cd $dirname
 
 	echo "[!]: Installing modules"
 	make INSTALL_MOD_PATH=$pkgdir INSTALL_MOD_STRIP=1 modules_install
-	rm $pkgdir/lib/modules/$pkgver-drunk/{source,build}
+	rm $pkgdir/lib/modules/$pkgver-evolinx/{source,build}
 
 	mkdir -p $pkgdir/boot
 
 	echo "[!]: Installing vmlinuz"
-	cp arch/x86/boot/bzImage $pkgdir/boot/vmlinuz-drunk
-	cp .config $pkgdir/boot/config-drunk
+	cp arch/x86/boot/bzImage $pkgdir/boot/vmlinuz-evolinx
+	cp .config $pkgdir/boot/config-evolinx
 	echo $kernver > $pkgdir/lib/modules/KERNELVERSION
 
 	echo "[!]: Installing build files..."
-	local builddir="$pkgdir/lib/modules/$pkgver-drunk/build"
+	local builddir="$pkgdir/lib/modules/$pkgver-evolinx/build"
 	install -Dt "$builddir" -m644 .config Makefile Module.symvers System.map \
-		vmlinux
+	vmlinux
 
 	install -Dt "$builddir/kernel" -m644 kernel/Makefile
 	install -Dt "$builddir/arch/x86" -m644 arch/x86/Makefile

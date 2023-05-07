@@ -1,6 +1,6 @@
 pkgname=acpid
 pkgver=2.0.34
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=('which' 'bash')
 backup=('etc/acpi/handler.sh' 'etc/acpi/events/anything')

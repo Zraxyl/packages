@@ -1,5 +1,5 @@
 pkgname=khotkeys
-pkgver=5.26.3
+pkgver=5.27.4
 pkgrel=1
 arch=(x86_64)
 depends=(plasma-workspace kdelibs4support)

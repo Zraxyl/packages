@@ -1,10 +1,10 @@
 pkgname=kdoctools
-pkgver=5.98.0
+pkgver=5.105.0
 pkgrel=1
 arch=('x86_64')
 depends=(karchive docbook-xsl double-conversion)
-makedepends=(cmake perl-modules ki18n qt5 extra-cmake-modules)
-durl=https://download.kde.org/stable/frameworks/5.98
+makedepends=(cmake perl-modules ki18n qt5 doxygen extra-cmake-modules)
+durl=https://download.kde.org/stable/frameworks/5.105
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

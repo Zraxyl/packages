@@ -1,8 +1,9 @@
 pkgname=okular
-pkgver=22.08.0
+pkgver=23.04.0
 pkgrel=1
 arch=('x86_64')
-depends=(djvulibre libspectre libkexiv2 zip poppler kpty kactivities threadweaver kjs kparts purpose discount phonon djvulibre libkexiv2 libspectre)
+depends=(djvulibre libspectre libkexiv2 zip poppler kpty kactivities threadweaver
+    kjs kparts purpose discount phonon djvulibre libkexiv2 libspectre poppler)
 makedepends=(cmake extra-cmake-modules kdoctools khtml)
 durl=https://download.kde.org/stable/release-service
 source=($durl/$pkgver/src/$pkgname-$pkgver.tar.xz)

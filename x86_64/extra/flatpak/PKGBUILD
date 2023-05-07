@@ -1,6 +1,6 @@
 pkgname=flatpak
-pkgver=1.15.1
-pkgrel=4
+pkgver=1.15.4
+pkgrel=1
 arch=(x86_64)
 depends=(dbus glib2 curl polkit libxau libostree json-glib libarchive socat
 	python3 appstream systemd fuse3 bubblewrap xdg-dbus-proxy xdg-desktop-portal
@@ -57,6 +57,6 @@ package() {
 	cp -vf $srcdir/flatpak-system-helper.service $pkgdir/usr/lib/systemd/system/
 
 	# Misc changes
-	mkdir -p $pkgdir/var/lib/ $pkgdir/usr/var/lib/
+	mkdir -p $pkgdir/var/lib/ $pkgdir/usr/var/lib/flatpak
 	ln -sf /usr/var/lib/flatpak $pkgdir/var/lib/flatpak
 }
