@@ -1,5 +1,5 @@
 pkgname=rust-bindgen
-pkgver=0.63.0
+pkgver=0.65.1
 pkgrel=1
 arch=(x86_64)
 depends=(llvm clang)

@@ -1,18 +1,23 @@
 pkgname=pixman
-pkgver=0.40.0
+pkgver=0.42.2
 pkgrel=1
 arch=('x86_64')
 depends=(libpng)
-source=(https://cairographics.org/releases/$pkgname-$pkgver.tar.gz)
+source=($pkgname-$pkgver.tar.gz::https://gitlab.freedesktop.org/$pkgname/$pkgname/-/archive/$pkgname-$pkgver/$pkgname-$pkgname-$pkgver.tar.gz)
 
 prepare() {
+	rm -rf $pkgname-$pkgver
+	mv $pkgname-$pkgname-$pkgver $pkgname-$pkgver
 	mkdir -p $pkgname-$pkgver/build
 }
 
 build() {
 	cd $pkgname-$pkgver/build
 
-	meson --prefix=/usr --buildtype=release
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	..
 
 	ninja
 }

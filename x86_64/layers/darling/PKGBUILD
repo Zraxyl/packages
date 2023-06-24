@@ -30,7 +30,7 @@ prepare() {
 	#rm -rf darling
 
 	# Clone darling separately so modules and etc can be worked easily
-	git clone --recursive https://github.com/darlinghq/darling.git
+	#git clone --recursive https://github.com/darlinghq/darling.git
 
 	cd darling
 

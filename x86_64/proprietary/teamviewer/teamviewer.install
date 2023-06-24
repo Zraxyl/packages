@@ -1,0 +1,5 @@
+post_upgrade() {
+	systemctl daemon-reload
+	systemctl enable teamviewerd.service
+	systemctl start teamviewerd.service
+}

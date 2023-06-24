@@ -6,18 +6,19 @@ PKGS="${OUT}/pkgs/${ARCH}"
 
 remove_leftovers() {
     iam=$1
+    igo=$2
 
-    cd $@
+    cd $1
 
     set +e
     echo " "
     echo "[*]: Moving $iam pkgs to proper place"
-    mkdir -p $PKGS/$iam/
-    mv */*pkg.t* $PKGS/$iam/ &> /dev/null
+    mkdir -p $PKGS/$igo/
+    mv */*pkg.t* $PKGS/$igo/ &> /dev/null
     set -e
     echo "[*]: Cleaning up $iam"
 
-    rm -rf */pkg/ */src/ */*pkg* */*xz* */*tar.gz */*tar.bz2 */*.zip */*/ */*tgz */*tar.zst */*sign* */*sig* */*asc*
+    rm -rf */pkg/ */src/ */*pkg* */*xz* */*tar.gz */*tar.bz2 */*.zip */*/ */*tgz */*tar.zst */*sign* */*sig* */*asc* */*.jar
 
     cd ..
 }
@@ -56,9 +57,9 @@ remove_kde_leftovers() {
 }
 
 remove_xorg_leftovers() {
-    iam=$1
+    iam=$2
 
-    cd $@
+    cd $1
 
     KDE_DEF="app data driver libs proto xserver"
     for removed in ${KDE_DEF}
@@ -79,21 +80,27 @@ remove_xorg_leftovers() {
 
 set -e
 
-remove_leftovers core
-remove_leftovers cross_tools
-remove_leftovers extra
-remove_leftovers extra32
-remove_leftovers games
-remove_leftovers layers
-remove_leftovers pentest
-remove_leftovers perl
-remove_leftovers proprietary
-remove_leftovers python
-remove_leftovers server
-remove_leftovers xfce
-remove_leftovers gnome
+# remove_leftovers $1 $2
+# $1 tells what am I ( $iam )
+# $2 tells where pkgs go ( $igo )
+
+remove_leftovers core core
+remove_leftovers cross_tools cross_tools
+remove_leftovers extra extra
+remove_leftovers extra32 extra32
+remove_leftovers games games
+remove_leftovers layers layers
+remove_leftovers pentest pentest
+remove_leftovers perl perl
+remove_leftovers proprietary proprietary
+remove_leftovers python python
+remove_leftovers server server
+remove_leftovers xfce xfce
+remove_leftovers gnome gnome
+remove_leftovers fonts extra
+remove_leftovers java extra
 remove_kde_leftovers kde
-remove_xorg_leftovers xorg
+remove_xorg_leftovers xorg extra
 
 echo " "
 echo "[*]: Done"

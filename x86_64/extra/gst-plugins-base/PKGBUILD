@@ -1,5 +1,5 @@
 pkgname=gst-plugins-base
-pkgver=1.21.2
+pkgver=1.22.3
 pkgrel=1
 arch=('x86_64')
 depends=(
@@ -7,10 +7,10 @@ depends=(
 	gstreamer
 
 	# base
-	graphene opus libtheora libxv sdl2 qt5
+	graphene opus libtheora libxv sdl2 qt5 mesa libxi
 	zlib libglvnd wayland wayland-protocols libx11 libgudev libdrm)
 makedepends=(valgrind bash-completion python3 mesa ninja bison)
-source=(https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.21.2.tar.xz)
+source=(https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-$pkgver.tar.xz)
 
 prepare() {
 	cd "${pkgname}-${pkgver}"
@@ -25,9 +25,9 @@ build() {
 	--wrap-mode=nofallback \
 	--prefix=/usr \
 	--buildtype=release	\
-	-D package-origin=https://drunklinux.tk/ \
-	-D gst-plugins-base:package-name="[GStreamer-BAD]: $pkgver - DRUNK" \
-	-D gst-plugins-base:package-origin=https://drunklinux.tk/
+	-D package-origin=https://evolinx.martinvlba.eu \
+	-D gst-plugins-base:package-name="[GStreamer-BASE]: $pkgver - EVOLINX" \
+	-D gst-plugins-base:package-origin=https://evolinx.martinvlba.eu
 
 	ninja
 }

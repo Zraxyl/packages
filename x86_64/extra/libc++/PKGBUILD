@@ -1,5 +1,5 @@
 pkgname=libc++
-pkgver=13.0.1
+pkgver=16.0.5
 pkgrel=1
 arch=(x86_64)
 depends=(llvm gcc)

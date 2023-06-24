@@ -20,7 +20,8 @@ build() {
 	mkdir -p build
 	cd build
 
-        cmake .. \
+	cmake .. \
+	-GNinja \
 	-D CMAKE_BUILD_TYPE=Release \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_INSTALL_LIBDIR=lib \

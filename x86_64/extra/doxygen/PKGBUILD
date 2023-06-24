@@ -1,9 +1,9 @@
 pkgname=doxygen
-pkgver=1.9.6
+pkgver=1.9.7
 pkgrel=1
 arch=('x86_64')
-depends=(gcc qt5)
-makedepends=(cmake git ghostscript flex python3-pip)
+depends=(gcc glib2)
+makedepends=(cmake qt5 git ghostscript flex python3-pip)
 source=(https://doxygen.nl/files/doxygen-$pkgver.src.tar.gz)
 
 build() {

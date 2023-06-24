@@ -1,7 +1,6 @@
 ## Default
 ac_add_options --with-wasi-sysroot=/usr/share/wasi-sysroot
 ac_add_options --enable-application=browser
-mk_add_options MOZ_OBJDIR=${PWD}/obj
 ac_add_options --prefix=/usr
 ac_add_options --enable-release
 ac_add_options --enable-hardening
@@ -18,7 +17,7 @@ ac_add_options --with-distribution-id=org.drunklinux
 ac_add_options --with-unsigned-addon-scopes=app,system
 ac_add_options --allow-addon-sideload
 export MOZILLA_OFFICIAL=1
-export MOZ_APP_REMOTINGNAME=${pkgname//-/}
+export MOZ_APP_REMOTINGNAME=firefox
 
 ## Keys
 #ac_add_options --with-google-location-service-api-keyfile=${PWD@Q}/google-api-key
@@ -36,7 +35,7 @@ ac_add_options --enable-crashreporter
 ac_add_options --disable-updater
 ac_add_options --disable-tests
 
-## Drunk / LFS Feature
+## Evolinx / LFS Feature
 
 # The following option unsets Telemetry Reporting. With the Addons Fiasco,
 # Mozilla was found to be collecting user's data, including saved passwords and

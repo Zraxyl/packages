@@ -1,8 +1,8 @@
 pkgname=libepoxy
-pkgver=1.5.9
+pkgver=1.5.10
 pkgrel=1
 arch=('x86_64')
-depends=(mesa doxygen)
+depends=(libglvnd libx11 glibc)
 makedepends=(doxygen mesa)
 source=(https://github.com/anholt/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.xz)
 

@@ -1,13 +1,14 @@
 pkgname=qt5
-pkgver=5.15.8
+pkgver=5.15.10
 pkgrel=1
 arch=('x86_64')
-depends=(xorg-server xwayland alsa-lib cups glib2 harfbuzz icu libjpeg libpng
-	libtiff libwebp libxkbcommon mesa pcre2 sqlite3 wayland xcb-util-image xcb-util-keysyms
-	xcb-util-renderutil xcb-util-wm libinput pciutils pulseaudio bluez libglvnd fontconfig double-conversion)
-makedepends=(extra-cmake-modules perl llvm clang)
-commitid=b17a459f05a5d4b1556db3cf282393334bb8068b
-#commitid=77f657b6d467adde157b1e271279eaba82b9d3c1 # STABLE
+depends=(xorg-server xwayland alsa-lib cups glib2 harfbuzz icu libjpeg libpng libc++ llvm
+	libtiff libwebp libxkbcommon mesa pcre2 sqlite3 wayland xcb-util-image xcb-util-keysyms hunspell
+	xcb-util-renderutil xcb-util-wm libinput pciutils pulseaudio bluez libglvnd fontconfig double-conversion
+	gstreamer gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly ffmpeg pipewire jasper openal)
+makedepends=(extra-cmake-modules perl gtk3+ clang)
+commitid=d2861d63bfa74b1261b5e13aaeaee088a9e33800
+#commitid=66282e5009901ca8b82e317ebd234eb792016c59 # STABLE 5.15.9
 url=https://invent.kde.org/qt/qt/qt5.git
 source=(
 	# Base src
@@ -59,25 +60,27 @@ prepare() {
 	-archdatadir /usr/lib/qt \
 	-datadir /usr/share/qt \
 	-sysconfdir /etc/xdg \
+	-release \
 	-confirm-license \
 	-dbus-linked \
 	-openssl-linked	\
 	-system-harfbuzz \
 	-opensource \
 	-system-sqlite \
-	-nomake examples \
 	-nomake tests \
-	-skip qtdocgallery \
+	-no-mimetype-database \
+    -no-use-gold-linker \
+    -no-reduce-relocations \
 	-no-rpath \
-	-no-strip \
 	-skip qtwebengine \
+	-skip qtdocgallery \
 	-journald
 }
 
 build() {
 	cd qt5
 
-	make -j6
+	make -j8
 }
 
 package() {
@@ -96,18 +99,22 @@ package() {
 
 	# Install images and create the menu entries for installed applications.
 	install -v -dm755 $pkgdir/usr/share/pixmaps/
+	install -v -dm755 $pkgdir/usr/share/applications
+
 	install -v -Dm644 qttools/src/assistant/assistant/images/assistant-128.png \
 		$pkgdir/usr/share/pixmaps/assistant-qt5.png
+
 	install -v -Dm644 qttools/src/designer/src/designer/images/designer.png \
 		$pkgdir/usr/share/pixmaps/designer-qt5.png
+
 	install -v -Dm644 qttools/src/linguist/linguist/images/icons/linguist-128-32.png \
 		$pkgdir/usr/share/pixmaps/linguist-qt5.png
+
 	install -v -Dm644 qttools/src/qdbus/qdbusviewer/images/qdbusviewer-128.png \
 		$pkgdir/usr/share/pixmaps/qdbusviewer-qt5.png
-	install -dm755 $pkgdir/usr/share/applications
 
-	cp $srcdir/assistant-qt5.desktop $pkgdir/usr/share/applications/
-	cp $srcdir/designer-qt5.desktop $pkgdir/usr/share/applications/
-	cp $srcdir/linguist-qt5.desktop $pkgdir/usr/share/applications/
-	cp $srcdir/qdbusviewer-qt5.desktop $pkgdir/usr/share/applications/
+	install -v -Dm644 $srcdir/assistant-qt5.desktop $pkgdir/usr/share/applications/
+	install -v -Dm644 $srcdir/designer-qt5.desktop $pkgdir/usr/share/applications/
+	install -v -Dm644 $srcdir/linguist-qt5.desktop $pkgdir/usr/share/applications/
+	install -v -Dm644 $srcdir/qdbusviewer-qt5.desktop $pkgdir/usr/share/applications/
 }

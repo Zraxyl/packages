@@ -1,8 +1,8 @@
 pkgname=appstream
-pkgver=0.15.5
+pkgver=0.16.2
 pkgrel=1
 arch=(x86_64)
-depends=(curl qt5 librsvg yaml libxmlb libsoup nghttp2)
+depends=(curl librsvg yaml libxmlb libsoup nghttp2)
 makedepends=(meson xmlto gobject-introspection gtk-doc qt5 itstool vala gperf)
 source=(https://www.freedesktop.org/software/appstream/releases/AppStream-$pkgver.tar.xz
         update-appstream-cache.hook)

@@ -1,11 +1,11 @@
 pkgname=avahi
-pkgver=v0.8
+pkgver=v0.8.4.5
 pkgrel=1
 arch=(x86_64)
-depends=(libdaemon qt5 dbus expat gdbm glib2 libcap gtk3+ libevent nss gobject-introspection python3-gobject python3-dbus)
-makedepends=(git m4)
-commitid=b6ff6ab134736c0cdcd46f2cc70f21fc9db974c9
-source=(git+https://github.com/Drunk-Linux/avahi.git#commit=$commitid)
+depends=(libdaemon dbus expat gdbm glib2 libcap libevent nss gobject-introspection python3-gobject python3-dbus)
+makedepends=(git m4 gtk3+)
+commitid=a13da0547768d4e9d56d7a6d9799a940d125f96a
+source=(git+https://git.martinvlba.eu/Evolinx/avahi.git#commit=$commitid)
 
 prepare() {
 	cd $pkgname
@@ -17,7 +17,7 @@ prepare() {
 	--with-autoipd-user=avahi \
 	--with-autoipd-group=avahi \
 	--with-systemdsystemunitdir=/usr/lib/systemd/system \
-	--with-distro=drunk \
+	--with-distro=evolinx \
 	--disable-mono \
 	--disable-manpages
 }

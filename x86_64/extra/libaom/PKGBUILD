@@ -1,8 +1,8 @@
 pkgname=libaom
-pkgver=3.6.0
+pkgver=3.6.1
 pkgrel=1
 arch=(x86_64)
-depends=(glibc)
+depends=(glibc gcc)
 makedepends=(cmake ninja nasm yasm)
 source=(https://storage.googleapis.com/aom-releases/$pkgname-$pkgver.tar.gz)
 

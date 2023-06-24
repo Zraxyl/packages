@@ -1,5 +1,5 @@
 pkgname=gst-plugins-good
-pkgver=1.21.2
+pkgver=1.22.3
 pkgrel=1
 arch=('x86_64')
 depends=(
@@ -7,9 +7,9 @@ depends=(
 	gstreamer gst-plugins-base
 
 	# bad
-	nasm jack2 lame pulseaudio libvpx cairo libsoup)
+	nasm jack2 lame pulseaudio libvpx cairo libsoup pipewire)
 makedepends=(valgrind bash-completion python3 mesa ninja bison)
-source=(https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.21.2.tar.xz)
+source=(https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-$pkgver.tar.xz)
 
 prepare() {
 	cd "${pkgname}-${pkgver}"
@@ -24,9 +24,9 @@ build() {
 	--wrap-mode=nofallback \
 	--prefix=/usr \
 	--buildtype=release	\
-	-D package-origin=https://drunklinux.tk/ \
-	-D gst-plugins-good:package-name="[GStreamer-BAD]: $pkgver - DRUNK" \
-	-D gst-plugins-good:package-origin=https://drunklinux.tk/
+	-D package-origin=https://evolinx.martinvlba.eu \
+	-D gst-plugins-good:package-name="[GStreamer-GOOD]: $pkgver - EVOLINX" \
+	-D gst-plugins-good:package-origin=https://evolinx.martinvlba.eu
 
 	ninja
 }

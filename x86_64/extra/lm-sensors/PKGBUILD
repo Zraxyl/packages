@@ -1,24 +1,16 @@
 pkgname=lm-sensors
-pkgver=3.6.0.r41.g31d1f125
+pkgver=3.6.0
 _commit=31d1f125d8076f1c8c8f3224b31d240e6e6a1763
-pkgrel=1
+pkgrel=2
 pkgdesc="Collection of user space tools for general SMBus access and hardware monitoring"
 arch=('x86_64')
 url="https://hwmon.wiki.kernel.org/lm_sensors"
 license=('GPL' 'LGPL')
-optdepends=('rrdtool: for logging with sensord'
-            'perl: for sensor detection and configuration convert')
+depends=('rrdtool' 'perl')
 makedepends=('rrdtool' 'perl' 'git')
 backup=('etc/sensors3.conf' 'etc/healthd.conf' 'etc/conf.d/sensord')
-#source=(lm_sensors-${pkgver}.tar.gz::https://github.com/lm-sensors/lm-sensors/archive/V${_pkgver}.tar.gz
 source=("git+https://github.com/groeck/lm-sensors.git#commit=${_commit}"
 	healthd healthd.conf healthd.service sensord.conf)
-
-pkgver() {
-	cd "${srcdir}"/lm-sensors*
-
-	git describe --long --tags | sed 's/V//;s/\([^-]*-g\)/r\1/;s/-/./g'
-}
 
 prepare() {
 	cd "${srcdir}"/lm-sensors*

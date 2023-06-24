@@ -1,8 +1,13 @@
 pkgname=alsa-tools
 pkgver=1.2.5
-pkgrel=1
+pkgrel=3
 arch=('x86_64')
-depends=(alsa-lib gtk2+ gtk+ fltk)
+depends=(alsa-lib libsndfile) # python3-gobject and python3-pyalsa ( this needs to be compiled over for pyhton repo )
+makedepends=(gtk2+ gtk+ fltk)
+optdepends=(
+	'fltk: hdspconf, hdspmixer'
+	'gtk2: envy24control, echomixer, rmeddigicontrol'
+	'gtk3: hdajackretask')
 source=(https://alsa-project.org/files/pub/tools/$pkgname-$pkgver.tar.bz2)
 
 build() {

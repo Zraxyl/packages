@@ -1,6 +1,6 @@
 pkgname=wine
 # Versioning YY/MM/DD/HH YEAR/MONTH/DAY/HOUR ( HOUR = 24H FORMAT ) FROM PATCH FILE
-pkgver=8.5
+pkgver=8.10
 ever=
 pkgrel=1
 source=(https://dl.winehq.org/wine/source/8.x/wine-$pkgver.tar.xz
@@ -29,6 +29,7 @@ depends=(
 	desktop-file-utils
 	mesa lib32-mesa
 	procps-ng
+	krb5
 )
 
 makedepends=(

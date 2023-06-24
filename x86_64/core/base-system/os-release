@@ -1,7 +1,7 @@
-NAME="Evolix"
-VERSION="2023.1"
-ID=evolix
-ID_LIKE=evolix
-PRETTY_NAME="Evolix 2023.1"
-VERSION_ID="2023.1"
+NAME="Evolinx"
+VERSION="2023.2"
+ID=evolinx
+ID_LIKE=evolinx
+PRETTY_NAME="Evolinx 2023.2"
+VERSION_ID="2023.2"
 VERSION_CODENAME=evolutionary

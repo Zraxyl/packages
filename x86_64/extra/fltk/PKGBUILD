@@ -2,8 +2,9 @@ pkgname=fltk
 pkgver=1.3.8
 pkgrel=1
 arch=('x86_64')
-depends=(xorg-server alsa-lib hicolor-icon-theme libjpeg libpng mesa)
-makedepends=(doxygen)
+depends=(gcc fontconfig libglvnd libjpeg libpng libx11 libxcursor
+	libxext libxfixes libxft libxinerama libxrender)
+makedepends=(doxygen hicolor-icon-theme)
 source=(https://fltk.org/pub/$pkgname/$pkgver/$pkgname-$pkgver-source.tar.gz)
 
 prepare() {

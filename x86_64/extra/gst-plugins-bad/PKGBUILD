@@ -1,5 +1,5 @@
 pkgname=gst-plugins-bad
-pkgver=1.21.2
+pkgver=1.22.3
 pkgrel=1
 arch=('x86_64')
 depends=(
@@ -9,9 +9,10 @@ depends=(
 	# bad
 	vulkan-icd-loader vulkan-headers
 	bluez libavtp bzip2 webrtc-audio-processing
-	nettle libxml2 qrencode json-glib libva libxkbcommon)
+	nettle libxml2 qrencode json-glib libva libxkbcommon
+	libx264 libx265)
 makedepends=(valgrind bash-completion python3 mesa ninja bison)
-source=(https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.21.2.tar.xz)
+source=(https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-$pkgver.tar.xz)
 
 prepare() {
 	cd "${pkgname}-${pkgver}"
@@ -26,9 +27,9 @@ build() {
 	--wrap-mode=nofallback \
 	--prefix=/usr \
 	--buildtype=release	\
-	-D package-origin=https://drunklinux.tk/ \
-	-D gst-plugins-bad:package-name="[GStreamer-BAD]: $pkgver - DRUNK" \
-	-D gst-plugins-bad:package-origin=https://drunklinux.tk/
+	-D package-origin=https://evolinx.martinvlba.eu \
+	-D gst-plugins-bad:package-name="[GStreamer-BAD]: $pkgver - EVOLINX" \
+	-D gst-plugins-bad:package-origin=https://evolinx.martinvlba.eu
 
 	ninja
 }

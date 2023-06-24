@@ -1,22 +1,27 @@
 pkgname=gcc
-pkgver=12.1.0
-pkgrel=2
+pkgver=13.1.0
+pkgrel=1
 arch=('x86_64')
-source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver/$pkgname-$pkgver.tar.gz)
 options=(!emptydirs !lto !strip)
-depends=(binutils mpfr mpc glibc libxcrypt zstd flex)
+depends=(binutils mpfr mpc glibc libxcrypt zstd flex expect)
+source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver/$pkgname-$pkgver.tar.gz
+	gcc-ada-repro.patch)
 
 prepare() {
 	cd $pkgname-$pkgver
 
-	# link isl for in-tree build
-	ln -sf ../isl-${_islver} isl
+	# Do not run fixincludes
+	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
+
+	# Arch Linux installs x86_64 libraries /lib
+	sed -i '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
+
 
 	# Do not run fixincludes
 	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
 
-	sed -e '/m64=/s/lib64/lib/' \
-		-i.orig gcc/config/i386/t-linux64
+	# Reproducible gcc-ada
+	patch -Np0 < "$srcdir/gcc-ada-repro.patch"
 
 	mkdir -pv build
 	cd build
@@ -29,6 +34,7 @@ prepare() {
 	--enable-multilib \
 	--enable-lto \
 	--enable-default-pie \
+	--enable-__cxa_atexit \
 	--enable-plugin \
 	--enable-shared \
 	--enable-threads=posix \
@@ -39,7 +45,7 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	#make -j4
+	make -j4
 }
 
 package() {

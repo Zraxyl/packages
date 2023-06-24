@@ -1,10 +1,10 @@
 pkgname=jack2
 pkgdesc="The JACK low-latency audio server"
 pkgver=1.9.22
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 source=("${pkgname}::git+https://github.com/jackaudio/${pkgname}.git#tag=v${pkgver}")
-depends=(dbus alsa-lib systemd opus rtkit)
+depends=(dbus alsa-lib systemd opus rtkit libsamplerate)
 makedepends=(alsa-lib dbus expat libsndfile python2 python3
 	python3-dbus)
 

@@ -1,15 +1,20 @@
 pkgname=firefox
-pkgver=108.0.0
-fver=108.0
+pkgver=113.0.2
+fver=113.0.2
 pkgrel=1
+pkgdesc="Standalone web browser from mozilla.org"
+url="https://www.mozilla.org/firefox/"
 arch=('x86_64')
 depends=(dbus-glib gtk+ gtk2+ libnotify pulseaudio alsa-lib python3 sqlite3 unzip
-	zip startup-notification wireplumber icu libevent pixman libjpeg libpng xmessage double-conversion ffmpeg)
-makedepends=(autoconf cbindgen nodejs nasm yasm lld wasi-compiler-rt wasi-libc wasi-libc++ nss
-	llvm mesa rust clang nodejs autoconf2.13 imake m4 python3 python2 python3-pip)
+	zip startup-notification wireplumber icu libevent pixman libjpeg libpng xmessage double-conversion ffmpeg
+	nss webrtc-audio-processing mesa llvm gstreamer
+	gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly)
+makedepends=(autoconf cbindgen nodejs nasm yasm lld wasi-compiler-rt wasi-libc wasi-libc++
+	rust clang nodejs autoconf2.13 imake m4 python3 python2 python3-pip)
 source=(https://archive.mozilla.org/pub/$pkgname/releases/$fver/source/$pkgname-$fver.source.tar.xz
 	mozconfig
-	firefox.desktop)
+	firefox.desktop
+	identity-icons-brand.svg)
 
 prepare() {
 	mkdir -p mozbuild
@@ -37,12 +42,16 @@ build() {
 	echo "Building instrumented browser..."
 	cp $srcdir/mozconfig .mozconfig
 
+	echo "
+	mk_add_options MOZ_OBJDIR=${PWD@Q}/obj
+	" >> .mozconfig
+
 	./mach configure
 
 	# Make obj dir for make
 	mkdir -p $srcdir/$pkgname-$fver/obj
 
-	./mach build -j5
+	./mach build -j8
 }
 
 package() {
@@ -54,6 +63,10 @@ package() {
 	install -Dvm644 /dev/stdin "$vendorjs" <<END
 // Use LANG environment variable to choose locale
 pref("intl.locale.requested", "");
+
+// Use system-provided dictionaries
+pref("spellchecker.dictionary_path", "/usr/share/hunspell");
+
 // Don't disable extensions in the application directory
 pref("extensions.autoDisableScopes", 11);
 END
@@ -61,13 +74,13 @@ END
 	local distini="$pkgdir/usr/lib/$pkgname/distribution/distribution.ini"
 	install -Dvm644 /dev/stdin "$distini" <<END
 [Global]
-id=drunklinux
-version=2023.1
-about=Mozilla Firefox for Drunk Linux
+id=evolinx
+version=stable
+about=Mozilla Firefox for Evolinx
 [Preferences]
-app.distributor=drunklinux
+app.distributor=evolinx
 app.distributor.channel=$pkgname
-app.partner.drunklinux=drunklinux
+app.partner.evolinx=evolinx
 END
 
 	mkdir -pv $pkgdir/usr/share/applications
@@ -93,4 +106,7 @@ END
 
     install -Dvm644 browser/branding/$theme/content/about-logo.svg \
         "$pkgdir/usr/share/icons/hicolor/scalable/apps/$pkgname.svg"
+
+    install -Dvm644 $srcdir/identity-icons-brand.svg \
+    "$pkgdir/usr/share/icons/hicolor/symbolic/apps/$pkgname-symbolic.svg"
 }

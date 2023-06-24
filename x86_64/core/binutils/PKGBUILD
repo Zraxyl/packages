@@ -1,10 +1,18 @@
 pkgname=binutils
-pkgver=2.38
+pkgver=2.40
 pkgrel=1
 arch=('x86_64')
-depends=(glibc zlib readline elfutils flex)
+depends=(glibc zlib readline elfutils flex isl gettext
+    zstd jansson)
 makedepends=(bc git)
 source=(https://ftp.gnu.org/gnu/binutils/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+    cd $pkgname-$pkgver
+
+    # Turn off development mode (-Werror, gas run-time checks, date in sonames)
+    sed -i '/^development=/s/true/false/' bfd/development.sh
+}
 
 build() {
     cd $pkgname-$pkgver
@@ -13,19 +21,26 @@ build() {
     cd build
 
     ../configure \
-    --prefix=/usr       \
-    --enable-gold       \
+    --prefix=/usr \
+    --enable-cet \
+    --enable-jansson \
+    --enable-gold \
     --enable-ld=default \
-    --enable-plugins    \
-    --enable-shared     \
-    --enable-gold       \
+    --enable-new-dtags \
+    --enable-plugins \
+    --enable-shared \
+    --enable-gold \
+    --enable-relro \
     --enable-targets=all \
-    --with-pic          \
-    --disable-werror    \
+    --with-pic \
+    --enable-colored-disassembly \
+    --enable-default-execstack=no \
+    --enable-deterministic-archives \
+    --disable-werror \
     --enable-64-bit-bfd \
-    --with-system-zlib  \
-    --enable-multilib   \
-    --with-lib-path=/usr/lib:/lib:/usr/lib32
+    --with-system-zlib \
+    --enable-multilib \
+    --with-lib-path=/lib:/lib64:/usr/lib:/usr/lib32:/opt/lib
 
     make tooldir=/usr
 }
@@ -34,4 +49,7 @@ package() {
     cd $pkgname-$pkgver/build
 
     make tooldir=/usr DESTDIR=$pkgdir install -j1
+
+    # Remove unwanted files
+    rm -f "${pkgdir}"/usr/share/man/man1/{dlltool,windres,windmc}*
 }

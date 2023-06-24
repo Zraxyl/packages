@@ -1,6 +1,6 @@
 pkgname=glibc
-pkgver=2.35
-pkgrel=4
+pkgver=2.37
+pkgrel=1
 arch=('x86_64')
 depends=(libxcrypt filesystem lib32-libxcrypt)
 makedepends=(python3 bison m4)
@@ -57,23 +57,23 @@ build() {
 }
 
 package() {
-        # 64bit install
-        cd $pkgname-$pkgver
-        cd build
+	# 64bit install
+	cd $pkgname-$pkgver
+	cd build
 
-        mkdir -p $pkgdir/lib64
-        ln -sfv ../lib/ld-linux-x86-64.so.2 $pkgdir/lib64/ld-linux-x86-64.so.2
-        ln -sfv ../lib/ld-linux-x86-64.so.2 $pkgdir/lib64/ld-lsb-x86-64.so.3
+	mkdir -p $pkgdir/lib64
+	ln -sfv ../lib/ld-linux-x86-64.so.2 $pkgdir/lib64/ld-linux-x86-64.so.2
+	ln -sfv ../lib/ld-linux-x86-64.so.2 $pkgdir/lib64/ld-lsb-x86-64.so.3
 
-        mkdir -p $pkgdir/etc
-        touch $pkgdir/etc/ld.so.conf
-        make install_root=$pkgdir install
+	mkdir -p $pkgdir/etc
+	touch $pkgdir/etc/ld.so.conf
+	make install_root=$pkgdir install
 
-        cp -v ../nscd/nscd.conf $pkgdir/etc/nscd.conf
-        mkdir -pv $pkgdir/var/cache/nscd
+	cp -v ../nscd/nscd.conf $pkgdir/etc/nscd.conf
+	mkdir -pv $pkgdir/var/cache/nscd
 
-        mkdir -pv $pkgdir/usr/lib/locale
-        make install_root=$pkgdir localedata/install-locales -j2
+	mkdir -pv $pkgdir/usr/lib/locale
+	make install_root=$pkgdir localedata/install-locales -j2
 
 	# 32bit
 	cd ../build32	
@@ -95,7 +95,7 @@ package() {
 	cp -Rv DESTDIR/usr/lib32/* $pkgdir/usr/lib32/
 
 	# Provided by libxcrypt; keep the old shared library for backwards compatibility
-        rm -f "$pkgdir"/usr/include/crypt.h "$pkgdir"/usr/{lib,lib32}/libcrypt.{a,so}
+	rm -f "$pkgdir"/usr/include/crypt.h "$pkgdir"/usr/{lib,lib32}/libcrypt.{a,so}
 
 	mkdir -vp $pkgdir/etc/ld.so.conf.d
 	mkdir -vp $pkgdir/lib/

@@ -1,22 +1,26 @@
 pkgname=xkeyboard-config
-pkgver=2.33
+pkgver=2.39
 pkgrel=1
 arch=('x86_64')
 depends=(fontconfig libxcb)
-source=(https://x.org/pub/individual/data/$pkgname/$pkgname-$pkgver.tar.bz2)
+source=(https://x.org/pub/individual/data/$pkgname/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	mkdir -p $pkgname-$pkgver/build
+}
 
 build() {
-	cd $pkgname-$pkgver
+	cd $pkgname-$pkgver/build
 
-	./configure			\
-	--prefix=/usr			\
-	--with-xkb-rules-symlink=xorg
+	meson \
+	--prefix=/usr \
+	-D xorg-rules-symlinks=true \
 
-	make
+	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver
+	cd $pkgname-$pkgver/build
 
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir ninja install
 }

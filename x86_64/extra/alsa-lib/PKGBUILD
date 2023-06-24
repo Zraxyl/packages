@@ -1,5 +1,5 @@
 pkgname=alsa-lib
-pkgver=1.2.8
+pkgver=1.2.9
 pkgrel=1
 arch=('x86_64')
 depends=(doxygen python3 alsa-topology-conf alsa-ucm-conf alsa-firmware)

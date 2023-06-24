@@ -1,0 +1,43 @@
+pkgname=teamviewer
+pkgver=15.42.4
+pkgrel=1
+arch=('x86_64')
+depends=(glibc qt5 libglvnd mesa dbus lz4 icu glib2 nss shared-mime-info libx11 libxcb libxcomposite libxcursor libxdamage libxext
+	 libxfixes libxi libxrender libxtst  libxrandr libxkbcommon libxss systemd pcre sqlite3 libxau libxdmcp libcap libgcrypt libgpg-error minizip)
+source=(https://download.teamviewer.com/download/linux/teamviewer_amd64.tar.xz
+	configs.7z)
+install=teamviewer.install
+
+package() {
+	mkdir -p $pkgdir/opt/$pkgname $pkgdir/usr/bin $pkgdir/usr/share/applications $pkgdir/var/log/teamviewer15 $pkgdir/usr/share/dbus-1/{services,system.d}
+	mkdir -p $pkgdir/usr/share/polkit-1/actions $pkgdir/etc/teamviewer
+
+	cp -rf $srcdir/$pkgname/tv_bin $pkgdir/opt/$pkgname/tv_bin
+	sync && sleep 1 # Possibly needed to get the libs copied over properly
+
+	# Remove un-needed libs to reduce the overall size of package
+	rm -rf $pkgdir/opt/$pkgname/tv_bin/RTlib/qt
+
+	cp -rf $srcdir/configs/* $pkgdir/opt/$pkgname/tv_bin/script
+
+	rm $pkgdir/opt/teamviewer/tv_bin/xdg-utils/xdg-email
+
+	# Copy over script for launching teamviewer from cli
+	ln -sf /opt/$pkgname/tv_bin/script/teamviewer $pkgdir/usr/bin/teamviewer
+
+	# Links
+	ln -sf /etc/teamviewer $pkgdir/opt/$pkgname/config
+	ln -sf /var/log/teamviewer15 $pkgdir/opt/$pkgname/logfiles
+	ln -sf /opt/teamviewer/tv_bin/script/com.teamviewer.TeamViewer.Desktop.service $pkgdir/usr/share/dbus-1/services/com.teamviewer.TeamViewer.Desktop.service
+	ln -sf /opt/teamviewer/tv_bin/script/com.teamviewer.TeamViewer.service $pkgdir/usr/share/dbus-1/services/com.teamviewer.TeamViewer.service
+	ln -sf /opt/teamviewer/tv_bin/script/com.teamviewer.TeamViewer.policy $pkgdir/usr/share/polkit-1/actions/com.teamviewer.TeamViewer.policy
+
+	# Services
+	install -D -m0644 $pkgdir/opt/teamviewer/tv_bin/script/teamviewerd.service \
+		$pkgdir/usr/lib/systemd/system/teamviewerd.service
+
+	# Desktop files
+	cp -rf $srcdir/$pkgname/tv_bin/desktop/com.teamviewer.TeamViewer.desktop $pkgdir/usr/share/applications
+	cp -rf $srcdir/$pkgname/tv_bin/desktop/teamviewer8.desktop $pkgdir/usr/share/applications
+	cp -rf $srcdir/$pkgname/tv_bin/desktop/teamviewerapi.desktop $pkgdir/usr/share/applications
+}

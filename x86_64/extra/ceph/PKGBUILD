@@ -1,14 +1,15 @@
 pkgname=ceph
-pkgver=17.2.0
+pkgver=17.2.6
 pkgrel=1
 arch=('x86_64')
 depends=("zstd" 'bash' 'bc' 'boost' 'bzip2' 'c-ares' 'cmake' 'coreutils'
-    'cpio' 'curl' 'expat' 'fontconfig' 'fuse2' 'gcc' 'git' 'glibc' 'gnutls'
-    'gperf' 'inetutils' 'keyutils' 'libcap' 'snappy' 'benchmark'
-    'libedit' 'libgudev' 'libnl' 'libtool' 'util-linux'
+    'cpio' 'curl' 'expat' 'fontconfig' 'fuse2' 'fuse3' 'gcc' 'git' 'glibc' 'gnutls'
+    'gperf' 'inetutils' 'keyutils' 'libcap' 'snappy' 'benchmark' 'gawk'
+    'libedit' 'libgudev' 'libnl' 'libtool' 'util-linux' 'libaio'
     'libuv' 'libxml2' 'libpciaccess' 'lz4' 'ncurses' 'python3-pip'
     'nss' 'numactl' 'openssl' 'parted' 'pcre' 'pcre2' 'pkgconf' 'libcap-ng'
-    'procps-ng' 'sed' 'systemd' 'valgrind' 'yaml' 'yasm' 'zlib')
+    'procps-ng' 'sed' 'systemd' 'valgrind' 'yaml' 'yasm' 'zlib' 'openldap'
+    'cryptsetup' 'openjdk-17' 'lua')
 makedepends=(python3-pip)
 options=('emptydirs')
 source=(https://download.ceph.com/tarballs/${pkgname}-${pkgver}.tar.gz)
@@ -17,6 +18,7 @@ prepare() {
     cd "${pkgbase}-${pkgver}"
 
     # Install python3 needed modules ( may need more attention on cleaner dev env's )
+    pip3 install setuptools
     pip3 install doxypypy doxyqml requests
     pip3 install Cython pyyaml
 

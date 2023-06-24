@@ -1,5 +1,5 @@
 pkgname=base-system
-pkgver=2023.1
+pkgver=2023.2
 pkgrel=1
 pkgdesc="Base metapckage alike pkg to give user/dev needed bootable CLI-System"
 arch=('x86_64')

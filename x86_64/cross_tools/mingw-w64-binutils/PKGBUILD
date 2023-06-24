@@ -8,21 +8,23 @@ cross_targets="i686-w64-mingw32 x86_64-w64-mingw32"
 source=(https://ftp.gnu.org/gnu/binutils/binutils-$pkgver.tar.gz)
 
 prepare() {
-	cd $pkgname-$pkgver
+	cd binutils-$pkgver
 
 	sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
+
+	mkdir -pv $srcdir/{i686-w64-mingw32,x86_64-w64-mingw32}
 }
 
 build() {
 	for ctarget in $cross_targets; do
-		echo "Compiling $ctarget"
+		echo "Compiling $ctarget binutils"
 
-		mkdir -pv $srcdir/$ctarget
 		cd $srcdir/$ctarget
 
 		./../binutils-$pkgver/configure \
 		--prefix=/usr \
 		--target=$ctarget \
+		--infodir=/usr/share/info/$ctarget \
 		--enable-lto \
 		--enable-plugins \
 		--enable-deterministic-archives \
@@ -37,8 +39,8 @@ build() {
 }
 
 package() {
-	make -C $srcdir/i686-w64-mingw32 DESTIDR=$pkgdir install
-	make -C $srcdir/x86_64-w64-mingw32 DESTIDR=$pkgdir install
+	make DESTDIR=$pkgdir -C $srcdir/i686-w64-mingw32 install
+	make DESTDIR=$pkgdir -C $srcdir/x86_64-w64-mingw32 install
 
 	rm -v "$pkgdir"/usr/lib/bfd-plugins/libdep.so
 }

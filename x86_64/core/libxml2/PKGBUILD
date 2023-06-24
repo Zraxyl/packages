@@ -1,6 +1,6 @@
 pkgname=libxml2
 pkgver=2.9.12
-pkgrel=5
+pkgrel=6
 arch=('x86_64')
 depends=(icu readline zlib ncurses xz)
 install=libxml2.install
@@ -31,6 +31,8 @@ build() {
 	--with-history   \
 	--with-icu \
 	--with-threads \
+	--enable-static \
+	--enable-shared \
 	--with-python=/usr/bin/python3
 
 	make

@@ -1,13 +1,17 @@
 pkgname=mesa
-pkgver=23.0.3
+pkgver=23.1.2
 demover=9.0.0
 pkgrel=1
 arch=('x86_64')
-depends=('libxcb' 'fontconfig' 'libdrm' 'libx11' 'libxext' 'libxfixes' 'libxshmfence' 'libxrender'
+depends=(
+	# X11
+	'libxcb' 'libx11' 'libxext' 'libxfixes' 'libxshmfence' 'libxrender' 'libxvmc' 'libxxf86vm'
+	# Other
 	'wayland' 'wayland-protocols' 'vulkan-icd-loader' 'libomxil-bellagio' 'libclc' 'libglvnd'
-	'valgrind' 'libunwind' 'opencl-icd-loader' 'libpciaccess' 'libxxf86vm'
-	'vdpau' 'glslang' 'libva' 'llvm' 'libxvmc' 'lm-sensors' 'spirv-llvm-translator'
-	'libepoxy' 'gtk3+' 'libc++')
+	'valgrind' 'libunwind' 'opencl-icd-loader' 'libpciaccess'
+	'vdpau' 'glslang' 'libva' 'llvm'  'lm-sensors' 'spirv-llvm-translator'
+	'libepoxy' 'gtk3+' 'libc++' 'libx264' 'libx265' 'fontconfig' 'libdrm'
+	)
 makedepends=('meson' 'directx-headers' 'vulkan-headers' 'opencl-headers' 'python3-pip' 'clang' 'cmake' 'byacc'
 	'bison' 'rust' 'cbindgen' 'rust-bindgen')
 source=(https://mesa.freedesktop.org/archive/$pkgname-$pkgver.tar.xz
@@ -24,8 +28,11 @@ prepare() {
 }
 
 build() {
-	mkdir -p build build2 && cd build
+	mkdir -p build build2
+
 	echo "MESA"
+	cd build
+
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
@@ -53,19 +60,22 @@ build() {
 	-D glx=dri \
 	-D libunwind=enabled \
 	-D llvm=enabled \
+	-D shared-llvm=enabled \
 	-D lmsensors=enabled \
 	-D osmesa=true \
 	-D tools=all \
 	-D shared-glapi=enabled \
 	-D microsoft-clc=disabled \
 	-D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
+	-D vmware-mks-stats=true \
 	-D valgrind=enabled \
 	../$pkgname-$pkgver/
 
 	ninja -j6
 
-	cd ../build2
 	echo "MESA-DEMOS"
+	cd ../build2
+
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
@@ -76,10 +86,15 @@ build() {
 }
 
 package() {
+	echo "MESA"
 	cd build
+
 	DESTDIR=$pkgdir ninja install
 
+	echo "MESA-DEMOS"
 	cd ../build2
+
 	DESTDIR=$pkgdir ninja install
+
 	install -m 0755 src/egl/opengl/{eglgears_wayland,eglgears_x11,eglkms,egltri_wayland,egltri_x11,peglgears,xeglgears,xeglthreads} "${pkgdir}/usr/bin/"
 }
