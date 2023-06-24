@@ -1,30 +1,29 @@
 pkgname=boost
-pkgver=1.78.0
+maver=1
+miver=81
+uver=0
+pkgver=$maver.$miver.$uver
 pkgrel=3
 arch=('x86_64')
-depends=(which icu)
-source=(https://boostorg.jfrog.io/artifactory/main/release/$pkgver/source/boost_1_78_0.tar.bz2)
+depends=(which icu zstd zlib bzip2 python3)
+source=(https://boostorg.jfrog.io/artifactory/main/release/$pkgver/source/boost_${maver}_${miver}_${uver}.tar.bz2)
 
 build() {
-	echo 1
-}
+	cd boost_${maver}_${miver}_${uver}
 
-build1() {
-	cd boost_1_78_0
-
-	./bootstrap.sh			\
-	--prefix=$srcdir/fkinstall	\
+	./bootstrap.sh \
+	--prefix=$srcdir/fkinstall \
 	--with-python=python3
 
-	./b2 stage			\
-	threading=multi			\
-	--debug-symbols=on              \
-        --runtime-link=shared           \
-        --link=shared,static
+	./b2 stage \
+	threading=multi \
+	--debug-symbols=on \
+	--runtime-link=shared \
+	--link=shared,static
 }
 
 package() {
-	cd boost_1_78_0
+	cd boost_${maver}_${miver}_${uver}
 
 	./b2 install
 

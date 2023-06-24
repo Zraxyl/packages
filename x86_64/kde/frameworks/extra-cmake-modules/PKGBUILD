@@ -1,21 +1,21 @@
 pkgname=extra-cmake-modules
-pkgver=5.105.0
+pkgver=5.107.0
 pkgrel=1
 arch=('x86_64')
-commitid=89249187ca265d2566041332758f5830362bb8f1
+durl=https://download.kde.org/stable/frameworks/5.107
 depends=(cmake make)
 makdedepends=(python3-sphinx python3-requests qt5 qt6)
-source=("https://github.com/KDE/extra-cmake-modules/archive/$commitid.zip"
-	"ECM-no-init.py.patch")
+source=("${durl}/${pkgname}-${pkgver}.tar.xz")
 
 prepare() {
-	patch -d $pkgname-$commitid -p1 < ECM-no-init.py.patch
+	# Patches are usually here
+	echo ""
 }
 
 build() {
 	cmake \
 	-B build \
-	-S $pkgname-$commitid \
+	-S $pkgname-$pkgver \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D BUILD_HTML_DOCS=OFF \
 	-D BUILD_QTHELP_DOCS=OFF

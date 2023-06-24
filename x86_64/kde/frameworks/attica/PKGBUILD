@@ -1,5 +1,5 @@
 pkgname=attica
-pkgver=5.105.0
+pkgver=5.107.0
 pkgrel=1
 arch=('x86_64')
 depends=(qt5)

@@ -117,4 +117,8 @@ package() {
 	install -v -Dm644 $srcdir/designer-qt5.desktop $pkgdir/usr/share/applications/
 	install -v -Dm644 $srcdir/linguist-qt5.desktop $pkgdir/usr/share/applications/
 	install -v -Dm644 $srcdir/qdbusviewer-qt5.desktop $pkgdir/usr/share/applications/
+
+	# As qt3d example is hell of a big boy then lets kick him out of the party
+	# And as we wanna keep other small examples then we keep them as is
+	rm -rf $pkgdir/usr/share/qt/examples/qt3d
 }
