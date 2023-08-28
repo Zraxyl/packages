@@ -1,5 +1,5 @@
 pkgname=gst-plugins-ugly
-pkgver=1.22.3
+pkgver=1.22.4
 pkgrel=1
 arch=('x86_64')
 depends=(
@@ -8,7 +8,7 @@ depends=(
 
 	# bad
 	libcdio libx264 libx265)
-makedepends=(valgrind bash-completion python3 mesa ninja bison)
+makedepends=(valgrind bash-completion python3 mesa ninja bison orc)
 source=(https://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-$pkgver.tar.xz)
 
 prepare() {

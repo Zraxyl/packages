@@ -1,10 +1,10 @@
 pkgname=knotifications
-pkgver=5.105.0
+pkgver=5.107.0
 pkgrel=1
 arch=('x86_64')
 depends=(libcanberra libdbusmenu-qt kwindowsystem kconfig kcoreaddons qt5 libxtst)
 makedepends=(cmake extra-cmake-modules qt5 doxygen)
-durl=https://download.kde.org/stable/frameworks/5.105
+durl=https://download.kde.org/stable/frameworks/5.107
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

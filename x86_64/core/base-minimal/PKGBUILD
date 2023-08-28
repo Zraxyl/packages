@@ -1,0 +1,29 @@
+pkgname=base-minimal
+pkgver=2023.3
+pkgrel=1
+pkgdesc="Base minimal metapckage alike pkg to give user/dev needed CLI-System"
+arch=('x86_64')
+source=(neofetch os-release os-branch)
+conflicts=(base-chroot base-system)
+depends=(
+	# Base minimal packages
+	systemd bash glibc libseccomp util-linux coreutils kmod openssl
+
+	# pkg manager
+	bottle)
+
+build() {
+	mkdir -p $pkgname-$pkgver
+	cd $pkgname-$pkgver
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	# Make rootfs structure
+	mkdir -vp $pkgdir/etc/systemd/system/
+	cp -f ../../os-branch $pkgdir/etc
+
+	mkdir -vp $pkgdir/usr/bin
+	cp -f ../../neofetch $pkgdir/usr/bin && chmod +x $pkgdir/usr/bin/neofetch
+}

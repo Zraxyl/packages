@@ -1,6 +1,6 @@
 pkgname=fontconfig
-pkgver=2.14.0
-pkgrel=2
+pkgver=2.14.2
+pkgrel=1
 arch=('x86_64')
 depends=(glibc libpng expat zstd bzip2 readline freetype2)
 source=(https://freedesktop.org/software/$pkgname/release/$pkgname-$pkgver.tar.gz
@@ -35,7 +35,13 @@ build() {
 
 	./../configure \
 	--prefix=/usr \
-	--sysconfdir=/etc
+	--sysconfdir=/etc \
+	--with-templatedir=/etc/fonts/conf.avail \
+	--with-xmldir=/etc/fonts \
+	--localstatedir=/var \
+	--with-default-fonts=/usr/share/fonts \
+	--with-add-fonts=/usr/local/share/fonts
+
 
 	make
 }

@@ -1,10 +1,11 @@
 pkgname=krunner
-pkgver=5.105.0
+pkgver=5.107.0
 pkgrel=1
 arch=('x86_64')
+pkgdesc='Framework for providing different actions given a string query'
 depends=(threadweaver plasma-framework)
 makedepends=(cmake extra-cmake-modules doxygen)
-durl=https://download.kde.org/stable/frameworks/5.105
+durl=https://download.kde.org/stable/frameworks/5.107
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

@@ -1,0 +1,46 @@
+pkgname=ufw
+ver=0.36
+pkgver=$ver.2
+pkgrel=1
+arch=(x86_64)
+depends=(iptables python3)
+backup=(etc/ufw/before.rules
+        etc/ufw/before6.rules
+        etc/ufw/after.rules
+        etc/ufw/after6.rules
+        etc/ufw/ufw.conf
+        etc/ufw/user.rules
+        etc/ufw/sysctl.conf
+        etc/default/ufw
+        etc/ufw/user6.rules)
+source=(https://launchpad.net/$pkgname/$ver/$pkgver/+download/$pkgname-$pkgver.tar.gz
+	ufw.service
+	add-and-use-sbin.patch)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	sed -i -e 's|/lib|/usr/lib|' \
+	-e 's|sbin|bin|g' setup.py
+
+	sed -i -e '/net\/ipv4\/tcp_sack/s/^/#/g' conf/sysctl.conf
+
+	patch -Np0 -i $srcdir/add-and-use-sbin.patch
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	python3 setup.py build
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	python3 setup.py install --root=$pkgdir
+
+	install -Dm644 shell-completion/bash $pkgdir/usr/share/bash-completion/completions/ufw
+	install -Dm644 $srcdir/ufw.service $pkgdir/usr/lib/systemd/system/ufw.service
+
+	chmod 644 $pkgdir/etc/ufw/*.rules
+}

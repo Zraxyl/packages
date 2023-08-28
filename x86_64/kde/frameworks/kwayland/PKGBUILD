@@ -1,10 +1,10 @@
 pkgname=kwayland
-pkgver=5.105.0
+pkgver=5.107.0
 pkgrel=1
 arch=('x86_64')
 depends=(qt5)
-makedepends=(wayland-protocols plasma-wayland-protocols cmake extra-cmake-modules kwayland)
-durl=https://download.kde.org/stable/frameworks/5.105
+makedepends=(wayland-protocols plasma-wayland-protocols cmake extra-cmake-modules)
+durl=https://download.kde.org/stable/frameworks/5.107
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

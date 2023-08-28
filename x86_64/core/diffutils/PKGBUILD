@@ -1,14 +1,17 @@
 pkgname=diffutils
-pkgver=3.8
+pkgver=3.10
 pkgrel=1
 arch=('x86_64')
-depends=(glibc bash)
+depends=(glibc bash libx11)
 source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz)
 
 build() {
         cd $pkgname-$pkgver
 
-        ./configure --prefix=/usr
+        ./configure \
+        --prefix=/usr \
+        --with-x
+
         make
 }
 

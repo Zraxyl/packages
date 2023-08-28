@@ -1,9 +1,9 @@
 pkgname=libseccomp
-pkgver=2.5.3
+pkgver=2.5.4
 pkgrel=1
 arch=('x86_64')
 depends=(glibc)
-makedepends=(valgrind gperf python3-pip)
+makedepends=(valgrind gperf python3-pip libtool)
 source=(https://github.com/seccomp/${pkgname}/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz)
 
 prepare() {

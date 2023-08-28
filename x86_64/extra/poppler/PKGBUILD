@@ -1,23 +1,16 @@
 pkgname=poppler
-pkgver=22.08.0
+pkgver=23.06.0
 pkgrel=1
 arch=('x86_64')
-depends=(fontconfig openjpeg)
-makedepends=(cmake)
+depends=(fontconfig openjpeg cairo lcms nss curl
+	gpgme nspr libpng freetype2 libtiff glib2)
+makedepends=(cmake gtk-doc python3-pip python3-pygments)
 source=(https://poppler.freedesktop.org/$pkgname-$pkgver.tar.xz
-	https://poppler.freedesktop.org/$pkgname-data-0.4.11.tar.gz)
+	https://poppler.freedesktop.org/$pkgname-data-0.4.12.tar.gz)
 
 prepare() {
-	# poppler
-	cd $pkgname-$pkgver
-	mkdir -p build
+	mkdir -p $pkgname-$pkgver/build $pkgname-data-0.4.12/build
 	
-	# poppler-data
-	cd ../$pkgname-data-0.4.11
-	mkdir -p build
-}
-
-build() {
 	cd $pkgname-$pkgver/build
 
 	cmake \
@@ -25,7 +18,12 @@ build() {
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D TESTDATADIR=$PWD/testfiles \
 	-D ENABLE_UNSTABLE_API_ABI_HEADERS=ON \
+	-D ENABLE_GTK_DOC=ON \
 	..
+}
+
+build() {
+	cd $pkgname-$pkgver/build
 
 	make
 }
@@ -35,6 +33,6 @@ package() {
 	make DESTDIR=$pkgdir install
 
 	# poppler-data
-	cd $srcdir/$pkgname-data-0.4.11
+	cd $srcdir/$pkgname-data-0.4.12
 	make prefix=$pkgdir install
 }

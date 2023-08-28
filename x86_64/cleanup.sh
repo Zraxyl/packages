@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ARCH="x86_64"
-OUT="../../../../out"
-PKGS="${OUT}/pkgs/${ARCH}"
+export ARCH="x86_64"
+export OUT="../../../../out"
+export PKGS="${OUT}/pkgs/${ARCH}"
 
 remove_leftovers() {
     iam=$1
@@ -13,8 +13,8 @@ remove_leftovers() {
     set +e
     echo " "
     echo "[*]: Moving $iam pkgs to proper place"
-    mkdir -p $PKGS/$igo/
-    mv */*pkg.t* $PKGS/$igo/ &> /dev/null
+    mkdir -pv $PKGS/$igo/
+    mv */*pkg.t* $PKGS/$igo/
     set -e
     echo "[*]: Cleaning up $iam"
 
@@ -34,8 +34,8 @@ remove_kde_leftovers() {
         set +e
         echo " "
         echo "[*]: Moving KDE/$removed pkgs to proper place"
-        mkdir -p $PKGS/$iam/
-        mv $removed/*/*pkg.t* $PKGS/$iam/ &> /dev/null
+        mkdir -pv $PKGS/$iam/
+        mv $removed/*/*pkg.t* $PKGS/$iam/
         set -e
 
         echo "[*]: Cleaning up KDE/$removed"

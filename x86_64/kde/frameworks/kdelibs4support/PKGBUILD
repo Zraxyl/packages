@@ -1,12 +1,12 @@
 pkgname=kdelibs4support
-pkgver=5.105.0
+pkgver=5.107.0
 pkgrel=1
 arch=('x86_64')
 depends=(kunitconversion kitemmodels kemoticons kparts
 	kdesignerplugin kinit networkmanager perl)
 makedepends=(cmake extra-cmake-modules docbook-xml docbook-xsl
 	perl-modules kdoctools)
-durl=https://download.kde.org/stable/frameworks/5.105/portingAids
+durl=https://download.kde.org/stable/frameworks/5.107/portingAids
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

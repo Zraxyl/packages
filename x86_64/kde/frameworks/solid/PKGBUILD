@@ -1,10 +1,10 @@
 pkgname=solid
-pkgver=5.105.0
+pkgver=5.107.0
 pkgrel=1
 arch=('x86_64')
 depends=(upower udisks2 qt5 media-player-info)
 makedepends=(cmake extra-cmake-modules bison)
-durl=https://download.kde.org/stable/frameworks/5.105
+durl=https://download.kde.org/stable/frameworks/5.107
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

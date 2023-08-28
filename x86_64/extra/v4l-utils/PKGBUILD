@@ -1,0 +1,25 @@
+pkgname=v4l-utils
+pkgver=1.24.1
+pkgrel=1
+arch=(x86_64)
+depends=(hicolor-icon-theme alsa-lib libjpeg json-c systemd sdl2-image)
+makedepends=(gcc qt5)
+source=(https://linuxtv.org/downloads/v4l-utils/$pkgname-$pkgver.tar.bz2)
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+
+	rm $pkgdir/usr/bin/ivtv-ctl
+}

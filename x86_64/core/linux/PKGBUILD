@@ -35,6 +35,8 @@ build() {
 	echo "[!]: Getting up default config of evolinx"
 	make evolinx_defconfig
 
+	make menuconfig
+
 	echo "[!]: Started making all"
 	make all -j7
 

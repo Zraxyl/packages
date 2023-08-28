@@ -2,7 +2,7 @@ pkgname=tk
 pkgver=8.6.12
 pkgrel=1
 arch=(x86_64)
-depends=(tcl libxss libxft)
+depends=(tcl)
 makedepends=(make gcc)
 source=(https://downloads.sourceforge.net/sourceforge/tcl/tk$pkgver-src.tar.gz)
 

@@ -1,5 +1,5 @@
 pkgname=libksysguard
-pkgver=5.27.4
+pkgver=5.27.6
 pkgrel=1
 arch=(x86_64)
 depends=(libxres qt5-webengine kdeclarative knewstuff libpcap)

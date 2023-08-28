@@ -1,15 +1,15 @@
 pkgname=runc
-pkgver=1.1.0
+pkgver=1.1.8
 pkgrel=1
 arch=('x86_64')
 depends=(libseccomp criu)
 makedepends=(git go go-md2man)
 commitid=067aaf8548d78269dcb2c13b856775e27c410f9c
-source=(git+https://github.com/opencontainers/runc.git#commit=$commitid)
+source=(https://github.com/opencontainers/runc/releases/download/v$pkgver/runc.tar.xz)
 
 prepare() {
 	mkdir -p src/github.com/opencontainers
-	cp -r runc src/github.com/opencontainers/
+	cp -r runc-$pkgver src/github.com/opencontainers/runc
 }
 
 build() {

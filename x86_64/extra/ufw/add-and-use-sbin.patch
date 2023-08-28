@@ -1,0 +1,20 @@
+--- setup.py.old	2023-07-12 16:06:54.086465372 +0300
++++ setup.py	2023-07-12 16:08:32.176197219 +0300
+@@ -113,7 +113,7 @@
+         if self.root != None:
+             prefix = self.root + real_prefix
+ 
+-        script = os.path.join(prefix, 'bin', 'ufw')
++        script = os.path.join(prefix, 'sbin', 'ufw')
+         manpage = os.path.join(prefix, 'share', 'man', 'man8', 'ufw.8')
+         manpage_f = os.path.join(prefix, 'share', 'man', 'man8', \
+                                  'ufw-framework.8')
+@@ -254,7 +254,7 @@
+     # to /usr/bin with no symlink in /bin except on upgrades. To accomodate
+     # buildds that may still have the old iptables, search /usr/bin first
+     for dir in ['/usr/bin', '/bin', '/usr/bin', '/bin', '/usr/local/bin', \
+-                '/usr/local/bin']:
++                '/usr/local/bin', '/usr/sbin', '/sbin']:
+         if e == "iptables":
+             if os.path.exists(os.path.join(dir, e)):
+                 iptables_dir = dir

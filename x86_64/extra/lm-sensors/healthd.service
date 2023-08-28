@@ -3,7 +3,7 @@ Description=A daemon which can be used to alert you in the event of a hardware h
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/healthd
+ExecStart=/usr/sbin/healthd
 
 [Install]
 WantedBy=multi-user.target

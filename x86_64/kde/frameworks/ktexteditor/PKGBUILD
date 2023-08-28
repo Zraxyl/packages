@@ -1,10 +1,11 @@
 pkgname=ktexteditor
-pkgver=5.105.0
+pkgver=5.107.0
 pkgrel=1
 arch=('x86_64')
-depends=(kparts syntax-highlighting editorconfig-core-c)
+pkgdesc='Advanced embeddable text editor'
+depends=(kauth kparts syntax-highlighting editorconfig-core-c)
 makedepends=(qt5 cmake extra-cmake-modules git)
-durl=https://download.kde.org/stable/frameworks/5.105
+durl=https://download.kde.org/stable/frameworks/5.107
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

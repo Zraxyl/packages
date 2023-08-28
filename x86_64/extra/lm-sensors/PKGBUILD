@@ -1,7 +1,7 @@
 pkgname=lm-sensors
 pkgver=3.6.0
 _commit=31d1f125d8076f1c8c8f3224b31d240e6e6a1763
-pkgrel=2
+pkgrel=3
 pkgdesc="Collection of user space tools for general SMBus access and hardware monitoring"
 arch=('x86_64')
 url="https://hwmon.wiki.kernel.org/lm_sensors"
@@ -25,10 +25,11 @@ build() {
 
 package() {
 	cd "${srcdir}"/lm-sensors*
-	make PROG_EXTRA=sensord BUILD_STATIC_LIB=0 \
-	PREFIX=/usr SBINDIR=/usr/bin MANDIR=/usr/share/man DESTDIR="${pkgdir}" install
 
-	install -D -m755 "${srcdir}/healthd" "${pkgdir}/usr/bin/healthd"
+	make PROG_EXTRA=sensord ETCDIR=/etc BUILD_STATIC_LIB=0 \
+	PREFIX=/usr SBINDIR=/usr/sbin MANDIR=/usr/share/man DESTDIR="${pkgdir}" install
+
+	install -D -m755 "${srcdir}/healthd" "${pkgdir}/usr/sbin/healthd"
 
 	install -D -m644 "${srcdir}/healthd.conf" "${pkgdir}/etc/healthd.conf"
 	install -D -m644 "${srcdir}/sensord.conf" "${pkgdir}/etc/conf.d/sensord"

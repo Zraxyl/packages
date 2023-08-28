@@ -1,14 +1,16 @@
 pkgname=libcanberra
 pkgver=0.30
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
-depends=(libvorbis alsa-lib pulseaudio libvorbis)
+depends=(libvorbis alsa-lib pulseaudio libvorbis sound-theme-freedesktop)
 makedepends=(intltool tdb gtk2+ gtk3+)
-source=(http://0pointer.de/lennart/projects/$pkgname/$pkgname-$pkgver.tar.xz
-	libcanberra-multi-backend.patch
-	40-libcanberra-gtk-module.sh)
+source=(https://salsa.debian.org/gnome-team/libcanberra/-/archive/ubuntu/$pkgver-10ubuntu1.22.04.1/libcanberra-ubuntu-$pkgver-10ubuntu1.22.04.1.tar.gz
+	40-libcanberra-gtk-module.sh
+	libcanberra-multi-backend.patch)
 
 prepare() {
+	mv libcanberra-ubuntu-$pkgver-10ubuntu1.22.04.1 $pkgname-$pkgver
+
 	cd $pkgname-$pkgver
 
 	wget https://linuxfromscratch.org/patches/blfs/svn/$pkgname-$pkgver-wayland-1.patch

@@ -1,5 +1,5 @@
 pkgname=flatpak-kcm
-pkgver=5.27.4
+pkgver=5.27.6
 pkgrel=1
 arch=('x86_64')
 depends=(flatpak systemsettings kcmutils)
@@ -16,9 +16,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

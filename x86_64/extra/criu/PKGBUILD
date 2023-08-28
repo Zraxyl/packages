@@ -1,10 +1,12 @@
 pkgname=criu
-pkgver=3.16.1
+pkgver=3.18
+pkgdesc="CRIU (stands for Checkpoint and Restore in Userspace) is a utility to checkpoint/restore Linux tasks."
 pkgrel=1
 arch=('x86_64')
 depends=(libbsd libnet libnl protobuf-c gnutls nftables)
 makedepends=(xmlto asciidoc)
-source=($pkgname-$pkgver.tar.gz::https://github.com/checkpoint-restore/criu/archive/v$pkgver.tar.gz)
+options=('!buildflags' '!lto')
+source=($pkgname-$pkgver.tar.gz::https://github.com/checkpoint-restore/criu/archive/refs/tags/v$pkgver.tar.gz)
 
 build() {
 	cd $pkgname-$pkgver
@@ -15,11 +17,11 @@ build() {
 package() {
 	cd $pkgname-$pkgver
 
-	make			\
-	DESTDIR=$pkgdir		\
-	PREFIX=/usr		\
-	LIBDIR=/usr/lib		\
-	LIBEXECDIR=/usr/libexec	\
+	make \
+	DESTDIR=$pkgdir \
+	PREFIX=/usr \
+	LIBDIR=/usr/lib \
+	LIBEXECDIR=/usr/libexec \
 	install
 
 	rm -r $pkgdir/usr/include/compel/common/asm

@@ -1,10 +1,10 @@
 pkgname=libdecor
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 arch=('x86_64')
-depends=('wayland' 'pango' 'dbus' 'egl-wayland' 'libxkbcommon')
+depends=('wayland' 'pango' 'dbus' 'egl-wayland' 'libxkbcommon' 'libglvnd')
 makedepends=('cmake' 'ninja' 'meson' 'wayland-protocols')
-source=(https://gitlab.gnome.org/jadahl/libdecor/uploads/81adf91d27620e20bcc5f6b9b312d768/${pkgname}-${pkgver}.tar.xz)
+source=(https://gitlab.gnome.org/jadahl/libdecor/-/archive/0.1.1/${pkgname}-${pkgver}.tar.gz)
 
 build () {
     rm -rf _build

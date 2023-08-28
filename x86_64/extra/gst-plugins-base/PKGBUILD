@@ -1,5 +1,5 @@
 pkgname=gst-plugins-base
-pkgver=1.22.3
+pkgver=1.22.4
 pkgrel=1
 arch=('x86_64')
 depends=(
@@ -9,7 +9,7 @@ depends=(
 	# base
 	graphene opus libtheora libxv sdl2 qt5 mesa libxi
 	zlib libglvnd wayland wayland-protocols libx11 libgudev libdrm)
-makedepends=(valgrind bash-completion python3 mesa ninja bison)
+makedepends=(valgrind bash-completion python3 mesa ninja bison orc)
 source=(https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-$pkgver.tar.xz)
 
 prepare() {

@@ -1,8 +1,8 @@
 pkgname=ceph
-pkgver=17.2.6
+pkgver=18.1.1
 pkgrel=1
 arch=('x86_64')
-depends=("zstd" 'bash' 'bc' 'boost' 'bzip2' 'c-ares' 'cmake' 'coreutils'
+depends=("zstd" 'bash' 'bc' 'bzip2' 'c-ares' 'cmake' 'coreutils'
     'cpio' 'curl' 'expat' 'fontconfig' 'fuse2' 'fuse3' 'gcc' 'git' 'glibc' 'gnutls'
     'gperf' 'inetutils' 'keyutils' 'libcap' 'snappy' 'benchmark' 'gawk'
     'libedit' 'libgudev' 'libnl' 'libtool' 'util-linux' 'libaio'
@@ -10,17 +10,30 @@ depends=("zstd" 'bash' 'bc' 'boost' 'bzip2' 'c-ares' 'cmake' 'coreutils'
     'nss' 'numactl' 'openssl' 'parted' 'pcre' 'pcre2' 'pkgconf' 'libcap-ng'
     'procps-ng' 'sed' 'systemd' 'valgrind' 'yaml' 'yasm' 'zlib' 'openldap'
     'cryptsetup' 'openjdk-17' 'lua')
-makedepends=(python3-pip)
-options=('emptydirs')
+makedepends=(python3-pip boost)
+options=('emptydirs' '!lto')
 source=(https://download.ceph.com/tarballs/${pkgname}-${pkgver}.tar.gz)
 
 prepare() {
-    cd "${pkgbase}-${pkgver}"
+    cd "${pkgname}-${pkgver}"
 
     # Install python3 needed modules ( may need more attention on cleaner dev env's )
     pip3 install setuptools
     pip3 install doxypypy doxyqml requests
     pip3 install Cython pyyaml
+
+    # Fix some things
+    find . -name '*.cmake' -or -name 'CMakeLists.txt' -print0 | xargs --null \
+        sed -r \
+        -e 's|Boost::|boost_|g' \
+        -e 's|Boost_|boost_|g' \
+        -e 's|[Bb]oost_boost|boost_system|g' -i || exit 1
+
+
+    # Remove some things before configuring the source
+    rm src/test/cli/ceph-authtool/cap*.t
+    sed -i '/add_ceph_test(smoke.sh/d' src/test/CMakeLists.txt
+    sed -i '/add_ceph_test(safe-to-destroy.sh/d' src/test/osd/CMakeLists.txt
 
     # Configure pkg in prepare so build() only compiles the pkg
     CPPFLAGS+=' -DBOOST_ASIO_USE_TS_EXECUTOR_AS_DEFAULT'
@@ -75,13 +88,39 @@ prepare() {
 }
 
 build() {
-    cd "${pkgbase}-${pkgver}"
+    cd "${pkgname}-${pkgver}"
 
     cmake --build build -j4
 }
 
 package() {
-    cd "${pkgbase}-${pkgver}"
+    cd "${pkgname}-${pkgver}"
 
     make -C build DESTDIR=$pkgdir install
+
+    # remove _test_ binaries from the package, not needed
+    find "$pkgdir/usr/bin" -maxdepth 1 -type f -iname 'ceph_test_*' -delete
+
+    # Debian init scripts
+    rm -rf "$pkgdir/etc/init.d"
+
+    # fix bash completions path
+    install -d -m 755 "$pkgdir/usr/share/bash-completion"
+    mv "$pkgdir"/{etc/bash_completion.d,usr/share/bash-completion/completions}
+
+    # fix EnvironmentFile location in systemd service files
+    sed -i 's|/etc/sysconfig/|/etc/conf.d/|g' "$pkgdir"/usr/lib/systemd/system/*.service
+
+    # prepare some paths and set correct permissions
+    install -D -d -m750 -o   0 -g 340 "$pkgdir/etc/ceph"
+    install -D -d -m750 -o 340 -g 340 "$pkgdir/var/log/ceph"
+    install -D -d -m750 -o 340 -g 340 "$pkgdir/var/lib/ceph"
+    install -D -d -m750 -o 340 -g 340 "$pkgdir/var/lib/ceph/bootstrap-mds"
+    install -D -d -m750 -o 340 -g 340 "$pkgdir/var/lib/ceph/bootstrap-osd"
+    install -D -d -m750 -o 340 -g 340 "$pkgdir/var/lib/ceph/bootstrap-rgw"
+    install -D -d -m750 -o 340 -g 340 "$pkgdir/var/lib/ceph/crash/posted"
+    install -D -d -m750 -o 340 -g 340 "$pkgdir/var/lib/ceph/mon"
+    install -D -d -m750 -o 340 -g 340 "$pkgdir/var/lib/ceph/mgr"
+    install -D -d -m750 -o 340 -g 340 "$pkgdir/var/lib/ceph/osd"
+
 }

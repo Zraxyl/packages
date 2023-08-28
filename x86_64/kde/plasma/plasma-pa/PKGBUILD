@@ -3,7 +3,7 @@ pkgver=5.27.4
 pkgrel=1
 arch=(x86_64)
 depends=(plasma-workspace pulseaudio perl libcanberra
-    sound-theme-spec)
+    sound-theme-freedesktop)
 makedepends=(extra-cmake-modules kdoctools)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 

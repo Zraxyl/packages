@@ -108,5 +108,5 @@ END
         "$pkgdir/usr/share/icons/hicolor/scalable/apps/$pkgname.svg"
 
     install -Dvm644 $srcdir/identity-icons-brand.svg \
-    "$pkgdir/usr/share/icons/hicolor/symbolic/apps/$pkgname-symbolic.svg"
+		"$pkgdir/usr/share/icons/hicolor/symbolic/apps/$pkgname-symbolic.svg"
 }

@@ -1,9 +1,10 @@
 pkgname=discover
-pkgver=5.27.4
+pkgver=5.27.6
 pkgrel=1
 arch=(x86_64)
 depends=(knewstuff kitemmodels kcmutils kidletime hicolor-icon-theme kirigami2 discount
-	flatpak purpose packagekit-qt5 appstream libostree flatpak-kcm xdg-desktop-portal-kde)
+	flatpak purpose packagekit-qt5 appstream libostree flatpak-kcm xdg-desktop-portal-kde
+	kuserfeedback)
 makedepends=(extra-cmake-modules plasma-framework)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz
 	bottle-changes.patch)

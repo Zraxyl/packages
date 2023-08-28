@@ -1,25 +1,61 @@
-pkgname=
-pkgver=
+pkgname=openssh
+pkgver=9.4p1
 pkgrel=1
 arch=('x86_64')
-depends=()
-makedepends=()
-source=()
+depends=(glibc krb5 libedit openssl
+	linux-pam zlib xauth)
+source=(https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$pkgname-$pkgver.tar.gz
+	sshdgenkeys.service
+	sshd.service
+	sshd.conf
+	sshd.pam)
 
 prepare() {
 	cd $pkgname-$pkgver
 
-	
+	sed '/^#.*\$.*\$$/d' -i ssh{,d}_config
+
+	# prepend configuration option to include drop-in configuration files for sshd_config
+	printf "# Include drop-in configurations\nInclude /etc/ssh/sshd_config.d/*.conf\n" | cat - sshd_config > sshd_config.tmp
+	mv -v sshd_config.tmp sshd_config
+
+	# prepend configuration option to include drop-in configuration files for ssh_config
+	printf "# Include drop-in configurations\nInclude /etc/ssh/ssh_config.d/*.conf\n" | cat - ssh_config > ssh_config.tmp
+	mv -v ssh_config.tmp ssh_config
+
 }
 
 build() {
 	cd $pkgname-$pkgver
 
-	
+	./configure \
+	--prefix=/usr \
+	--sbindir=/usr/bin \
+	--libexecdir=/usr/lib/ssh \
+	--sysconfdir=/etc/ssh \
+	--with-libedit \
+	--with-security-key-builtin \
+	--with-ssl-engine \
+	--with-pam \
+	--with-privsep-user=nobody \
+	--with-kerberos5=/usr \
+	--with-xauth=/usr/bin/xauth \
+	--with-pid-dir=/run \
+	--disable-strip \
+	--disable-security-key
+
+	make
 }
 
 package() {
 	cd $pkgname-$pkgver
 
-	
+	make DESTDIR="$pkgdir" install
+
+	install -vdm 755 "$pkgdir/etc/ssh/ssh_config.d"
+
+	install -Dm644 ../sshdgenkeys.service -t "$pkgdir"/usr/lib/systemd/system/
+	install -Dm644 ../sshd.service -t "$pkgdir"/usr/lib/systemd/system/
+	install -Dm644 ../sshd.conf -t "$pkgdir"/usr/lib/tmpfiles.d/
+	install -Dm644 ../sshd.pam "$pkgdir"/etc/pam.d/sshd
 }

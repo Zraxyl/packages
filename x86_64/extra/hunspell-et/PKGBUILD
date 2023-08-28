@@ -1,0 +1,19 @@
+pkgname=hunspell-et
+pkgver=2008.07.01
+pkgrel=1
+pkgdesc="Estonian hunspell dictionaries"
+arch=(x86_64)
+depends=(hunspell)
+source=(https://git.martinvlba.eu/Evolinx/hunspell-et/archive/$pkgver.tar.gz)
+
+build() {
+	cd $pkgname-$pkgver
+
+
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+
+}

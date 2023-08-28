@@ -1,0 +1,58 @@
+pkgname=audit-userspace
+pkgver=3.1.1
+pkgrel=1
+arch=('x86_64')
+depends=(glibc bash krb5 libcap-ng libcap openldap)
+makedepends=(python3 swig)
+source=(https://github.com/linux-audit/$pkgname/archive/refs/tags/v$pkgver.tar.gz
+	# Patches
+	audit-3.0.8-config_paths.patch
+	audit-3.0.9-flex_array_workaround.patch
+	audit-3.0.9-undo_flex_array_workaround.patch)
+
+prepare() {
+	mkdir -p build
+
+	cd $pkgname-$pkgver
+
+	# Patching
+	patch -Np1 -i ../audit-3.0.8-config_paths.patch
+
+	cp -fv /usr/include/linux/audit.h lib/
+	patch -Np0 -i ../audit-3.0.9-flex_array_workaround.patch
+
+	# Preconfigure the source
+	autoreconf -fvi
+
+	cd ../build
+
+	# Configure the source code
+	./../$pkgname-$pkgver/configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--enable-gssapi-krb5=yes \
+	--enable-systemd=yes \
+	--with-io_uring=yes \
+	--with-libcap-ng=yes
+}
+
+build() {
+	cd build
+
+	make
+}
+
+package() {
+	cd build
+
+	# Add log dir
+	install -vdm 700 "$pkgdir/var/log/$pkgname/"
+
+	# Add rules.d dir
+	install -vdm 755 "$pkgdir/etc/audit/rules.d/"
+
+	make DESTDIR=$pkgdir install
+
+	patch -Np0 -d $pkgdir -i $srcdir/audit-3.0.9-undo_flex_array_workaround.patch
+	rm -v $pkgdir/usr/include/libaudit.h.orig
+}

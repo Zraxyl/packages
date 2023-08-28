@@ -1,0 +1,23 @@
+pkgname=orc
+pkgver=0.4.34
+pkgrel=1
+arch=(x86_64)
+depends=(glibc python3)
+makedepends=(meson gtk-doc python3-pip)
+source=(https://gitlab.freedesktop.org/gstreamer/orc/-/archive/$pkgver/orc-$pkgver.tar.gz)
+
+prepare() {
+	mkdir -p build
+
+	meson \
+	--prefix=/usr \
+	$pkgname-$pkgver build
+}
+
+build() {
+	ninja -C build
+}
+
+package() {
+	DESTDIR=$pkgdir ninja install -C build
+}

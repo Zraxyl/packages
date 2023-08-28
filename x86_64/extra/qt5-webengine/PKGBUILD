@@ -1,11 +1,16 @@
 pkgname=qt5-webengine
-pkgver=5.15.14
+pkgver=5.15.15
 pkgrel=1
 arch=('x86_64')
 depends=(qt5 nodejs nss pciutils llvm clang bison ffmpeg minizip double-conversion
 	libx264 libx265 pipewire)
 makedepends=(extra-cmake-modules python3-pip python2-pip python2-setuptools)
-commitid_engine=872003d9ad187a9904e3b2b5ccc89c774839bec6 # 5.15.5
+commitid_engine=21ddfe15f638a36160cb11d00639c3126c1aed7c # 5.15.15
+source=(qt5-webengine-python3.patch
+        qt5-webengine-chromium-python3.patch
+        qt5-webengine-ffmpeg5.patch
+        qt5-webengine-pipewire-0.3.patch
+        clang-16-support.patch)
 url=https://invent.kde.org/qt/qt
 
 prepare() {
@@ -29,6 +34,15 @@ prepare() {
 	git submodule foreach --recursive git reset --hard
 
 	# patching time
+	set +e
+	patch -p1 -i "$srcdir"/qt5-webengine-python3.patch # Fix build with Python 3
+	patch -p1 -d src/3rdparty -i "$srcdir"/qt5-webengine-chromium-python3.patch
+
+	patch -p1 -d src/3rdparty -i "$srcdir"/qt5-webengine-ffmpeg5.patch # Fix build with ffmpeg 5
+	patch -p1 -d src/3rdparty -i "$srcdir"/qt5-webengine-pipewire-0.3.patch # Port to pipewire 0.3
+
+	patch -p0 -i "$srcdir"/clang-16-support.patch # Fix chromium build error ( static constexpr T kMax = static_cast )
+	set -e
 }
 
 build() {

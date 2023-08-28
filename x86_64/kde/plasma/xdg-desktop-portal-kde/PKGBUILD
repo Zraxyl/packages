@@ -1,6 +1,6 @@
 pkgname=xdg-desktop-portal-kde
-realver=5.27.4
-pkgver=5.27.4.1
+realver=5.27.6
+pkgver=5.27.6
 pkgrel=1
 arch=('x86_64')
 depends=(plasma-framework kirigami2 kio-fuse xdg-desktop-portal)

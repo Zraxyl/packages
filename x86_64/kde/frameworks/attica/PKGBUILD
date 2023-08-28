@@ -4,7 +4,7 @@ pkgrel=1
 arch=('x86_64')
 depends=(qt5)
 makedepends=(cmake extra-cmake-modules docbook-xml docbook-xsl)
-durl=https://download.kde.org/stable/frameworks/5.105
+durl=https://download.kde.org/stable/frameworks/5.107
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -16,10 +16,11 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
-	-Wno-dev ..
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-Wno-dev \
+	..
 
 	make -j4
 	

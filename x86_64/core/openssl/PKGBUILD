@@ -1,27 +1,49 @@
 pkgname=openssl
-pkgver=1.1.1m
-pkgrel=1
+pkgver=3.0.9
+pkgcomp=1.1.1u
+pkgrel=2
 arch=('x86_64')
-depends=(glibc)
-source=(https://openssl.org/source/$pkgname-$pkgver.tar.gz)
+depends=(glibc ca-certificates)
+backup=('etc/ssl/openssl.cnf')
+makedepends=('perl')
+source=(https://openssl.org/source/$pkgname-$pkgver.tar.gz
+    https://openssl.org/source/$pkgname-$pkgcomp.tar.gz)
+
+prepare() {
+    cd $srcdir/$pkgname-$pkgver
+
+    ./config --prefix=/usr \
+    --openssldir=/etc/ssl \
+    --libdir=lib \
+    shared \
+    linux-x86_64 \
+    enable-ktls \
+    zlib-dynamic
+
+    cd $srcdir/$pkgname-$pkgcomp
+
+    ./config --prefix=/usr \
+    --openssldir=/etc/ssl \
+    --libdir=lib \
+    shared \
+    zlib-dynamic
+}
 
 build() {
-        cd $pkgname-$pkgver
+    cd $srcdir/$pkgname-$pkgver
 
-        ./config --prefix=/usr         \
-                 --openssldir=/etc/ssl \
-                 --libdir=lib          \
-                 shared                \
-                 zlib-dynamic
+    make
 
-        make
+    cd $srcdir/$pkgname-$pkgcomp
 
-        # disable static lib
-        sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
+    make
 }
 
 package() {
-        cd $pkgname-$pkgver
+    cd $srcdir/$pkgname-$pkgver
 
-        make DESTDIR=$pkgdir MANDIR=/usr/share/man MANSUFFIX=ssl install
+    make DESTDIR=$pkgdir MANDIR=/usr/share/man MANSUFFIX=ssl install
+
+    # Install compatability layer for packages that still depend on older libs
+    cp -f $srcdir/$pkgname-$pkgcomp/lib{ssl.so.1.1,crypto.so.1.1} $pkgdir/usr/lib/
 }

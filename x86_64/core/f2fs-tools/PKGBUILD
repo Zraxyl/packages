@@ -1,0 +1,30 @@
+pkgname=f2fs-tools
+pkgver=1.16.0
+pkgrel=1
+arch=('x86_64')
+depends=(util-linux)
+makedepends=(automake autoconf m4 bison git)
+commitid=6ebf6f2967d0a5731af1767d5735f46e30fea0fc
+source=(git+https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git#tag=$commitid)
+
+prepare() {
+	cd $pkgname
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--with-x
+}
+
+build() {
+	cd $pkgname
+
+	make
+}
+
+package() {
+	cd $pkgname
+
+	make DESTDIR=$pkgdir install
+}

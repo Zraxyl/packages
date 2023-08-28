@@ -1,9 +1,9 @@
 pkgname=base-system
-pkgver=2023.2
+pkgver=2023.3
 pkgrel=1
 pkgdesc="Base metapckage alike pkg to give user/dev needed bootable CLI-System"
 arch=('x86_64')
-source=(os-release neofetch)
+source=(os-release neofetch os-branch)
 depends=(
 	# Base packages
 	accountsservice ca-certificates diffutils file gnu-efi kmod libnl linux-pam pciutils procps-ng tar xz
@@ -34,6 +34,7 @@ package() {
 	mkdir -vp $pkgdir/usr/bin
 
 	# Copy over needed files
+	cp -f ../../os-branch $pkgdir/etc
 	cp -f ../../os-release $pkgdir/etc
 	cp -f ../../neofetch $pkgdir/usr/bin && chmod +x $pkgdir/usr/bin/neofetch
 }

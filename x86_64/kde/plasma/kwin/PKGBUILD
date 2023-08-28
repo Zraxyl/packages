@@ -1,11 +1,11 @@
 pkgname=kwin
-pkgver=5.27.4
+pkgver=5.27.6
 pkgrel=1
 arch=(x86_64)
 depends=(breeze kcmutils kscreenlocker lcms libxcvt
 	wireplumber pipewire xcb-util-cursor krunner
 	plasma-wayland-protocols wayland-protocols hwdata
-	libdrm)
+	libdrm kscreen plasma-framework)
 makedepends=(extra-cmake-modules qt5 kdoctools krunner)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 install=$pkgname.install
@@ -13,9 +13,7 @@ install=$pkgname.install
 build() {
 	cmake -B build -S $pkgname-$pkgver \
 	-D CMAKE_INSTALL_LIBEXECDIR=lib \
-	-D BUILD_TESTING=OFF \
-	-D QT_MAJOR_VERSION=5 \
-	-D EXCLUDE_DEPRECATED_BEFORE_AND_AT=5.94.0
+	-D BUILD_TESTING=OFF
 
 	cmake --build build
 }

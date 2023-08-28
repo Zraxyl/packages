@@ -1,49 +1,93 @@
 pkgname=ffmpeg
 pkgver=6.0
-pkgrel=1
+pkgrel=3
 arch=('x86_64')
 depends=(fdk-aac freetype2 lame libtheora
     libvorbis libvpx opus libx264 libx265
-    libass vdpau alsa-lib fribidi gmp gnutls
-    jack2 libdrm libglvnd pulseaudio libva
+    libass vdpau alsa-lib fribidi gmp gnutls libssh
+    jack2 libdrm libglvnd pulseaudio libva v4l-utils
     libxext sdl2 opencl-icd-loader libaom bzip2 fontconfig
     gsm pipewire libbluray libjxl librsvg libsndfile)
 makedepends=(nasm yasm clang vulkan-headers opencl-headers)
 source=(https://ffmpeg.org/releases/ffmpeg-$pkgver.tar.xz
     chromium-av_stream_get_first_dts.patch
-    hwcontext_vulkan.patch)
+    ffmpeg-vmaf2.x.patch)
 
 prepare() {
     cd $pkgname-$pkgver
 
     sed -i 's/-lflite"/-lflite -lasound"/' configure
 
-    #patch -p0 -i ../chromium-av_stream_get_first_dts.patch
-    #patch -p1 -i ../hwcontext_vulkan.patch
+    echo "[ PATCH ]: [1/1]"
+    patch -p1 -i ../chromium-av_stream_get_first_dts.patch
+    #echo "[ PATCH ]: [2/2]"
+    #patch -p1 -i ../ffmpeg-vmaf2.x.patch
 }
 
 build() {
     cd $pkgname-$pkgver
 
+    # No support to these yet
+    #--enable-avisynth \
+    #--enable-ladspa \
+    #--enable-libiec61883 \
+    #--enable-libbs2b \
+    #--enable-libdav1d \
+    #--enable-libmfx \
+    #--enable-libmodplug \
+    #--enable-libopencore_amrnb \
+    #--enable-libopencore_amrwb \
+    #--enable-libopenmpt \
+    #--enable-librav1e \
+    #--enable-libspeex \
+    #--enable-libsoxr \
+    #--enable-libsrt \
+    #--enable-libvidstab \
+    #--enable-libvmaf \
+    #--enable-libsvtav1 \
+    #--enable-libxvid \
+    #--enable-libzimg \
+    #--enable-nvdec \
+    #--enable-nvenc \
+    #--enable-amf \
+
     ./configure \
     --prefix=/usr \
-    --enable-gpl \
-    --enable-version3 \
-    --enable-nonfree \
-    --enable-shared \
-    --disable-debug \
-    --enable-libass \
-    --enable-libfdk-aac \
-    --enable-libfreetype \
+    --enable-cuda-llvm \
+    --enable-lto \
     --enable-fontconfig \
+    --enable-gmp \
+    --enable-gnutls \
+    --enable-gpl \
+    --enable-libaom \
+    --enable-libass \
+    --enable-libbluray \
+    --enable-libdrm \
+    --enable-libfreetype \
+    --enable-libfribidi \
+    --enable-libgsm \
+    --enable-libjack \
+    --enable-libjxl \
     --enable-libmp3lame \
+    --enable-libopenjpeg \
     --enable-libopus \
+    --enable-libpulse \
+    --enable-librsvg \
+    --enable-libssh \
     --enable-libtheora \
+    --enable-libv4l2 \
     --enable-libvorbis \
     --enable-libvpx \
+    --enable-libwebp \
     --enable-libx264 \
     --enable-libx265 \
-    --enable-openssl
+    --enable-libxcb \
+    --enable-libxml2 \
+    --enable-opencl \
+    --enable-opengl \
+    --enable-shared \
+    --enable-version3 \
+    --enable-vulkan
 
     make -j4
 }

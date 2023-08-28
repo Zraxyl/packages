@@ -1,0 +1,10 @@
+--- src/3rdparty/chromium/build/config/compiler/BUILD.gn	2023-07-25 10:30:31.217879074 +0300
++++ src/3rdparty/chromium/build/config/compiler/BUILD.gn	2023-07-25 10:57:57.363785819 +0300
+@@ -318,6 +318,7 @@
+       "-Wno-parentheses-equality",
+       "-Wno-tautological-compare",
+       "-Wno-thread-safety-attributes",
++      "-Wno-enum-constexpr-conversion",
+     ]
+   }
+ 

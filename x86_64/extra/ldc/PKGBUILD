@@ -1,40 +1,22 @@
 pkgname=ldc
-pkgver=1.32.2
+pkgver=1.33.0
 pkgrel=1
 arch=(x86_64)
 depends=(gcc compiler-rt llvm curl lld spirv-llvm-translator)
 makedepends=(cmake ninja git)
-source=(https://github.com/ldc-developers/ldc/releases/download/v1.32.2/ldc2-$pkgver-linux-x86_64.tar.xz
+source=(https://github.com/ldc-developers/ldc/archive/340d7cf2de6b249e9d99ac11b7760c0d306ff52f.tar.gz
+	https://github.com/ldc-developers/phobos/archive/f4961356a33849f24557a77bdc386eff852bb9f5.tar.gz
 	ldc2.conf)
-old_source=(https://github.com/$pkgname-developers/$pkgname/releases/download/v$pkgver-beta2/$pkgname-$pkgver-beta2-src.tar.gz
-	https://github.com/$pkgname-developers/phobos/archive/refs/tags/$pkgname-v$pkgver-beta2.tar.gz)
 
-
-package() {
-	mkdir -p $pkgdir/usr $pkgdir/usr/include/dlang/
-
-	cp -rf ldc2-$pkgver-linux-x86_64/* $pkgdir/usr/
-
-	rm -f $pkgdir/usr/{LICENSE,README}
-	mv $pkgdir/usr/etc $pkgdir/etc
-	mv $pkgdir/usr/import $pkgdir/usr/include/dlang/ldc
-	cp -f $srcdir/ldc2.conf $pkgdir/etc/ldc2.conf
-}
-
-
-#
-# remove old when llvm-16 is supported by them
-#
-
-old_prepare() {
+prepare() {
 	# Remove old src
 	rm -rf ldc ldc-phobos
 
 	# Rename the folders
-	mv $srcdir/ldc-$pkgver-beta2-src ldc
-	mv $srcdir/phobos-ldc-v$pkgver-beta2 ldc-phobos
+	mv $srcdir/ldc-340d7cf2de6b249e9d99ac11b7760c0d306ff52f ldc
+	mv $srcdir/phobos-f4961356a33849f24557a77bdc386eff852bb9f5 ldc-phobos
 
-	mkdir -p build
+	mkdir -p ldc/build
 
 	# Submodule hacks
 	cd ldc
@@ -46,28 +28,26 @@ old_prepare() {
 	sed -i "s/ldc::llvm_version_base/\"16.0.5\"/" driver/linker-gcc.cpp
 }
 
-old_build() {
-	cd build
+build() {
+	cd ldc/build
 
-	CXX=clang++ \
-	CC=clang \
-	LD=clang \
 	cmake \
 	-G Ninja \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_BUILD_TYPE=Release \
+	-D CMAKE_SKIP_RPATH=ON \
 	-D INCLUDE_INSTALL_DIR=/usr/include/dlang/ldc \
 	-D BUILD_SHARED_LIBS=BOTH \
-	-D BUILD_LTO_LIBS=OFF \
+	-D BUILD_LTO_LIBS=ON \
 	-D LDC_INSTALL_LTOPLUGIN=OFF \
 	-D LDC_WITH_LLD=ON \
 	-D CMAKE_PREFIX_PATH=/usr/lib/llvm \
-	../ldc
+	..
 
 	ninja
 }
 
-old_package() {
+package() {
 	cd build
 
 	DESTDIR=$pkgdir ninja install

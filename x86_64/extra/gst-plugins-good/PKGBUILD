@@ -1,5 +1,5 @@
 pkgname=gst-plugins-good
-pkgver=1.22.3
+pkgver=1.22.4
 pkgrel=1
 arch=('x86_64')
 depends=(
@@ -7,7 +7,7 @@ depends=(
 	gstreamer gst-plugins-base
 
 	# bad
-	nasm jack2 lame pulseaudio libvpx cairo libsoup pipewire)
+	nasm jack2 lame pulseaudio libvpx cairo libsoup pipewire orc)
 makedepends=(valgrind bash-completion python3 mesa ninja bison)
 source=(https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-$pkgver.tar.xz)
 
