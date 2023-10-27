@@ -1,0 +1,36 @@
+pkgname=fmt
+pkgver=10.1.1
+pkgrel=1
+arch=(x86_64)
+depends=(gcc glibc)
+makedepends=(cmake doxygen git ninja nodejs python3-pip)
+source=(https://github.com/fmtlib/fmt/releases/download/10.1.1/fmt-10.1.1.zip)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	rm -rf build
+	mkdir build
+
+	cd build
+
+	cmake \
+	-G Ninja \
+    -D CMAKE_BUILD_TYPE=Releaase \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D BUILD_SHARED_LIBS=ON \
+    ..
+
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	DESTDIR=$pkgdir ninja install
+}

@@ -1,31 +1,33 @@
 pkgname=kmod
-pkgver=29
-pkgrel=2
+pkgver=30
+pkgrel=1
 arch=('x86_64')
 depends=(glibc zlib openssl xz zstd)
 source=(https://www.kernel.org/pub/linux/utils/kernel/$pkgname/$pkgname-$pkgver.tar.xz)
 
 build() {
-        cd $pkgname-$pkgver
+	cd $pkgname-$pkgver
 
-        ./configure --prefix=/usr          \
-                    --bindir=/bin          \
-                    --sysconfdir=/etc      \
-                    --with-rootlibdir=/lib \
-                    --with-xz              \
-		    --with-openssl	   \
-                    --with-zlib
-        make
+	./configure \
+	--prefix=/usr \
+	--bindir=/bin \
+	--sysconfdir=/etc \
+	--with-rootlibdir=/lib \
+	--with-xz \
+	--with-openssl \
+	--with-zlib
+
+	make
 }
 
 package() {
 	cd $pkgname-$pkgver
-        make DESTDIR=$pkgdir install
+	make DESTDIR=$pkgdir install
 
-        mkdir -p $pkgdir/sbin
-        for target in depmod insmod lsmod modinfo modprobe rmmod; do
-          ln -sfv ../bin/kmod $pkgdir/sbin/$target
-        done
+	mkdir -p $pkgdir/sbin
+	for target in depmod insmod lsmod modinfo modprobe rmmod; do
+		ln -sfv ../bin/kmod $pkgdir/sbin/$target
+	done
 
-        ln -sfv kmod $pkgdir/bin/lsmod
+	ln -sfv kmod $pkgdir/bin/lsmod
 }

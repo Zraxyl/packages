@@ -1,6 +1,7 @@
 ## IMPORTANT!!!
 
 * Always change linux.install kernel version strings!!!
+* Same goes for emergency and evolinx .conf files
 
 ## Why not just automate kernel version string search from /lib/modules?
 * Doing it may break the automation if

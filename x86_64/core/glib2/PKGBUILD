@@ -1,10 +1,10 @@
 pkgname=glib2
-pkgver=2.74.5
+pkgver=2.78.1
 pkgrel=1
 arch=('x86_64')
 depends=('libffi' 'pcre' 'pcre2' 'util-linux' 'zlib' 'elfutils' 'libxslt' 'libxml2')
 makedepends=('gtk-doc' 'python3-pip' 'dbus' 'gettext' 'git' 'meson' 'docbook-xml' 'docbook-xsl')
-gvdbcommit=0854af0fdb6d527a8d1999835ac2c5059976c210
+gvdbcommit=89dbdb9ab45721189e195c7e70ed620143d840f7
 source=(git+https://gitlab.gnome.org/GNOME/glib.git#tag=$pkgver
 	git+https://gitlab.gnome.org/GNOME/gvdb.git#commit=$gvdbcommit
 	noisy-glib-compile-schemas.diff
@@ -13,7 +13,6 @@ source=(git+https://gitlab.gnome.org/GNOME/glib.git#tag=$pkgver
 
 prepare() {
 	cd glib
-	git apply -3 ../noisy-glib-compile-schemas.diff
 
 	pip3 install pygments
 
@@ -24,12 +23,12 @@ prepare() {
 build() {
 	CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
 
-	meson glib build		\
-	-D glib_debug=disabled		\
-	-D selinux=disabled		\
-	-D man=false			\
-	-D gtk_doc=true			\
-	--prefix=/usr			\
+	meson glib build \
+	-D glib_debug=disabled \
+	-D selinux=disabled \
+	-D man=false \
+	-D gtk_doc=true \
+	--prefix=/usr \
 	--libdir=/usr/lib
 
 	meson compile -C build

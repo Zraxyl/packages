@@ -1,0 +1,19 @@
+pkgname=base-sdboot
+pkgver=2023.4
+pkgdesc="Package that adds default boot entries"
+rver=6.2
+pkgrel=2
+arch=('x86_64')
+install=sdboot.install
+depends=(linux base-system)
+source=(loader.conf
+	evolinx.conf
+	emergency.conf)
+
+package() {
+	mkdir -p $pkgdir/boot/loader/entries
+
+	install -m 700 $srcdir/loader.conf $pkgdir/boot/loader/
+	install -m 700 $srcdir/evolinx.conf $pkgdir/boot/loader/entries/
+	install -m 700 $srcdir/emergency.conf $pkgdir/boot/loader/entries/
+}

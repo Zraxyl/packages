@@ -1,0 +1,31 @@
+ac_add_options --enable-application=js
+
+ac_add_options --prefix=/usr
+ac_add_options --enable-release
+ac_add_options --enable-rust-simd
+ac_add_options --enable-linker=lld
+ac_add_options --disable-bootstrap
+ac_add_options --disable-debug
+ac_add_options --disable-jemalloc
+ac_add_options --disable-strip
+ac_add_options --disable-unified-build
+
+# System libraries
+ac_add_options --with-system-zlib
+ac_add_options --without-system-icu
+
+# Features
+ac_add_options --enable-readline
+ac_add_options --enable-shared-js
+ac_add_options --disable-tests
+ac_add_options --with-intl-api
+
+## Evolinx / LFS Feature
+
+# The following option unsets Telemetry Reporting. With the Addons Fiasco,
+# Mozilla was found to be collecting user's data, including saved passwords and
+# web form data, without users consent. Mozilla was also found shipping updates
+# to systems without the user's knowledge or permission.
+# As a result of this, use the following command to permanently disable
+# telemetry reporting in Firefox.
+unset MOZ_TELEMETRY_REPORTING

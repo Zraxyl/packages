@@ -1,6 +1,6 @@
 _target=aarch64-linux-gnu
 pkgname=$_target-glibc
-pkgver=2.33
+pkgver=2.38
 pkgrel=1
 _commit=be176490b818b65b5162c332eb6b581690b16e5c
 pkgdesc="GNU C Library ARM64 target"
@@ -8,7 +8,7 @@ arch=(x86_64)
 url='https://www.gnu.org/software/libc/'
 depends=($_target-gcc $_target-linux-api-headers)
 makedepends=(python3)
-source=(https://ftp.gnu.org/gnu/libc/glibc-$pkgver.tar.xz{,.sig})
+source=(https://ftp.gnu.org/gnu/libc/glibc-$pkgver.tar.xz)
 prepare() {
   mkdir -p glibc-build
 }

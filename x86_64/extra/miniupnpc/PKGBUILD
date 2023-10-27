@@ -1,0 +1,26 @@
+pkgname=miniupnpc
+pkgver=2.2.5
+pkgrel=1
+arch=(x86_64)
+depends=(glibc python3)
+makedepends=(python3-pip bash)
+source=(https://miniupnp.tuxfamily.org/files/${pkgname}-${pkgver}.tar.gz)
+
+prepare() {
+	pip3 install setuptools
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+
+	python3 setup.py build
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+	python setup.py install --optimize=1 --skip-build --root="$pkgdir"
+}

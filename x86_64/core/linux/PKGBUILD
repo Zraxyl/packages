@@ -2,9 +2,8 @@ pkgname=linux
 pkgver=6.2.10
 pkgdesc="The Linux kernel, modules and headers package"
 rver=6.2
-pkgrel=2
+pkgrel=3
 dirname=$pkgname
-pkgdesc='Linux'
 arch=('x86_64')
 options=('!strip' 'emptydirs')
 install=linux.install
@@ -56,7 +55,7 @@ package() {
 	echo "[!]: Installing vmlinuz"
 	cp arch/x86/boot/bzImage $pkgdir/boot/vmlinuz-evolinx
 	cp .config $pkgdir/boot/config-evolinx
-	echo $kernver > $pkgdir/lib/modules/KERNELVERSION
+	echo "${pkgver}-evolinx" > $pkgdir/lib/modules/KERNELVERSION
 
 	echo "[!]: Installing build files..."
 	local builddir="$pkgdir/lib/modules/$pkgver-evolinx/build"

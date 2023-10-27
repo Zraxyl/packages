@@ -1,10 +1,10 @@
 pkgname=lib32-pipewire
-commitid=64cf5e80e6240284e6b757907b900507fe56f1b5 # tags/0.3.50
-pkgver=0.3.50
+commitid=b5c3f217926f9066a1afbee7eb20967dd6896c56 # tags/0.3.79
+pkgver=0.3.79
 pkgrel=1
 arch=(x86_64)
 depends=(pipewire lib32-systemd lib32-pulseaudio)
-makedepends=(git meson lib32-alsa-lib lib32-systemd lib32-dbus)
+makedepends=(git meson lib32-alsa-lib lib32-systemd lib32-dbus lib32-glib2)
 source=(git+https://gitlab.freedesktop.org/pipewire/pipewire.git#commit=$commitid)
 
 build() {

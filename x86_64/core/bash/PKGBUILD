@@ -1,5 +1,5 @@
 pkgname=bash
-pkgver=5.1.16
+pkgver=5.2.15
 pkgrel=1
 arch=('x86_64')
 depends=(readline glibc ncurses)
@@ -12,29 +12,42 @@ source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz
 	system.bash_logout
 	system.bashrc)
 
-build() {
-        cd $pkgname-$pkgver
+prepare() {
+	cd $pkgname-$pkgver
 
-        ./configure		\
-	--prefix=/usr		\
-	--with-curses		\
-	--enable-readline	\
-	--without-bash-malloc	\
+	# CFLAGS
+	bashcfg=(-DDEFAULT_PATH_VALUE=\'\"/sbin:/bin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin\"\'
+	-DSTANDARD_UTILS_PATH=\'\"/usr/bin\"\'
+	-DSYS_BASHRC=\'\"/etc/bash.bashrc\"\'
+	-DSYS_BASH_LOGOUT=\'\"/etc/bash.bash_logout\"\'
+	-DNON_INTERACTIVE_LOGIN_SHELLS)
+
+	export CFLAGS="${CFLAGS} ${bashcfg[@]}"
+
+	./configure \
+	--prefix=/usr \
+	--with-curses \
+	--enable-readline \
+	--without-bash-malloc \
 	--with-installed-readline
+}
 
-        make
+build() {
+	cd $pkgname-$pkgver
+
+	make
 }
 
 package() {
 	cd $pkgname-$pkgver
 
-        make DESTDIR=$pkgdir install
+	make DESTDIR=$pkgdir install
 	
 	cd ../
 	
-        mkdir -p $pkgdir/bin/
-        mv $pkgdir/usr/bin/bash $pkgdir/bin
-        ln -s bash $pkgdir/bin/sh
+	mkdir -p $pkgdir/bin/
+	mv $pkgdir/usr/bin/bash $pkgdir/bin
+	ln -s bash $pkgdir/bin/sh
 
 	# System
 	mkdir -p $pkgdir/etc

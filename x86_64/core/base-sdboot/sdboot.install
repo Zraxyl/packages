@@ -1,0 +1,25 @@
+post_upgrade() {
+  echo "##"
+  echo "# [ EVOLINX ]: Adding default boot entries for systemd-boot..."
+  echo "##"
+
+  # Get / mount partition label
+  export ROOTFS_PARTITION_LABEL=$(lsblk -no LABEL $(findmnt -no SOURCE /))
+
+  if [ -z "$ROOTFS_PARTITION_LABEL" ]; then
+    echo "[ ERROR ]: Required partition label: ${ROOTFS_PARTITION_LABEL} is empty."
+    echo "[ ERROR ]: If youre system partition dosent have an label then dont use this PACKAGE!"
+    echo "[ ERROR ]: Now please uninstall base-sdboot with bottle!"
+    exit 1
+  else
+    echo "Partiton label called: ${ROOTFS_PARTITION_LABEL} has been found for / mountpoint"
+  fi
+
+  # Now replace dummy parttion label with the found label
+  sed -i "s/EDITME/$ROOTFS_PARTITION_LABEL/g" /boot/loader/entries/evolinx.conf
+  sed -i "s/EDITME/$ROOTFS_PARTITION_LABEL/g" /boot/loader/entries/emergency.conf
+}
+
+post_install() {
+  post_upgrade
+}

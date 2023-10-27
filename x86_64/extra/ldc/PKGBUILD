@@ -1,11 +1,12 @@
 pkgname=ldc
-pkgver=1.33.0
+pkgver=1.35.0
 pkgrel=1
 arch=(x86_64)
+options=(!lto)
 depends=(gcc compiler-rt llvm curl lld spirv-llvm-translator)
 makedepends=(cmake ninja git)
-source=(https://github.com/ldc-developers/ldc/archive/340d7cf2de6b249e9d99ac11b7760c0d306ff52f.tar.gz
-	https://github.com/ldc-developers/phobos/archive/f4961356a33849f24557a77bdc386eff852bb9f5.tar.gz
+source=(https://github.com/ldc-developers/ldc/releases/download/v$pkgver/ldc-$pkgver-src.tar.gz
+	https://github.com/ldc-developers/phobos/archive/refs/tags/ldc-v$pkgver.tar.gz
 	ldc2.conf)
 
 prepare() {
@@ -13,8 +14,8 @@ prepare() {
 	rm -rf ldc ldc-phobos
 
 	# Rename the folders
-	mv $srcdir/ldc-340d7cf2de6b249e9d99ac11b7760c0d306ff52f ldc
-	mv $srcdir/phobos-f4961356a33849f24557a77bdc386eff852bb9f5 ldc-phobos
+	mv $srcdir/ldc-$pkgver-src ldc
+	mv $srcdir/phobos-ldc-v$pkgver ldc-phobos
 
 	mkdir -p ldc/build
 
@@ -25,30 +26,42 @@ prepare() {
 	git config submodule.phobos.url "$srcdir/ldc-phobos"
 	git -c protocol.file.allow=always submodule update
 
-	sed -i "s/ldc::llvm_version_base/\"16.0.5\"/" driver/linker-gcc.cpp
+	sed -i "s/ldc::llvm_version_base/\"16\"/" driver/linker-gcc.cpp
 }
 
 build() {
+	export PATH=$P_ROOT/static/ldc/bin:$PATH
+
 	cd ldc/build
 
 	cmake \
 	-G Ninja \
+	-D CMAKE_C_COMPILER=/usr/bin/clang \
+	-D CMAKE_CXX_COMPILER=/usr/bin/clang++ \
 	-D CMAKE_INSTALL_PREFIX=/usr \
-	-D CMAKE_BUILD_TYPE=Release \
-	-D CMAKE_SKIP_RPATH=ON \
-	-D INCLUDE_INSTALL_DIR=/usr/include/dlang/ldc \
-	-D BUILD_SHARED_LIBS=BOTH \
-	-D BUILD_LTO_LIBS=ON \
-	-D LDC_INSTALL_LTOPLUGIN=OFF \
-	-D LDC_WITH_LLD=ON \
-	-D CMAKE_PREFIX_PATH=/usr/lib/llvm \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_SKIP_RPATH=ON \
+    -D MULTILIB=ON \
+    -D INCLUDE_INSTALL_DIR=/usr/include/dlang/ldc \
+    -D BUILD_SHARED_LIBS=BOTH \
+    -D BUILD_LTO_LIBS=ON \
+    -D LDC_WITH_LLD=OFF \
+    -D D_COMPILER_FLAGS="-link-defaultlib-shared=false -linker=gold --flto=thin" \
+    -D ADDITIONAL_DEFAULT_LDC_SWITCHES="\"-link-defaultlib-shared\"," \
 	..
 
 	ninja
 }
 
 package() {
-	cd build
+	export PATH=$P_ROOT/static/ldc/bin:$PATH
+
+	cd ldc/build
 
 	DESTDIR=$pkgdir ninja install
+
+	ln -sf /usr/share/bash-completion/completions/ldc2 "$pkgdir/usr/share/bash-completion/completions/ldc"
+
+	ln -sf /usr/bin/ldc2 "$pkgdir/usr/bin/ldc"
+    ln -sf /usr/bin/ldmd2 "$pkgdir/usr/bin/ldmd"
 }

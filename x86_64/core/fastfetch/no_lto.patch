@@ -1,0 +1,11 @@
+--- CMakeLists.txt.old	2023-10-24 17:23:33.000000000 +0300
++++ CMakeLists.txt	2023-10-24 22:33:00.985235512 +0300
+@@ -130,7 +130,7 @@
+     include(CheckIPOSupported)
+     check_ipo_supported(RESULT IPO_SUPPORTED)
+     if(IPO_SUPPORTED)
+-        set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
++        set(CMAKE_INTERPROCEDURAL_OPTIMIZATION FALSE)
+     endif()
+ endif()
+ 

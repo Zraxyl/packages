@@ -1,17 +1,26 @@
 pkgname=binutils
-pkgver=2.40
+pkgver=2.41
 pkgrel=1
 arch=('x86_64')
 depends=(glibc zlib readline elfutils flex isl gettext
     zstd jansson)
 makedepends=(bc git)
-source=(https://ftp.gnu.org/gnu/binutils/$pkgname-$pkgver.tar.xz)
+backup=('etc/gprofng.rc')
+source=(https://ftp.gnu.org/gnu/binutils/$pkgname-$pkgver.tar.xz
+    https://gitlab.archlinux.org/archlinux/packaging/packages/binutils/-/raw/main/gold-warn-unsupported.patch)
 
 prepare() {
     cd $pkgname-$pkgver
 
     # Turn off development mode (-Werror, gas run-time checks, date in sonames)
     sed -i '/^development=/s/true/false/' bfd/development.sh
+
+    # Creds @Fedora / @Arch
+    # Change the gold configuration script to only warn about
+    # unsupported targets.  This allows the binutils to be built with
+    # BPF support enabled.
+    patch -Np1 -i "${srcdir}"/gold-warn-unsupported.patch
+
 }
 
 build() {
@@ -30,6 +39,7 @@ build() {
     --enable-plugins \
     --enable-shared \
     --enable-gold \
+    --enable-threads \
     --enable-relro \
     --enable-targets=all \
     --with-pic \
@@ -48,8 +58,32 @@ build() {
 package() {
     cd $pkgname-$pkgver/build
 
+    # Extract the FSF All Permissive License
+    # <https://www.gnu.org/prep/maintain/html_node/License-Notices-for-Other-Files.html>
+    # used for some linker scripts.
+    tail -n 5 "${srcdir}"/$pkgname-$pkgver/ld/scripttempl/README > FSFAP
+
     make tooldir=/usr DESTDIR=$pkgdir install -j1
+
+    # install PIC version of libiberty
+    install -m644 libiberty/pic/libiberty.a "${pkgdir}"/usr/lib
+
 
     # Remove unwanted files
     rm -f "${pkgdir}"/usr/share/man/man1/{dlltool,windres,windmc}*
+
+    # No shared linking to these files outside binutils
+    rm -f "${pkgdir}"/usr/lib/lib{bfd,opcodes}.so
+    tee "${pkgdir}"/usr/lib/libbfd.so << EOS
+/* GNU ld script */
+
+INPUT( /usr/lib/libbfd.a -lsframe -liberty -lz -lzstd -ldl )
+EOS
+
+    tee "${pkgdir}"/usr/lib/libopcodes.so << EOS
+/* GNU ld script */
+
+INPUT( /usr/lib/libopcodes.a -lbfd )
+EOS
+
 }

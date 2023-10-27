@@ -1,0 +1,30 @@
+pkgname=gir-to-d
+pkgver=0.23.1
+pkgrel=1
+arch=(x86_64)
+depends=(gcc ldc)
+makedepends=(meson ldc)
+commitid=(55b2024e8a0ae25569d7b1d60a037fab5c247f7b)
+source=(https://github.com/gtkd-developers/gir-to-d/archive/$commitid.zip)
+
+prepare() {
+	mkdir -p build && cd build
+
+	export DFLAGS="--allinst"
+
+	meson \
+	--prefix=/usr \
+	../$pkgname-$commitid
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

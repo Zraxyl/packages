@@ -1,0 +1,28 @@
+pkgname=enet
+pkgver=1.3.17
+pkgrel=1
+arch=(x86_64)
+depends=(glibc)
+makedepends=(gcc)
+source=(http://enet.bespin.org/download/$pkgname-$pkgver.tar.gz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

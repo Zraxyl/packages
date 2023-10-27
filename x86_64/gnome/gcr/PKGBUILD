@@ -1,5 +1,5 @@
 pkgname=gcr
-pkgver=3.40.0
+pkgver=3.41.1
 pkgrel=1
 arch=('x86_64')
 depends=(glib2 libgcrypt p11-kit gtk+ gobject-introspection gnupg)
@@ -21,10 +21,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
-	-D gtk_doc=false	\
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D gtk_doc=false \
 	..
 
 	ninja

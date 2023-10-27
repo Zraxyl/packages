@@ -1,7 +1,8 @@
 pkgname=filesystem
 pkgver=1
-pkgrel=10
+pkgrel=11
 arch=('x86_64')
+depends=(iana-etc)
 backup=(etc/dircolors.sh
         etc/extrapaths.sh
         etc/fstab

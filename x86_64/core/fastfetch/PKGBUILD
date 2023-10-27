@@ -1,0 +1,43 @@
+pkgname=fastfetch
+pkgver=2.1.2
+pkgrel=1
+arch=('x86_64')
+depends=(bash)
+makedepends=(make automake)
+commitid=(22080d36b07b01b7792e4519b6f5ec47537958f5)
+source=(https://github.com/fastfetch-cli/fastfetch/archive/$commitid.zip
+	no_lto.patch)
+
+prepare() {
+	cd $pkgname-$commitid
+
+	patch -p0 -i $srcdir/no_lto.patch
+
+	cd ..
+
+	mkdir -p build && cd build
+
+	cmake \
+	-D CMAKE_BUILD_TYPE='Release' \
+	-D IPO_SUPPORTED=FALSE \
+	-D CMAKE_INTERPROCEDURAL_OPTIMIZATION=FALSE \
+	-D CMAKE_INSTALL_PREFIX='/usr' \
+	-D ENABLE_SQLITE3='OFF' \
+	-D ENABLE_RPM='OFF' \
+	-D ENABLE_IMAGEMAGICK6='OFF' \
+	../$pkgname-$commitid
+}
+
+build() {
+	cmake \
+	--build build \
+	--target fastfetch \
+	--target flashfetch
+}
+
+package() {
+
+	DESTDIR=$pkgdir \
+	cmake \
+	--install build
+}

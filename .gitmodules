@@ -1,0 +1,4 @@
+[submodule "community"]
+    path = x86_64/community
+    url = https://git.martinvlba.eu/Evolinx/internal_pkgbuild_community.git
+    branch = x86_64

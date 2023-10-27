@@ -1,14 +1,14 @@
 pkgname=pipewire
-pkgver=0.3.65
-pkgrel=3
+pkgver=0.3.79
+pkgrel=1
 arch=(x86_64)
 depends=(pulseaudio alsa-lib libusb gst-plugins-base dbus sdl2 ncurses
 	libcanberra libsndfile bluez webrtc-audio-processing libx11 libxfixes
-	rtkit jack2 libcamera)
+	rtkit jack2 libcamera ffmpeg)
 makedepends=(git meson doxygen python3 valgrind wireplumber)
 source=(https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/$pkgver/pipewire-$pkgver.tar.gz
 	# Extra patches
-	meson_build.diff
+	#meson_build.diff
 	pipewire-pulse.sh)
 install=pipewire.install
 
@@ -19,7 +19,7 @@ prepare() {
 	sed -i '/LD_LIBRARY_PATH/d' pipewire-jack/src/pw-jack.in
 
 	# Patching
-	patch -p1 -i $srcdir/meson_build.diff
+	#patch -p1 -i $srcdir/meson_build.diff
 }
 
 build() {
@@ -32,6 +32,7 @@ build() {
 	-D jack-devel=true \
 	-D libjack-path=/usr/lib \
 	-D libcamera=enabled \
+	-D ffmpeg=enabled \
 	-D udevrulesdir=/usr/lib/udev/rules.d \
 	-D roc=disabled \
 	-D session-managers=[]

@@ -1,0 +1,43 @@
+pkgname=polly
+pkgver=16.0.5
+pkgrel=1
+pkgdesc="High-level loop and data-locality optimizer and optimization infrastructure for LLVM"
+arch=('x86_64')
+url="https://polly.llvm.org/"
+depends=(llvm)
+makedepends=('cmake' 'ninja' 'llvm' 'clang')
+_source_base=https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver
+source=($_source_base/$pkgname-$pkgver.src.tar.xz
+	$_source_base/cmake-$pkgver.src.tar.xz
+	$_source_base/llvm-$pkgver.src.tar.xz)
+
+prepare() {
+	mv cmake{-$pkgver.src,}
+
+	cd "$srcdir/$pkgname-$pkgver.src"
+	mkdir build
+}
+
+build() {
+	cd "$srcdir/$pkgname-$pkgver.src/build"
+
+	cmake .. -G Ninja \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D LLVM_LINK_LLVM_DYLIB=ON \
+	-D LLVM_BUILD_TESTS=OFF \
+	-D LLVM_INCLUDE_BENCHMARKS=OFF \
+	-D LLVM_BUILD_DOCS=OFF \
+	-D LLVM_ENABLE_SPHINX=OFF \
+	-D SPHINX_WARNINGS_AS_ERRORS=OFF \
+	-D LLVM_EXTERNAL_LIT=/usr/bin/lit \
+	-D LLVM_BUILD_MAIN_SRC_DIR="$srcdir/llvm-$pkgver.src"
+
+	ninja
+}
+
+package() {
+	cd "$srcdir/$pkgname-$pkgver.src/build"
+
+	DESTDIR="$pkgdir" ninja install
+}

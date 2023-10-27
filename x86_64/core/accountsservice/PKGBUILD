@@ -1,8 +1,8 @@
 pkgname=accountsservice
-pkgver=22.08.8
+pkgver=23.13.9
 pkgrel=1
 arch=('x86_64')
-depends=(glib2 polkit systemd shadow)
+depends=(glib2 glibc polkit systemd shadow)
 makedepends=(gtk-doc gobject-introspection meson docbook-xsl docbook-xml
 	xmlto vala python3-pygments)
 source=(https://freedesktop.org/software/$pkgname/$pkgname-$pkgver.tar.xz
@@ -17,7 +17,7 @@ build() {
 
 	meson \
 	--prefix=/usr \
-	-D admin_group=adm \
+	-D admin_group=adm,wheel \
 	-D gtk_doc=true \
 	-D docbook=true
 

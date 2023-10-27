@@ -1,0 +1,15 @@
+pkgname=perl5-triehash
+rname=triehash
+pkgver=0.3
+pver=3
+pkgrel=1
+arch=('x86_64')
+depends=(perl)
+makedepends=(make gcc)
+source=(https://github.com/julian-klode/triehash/archive/debian/$pkgver-$pver.tar.gz)
+
+package() {
+	cd $rname-debian-$pkgver-$pver
+
+	install -Dvm755 "$rname.pl" "$pkgdir/usr/bin/$rname"
+}

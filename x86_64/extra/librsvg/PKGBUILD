@@ -1,16 +1,16 @@
 pkgname=librsvg
-pkgver=2.52.5
+pkgver=2.57.0
 pkgrel=1
 arch=('x86_64')
-depends=('gdk-pixbuf' 'cairo' 'pango' 'vala')
-makedepends=('rust')
-source=(https://download.gnome.org/sources/$pkgname/2.52/$pkgname-$pkgver.tar.xz)
+depends=('cairo' 'freetype2' 'gdk-pixbuf' 'cairo' 'pango' 'libxml2' 'glib2' 'vala')
+makedepends=('rust' 'gobject-introspection')
+source=(https://download.gnome.org/sources/$pkgname/2.57/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr		\
+	./configure \
+	--prefix=/usr \
 	--enable-vala
 
 	make

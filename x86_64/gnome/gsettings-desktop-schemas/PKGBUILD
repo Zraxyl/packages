@@ -1,6 +1,6 @@
 pkgname=gsettings-desktop-schemas
-pkgver=41.0
-gver=41
+pkgver=45.0
+gver=45
 pkgrel=1
 arch=('x86_64')
 depends=(glib2 gobject-introspection)
@@ -13,9 +13,9 @@ build() {
 
 	mkdir -p build && cd build
 
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
 	..
 
 	ninja

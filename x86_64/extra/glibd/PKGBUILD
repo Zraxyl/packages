@@ -1,0 +1,30 @@
+pkgname=glibd
+pkgver=2.4.2
+pkgrel=1
+arch=(x86_64)
+depends=(glib2 ldc)
+makedepends=(meson ldc gobject-introspection gir-to-d)
+source=(https://github.com/gtkd-developers/GlibD/archive/refs/tags/v$pkgver.tar.gz)
+
+prepare() {
+	mkdir -p build && cd build
+
+	export DC=ldc
+	export LDFLAGS="$(echo -ne $LDFLAGS | sed -e 's/-flto=auto/-flto=full/')"
+
+	meson \
+	--prefix=/usr \
+	../GlibD-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

@@ -1,23 +1,24 @@
 pkgname=libsecret
-pkgver=0.20.5
+pkgver=0.21.1
 pkgrel=1
 arch=('x86_64')
 depends=(glib2 gobject-introspection libgcrypt libxslt)
 makedepends=(python3-pip)
-source=(https://download.gnome.org/sources/$pkgname/0.20/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/0.21/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	pip install setuptools
-        pip install pygments markdown toml typogrify
+	pip install pygments markdown toml typogrify jinja2 markupsafe packaging
 }
 
 build() {
 	cd $pkgname-$pkgver
 	mkdir -p build && cd build
 
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D manpage=false \
 	..
 
 	ninja

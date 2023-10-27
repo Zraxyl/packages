@@ -1,0 +1,30 @@
+pkgname=geocode-glib
+pkgver=3.26.4
+pkgrel=1
+arch=(x86_64)
+depends=(json-glib libsoup gobject-introspection)
+makedepends=(gtk-doc)
+source=(https://download.gnome.org/sources/geocode-glib/3.26/geocode-glib-$pkgver.tar.xz)
+
+prepare() {
+	mkdir -p build
+}
+
+build() {
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D enable-gtk-doc=false \
+	-D soup2=false \
+	../$pkgname-$pkgver
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

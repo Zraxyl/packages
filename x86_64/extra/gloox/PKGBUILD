@@ -1,0 +1,28 @@
+pkgname=gloox
+pkgver=1.0.27
+pkgrel=1
+arch=(x86_64)
+depends=(libidn gnutls)
+makedepends=(gcc)
+source=(https://camaya.net/download/gloox-$pkgver.tar.bz2)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

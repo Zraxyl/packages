@@ -1,11 +1,20 @@
 pkgname=bottle
-pkgver=2023.2
+pkgver=2023.4
 pkgrel=1
 arch=('x86_64')
 depends=(zstd bash glibc libarchive curl gpgme libassuan)
-commitid=76450251d000de0832889292a26acad560698ace
-replaces=(pacman)
-source=(git+https://git.martinvlba.eu/DrunkOS/bottle.git#commit=$commitid)
+
+export USE_STAGING=yes
+if [ "$USE_STAGING" == "yes" ]; then
+	# Staging
+	commitid=c20ea7eaec167b9720b1c8af938e8e6ac85b1629
+	branch=staging
+else
+	# Stable
+	commitid=76450251d000de0832889292a26acad560698ace
+	branch=bottle
+fi
+source=(git+https://git.martinvlba.eu/evolinx/bottle.git#commit=${commitid})
 
 build() {
 	cd $pkgname
@@ -29,7 +38,11 @@ package() {
 	ninja -C build install
 
 	# copy our own bottle.conf that has proper server list
-	cp -f ../../bottle.conf $pkgdir/etc/bottle.conf
+	if [ "$USE_STAGING" == "yes" ]; then
+		cp -f ../../bottle.conf.staging $pkgdir/etc/bottle.conf
+	else
+		cp -f ../../bottle.conf.stable $pkgdir/etc/bottle.conf
+	fi
 	mkdir -p $pkgdir/etc/bottle.d
 	touch $pkgdir/etc/bottle.d/mirrorlist
 }

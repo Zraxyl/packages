@@ -1,0 +1,58 @@
+pkgname=0ad
+pkgver=0.0.26
+ever=alpha
+pkgrel=1
+arch=('x86_64')
+depends=(binutils boost curl enet fmt gloox glu icu libglvnd miniupnpc
+    libogg libpng libsodium libvorbis libxml2 nspr openal sdl2 which wxwidgets zlib)
+makedepends=(gcc rust)
+source=(https://releases.wildfiregames.com/0ad-0.0.26-alpha-unix-build.tar.xz
+	https://releases.wildfiregames.com/0ad-0.0.26-alpha-unix-data.tar.xz
+
+	https://gitlab.archlinux.org/archlinux/packaging/packages/0ad/-/raw/main/fix_python_3.11_ftbfs.patch
+	https://gitlab.archlinux.org/archlinux/packaging/packages/0ad/-/raw/main/mozjs_virtualenv.patch
+	https://github.com/0ad/0ad/commit/839edc3a.patch
+	https://github.com/0ad/0ad/commit/093e1eb2.patch)
+
+prepare() {
+	cd $pkgname-$pkgver-$ever
+
+	# Patching
+	patch -Np1 -i "$srcdir"/fix_python_3.11_ftbfs.patch
+	cp "$srcdir"/mozjs_virtualenv.patch libraries/source/spidermonkey
+	patch -p1 -i ../839edc3a.patch # Fix build with fmt 10
+	patch -p1 -i ../093e1eb2.patch # Fix build with GCC 13
+
+
+	# Configure
+	cd build/workspaces
+
+	CC=gcc \
+	CXX=g++ \
+	./update-workspaces.sh \
+	-j$(nproc) \
+	--without-pch \
+	--bindir=/usr/bin \
+	--libdir=/usr/lib/0ad \
+	--datadir=/usr/share/0ad/data
+}
+
+build() {
+	cd $pkgname-$pkgver-$ever/build/workspaces/gcc
+
+	#make
+}
+
+package() {
+	cd $pkgname-$pkgver-$ever
+
+	install -d "${pkgdir}"/usr/{bin,lib/0ad,share/"${pkgname}"/data}
+	install -Dm755 binaries/system/pyrogenesis "${pkgdir}/usr/bin"
+	install -Dm755 binaries/system/*.so "${pkgdir}/usr/lib/0ad"
+
+	cp -rf binaries/data/{l10n,config,mods,tools} "${pkgdir}/usr/share/${pkgname}/data/"
+
+	install -Dm755 build/resources/${pkgname}.sh "${pkgdir}/usr/bin/${pkgname}"
+	install -Dm644 build/resources/${pkgname}.desktop "${pkgdir}/usr/share/applications/${pkgname}.desktop"
+	install -Dm644 build/resources/${pkgname}.png "${pkgdir}/usr/share/pixmaps/${pkgname}.png"
+}

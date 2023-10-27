@@ -1,19 +1,28 @@
 pkgname=gjs
-pkgver=1.70.1
+pkgver=1.78.0
 pkgrel=1
 arch=(x86_64)
-depends=(cairo dbus gobject-introspection js78 gtk3+)
-makedepends=()
-source=()
+depends=(cairo dbus gobject-introspection gtk3+ gtk4+ js113)
+source=(https://download.gnome.org/sources/gjs/1.78/gjs-$pkgver.tar.xz)
+
+prepare() {
+	mkdir -p build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	--wrap-mode=nofallback \
+	../$pkgname-$pkgver
+}
 
 build() {
-	cd $pkgname-$pkgver
+	cd build
 
-	
+	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver
+	cd build
 
-	
+	DESTDIR=$pkgdir ninja install
 }

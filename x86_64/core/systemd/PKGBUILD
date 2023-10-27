@@ -1,18 +1,17 @@
 pkgname=systemd
-pkgver=251
+pkgver=252.14
 pkgrel=1
 arch=('x86_64')
 depends=('acl' 'gperf' 'lz4' 'xz' 'linux-pam' 'elfutils'
 	'kmod' 'libcap' 'libidn2' 'libgcrypt'
 	'libxslt' 'util-linux'
 	'shadow' 'gnu-efi'
-	'libxkbcommon'
+	'libxkbcommon' 'cryptsetup'
 	'bash-completion' 'p11-kit'
 	'gnutls')
 makedepends=('meson' 'docbook-xsl' 'git' 'rsync' 'intltool' 'python3-pip')
 source=("https://github.com/systemd/systemd-stable/archive/refs/tags/v${pkgver}.tar.gz"
-	'drunk.conf'
-	'initrd-drunk.conf'
+	'evolinx.conf'
 	'loader.conf'
 	'systemd-user.pam'
 	'systemd-hook'
@@ -67,11 +66,11 @@ build() {
 		-D dns-servers='1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com 2606:4700:4700::1001#cloudflare-dns.com' \
 		-D docdir=/usr/share/doc/systemd \
 		-D dbuspolicydir=/usr/share/dbus-1/system.d \
-		-D sbat-distro='drunk' \
-		-D sbat-distro-summary='Drunk Linux'\
+		-D sbat-distro='evolinx' \
+		-D sbat-distro-summary='Evolinx'\
 		-D sbat-distro-pkgname="${pkgname}" \
 		-D sbat-distro-version="${pkgver}" \
-		-D sbat-distro-url="http://drunk.epizy.com/" \
+		-D sbat-distro-url="https://evolinx.martinvlba.eu" \
 		..
 
 	ninja
@@ -79,8 +78,8 @@ build() {
 
 package() {
 	# Install bootctl conf file examples
-	install -D -m0644 drunk.conf "$pkgdir"/usr/share/systemd/bootctl/drunk.conf
-	install -D -m0644 drunk.conf "$pkgdir"/usr/share/systemd/bootctl/initrd-drunk.conf
+	install -D -m0644 evolinx.conf "$pkgdir"/usr/share/systemd/bootctl/evolinx.conf
+	install -D -m0644 evolinx.conf "$pkgdir"/usr/share/systemd/bootctl/initrd-evolinx.conf
 	install -D -m0644 loader.conf "$pkgdir"/usr/share/systemd/bootctl/loader.conf
 
 	cd $pkgname-stable-$pkgver/build
