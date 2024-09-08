@@ -1,0 +1,27 @@
+pkgname=gnome-menus
+pkgver=3.36.0
+pkgrel=1
+arch=(x86_64)
+depends=(glib2 gobject-introspection)
+makedepends=(gtk-doc)
+source=(https://download.gnome.org/sources/$pkgname/3.36/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	mkdir -p build && cd build
+
+	./../$pkgname-$pkgver/configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
+
+build() {
+	cd build
+
+	make
+}
+
+package() {
+	cd build
+
+	make DESTDIR=$pkgdir install
+}

@@ -1,0 +1,29 @@
+pkgname=gnome-session
+pkgver=45.0
+pkgrel=1
+arch=(x86_64)
+depends=(gnome-desktop json-glib mesa systemd upower
+	xmlto libxslt)
+makedepends=(gtk-doc docbook-xml docbook-xsl asciidoc)
+source=(https://download.gnome.org/sources/$pkgname/45/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	mkdir -p build && cd build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

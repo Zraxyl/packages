@@ -1,0 +1,29 @@
+pkgname=libadwaita
+pkgver=1.4.0
+pkgrel=1
+arch=('x86_64')
+depends=(gtk4+ vala appstream)
+makedepends=(clang llvm)
+source=(https://download.gnome.org/sources/$pkgname/1.4/$pkgname-$pkgver.tar.xz)
+
+build() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build && cd build
+
+	CC=clang \
+	CXX=clang++ \
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	--wrap-mode=nofallback \
+	..
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+	
+	DESTDIR=$pkgdir ninja install
+}

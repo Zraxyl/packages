@@ -1,10 +1,18 @@
 pkgname=gcr
 pkgver=3.41.1
-pkgrel=1
+pkgver2=4.1.0
+pkgrel=3
 arch=('x86_64')
-depends=(glib2 libgcrypt p11-kit gtk+ gobject-introspection gnupg)
+depends=(glib2 libgcrypt libsecret p11-kit gtk3+ gtk4+ gobject-introspection
+	gnupg openssh)
 makedepends=(gtk-doc valgrind libxslt)
-source=(https://download.gnome.org/sources/gcr/3.40/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/gcr/3.41/$pkgname-$pkgver.tar.xz
+	https://download.gnome.org/sources/gcr/4.1/$pkgname-$pkgver2.tar.xz)
+
+##
+# I hate it when some things depends on older things like gtk3 and gcr3 + gtk4 and gcr4
+# As of this i have to compile 2 separate versions in 1 package :/
+##
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -16,10 +24,9 @@ prepare() {
 		-i ui/meson.build
 
 	mkdir -p build
-}
 
-build() {
-	cd $pkgname-$pkgver/build
+	# GTK3
+	cd build
 
 	meson \
 	--prefix=/usr \
@@ -27,11 +34,36 @@ build() {
 	-D gtk_doc=false \
 	..
 
+	cd $srcdir/$pkgname-$pkgver2
+
+	mkdir -p build
+
+	# GTK3
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D gtk_doc=false \
+	..
+}
+
+build() {
+	# GCR3
+	cd $pkgname-$pkgver/build
+	ninja
+
+	# GCR4
+	cd $srcdir/$pkgname-$pkgver2/build
 	ninja
 }
 
 package() {
+	# GCR3
 	cd $pkgname-$pkgver/build
+	DESTDIR=$pkgdir ninja install
 
+	# GCR4
+	cd $srcdir/$pkgname-$pkgver2/build
 	DESTDIR=$pkgdir ninja install
 }

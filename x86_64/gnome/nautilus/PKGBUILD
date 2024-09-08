@@ -1,0 +1,37 @@
+pkgname=nautilus
+pkgver=45.1
+pkgrel=1
+arch=('x86_64')
+depends=(bubblewrap gexiv2 gnome-autoar gnome-desktop libadwaita
+	libnotify libportal libseccomp tracker desktop-file-utils
+	exempi gobject-introspection gst-plugins-base libexif
+	adwaita-icon-theme gvfs tracker-miners packagekit)
+makedepends=(gtk-doc python3-pip)
+source=(https://download.gnome.org/sources/$pkgname/45/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	mkdir -p build
+
+	pip install setuptools
+	pip install pygments
+}
+
+build() {
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D packagekit=true \
+	-D selinux=false \
+	-D cloudproviders=false \
+	../$pkgname-$pkgver
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

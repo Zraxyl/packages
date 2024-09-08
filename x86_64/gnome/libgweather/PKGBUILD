@@ -1,9 +1,10 @@
-pkgname=gjs
-pkgver=1.78.0
+pkgname=libgweather
+pkgver=4.2.0
 pkgrel=1
 arch=(x86_64)
-depends=(cairo dbus gobject-introspection gtk3+ gtk4+ js115)
-source=(https://download.gnome.org/sources/gjs/1.78/gjs-$pkgver.tar.xz)
+depends=(geocode-glib gtk3+ libsoup python3-gobject)
+makedepends=(gtk-doc)
+source=(https://download.gnome.org/sources/$pkgname/4.2/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	mkdir -p build && cd build
@@ -11,7 +12,7 @@ prepare() {
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
-	--wrap-mode=nofallback \
+	-D gtk_doc=false \
 	../$pkgname-$pkgver
 }
 

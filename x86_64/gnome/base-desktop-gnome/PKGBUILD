@@ -1,0 +1,26 @@
+pkgname=base-desktop-gnome
+pkgver=2023.4
+pkgrel=1
+arch=('x86_64')
+depends=(
+	# Login ( suggest sddm as wayland can be launched here + theming )
+	sddm gdm
+
+	# Framework + desktop
+	gtk2+ gtk3+ gtk4+
+	gnome-backgrounds gvfs gexiv2 nautilus gnome-bluetooth gnome-keyring gnome-settings-daemon
+	gnome-control-center mutter gnome-shell gnome-shell-extensions gnome-session
+
+	# Applications
+	nautilus
+
+	# Other
+	powerdevil upower wireplumber)
+
+build() {
+	echo "[*]: Its a metapackage"
+}
+
+package() {
+	echo "[*]: Its a metapackage"
+}

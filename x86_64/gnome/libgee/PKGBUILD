@@ -1,0 +1,26 @@
+pkgname=libgee
+pkgver=2.20.6
+pkgrel=1
+arch=(x86_64)
+depends=(glib2 gobject-introspection vala)
+makedepends=(gtk-doc)
+source=(https://download.gnome.org/sources/$pkgname/0.20/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	mkdir -p build && cd build
+
+	./../$pkgname-$pkgver/configure \
+	--prefix=/usr
+}
+
+build() {
+	cd build
+
+	make
+}
+
+package() {
+	cd build
+
+	make DESTDIR=$pkgdir install
+}

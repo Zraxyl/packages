@@ -1,0 +1,45 @@
+pkgname=gvfs
+pkgver=1.52.1
+pkgrel=1
+arch=('x86_64')
+depends=(dbus fuse2 glib2 libusb libsecret libsoup gcr
+	libcdio udisks2 libmtp gcr samba libgcrypt bluez avahi
+	gtk+ gtk2+ systemd libgudev libxml2 gnome-online-accounts
+	fuse3 libgphoto2 openssh libbluray gsettings-desktop-schemas
+	libgdata)
+makedepends=(gtk-doc)
+source=(https://download.gnome.org/sources/$pkgname/1.52/$pkgname-$pkgver.tar.xz)
+
+build() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build && cd build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D fuse=true \
+	-D gphoto2=true \
+	-D afc=false \
+	-D bluray=true \
+	-D gcr=true \
+	-D udisks2=true \
+	-D cdda=true \
+	-D sftp=true \
+	-D nfs=false \
+	-D mtp=true \
+	-D smb=true \
+	-D tmpfilesdir=true \
+	-D dnssd=false \
+	-D goa=true \
+	-D google=true \
+	..
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+	
+	DESTDIR=$pkgdir ninja install
+}

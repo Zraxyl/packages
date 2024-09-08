@@ -1,0 +1,33 @@
+pkgname=gnome-control-center
+pkgver=44.3
+pkgrel=2
+arch=('x86_64')
+depends=(accountsservice gnome-online-accounts gnome-settings-daemon
+	gsound libgtop libpwquality krb5 shared-mime-info udisks2 cups samba libnma
+	gnome-bluetooth ibus libadwaita modemmanager cups-pk-helper sound-theme-freedesktop
+	gcr colord-gtk libhandy)
+makedepends=(git gtk-doc)
+source=(https://download.gnome.org/sources/$pkgname/44/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build && cd build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	..
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	DESTDIR=$pkgdir ninja install
+}

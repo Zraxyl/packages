@@ -1,0 +1,32 @@
+pkgname=tracker
+pkgver=3.5.3
+pkgrel=2
+arch=('x86_64')
+depends=(json-glib libseccomp vala gobject-introspection icu
+	libsoup python3-gobject tracker-miners)
+makedepends=(git gtk-doc)
+source=(https://download.gnome.org/sources/$pkgname/3.5/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D man=false \
+	..
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	DESTDIR=$pkgdir ninja install
+}
