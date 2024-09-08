@@ -1,15 +1,16 @@
 pkgname=qt6
-pkgver=6.3.1
-rver=6.3
+pkgver=6.7.2
+rver=6.7
 pkgrel=1
 arch=('x86_64')
 depends=(xorg-server xwayland alsa-lib cups glib2 harfbuzz icu libjpeg libpng
 	libtiff libwebp libxkbcommon mesa pcre2 sqlite3 wayland xcb-util-image xcb-util-keysyms
-	xcb-util-renderutil xcb-util-wm libinput pciutils pulseaudio bluez libglvnd fontconfig)
-makedepends=(extra-cmake-modules perl xinput)
+	xcb-util-renderutil xcb-util-wm libinput pciutils pulseaudio bluez libglvnd fontconfig
+	sdl2 gtk3+)
+makedepends=(extra-cmake-modules perl xinput clang)
 source=(
 	# Main single tarball
-	https://download.qt.io/official_releases/qt/6.3/6.3.1/single/qt-everywhere-src-6.3.1.tar.xz
+	https://download.qt.io/official_releases/qt/$rver/$pkgver/single/qt-everywhere-src-$pkgver.tar.xz
 	# Src is cloned by prepare so things keep origin url and etc
 	# Final desktop entries
 	assistant-qt6.desktop
@@ -22,6 +23,9 @@ prepare() {
 
 	# Lets run configure only in prepare so it wont get reconfigured later on
 	# qtdocgallery is disabled as of its errors when compiled
+	CC=clang \
+	CXX=clang++ \
+	CPP=clang++ \
 	cmake -B build -G Ninja \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_BUILD_TYPE=Release \
