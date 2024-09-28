@@ -1,9 +1,9 @@
 pkgname=gcc
-pkgver=13.1.0
-pkgrel=1
+pkgver=14.2.0
+pkgrel=2
 arch=('x86_64')
 options=(!emptydirs !lto !strip)
-depends=(binutils mpfr mpc glibc libxcrypt zstd flex expect)
+depends=(binutils mpfr mpc glibc libxcrypt zstd flex expect isl libffi)
 source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver/$pkgname-$pkgver.tar.gz
 	gcc-ada-repro.patch)
 
@@ -30,14 +30,23 @@ prepare() {
 	../configure \
 	--prefix=/usr \
 	--enable-languages=c,c++,fortran,go,lto,objc,obj-c++,d \
+	--enable-clocale=gnu \
 	--with-system-zlib \
 	--enable-multilib \
+	--enable-host-shared \
 	--enable-lto \
 	--enable-default-pie \
+	--enable-default-ssp \
+	--enable-gnu-indirect-function \
+	--enable-gnu-unique-object \
+	--enable-libstdcxx-backtrace \
+	--enable-link-serialization=1 \
+	--enable-linker-build-id \
 	--enable-__cxa_atexit \
 	--enable-plugin \
 	--enable-shared \
 	--enable-threads=posix \
+	--disable-libstdcxx-pch \
 	--disable-werror \
 	--with-arch_32=i686
 }

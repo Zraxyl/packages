@@ -1,5 +1,5 @@
 pkgname=lld
-pkgver=16.0.5
+pkgver=18.1.8
 pkgrel=1
 pkgdesc="Linker from the LLVM project"
 arch=('x86_64')

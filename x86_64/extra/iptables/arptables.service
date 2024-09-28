@@ -5,9 +5,9 @@ Wants=network-pre.target
 
 [Service]
 Type=oneshot
-ExecStart=/bin/sh -c 'arptables-restore < /etc/arptables.conf'
-ExecReload=/bin/sh -c 'arptables-restore < /etc/arptables.conf'
-ExecStop=/bin/sh -c 'arptables-restore < /dev/null'
+ExecStart=/bin/bash -c 'arptables-restore < /etc/arptables.conf'
+ExecReload=/bin/bash -c 'arptables-restore < /etc/arptables.conf'
+ExecStop=/bin/bash -c 'arptables-restore < /dev/null'
 RemainAfterExit=yes
 
 [Install]

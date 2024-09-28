@@ -1,11 +1,11 @@
 pkgname=pulseaudio
-pkgver=16.1
+pkgver=17.0
 pkgrel=1
 pkgdesc="A featureful, general-purpose sound server"
 arch=('x86_64')
-depends=('libsndfile' 'openssl' 'jack2' 'alsa-lib' 'dbus' 'glib2' 'libcap' 'libx11'
-	'libxcb' 'libice' 'check' 'libsm' 'libxtst' 'webrtc-audio-processing' 'gdbm'
-	'libxfixes' 'libxi' 'gst-plugins-base')
+depends=('libsndfile' 'openssl' 'jack2' 'alsa-lib' 'dbus' 'glib2'
+	'libcap' 'libx11' 'libsamplerate'
+	'libxcb' 'libice' 'check' 'libsm' 'libxtst' 'webrtc-audio-processing' 'gdbm' 'libxfixes' 'libxi' 'gst-plugins-base')
 makedepends=('perl' 'perl-modules' 'python3')
 source=(https://freedesktop.org/software/$pkgname/releases/$pkgname-$pkgver.tar.xz
 	client.conf
@@ -62,7 +62,7 @@ package() {
 	sed -e '/Load several protocols/aload-module module-dbus-protocol' \
  -i $pkgdir/etc/pulse/default.pa
 
-	rm -r $pkgdir/etc/dbus-1
+	rm -rf $pkgdir/etc/dbus-1
 
 	# Replcae out stock configs
 	cp -vf $srcdir/client.conf $pkgdir/etc/pulse/

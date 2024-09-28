@@ -1,5 +1,5 @@
 pkgname=meson
-pkgver=1.2.3
+pkgver=1.5.1
 pkgrel=1
 arch=('x86_64')
 depends=('python3')

@@ -1,5 +1,5 @@
 pkgname=lcms
-pkgver=2.12
+pkgver=2.16
 pkgrel=1
 arch=('x86_64')
 depends=(libjpeg libtiff)
@@ -8,7 +8,7 @@ source=(https://downloads.sourceforge.net/$pkgname/lcms2-$pkgver.tar.gz)
 build() {
 	cd lcms2-$pkgver
 
-	./configure		\
+	./configure \
 	--prefix=/usr
 
 	make

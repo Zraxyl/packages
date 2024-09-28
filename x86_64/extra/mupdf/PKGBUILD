@@ -1,31 +1,56 @@
 pkgname=mupdf
-pkgver=1.20.0
+pkgver=1.24.9
 pkgrel=1
+pkgdesc="Lightweight PDF and XPS viewer"
 arch=(x86_64)
 depends=('desktop-file-utils' 'freeglut' 'glu' 'freetype2' 'harfbuzz' 'jbig2dec'
-	'libjpeg' 'openjpeg' 'openssl' 'libxext' 'freetype2' 'lcms' 'gumbo-parser')
+	'libjpeg' 'openjpeg' 'openssl' 'libxext' 'freetype2' 'lcms' 'gumbo-parser'
+	'lcms')
 makedepends=(make)
-source=(https://mupdf.com/downloads/archive/mupdf-${pkgver}-source.tar.zst
-	mupdf-x11.desktop
-	mupdf.xpm)
+surl="https://github.com/ArtifexSoftware"
+source=(git+$surl/$pkgname.git#tag=$pkgver
+	mupdf.desktop
+	mupdf.pc
+	mupdf.xpm
+	user.make)
 
 prepare() {
-	cd $pkgname-$pkgver-source
+	cd $pkgname
 
-	rm -rf thirdparty/{freeglut,freetype,harfbuzz,jbig2dec,libjpeg,openjpeg,zlib}
+	git remote remove origin
+	git remote add origin $surl/$pkgname.git
+
+	git submodule init
+
+	git submodule deinit thirdparty/curl
+	git submodule deinit thirdparty/freeglut
+	git submodule deinit thirdparty/freetype
+	git submodule deinit thirdparty/gumbo-parser
+	git submodule deinit thirdparty/harfbuzz
+	git submodule deinit thirdparty/jbig2dec
+	git submodule deinit thirdparty/libjpeg
+	git submodule deinit thirdparty/openjpeg
+	git submodule deinit thirdparty/zlib
+
+	git submodule sync
+	git -c protocol.file.allow=always submodule update
+
+	cp ../user.make .
+	sed -e "s/VERSION/$pkgver/" -i ../$pkgname.pc
 }
 
 build() {
-	cd $pkgname-$pkgver-source
+	cd $pkgname
 
-	USE_SYSTEM_LIBS='yes' make build=release libs apps 
+	make -j1 VENV_FLAG= build=release libs apps c++
 }
 
 package() {
-	cd $pkgname-$pkgver-source
+	cd $pkgname
 
-	USE_SYSTEM_LIBS='yes' make prefix=$pkgdir build=release install
+	USE_SYSTEM_LIBS='yes' make prefix=/usr DESTDIR=$pkgdir build=release install
 
-	install -D -m0644 ../mupdf-x11.desktop "$pkgdir"/usr/share/applications/mupdf-x11.desktop
+	install -D -m0644 ../mupdf.pc "$pkgdir/usr/etc/pkgconfig/mupdf.pc"
+	install -D -m0644 ../mupdf.desktop "$pkgdir"/usr/share/applications/mupdf.desktop
 	install -D -m0644 ../mupdf.xpm "$pkgdir"/usr/share/pixmaps/mupdf.xpm
 }

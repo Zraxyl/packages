@@ -1,9 +1,9 @@
 pkgname=ghostscript
-pkgver=10.0.0
+pkgver=10.04.0
 pkgrel=1
 arch=(x86_64)
 depends=(libxt cups fontconfig zlib libpng libjpeg libtiff
-	lcms dbus libpaper openjpeg libidn jbig2dec)
+	lcms dbus libpaper openjpeg libidn jbig2dec libxt ijs)
 makedepends=(gtk3+ gnutls glu freeglut)
 source=(https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${pkgver//./}/ghostpdl-$pkgver.tar.xz)
 
@@ -12,14 +12,10 @@ prepare() {
 
     # Force usage of system libs
     rm -rf tesseract leptonica cups/libs expat ijs jbig2dec jpeg lcms2mt libpng openjpeg tiff zlib
-    rm -rf gpdl
-
-    # https://bugs.ghostscript.com/show_bug.cgi?id=704405
-    sed -i "s/gscms_transformm_color_const/gscms_transform_color_const/" base/gsicc_lcms2.c
+    rm -rf gpdl Resource/CMap
 
     ./configure \
     --prefix=/usr \
-    --enable-dynamic \
     --with-ijs \
     --with-jbig2dec \
     --with-x \

@@ -1,8 +1,9 @@
 pkgname=libwnck
 pkgver=43.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
-depends=(gtk+ gobject-introspection startup-notification)
+depends=(gtk+ glib2 gobject-introspection startup-notification)
+makedepends=(gtk-doc)
 source=(https://download.gnome.org/sources/$pkgname/43/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -14,6 +15,7 @@ build() {
 
 	meson \
 	--prefix=/usr \
+	--sysconfdir=/etc \
 	--buildtype=release \
 	..
 

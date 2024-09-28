@@ -1,13 +1,13 @@
 pkgname=firefox
-pkgver=113.0.2
-fver=113.0.2
+pkgver=130.0.0
+fver=130.0
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org"
 url="https://www.mozilla.org/firefox/"
 arch=('x86_64')
 depends=(dbus-glib gtk+ gtk2+ libnotify pulseaudio alsa-lib python3 sqlite3 unzip
-	zip startup-notification wireplumber icu libevent pixman libjpeg libpng xmessage double-conversion ffmpeg
-	nss webrtc-audio-processing mesa llvm gstreamer
+	zip startup-notification wireplumber icu libevent pixman libjpeg
+	libpng xmessage double-conversion ffmpeg nss webrtc-audio-processing mesa llvm gstreamer
 	gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly)
 makedepends=(autoconf cbindgen nodejs nasm yasm lld wasi-compiler-rt wasi-libc wasi-libc++
 	rust clang nodejs autoconf2.13 imake m4 python3 python2 python3-pip)

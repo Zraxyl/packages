@@ -1,0 +1,28 @@
+pkgname=exempi
+pkgver=2.6.4
+pkgrel=1
+arch=(x86_64)
+depends=(boost)
+makedepends=(valgrind automake)
+source=(https://libopenraw.freedesktop.org/download/exempi-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fiv
+
+	./configure \
+	--prefix=/usr
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

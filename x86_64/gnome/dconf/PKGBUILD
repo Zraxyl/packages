@@ -2,11 +2,12 @@ pkgname=dconf
 epkgname=dconf-editor
 pkgver=0.40.0
 gver=0.40
-ever=43.0
-pkgrel=3
+ever=45.0.1
+pkgrel=4
 arch=('x86_64')
-depends=(vala)
-makedepends=('glib2' 'gobject-introspection' 'dbus' 'gtk+' 'libhandy' 'libxml2' 'libxslt' 'gtk-doc')
+depends=(glib2 dbus)
+makedepends=(vala bash-completion gtk-doc meson python3 gtk2+ gtk3+ gtk4+
+	gobject-introspection dbus libhandy libxml2 libxslt)
 source=(https://download.gnome.org/sources/$pkgname/$gver/$pkgname-$pkgver.tar.xz
 	https://gitlab.gnome.org/GNOME/dconf-editor/-/archive/$ever/dconf-editor-$ever.tar.gz)
 
@@ -26,6 +27,7 @@ build() {
 
 	mkdir -p build && cd build
 
+	CFLAGS="-Wno-incompatible-pointer-types" \
 	meson \
 	--prefix=/usr \
 	--buildtype=release \

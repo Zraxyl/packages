@@ -1,57 +1,93 @@
 pkgname=util-linux
-pkgver=2.37.2
-pkgrel=6
+pkgver=2.40.2
+pkgrel=4
 arch=('x86_64')
-depends=('python3' 'systemd' 'linux-pam')
+depends=('systemd' 'linux-pam' 'libcap-ng'
+	'libxcrypt' 'sqlite3')
+makedepends=('python3')
 source=(https://www.kernel.org/pub/linux/utils/$pkgname/v${pkgver::4}/$pkgname-$pkgver.tar.xz
-	pam-{login,common,runuser,su}
+	pam-{login,common,remote,runuser,su}
+	util-linux.sysusers
 	60-rfkill.rules
 	rfkill-unblock_.service
-	rfkill-block_.service
-	util-linux.sysusers)
+	rfkill-block_.service)
 backup=(etc/pam.d/chfn
 	etc/pam.d/chsh
 	etc/pam.d/login
+	etc/pam.d/remote
 	etc/pam.d/runuser
 	etc/pam.d/runuser-l
-	etc/pamd.d/su
+	etc/pam.d/su
 	etc/pam.d/su-l)
 
+prepare() {
+	rm -rf build old
+	mkdir -p build old
+
+	meson \
+	$pkgname-$pkgver \
+	build \
+	--prefix=/usr \
+	-D fs-search-path=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin \
+	-D libuser=disabled \
+    -D libutempter=disabled \
+    -D ncurses=disabled \
+    -D ncursesw=enabled \
+    -D econf=disabled \
+    -D build-chfn-chsh=enabled \
+    -D build-line=disabled \
+    -D build-mesg=enabled \
+    -D build-newgrp=enabled \
+    -D build-vipw=enabled \
+    -D build-write=enabled
+
+	# Required just to get *.la files
+	cd old
+	./../$pkgname-$pkgver/configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--without-libutempter \
+	--without-ncurses \
+	--with-ncursesw \
+	--without-econf \
+	--disable-chfn-chsh \
+	--disable-line \
+	--enable-mesg \
+	--enable-newgrp \
+	--enable-vipw \
+	--enable-write
+
+}
+
 build() {
-        cd $pkgname-$pkgver
+	meson compile -C build
 
-	./configure						\
-		ADJTIME_PATH=/var/lib/hwclock/adjtime		\
-		--prefix=/usr					\
-		--localstatedir=/var				\
-		--enable-vipw					\
-		--enable-newgrp					\
-		--enable-chfn-chsh				\
-		--enable-login					\
-		--enable-write					\
-		--enable-mesg					\
-		--with-python=3					\
-		--with-systemd					\
-		--with-systemdsystemunitdir
-
-	make
+	make -C old
 }
 
 package() {
-	cd $pkgname-$pkgver
 	mkdir -pv $pkgdir/var/lib/hwclock
-        make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir meson install -C build
 
 	chmod 4755 $pkgdir/usr/bin/{newgrp,ch{sh,fn}}
 
-	install -Dm0644 $srcdir/pam-common $pkgdir/etc/pam.d/chfn
-	install -m0644 $srcdir/pam-common $pkgdir/etc/pam.d/chsh 
-	install -m0644 $srcdir/pam-login $pkgdir/etc/pam.d/login
+	install -m0644 old/*.la $pkgdir/usr/lib/
+
+	install -Dm0644 $srcdir/pam-remote $pkgdir/etc/pam.d/remote
 	install -m0644 $srcdir/pam-runuser $pkgdir/etc/pam.d/runuser
 	install -m0644 $srcdir/pam-runuser $pkgdir/etc/pam.d/runuser-l
 	install -m0644 $srcdir/pam-su $pkgdir/etc/pam.d/su
 	install -m0644 $srcdir/pam-su $pkgdir/etc/pam.d/su-l
-	
+
+	# Conflicts with shadow and we prefer shadow
+	rm -f $pkgdir/usr/bin/{chfn,chsh,newgrp}
+	#install -Dm0644 $srcdir/pam-common $pkgdir/etc/pam.d/chfn
+	#install -m0644 $srcdir/pam-common $pkgdir/etc/pam.d/chsh
+	#install -m0644 $srcdir/pam-login $pkgdir/etc/pam.d/login
+
+	# Other
+	sed -i '/ListenStream/ aRuntimeDirectory=uuidd' "${pkgdir}/lib/systemd/system/uuidd.socket"
+
 	install -Dm0644 "$srcdir/util-linux.sysusers"	\
 		$pkgdir/usr/lib/sysusers.d/util-linux.conf
 

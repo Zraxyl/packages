@@ -1,6 +1,6 @@
 pkgname=libsamplerate
 pkgver=0.2.2
-pkgrel=1
+pkgrel=2
 arch=(x86_64)
 depends=(alsa-lib libsndfile opus)
 makedepends=(cmake ninja)

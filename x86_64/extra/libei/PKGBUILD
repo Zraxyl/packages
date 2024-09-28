@@ -1,0 +1,32 @@
+pkgname=libei
+pkgver=1.1.0
+pkgrel=1
+arch=(x86_64)
+depends=(libevdev systemd)
+makedepends=(git libxkbcommon meson python3-pip asciidoc docbook-xml docbook-xsl)
+source=(https://gitlab.freedesktop.org/libinput/libei/-/archive/$pkgver/$pkgname-$pkgver.tar.gz)
+
+prepare() {
+	pip3 install attrs jinja2 structlog
+
+	cd $pkgname-$pkgver
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	..
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	DESTDIR=$pkgdir ninja install
+}

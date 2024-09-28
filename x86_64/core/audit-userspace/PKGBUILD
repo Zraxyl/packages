@@ -1,25 +1,22 @@
 pkgname=audit-userspace
-pkgver=3.1.1
+pkgver=4.0.2
 pkgrel=1
 arch=('x86_64')
 depends=(glibc bash krb5 libcap-ng libcap openldap)
 makedepends=(python3 swig)
 source=(https://github.com/linux-audit/$pkgname/archive/refs/tags/v$pkgver.tar.gz
+	audit.tmpfiles
 	# Patches
-	audit-3.0.8-config_paths.patch
-	audit-3.0.9-flex_array_workaround.patch
-	audit-3.0.9-undo_flex_array_workaround.patch)
+	4.0.2-flagtab_h.patch::https://github.com/linux-audit/audit-userspace/commit/6b9b74acba4db9edbab8595474d2323eb7eef51f.patch)
 
 prepare() {
 	mkdir -p build
 
 	cd $pkgname-$pkgver
 
-	# Patching
-	patch -Np1 -i ../audit-3.0.8-config_paths.patch
+	# fix weird issue with autotools and an unneeded header file: https://github.com/linux-audit/audit-userspace/issues/390
+	patch -Np1  -i ../4.0.2-flagtab_h.patch
 
-	cp -fv /usr/include/linux/audit.h lib/
-	patch -Np0 -i ../audit-3.0.9-flex_array_workaround.patch
 
 	# Preconfigure the source
 	autoreconf -fvi
@@ -30,10 +27,14 @@ prepare() {
 	./../$pkgname-$pkgver/configure \
 	--prefix=/usr \
 	--sysconfdir=/etc \
+	--runstatedir=/run \
+	--libexecdir=/usr/lib/audit \
 	--enable-gssapi-krb5=yes \
 	--enable-systemd=yes \
+	--enable-zos-remote \
 	--with-io_uring=yes \
-	--with-libcap-ng=yes
+    --with-libcap-ng=yes \
+    --with-python3=yes
 }
 
 build() {
@@ -53,6 +54,8 @@ package() {
 
 	make DESTDIR=$pkgdir install
 
-	patch -Np0 -d $pkgdir -i $srcdir/audit-3.0.9-undo_flex_array_workaround.patch
-	rm -v $pkgdir/usr/include/libaudit.h.orig
+	# add tmpfiles.d integration for factory files and file permissions
+	install -vDm 644 ../audit.tmpfiles \
+	"$pkgdir/usr/lib/tmpfiles.d/$pkgname.conf"
+
 }

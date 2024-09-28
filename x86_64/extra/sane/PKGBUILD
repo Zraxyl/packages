@@ -1,8 +1,8 @@
 pkgname=sane
-pkgver=1.1.1
+pkgver=1.3.1
 pkgrel=1
 arch=(x86_64)
-depends=(cairo glibc libgphoto2 libnl libpng libxml2 openssl)
+depends=(cairo glibc libgphoto2 libnl libpng libxml2 openssl poppler)
 makedepends=(autoconf-archive curl glib2 libjpeg libtiff libusb)
 source=("https://gitlab.com/sane-project/backends/-/archive/${pkgver}/backends-${pkgver}.tar.gz"
         "66-${pkgname}d.rules"

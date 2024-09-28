@@ -1,7 +1,7 @@
 pkgname=libxfce4util
 pkgver=4.19.3
 xver=4.19
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(glib2 gobject-introspection)
 makedepends=(glib2 gobject-introspection vala gtk-doc)
@@ -10,12 +10,14 @@ source=(https://archive.xfce.org/src/xfce/$pkgname/$xver/$pkgname-$pkgver.tar.bz
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr		\
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
 	--libdir=/usr/lib
 }
 
 package() {
 	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

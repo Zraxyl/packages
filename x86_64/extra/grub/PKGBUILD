@@ -1,69 +1,116 @@
 pkgname=grub
-pkgver=2.06
+pkgver=2.12
 pkgrel=1
 arch=(x86_64)
-depends=(rsync freetype2 xz fuse2 gettext lvm2 ttf-dejavu)
-makedepends=(python3 texinfo help2man bison nasm)
+depends=(rsync dosfstools efibootmgr freetype2 xz fuse2
+	gettext lvm2 fuse3 libisoburn mtools os-prober)
+makedepends=(python3 ttf-dejavu rsync xz texinfo help2man
+	bison nasm autoconf-archive automake base-devel)
 source=(https://ftp.gnu.org/gnu/grub/$pkgname-$pkgver.tar.xz)
 
+_conf_opt=(
+	--prefix="/usr" \
+	--sysconfdir="/etc" \
+	--bindir="/usr/bin"
+	--sbindir="/usr/bin"
+	--mandir="/usr/share/man"
+	--infodir="/usr/share/info"
+	--datarootdir="/usr/share"
+	--with-bootdir="/boot" \
+	--with-grubdir="grub" \
+	--program-prefix="" \
+	--enable-nls \
+	--enable-device-mapper \
+	--enable-cache-stats \
+	--enable-grub-mkfont \
+	--enable-grub-mount \
+	--disable-silent-rules \
+	--disable-werror
+)
+
 prepare() {
-	rm -rf i386 amd64
-	mkdir -p i386 amd64
+	# Missing file from release tarball :/
+	echo "depends bli part_gpt" > $pkgname-$pkgver/grub-core/extra_deps.lst
+
+	# Reconfigure src
+	cd $pkgname-$pkgver/
+	autoreconf -fvi
+
+	./linguas.sh
+	cd $srcdir
+
+	# _1 = normal ( common + bios)
+	# _2 = emu stuff
+	# _3 = with efi support
+	rm -rf i386_1 amd64_{1,2,3}
+	cp -rf $pkgname-$pkgver i386_1
+	cp -rf $pkgname-$pkgver amd64_1
+	cp -rf $pkgname-$pkgver amd64_2
+	cp -rf $pkgname-$pkgver amd64_3
 
 	# I386
-	cd i386
-	./../$pkgname-$pkgver/configure \
+	cd $srcdir/i386_1
+	./configure \
 	PACKAGE_VERSION="${pkgver}" \
 	FREETYPE="pkg-config freetype2" \
 	BUILD_FREETYPE="pkg-config freetype2" \
-	--prefix=/usr \
-	--sysconfdir=/etc \
 	--with-platform="pc" \
 	--target="i386" \
-	--enable-nls \
-	--enable-device-mapper \
-	--enable-grub-mkfont \
-	--enable-grub-mount \
-	--with-bootdir="/boot" \
 	--enable-efiemu \
 	--enable-boot-time \
-	--disable-werror
+	"${_conf_opt[@]}"
 
 	# AMD64
-	cd ../amd64
-	./../$pkgname-$pkgver/configure \
+	cd $srcdir/amd64_1
+	./configure \
 	PACKAGE_VERSION="${pkgver}" \
 	FREETYPE="pkg-config freetype2" \
 	BUILD_FREETYPE="pkg-config freetype2" \
-	--prefix=/usr \
-	--sysconfdir=/etc \
+	--with-platform="pc" \
+	--target="x86_64" \
+	--enable-efiemu \
+	--enable-boot-time \
+	"${_conf_opt[@]}"
+
+	cd $srcdir/amd64_2
+	./configure \
+	PACKAGE_VERSION="${pkgver}" \
+	FREETYPE="pkg-config freetype2" \
+	BUILD_FREETYPE="pkg-config freetype2" \
+	--with-platform="emu" \
+	--target="x86_64" \
+	--enable-grub-emu-usb=no \
+	--enable-grub-emu-sdl=no \
+	--disable-grub-emu-pci \
+	"${_conf_opt[@]}"
+
+	cd $srcdir/amd64_3
+	./configure \
+	PACKAGE_VERSION="${pkgver}" \
+	FREETYPE="pkg-config freetype2" \
+	BUILD_FREETYPE="pkg-config freetype2" \
 	--with-platform="efi" \
 	--target="x86_64" \
-	--enable-nls \
-	--enable-device-mapper \
-	--enable-grub-mkfont \
-	--enable-grub-mount \
-	--with-bootdir="/boot" \
+	--disable-efiemu \
 	--enable-boot-time \
-	--disable-werror
+	"${_conf_opt[@]}"
 }
 
 build() {
 	# I386
-	cd i386
-	make
-
+	make -C i386_1
 	# AMD64
-	cd ../amd64
-	make
+	make -C amd64_1
+	make -C amd64_2
+	make -C amd64_3
 }
 
 package() {
 	# I386
-	cd i386
-	make DESTDIR=$pkgdir install
+	make -C i386_1 DESTDIR=$pkgdir install
 
 	# AMD64
-	cd ../amd64
-	make DESTDIR=$pkgdir install
+	make -C amd64_2 DESTDIR=$pkgdir install
+	make -C amd64_3 DESTDIR=$pkgdir install
+	make -C amd64_1 DESTDIR=$pkgdir install
 }

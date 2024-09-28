@@ -1,15 +1,16 @@
 pkgname=gnutls
-pkgver=3.7.2
+pkgver=3.8.7
 pkgrel=1
 arch=('x86_64')
-depends=(nettle)
-source=(https://gnupg.org/ftp/gcrypt/$pkgname/v3.7/$pkgname-$pkgver.tar.xz)
+depends=(nettle 'gcc' 'gmp' 'libtasn1' 'zlib' 'p11-kit' 'libidn2'
+	'zstd' 'libunistring' 'brotli')
+source=(https://gnupg.org/ftp/gcrypt/$pkgname/v3.8/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr		\
+	./configure \
+	--prefix=/usr \
 	--with-included-unistring
 }
 

@@ -1,5 +1,5 @@
 pkgname=gtk4+
-pkgver=4.6.4
+pkgver=4.16.2
 pkgrel=1
 pkgdesc="GObject-based multi-platform GUI toolkit"
 url="https://www.gtk.org/"
@@ -7,29 +7,34 @@ arch=(x86_64)
 depends=(glib2 cairo pango harfbuzz fribidi gdk-pixbuf libpng libtiff libjpeg
          libepoxy libglvnd egl-wayland libxkbcommon graphene iso-codes
          colord wayland libxrandr libx11 libxrender libxi libxext libxcursor
-         libxdamage libxfixes fontconfig libxinerama cups
+         libxdamage libxfixes fontconfig libxinerama cups gobject-introspection
          gstreamer librsvg dconf shared-mime-info desktop-file-utils
-         adwaita-icon-theme cantarell-fonts gst-plugins-bad)
-makedepends=(gobject-introspection gtk-doc git glib2 sassc meson
-	wayland-protocols gi-docgen)
-commitid=1e6bad6c4f412dc0eb7b2f508cb4465929a04303  # tags/4.6.4^0
-source=("git+https://gitlab.gnome.org/GNOME/gtk.git#commit=$commitid"
-        gtk-update-icon-cache.{hook,script} gtk4-querymodules.hook)
+         adwaita-icon-theme cantarell-fonts gst-plugins-bad vulkan-icd-loader
+         tracker shaderc)
+makedepends=(gtk-doc git sassc meson glslang
+	wayland-protocols gi-docgen
+	vulkan-headers spirv-headers)
+source=(https://download.gnome.org/sources/gtk/4.16/gtk-$pkgver.tar.xz
+        gtk-update-icon-cache.{hook,script}
+        gtk4-querymodules.{hook,script})
 
 build() {
   CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
   local meson_options=(
     --prefix=/usr
-    --wrap-mode=nofallback
+    --sysconfdir=/etc
     -D broadway-backend=true
     -D cloudproviders=disabled
-    -D tracker=disabled
+    -D tracker=enabled
     -D colord=enabled
-    -D gtk_doc=false
+    -D documentation=false
+    -D vulkan=enabled
+    -D wayland-backend=true
     -D man-pages=false
+    -D introspection=enabled
   )
 
-  meson gtk build "${meson_options[@]}"
+  meson gtk-$pkgver build "${meson_options[@]}"
   meson compile -C build
 }
 
@@ -43,7 +48,11 @@ gtk-theme-name = Adwaita
 gtk-font-name = Cantarell 11
 END
 
+  ln -s gtk4-update-icon-cache "$pkgdir/usr/bin/gtk-update-icon-cache"
+
   install -Dt "$pkgdir/usr/share/libalpm/hooks" -m644 gtk4-querymodules.hook
+  install -D gtk4-querymodules.script "$pkgdir/usr/share/libalpm/scripts/gtk4-querymodules"
+
   install -Dt "$pkgdir/usr/share/libalpm/hooks" -m644 gtk-update-icon-cache.hook
   install -D gtk-update-icon-cache.script "$pkgdir/usr/share/libalpm/scripts/gtk-update-icon-cache"
 }

@@ -1,5 +1,5 @@
 pkgname=libsass
-pkgver=3.6.5
+pkgver=3.6.6
 pkgrel=1
 arch=('x86_64')
 depends=(glibc)

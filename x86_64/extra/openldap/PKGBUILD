@@ -1,5 +1,5 @@
 pkgname=openldap
-pkgver=2.6.4
+pkgver=2.6.8
 pkgrel=1
 arch=('x86_64')
 depends=('e2fsprogs' 'util-linux' 'chrpath' 'unixodbc' 'libsodium' 'systemd' 'libtool' 'perl')

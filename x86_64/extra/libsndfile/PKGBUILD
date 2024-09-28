@@ -1,5 +1,5 @@
 pkgname=libsndfile
-pkgver=1.2.0
+pkgver=1.2.2
 pkgrel=1
 arch=('x86_64')
 depends=(alsa-lib sqlite3 flac lame mpg123 libogg opus libvorbis)

@@ -1,51 +1,70 @@
 pkgname=glib2
-pkgver=2.78.1
-pkgrel=1
+pkgver=2.82.0
+pkgrel=2
 arch=('x86_64')
 depends=('libffi' 'pcre' 'pcre2' 'util-linux' 'zlib' 'elfutils' 'libxslt' 'libxml2')
-makedepends=('gtk-doc' 'python3-pip' 'dbus' 'gettext' 'git' 'meson' 'docbook-xml' 'docbook-xsl')
-gvdbcommit=89dbdb9ab45721189e195c7e70ed620143d840f7
+makedepends=('gtk-doc' 'python3-pip' 'dbus' 'gettext' 'git' 'meson' 'docbook-xml' 'docbook-xsl' 'gobject-introspection')
+gvdbcommit=2b42fc75f09dbe1cd1057580b5782b08f2dcb400
 source=(git+https://gitlab.gnome.org/GNOME/glib.git#tag=$pkgver
 	git+https://gitlab.gnome.org/GNOME/gvdb.git#commit=$gvdbcommit
-	noisy-glib-compile-schemas.diff
+	0001-glib-compile-schemas-Remove-noisy-deprecation-warnin.patch
 	glib-compile-schemas.hook
-	gio-querymodules.{hook,script})
+	gio-querymodules.hook)
 
 prepare() {
 	cd glib
 
+	export PATH=~/.local/bin:$PATH
+	pip3 install setuptools
 	pip3 install pygments
+	pip3 install rst2html5
+	pip3 install gi-docgen
 
-	mkdir -p subprojects/
-	cp -rf ../gvdb subprojects/
+	git apply -3 ../0001-glib-compile-schemas-Remove-noisy-deprecation-warnin.patch
+
+	git submodule init
+	git submodule set-url subprojects/gvdb "$srcdir/gvdb"
+	git -c protocol.file.allow=always -c protocol.allow=never submodule update
 }
 
 build() {
+	export PATH=$PATH:~/.local/bin
 	CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
 
-	meson glib build \
+	meson \
+	glib \
+	build \
+	--prefix=/usr \
+	--libdir=/usr/lib \
+	--default-library both \
+	--wrap-mode=nofallback \
+	-D introspection=enabled \
+	-D documentation=false \
+	-D sysprof=disabled \
 	-D glib_debug=disabled \
 	-D selinux=disabled \
+	-D tests=false \
 	-D man=false \
-	-D gtk_doc=true \
-	--prefix=/usr \
-	--libdir=/usr/lib
+	-D man-pages=false \
+	-D gtk_doc=false
 
 	meson compile -C build
 }
 
 package() {
+	export PATH=$PATH:~/.local/bin
 	meson install -C build --destdir $pkgdir
 
-	python3 -m compileall -d /usr/share/glib-2.0/codegen \
-	$pkgdir/usr/share/glib-2.0/codegen
-
-	python3 -O -m compileall -d /usr/share/glib-2.0/codegen \
-        $pkgdir/usr/share/glib-2.0/codegen
+	touch "$pkgdir/usr/lib/gio/modules/.keep"
 
 	mkdir -p $pkgdir/usr/lib/pkgconfig
 	cp -f build/meson-private/*.pc $pkgdir/usr/lib/pkgconfig
 
-	install -Dt $pkgdir/usr/share/libalpm/hooks/ -m644 *.hook
-	install -D gio-querymodules.script $pkgdir/usr/share/libalpm/scripts/gio-querymodules
+	install -Dt "$pkgdir/usr/share/libalpm/hooks" -m644 $srcdir/*.hook
+
+	python -m compileall -d /usr/share/glib-2.0/codegen \
+		"$pkgdir/usr/share/glib-2.0/codegen"
+
+	python -O -m compileall -d /usr/share/glib-2.0/codegen \
+		"$pkgdir/usr/share/glib-2.0/codegen"
 }

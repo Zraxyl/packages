@@ -1,0 +1,27 @@
+pkgname=openresolv
+pkgver=3.13.2
+pkgrel=1
+arch=('x86_64')
+depends=(glibc bash)
+source=(https://github.com/NetworkConfiguration/openresolv/releases/download/v$pkgver/openresolv-$pkgver.tar.xz)
+
+prepare() {
+        cd $pkgname-$pkgver
+
+        ./configure \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --libexecdir=/usr/lib/resolvconf
+}
+
+build() {
+        cd $pkgname-$pkgver
+
+        make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

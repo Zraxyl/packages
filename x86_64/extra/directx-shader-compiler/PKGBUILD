@@ -1,0 +1,62 @@
+pkgname=directx-shader-compiler
+pkgver=1.8.2407
+rname="DirectXShaderCompiler-$pkgver"
+pkgrel=1
+arch=('x86_64')
+depends=(ncurses)
+makedepends=('cmake' 'ninja' 'python3-pip' 'directx-headers'
+    'glslang' 'spirv-headers' 'spirv-tools')
+options=(!lto)
+source=(${pkgname}::git+https://github.com/microsoft/DirectXShaderCompiler.git#tag=v${pkgver})
+
+prepare() {
+    rm -rf build
+
+    #########
+    git clone https://github.com/microsoft/DirectX-Headers.git \
+    ${pkgname}-DirectX-Headers
+    git clone https://github.com/KhronosGroup/SPIRV-Headers \
+    ${pkgname}-SPIRV-Headers
+    git clone https://github.com/KhronosGroup/SPIRV-Tools \
+    ${pkgname}-SPIRV-Tools
+    #########
+    cd $pkgname
+    git submodule init
+    git config submodule."external/DirectX-Headers".url "${srcdir}/${pkgname}"-DirectX-Headers
+    git config submodule."external/SPIRV-Headers".url "${srcdir}/${pkgname}"-SPIRV-Headers
+    git config submodule."external/SPIRV-Tools".url "${srcdir}/${pkgname}"-SPIRV-Tools
+    git -c protocol.file.allow=always submodule update
+    cd ..
+    #########
+    cmake \
+    -B build \
+    -S $pkgname \
+    -G Ninja \
+    -C $pkgname/cmake/caches/PredefinedParams.cmake \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D LLVM_ENABLE_LTO=False \
+    -D CMAKE_INSTALL_PREFIX=/usr
+    #########
+}
+
+build() {
+    cd build
+
+    ninja
+}
+
+package() {
+    cd build
+
+    install -m755 -d "${pkgdir}"/usr/bin
+    install -m755 -d "${pkgdir}"/usr/lib
+    install -m755 -d "${pkgdir}"/usr/include
+    install -m755 -d "${pkgdir}"/usr/share/licenses/${pkgname}
+
+    install bin/dxc "${pkgdir}"/usr/bin/
+    cp lib/libdxcompiler.so* "${pkgdir}"/usr/lib/
+    cp -r ${srcdir}/${pkgname}/include/dxc "${pkgdir}"/usr/include/
+
+    install ${srcdir}/${pkgname}/LICENSE.TXT "${pkgdir}"/usr/share/licenses/${pkgname}/
+    install ${srcdir}/${pkgname}/ThirdPartyNotices.txt "${pkgdir}"/usr/share/licenses/${pkgname}
+}

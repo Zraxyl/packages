@@ -1,0 +1,40 @@
+pkgname=ccache
+pkgver=4.10.2
+pkgrel=1
+arch=('x86_64')
+depends=(fmt glibc gcc zstd)
+source=(https://github.com/ccache/ccache/releases/download/v${pkgver}/ccache-${pkgver}.tar.xz)
+
+prepare() {
+    cd ${pkgname}-${pkgver}
+
+    cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -Wno-dev \
+    -B build \
+    -S .
+}
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    make VERBOSE=1 -C build
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+
+    make DESTDIR="${pkgdir}" install -C build
+
+    install -d "${pkgdir}/usr/lib/ccache/bin"
+
+    for _prog in gcc g++ c++; do
+        ln -s /usr/bin/ccache "${pkgdir}/usr/lib/ccache/bin/$_prog"
+        ln -s /usr/bin/ccache "${pkgdir}/usr/lib/ccache/bin/${CHOST}-$_prog"
+    done
+
+    for _prog in cc clang clang++; do
+        ln -s /usr/bin/ccache "${pkgdir}/usr/lib/ccache/bin/$_prog"
+    done
+}

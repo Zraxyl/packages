@@ -1,9 +1,12 @@
 pkgname=cairo
-pkgver=1.17.4
+pkgver=1.18.2
 pkgrel=1
 arch=('x86_64')
-depends=(libpng pixman)
-source=(https://cairographics.org/snapshots/$pkgname-$pkgver.tar.xz)
+depends=(libpng fontconfig freetype2 glib2 glibc
+	pixman libx11 libxcb libxext libxrender
+	lzo zlib)
+makedepends=(meson)
+source=(https://cairographics.org/releases/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver

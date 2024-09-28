@@ -1,10 +1,10 @@
 pkgname=libsoup2
 pkgver=2.74.3
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
-depends=(glib-networking libpsl libxml2 sqlite3)
+depends=(glib-networking krb5 libpsl libxml2 sqlite3)
 # We need clang here as gcc has issues with -R arg
-makedepends=(clang llvm)
+makedepends=(clang llvm vala)
 commitid=4a6b9178ded85e269872ffedfb2b18f2754a75d9
 source=(git+https://gitlab.gnome.org/GNOME/libsoup.git#commit=$commitid)
 
@@ -13,11 +13,13 @@ build() {
 
 	mkdir -p build && cd build
 
-	CC=gcc \
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
-	-D vapi=enabled		\
+	CC=clang \
+	CXX=clang++ \
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D vapi=enabled \
+	--wrap-mode=nofallback \
 	..
 
 	ninja

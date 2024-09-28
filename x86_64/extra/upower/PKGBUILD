@@ -1,25 +1,32 @@
 pkgname=upower
-pkgver=0.99.13
+pkgver=1.90.2
 pkgrel=1
 arch=('x86_64')
-depends=(libgudev libusb polkit)
-commitid=(177df5b9f9b76f25a2ad9da41aa0c1fa)
-source=(https://gitlab.freedesktop.org/$pkgname/$pkgname/uploads/$commitid/$pkgname-$pkgver.tar.xz)
+depends=(libgudev libusb polkit gobject-introspection)
+makedepends=(gtk-doc python3-gobject python3-pygments asciidoc docbook-xml docbook-xsl)
+commitid=(8dcf54440d7eb58b75d7982bc1c29ee35dccf0c2)
+source=(https://gitlab.freedesktop.org/upower/upower/-/archive/v$pkgver/$pkgname-$pkgver.tar.gz)
+
+prepare() {
+	mkdir -p build && cd build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	--wrap-mode=nofallback \
+	-D man=false \
+	-D gtk-doc=true \
+	../$pkgname-v$pkgver-$commitid
+}
 
 build() {
-	cd $pkgname-$pkgver
+	cd build
 
-	./configure			\
-	--prefix=/usr			\
-	--localstatedir=/var		\
-	--enable-deprecated		\
-	--disable-docs
-
-	make
+	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver
+	cd build
 
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir ninja install
 }

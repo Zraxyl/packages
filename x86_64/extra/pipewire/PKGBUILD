@@ -1,11 +1,11 @@
 pkgname=pipewire
-pkgver=0.3.79
+pkgver=1.2.3
 pkgrel=1
 arch=(x86_64)
 depends=(pulseaudio alsa-lib libusb gst-plugins-base dbus sdl2 ncurses
 	libcanberra libsndfile bluez webrtc-audio-processing libx11 libxfixes
 	rtkit jack2 libcamera ffmpeg)
-makedepends=(git meson doxygen python3 valgrind wireplumber)
+makedepends=(git meson doxygen vulkan-headers python3-pip valgrind wireplumber)
 source=(https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/$pkgver/pipewire-$pkgver.tar.gz
 	# Extra patches
 	#meson_build.diff
@@ -13,6 +13,10 @@ source=(https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/$pkgver/pipew
 install=pipewire.install
 
 prepare() {
+	# jinja2, yaml, jinja2, ply
+	pip3 install jinja2
+	pip3 install pyyaml ply
+
 	cd $pkgname-$pkgver
 
 	# remove export of LD_LIBRARY_PATH for pw-jack as it would add /usr/lib
@@ -33,6 +37,7 @@ build() {
 	-D libjack-path=/usr/lib \
 	-D libcamera=enabled \
 	-D ffmpeg=enabled \
+	-D vulkan=enabled \
 	-D udevrulesdir=/usr/lib/udev/rules.d \
 	-D roc=disabled \
 	-D session-managers=[]

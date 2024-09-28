@@ -1,19 +1,23 @@
 pkgname=libuv
-pkgver=1.42.0
+pkgver=1.48.0
 pkgrel=1
+pkgdesc="Multi-platform support library with a focus on asynchronous I/O"
 arch=('x86_64')
+depends=(libnsl glibc)
 source=(https://dist.libuv.org/dist/v$pkgver/$pkgname-v$pkgver.tar.gz)
 
 build() {
-        cd $pkgname-v$pkgver
+	cd $pkgname-v$pkgver
 	
 	./autogen.sh
 	
 	./configure --prefix=/usr
-        make
+
+	make
 }
 
 package() {
 	cd $pkgname-v$pkgver
+
 	make DESTDIR=$pkgdir install
 }

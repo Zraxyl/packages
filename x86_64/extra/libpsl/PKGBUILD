@@ -1,8 +1,9 @@
 pkgname=libpsl
-pkgver=0.21.1
+pkgver=0.21.5
 pkgrel=1
 arch=('x86_64')
-depends=(libidn2)
+depends=(libidn2 libunistring)
+makedepends=(gtk-doc libxslt python3)
 source=(https://github.com/rockdaboot/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.gz)
 
 build() {
@@ -10,8 +11,9 @@ build() {
 
 	sed -i 's/env python/&3/' src/psl-make-dafsa
 
-	./configure		\
-	--prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

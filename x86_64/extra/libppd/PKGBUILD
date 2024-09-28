@@ -1,0 +1,31 @@
+pkgname=libppd
+pkgver=2.0.0
+pkgrel=1
+arch=(x86_64)
+depends=(libcupsfilters glibc gcc)
+makedepends=(base-devel)
+source=(https://github.com/OpenPrinting/$pkgname/archive/refs/tags/$pkgver.tar.gz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--disable-mutool
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

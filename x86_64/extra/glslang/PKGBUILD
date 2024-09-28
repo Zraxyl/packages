@@ -1,25 +1,25 @@
 pkgname=glslang
-pkgver=12.2.0
-stools=2023.2
-sheaders=1.3.250.0
-pkgrel=1
+pkgver=14.3.0
+stools=2024.3
+sheaders=1.3.290.0
+pkgrel=2
 pkgdesc='OpenGL and OpenGL ES shader front end and validator'
 arch=('x86_64')
-depends=('gcc' 'llvm' 'clang')
-makedepends=('cmake' 'ninja' 'git' 'python3')
+depends=('gcc' 'llvm' 'clang' 'spirv-tools')
+makedepends=('cmake' 'ninja' 'git' 'python3' 'spirv-headers')
 # Get the commits from known_good.json for every release
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/KhronosGroup/glslang/archive/${pkgver}.tar.gz
 	SPIRV-Tools.tar.gz::https://github.com/KhronosGroup/SPIRV-Tools/archive/refs/tags/v$stools.tar.gz
-	SPIRV-Headers.tar.gz::https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/sdk-$sheaders.tar.gz)
+	SPIRV-Headers.tar.gz::https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/vulkan-sdk-$sheaders.tar.gz)
 
 #
 # Spirv headers + tools are included here
 # WHY? = Because glslang itself already provides some spirv related files that have conflicted before, to skip the issue we build spirv-* here and package everything
 
-prepare() {
-	mv $srcdir/SPIRV-Tools-$stools $srcdir/$pkgname-$pkgver/External/spirv-tools
-	mv $srcdir/SPIRV-Headers-sdk-$sheaders $srcdir/$pkgname-$pkgver/External/spirv-tools/external/spirv-headers
-}
+#prepare() {
+#	mv $srcdir/SPIRV-Tools-$stools $srcdir/$pkgname-$pkgver/External/spirv-tools
+#	mv $srcdir/SPIRV-Headers-vulkan-sdk-$sheaders $srcdir/$pkgname-$pkgver/External/spirv-tools/external/spirv-headers
+#}
 
 build() {
 	## GLSLANG
@@ -31,6 +31,7 @@ build() {
 	-B build-shared \
 	-G Ninja \
 	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D ALLOW_EXTERNAL_SPIRV_TOOLS=ON \
 	-D CMAKE_BUILD_TYPE=Release \
 	-D BUILD_SHARED_LIBS=ON
 
@@ -41,6 +42,7 @@ build() {
 	-B build-static \
 	-G Ninja \
 	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D ALLOW_EXTERNAL_SPIRV_TOOLS=ON \
 	-D CMAKE_BUILD_TYPE=Release \
 	-D BUILD_SHARED_LIBS=OFF
 

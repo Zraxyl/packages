@@ -1,5 +1,5 @@
 pkgname=libcap-ng
-pkgver=0.8.3
+pkgver=0.8.5
 pkgrel=1
 arch=(x86_64)
 depends=(glibc)
@@ -9,6 +9,8 @@ source=(https://github.com/stevegrubb/libcap-ng/archive/v${pkgver}/${pkgname}-${
 prepare() {
 	cd $pkgname-$pkgver
 
+	touch NEWS
+
 	autoreconf -fiv
 }
 
@@ -17,7 +19,6 @@ build() {
 
 	./configure \
 	--prefix=/usr \
-	--enable-static=no \
 	--without-python \
 	--with-python3
 

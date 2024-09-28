@@ -1,97 +1,61 @@
 pkgname=wxwidgets
 rname=wxWidgets # Typical upper case namings :/
-pkgver=3.0.5
+pkgver=3.2.6
 pkgrel=1
 arch=(x86_64)
-depends=(gst-plugins-base glu webkit2gtk libnotify gtk2+ expat
-	libsm libxxf86vm libnotify libglvnd gtk3+ libtiff libpng libjpeg
-	libxpm sdl2 qt5 egl-wayland clang)
-makedepends=()
-source=(https://github.com/wxWidgets/wxWidgets/releases/download/v$pkgver/wxWidgets-$pkgver.tar.bz2)
+depends=(gst-plugins-base glu webkit2gtk libnotify  expat
+	libsm libxxf86vm libnotify libglvnd gtk2+ gtk3+ gtk4+ libtiff libpng libjpeg
+	libxpm sdl2 qt5 egl-wayland pcre pcre2 nanosvg zstd zlib libsoup libsoup2)
+makedepends=(clang llvm)
+source=(git+https://github.com/wxWidgets/wxWidgets#tag=v$pkgver)
 
 prepare() {
-	cp -rf $rname-$pkgver $rname-$pkgver-gtk2
-	cp -rf $rname-$pkgver $rname-$pkgver-qt5
+	cd $rname
+	git cherry-pick -n ed510012
+	git cherry-pick -n 8ea22b5e
+	cd ..
+
+	mkdir gtk2 gtk3 gtk4 qt5
+
+	cmake \
+	-S $rname \
+	-B gtk2 \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D wxBUILD_TOOLKIT=gtk2
+
+	cmake \
+	-S $rname \
+	-B gtk3 \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D wxBUILD_TOOLKIT=gtk3
+
+	cmake \
+	-S $rname \
+	-B gtk4 \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D wxBUILD_TOOLKIT=gtk4
+
+	cmake \
+	-S $rname \
+	-B qt5 \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D wxBUILD_TOOLKIT=qt
 }
 
 build() {
-	# GTK2
-	cd $srcdir/$rname-$pkgver-gtk2
-	echo "GTK2"
-	./configure \
-	--prefix=/usr \
-	--with-gtk=2 \
-	--with-opengl \
-	--enable-unicode \
-	--enable-graphics_ctx \
-	--enable-mediactrl \
-	--with-regex=builtin \
-	--with-libpng=sys \
-	--with-libxpm=sys \
-	--with-libjpeg=sys \
-	--enable-webview \
-	--with-libtiff=sys \
-	--disable-precomp-headers
-
-	make -j6
-
-	# GTK3
-	echo " "
-	echo "GTK3"
-	cd $srcdir/$rname-$pkgver
-
-	./configure \
-	--prefix=/usr \
-	--with-gtk=3 \
-	--with-opengl \
-	--enable-unicode \
-	--enable-graphics_ctx \
-	--enable-mediactrl \
-	--with-regex=builtin \
-	--with-libpng=sys \
-	--with-libxpm=sys \
-	--with-libjpeg=sys \
-	--with-libtiff=sys \
-	--with-sdl=sys \
-	--with-libtiff=sys \
-	--disable-precomp-headers
-
-	make -j6
-
-	# QT5
-	echo " "
-	echo "QT5"
-	cd $srcdir/$rname-$pkgver-qt5
-
-	./configure \
-	--prefix=/usr \
-	--with-qt \
-	--with-opengl \
-	--enable-unicode \
-	--enable-graphics_ctx \
-	--enable-mediactrl \
-	--with-regex=builtin \
-	--with-libpng=sys \
-	--with-libxpm=sys \
-	--with-libjpeg=sys \
-	--with-libtiff=sys \
-	--with-sdl=sys \
-	--with-libtiff=sys \
-	--disable-precomp-headers
-
-	make -j6
+	cmake --build gtk2
+	cmake --build gtk3
+	cmake --build gtk4
+	cmake --build qt5
 }
 
 package() {
-	# GTK2
-	cd $srcdir/$rname-$pkgver-gtk2
-	make DESTDIR=$pkgdir install
-
-	# QT5
-	cd $srcdir/$rname-$pkgver-qt5
-	make DESTDIR=$pkgdir install
-
-	# GTK3
-	cd $srcdir/$rname-$pkgver
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir cmake --install gtk2
+	DESTDIR=$pkgdir cmake --install gtk3
+	DESTDIR=$pkgdir cmake --install gtk4
+	DESTDIR=$pkgdir cmake --install qt5
 }

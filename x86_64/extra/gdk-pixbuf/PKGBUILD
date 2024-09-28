@@ -1,27 +1,44 @@
 pkgname=gdk-pixbuf
-pkgver=2.42.6
-pkgrel=4
+pkgver=2.42.9
+pkgrel=1
 arch=('x86_64')
-depends=(glib2 libjpeg libwebp libpng shared-mime-info libtiff librsvg)
+depends=(glib2 libjpeg libwebp libpng shared-mime-info libtiff librsvg libavif libjxl)
+makedepends=(python3-pip)
 source=(https://download.gnome.org/sources/$pkgname/2.42/$pkgname-$pkgver.tar.xz
 	gdk-pixbuf-query-loaders.hook)
 install=gdk-pixbuf2.install
 
-build() {
+prepare() {
+	pip3 install setuptools
+	pip3 install gi-docgen
+	export PATH=/home/developer/.local/bin:$PATH
+
 	cd $pkgname-$pkgver
 	mkdir -p build && cd build
-	
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
-	--wrap-mode=nofallback	\
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	--wrap-mode=nofallback \
+	-D installed_tests=false \
+	-D introspection=enabled \
+	-D builtin_loaders=all \
+	-D man=false \
+	-D gtk_doc=false \
 	..
+}
+
+build() {
+	export PATH=/home/developer/.local/bin:$PATH
+	cd $pkgname-$pkgver/build
 
 	ninja
 }
 
 package() {
+	export PATH=/home/developer/.local/bin:$PATH
 	cd $pkgname-$pkgver/build
+
 	DESTDIR=$pkgdir ninja install
 
 	install -Dt "$pkgdir/usr/share/libalpm/hooks" -m644 $srcdir/*.hook

@@ -1,9 +1,16 @@
 pkgname=sound-theme-freedesktop
 pkgver=0.8
-pkgrel=1
+pkgrel=2
 arch=(x86_64)
-makedepends=(intltool)
+makedepends=(intltool perl perl-modules)
+replaces=(sound-theme-spec)
 source=(https://people.freedesktop.org/~mccann/dist/$pkgname-$pkgver.tar.bz2)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+}
 
 build() {
 	cd $pkgname-$pkgver

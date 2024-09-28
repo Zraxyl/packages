@@ -1,24 +1,29 @@
 pkgname=libgudev
-pkgver=237
-pkgrel=2
+pkgver=238
+pkgrel=1
 arch=('x86_64')
-depends=('systemd' 'glib2')
-commitid=f6ec5ecb6ef68272392a7e950b3f60194c42f1ee
+depends=('systemd' 'glib2' 'gobject-introspection')
+commitid=df7c9c9940160307aaeb31347f4776a46f8736a9
 source=(git+https://gitlab.gnome.org/GNOME/libgudev.git#commit=$commitid)
 
-build() {
+prepare() {
 	mkdir -p build && cd build
 
-	meson		\
-	--prefix=/usr	\
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	--wrap-mode=nofallback \
 	../$pkgname
+}
+
+build() {
+	cd build
 
 	ninja
 }
 
 package() {
-	meson install -C build --destdir $pkgdir
+	cd build
 
-	# Some proprietary stuff need it :/
-	ln -sf libudev.so $pkgdir/usr/lib/libudev.so.0
+	DESTDIR=$pkgdir ninja install
 }

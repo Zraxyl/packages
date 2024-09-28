@@ -1,33 +1,27 @@
 pkgname=colord
-pkgver=master
-pkgrel=1
+pkgver=1.4.7
+pkgrel=2
 arch=('x86_64')
-depends=(libgudev lcms sqlite3 libgusb)
-source=(git+https://github.com/hughsie/colord)
+depends=(libgudev dbus glib2 lcms sqlite3 libgusb
+	gobject-introspection vala sane dbus dconf
+	polkit shared-mime-info argyllcms)
+makedepends=(bash-completion docbook-xsl meson sane vala)
+source=(https://www.freedesktop.org/software/$pkgname/releases/$pkgname-$pkgver.tar.xz)
 
 prepare() {
-	cd colord
-}
-
-spick() {
-	local p="$1" f d; shift
-	for f; do
-		d="$srcdir/$p/${f#$pkgdir/}"
-		mkdir -p "$(dirname "$d")"
-		mv "$f" "$d"
-		rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
-	done
+	mkdir -p build
+	meson colord-$pkgver build \
+	--prefix=/usr \
+	-D libcolordcompat=true \
+	-D sane=true \
+	-D systemd=true \
+	-D vapi=true \
+	-D print_profiles=true \
+	-D daemon_user=colord \
+	-D docs=false
 }
 
 build() {
-	meson colord build		\
-	--prefix=/usr			\
-	-D libcolordcompat=true		\
-	-D sane=false			\
-	-D vapi=true			\
-	-D daemon_user=colord		\
-	-D docs=false
-
 	meson compile -C build
 }
 

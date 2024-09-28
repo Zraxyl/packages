@@ -1,16 +1,20 @@
 pkgname=json-glib
-pkgver=1.6.6
+pkgver=1.10.0
 pkgrel=1
 arch=('x86_64')
 depends=(glib2)
-source=(https://download.gnome.org/sources/$pkgname/1.6/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/1.10/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 
 	mkdir -p build && cd build
 
-	meson --prefix=/usr --buildtype=release ..
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	..
+
 	ninja
 }
 

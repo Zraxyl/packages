@@ -1,0 +1,28 @@
+pkgname=nanosvg
+pkgver=0.1.0
+pkgrel=1
+arch=(x86_64)
+depends=(glibc)
+makedepends=(git cmake)
+commitid="93ce879dc4c04a3ef1758428ec80083c38610b1f"
+source=(git+https://github.com/memononen/nanosvg.git#commit=$commitid
+	001.patch::https://github.com/memononen/nanosvg/commit/abcd277ea45e9098bed752cf9c6875b533c0892f.patch)
+
+prepare() {
+	patch -p1 -i $srcdir/001.patch -d $pkgname
+
+	mkdir -p build
+	cmake \
+	-S $pkgname \
+	-B build \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release
+}
+
+build() {
+	cmake --build build
+}
+
+package() {
+	DESTDIR=$pkgdir cmake --install build
+}

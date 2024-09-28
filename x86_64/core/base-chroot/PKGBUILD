@@ -1,6 +1,6 @@
 pkgname=base-chroot
-pkgver=2023.3
-pkgrel=2
+pkgver=2024.1
+pkgrel=1
 pkgdesc="Base metapckage alike pkg to give user/dev needed CLI-System"
 arch=('x86_64')
 source=(os-release neofetch os-branch)

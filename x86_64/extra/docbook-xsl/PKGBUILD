@@ -1,6 +1,6 @@
 pkgname=docbook-xsl
 pkgver=1.79.2
-pkgrel=10
+pkgrel=12
 arch=(x86_64)
 install=docbook-xsl.install
 depends=(libxml2 libxslt docbook-xml)

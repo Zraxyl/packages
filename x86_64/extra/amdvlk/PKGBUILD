@@ -1,13 +1,17 @@
 pkgname=amdvlk
-pkgver=2022.Q2.3
+pkgver=2024.Q3.2
 pkgrel=1
 arch=(x86_64)
-makedepends=('perl-modules' 'python3' 'wayland' 'libxrandr'
-  'xorg-server' 'cmake' 'ninja' 'git' 'clang' 'python2' 'lld' 'repo')
+depends=('glibc' 'ncurses')
+makedepends=('perl-modules' 'python3-pip' 'libxrandr'
+  'cmake' 'ninja' 'git' 'clang' 'python2' 'lld' 'repo' 'directx-shader-compiler')
 options=('!lto')
 
 prepare() {
   mkdir -p amdvlk && cd amdvlk
+
+  git config --global user.email "builder@evolinx.org"
+  git config --global user.name "Builder Bob"  
 
   repo init -u https://github.com/GPUOpen-Drivers/AMDVLK.git -b refs/tags/v-$pkgver
 
@@ -15,9 +19,7 @@ prepare() {
 }
 
 build() {
-  cd $srcdir/amdvlk/drivers/spvgen/external
-  python2 fetch_external_sources.py
-
+  pip3 install jinja2 pyyaml ruamel.yaml
   cd $srcdir/amdvlk/drivers
 
   # use lld and clang to fix linking error
@@ -26,6 +28,7 @@ build() {
     -D CMAKE_INSTALL_PREFIX=/usr \
     -D CMAKE_C_COMPILER=clang \
     -D CMAKE_CXX_COMPILER=clang++ \
+    -D XGL_USE_CLANG=ON \
     -D LLVM_USE_LINKER=lld \
     -D CMAKE_EXE_LINKER_FLAGS='-fuse-ld=lld' \
     -D CMAKE_SHARED_LINKER_FLAGS='-fuse-ld=lld' \
@@ -37,7 +40,18 @@ build() {
 }
 
 package() {
-  DESTDIR=$pkgdir ninja install -C amdvlk/drivers/builds/Release64
+  cd $srcdir/amdvlk/drivers
+
+  install -m755 -d "${pkgdir}"/usr/lib
+  install -m755 -d "${pkgdir}"/usr/share/vulkan/icd.d
+  install -m755 -d "${pkgdir}"/usr/share/vulkan/implicit_layer.d
+
+  install builds/Release64/icd/amdvlk64.so "${pkgdir}"/usr/lib/
+  install builds/Release64/icd/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/
+  install builds/Release64/icd/amd_icd64.json "${pkgdir}"/usr/share/vulkan/implicit_layer.d/
+
+  sed -i "s#/lib64#/lib#g" "${pkgdir}"/usr/share/vulkan/icd.d/amd_icd64.json
+  sed -i "s#/lib64#/lib#g" "${pkgdir}"/usr/share/vulkan/implicit_layer.d/amd_icd64.json
 
   # Remove included home dir
   rm -rf $pkgdir/home

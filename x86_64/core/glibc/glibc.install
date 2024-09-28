@@ -1,10 +1,11 @@
 post_upgrade() {
-	# As we have locale file compressed then we need to decompress it now
-	cd /usr/lib/locale
-	rm -f locale-archive
-	tar xf locale-archive.tar.xz
-	cd /
-
 	# Update lib cache
 	ldconfig -r .
+
+	# As we have locale file compressed then we need to decompress it now
+	/usr/sbin/locales-install
+}
+
+post_install() {
+	post_upgrade
 }

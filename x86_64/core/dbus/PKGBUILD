@@ -1,5 +1,5 @@
 pkgname=dbus
-pkgver=1.15.6
+pkgver=1.15.8
 pkgrel=1
 arch=('x86_64')
 depends=(libx11 systemd expat audit-userspace)

@@ -1,9 +1,0 @@
-post_upgrade() {
-  echo "PLYMOUTH is now enabled by default with sddm"
-  systemctl enable sddm-plymouth
-  systemctl enable acpid
-}
-
-post_install() {
-  post_upgrade
-}

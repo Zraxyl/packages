@@ -1,18 +1,18 @@
 pkgname=glibmm
-pkgver=2.74.0
+pkgver=2.78.1
 pkgrel=1
 arch=('x86_64')
 depends=(glib2 libsigc++)
-source=(https://download.gnome.org/sources/$pkgname/2.66/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/2.78/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 
 	mkdir -p build && cd build
 
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
 	..
 
 	ninja

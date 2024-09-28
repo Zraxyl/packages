@@ -1,14 +1,13 @@
 pkgname=libfilezilla
-pkgver=0.38.0
+pkgver=0.48.1
 pkgrel=1
 arch=(x86_64)
 depends=(glibc gcc nettle gnutls nettle)
 makedepends=(make)
-source=(https://download.filezilla-project.org/libfilezilla/libfilezilla-${pkgver}.tar.bz2
-	aio-tuplefix.patch)
+source=($pkgname-$pkgver.tar.xz::"https://dl4.cdn.filezilla-project.org/libfilezilla/libfilezilla-$pkgver.tar.xz")
 
 prepare() {
-	patch -Np0 -i aio-tuplefix.patch
+	cd $pkgname-$pkgver
 }
 
 build() {

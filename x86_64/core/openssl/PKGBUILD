@@ -1,12 +1,12 @@
 pkgname=openssl
-pkgver=3.0.9
+pkgver=3.0.15
 pkgcomp=1.1.1u
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 depends=(glibc ca-certificates)
 backup=('etc/ssl/openssl.cnf')
 makedepends=('perl')
-source=(https://openssl.org/source/$pkgname-$pkgver.tar.gz
+source=(https://github.com/openssl/openssl/releases/download/openssl-$pkgver/openssl-$pkgver.tar.gz
     https://openssl.org/source/$pkgname-$pkgcomp.tar.gz)
 
 prepare() {

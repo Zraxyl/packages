@@ -1,0 +1,30 @@
+pkgname=geoclue
+pkgver=2.7.1
+pkgrel=1
+arch=('x86_64')
+depends=(json-glib libsoup modemmanager vala avahi libnotify)
+makedepends=(git gtk-doc)
+source=(https://gitlab.freedesktop.org/$pkgname/$pkgname/-/archive/$pkgver/$pkgname-$pkgver.tar.gz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	..
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	DESTDIR=$pkgdir ninja install
+}

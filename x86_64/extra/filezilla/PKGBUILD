@@ -1,15 +1,16 @@
 pkgname=filezilla
-pkgver=3.60.1
+pkgver=3.67.1
 pkgrel=1
 arch=(x86_64)
 depends=(glibc dbus xdg-utils libidn hicolor-icon-theme
 	sqlite3 gnutls libfilezilla ibus gtk3+ nettle wxwidgets)
 makedepends=(make gcc)
-source=(https://download.filezilla-project.org/client/FileZilla_${pkgver}_src.tar.bz2
-	wxwidgets.patch)
+source=(https://download.filezilla-project.org/client/FileZilla_${pkgver}_src.tar.xz)
 
 prepare() {
-	patch -Np0 -i wxwidgets.patch
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
 }
 
 build() {

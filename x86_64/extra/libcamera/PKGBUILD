@@ -1,17 +1,20 @@
 pkgname=libcamera
-pkgver=0.0.3
+pkgver=0.3.1
 pkgrel=1
 arch=(x86_64)
 depends=(glibc)
 makedepends=(doxygen git glib2 gst-plugins-base libdrm
-libjpeg libtiff meson qt5 sdl2 systemd python3-pip)
-commitid=0f382a9926bff239e43bbc3098f111ebf612dc50
+libjpeg libtiff meson qt5 qt6 sdl2 systemd python3-pip)
+commitid=c4e222e3d47fc87935981060de528e3243dc020b
 source=(git+https://git.libcamera.org/$pkgname/$pkgname.git#tag=$commitid)
 
 prepare() {
 	mkdir -p build
 
 	pip3 install jinja2 pyyaml ply
+
+	cd $pkgname
+	printf "%s\n" "$pkgver" > .tarball-version
 }
 
 build() {
@@ -21,6 +24,10 @@ build() {
 	--prefix=/usr \
 	-D v4l2=true \
 	-D tracing=disabled \
+	-D documentation=disabled \
+	-D test=false \
+	-D gstreamer=enabled \
+	-D udev=enabled \
 	../$pkgname
 
 	ninja

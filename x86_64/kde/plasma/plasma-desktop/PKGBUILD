@@ -1,5 +1,5 @@
 pkgname=plasma-desktop
-pkgver=5.27.4
+pkgver=5.27.6
 pkgrel=1
 arch=('x86_64')
 depends=(gawk kdelibs4support polkit-kde-agent kmenuedit systemsettings baloo accountsservice xdg-user-dirs ibus libevdev qqc2-desktop-style baloo)

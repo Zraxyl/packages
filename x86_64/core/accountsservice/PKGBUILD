@@ -1,34 +1,44 @@
 pkgname=accountsservice
 pkgver=23.13.9
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(glib2 glibc polkit systemd shadow)
 makedepends=(gtk-doc gobject-introspection meson docbook-xsl docbook-xml
 	xmlto vala python3-pygments)
-source=(https://freedesktop.org/software/$pkgname/$pkgname-$pkgver.tar.xz
-	40-adm.rules)
+source=(accounts-daemon-restart.hook
+	0001-tests-Drop-check-format-test.patch)
 
 prepare() {
-	mkdir -p $pkgname-$pkgver/build
+	rm -rf build && mkdir -p build
+
+	# Get src
+	rm -rf $pkgname
+	git clone https://gitlab.freedesktop.org/accountsservice/accountsservice.git
+	cd $pkgname
+	git reset --hard 57e491f5e6f3da2d5a949f4f8747c8f4e8ed799d
+
+	git cherry-pick -n da65bee12d9118fe1a49c8718d428fe61d232339 \
+	ad0365b77b583da06bcd1e8da4c1bed74129895a
 }
 
 build() {
-	cd $pkgname-$pkgver/build
+	cd build
 
 	meson \
 	--prefix=/usr \
-	-D admin_group=adm,wheel \
+	-D admin_group=wheel \
 	-D gtk_doc=true \
-	-D docbook=true
+	-D docbook=true \
+	../$pkgname
 
 	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver/build
+	cd build
 
 	DESTDIR=$pkgdir ninja install
 
 	mkdir -p $pkgdir/etc/polkit-1/rules.d
-	cp $srcdir/40-adm.rules $pkgdir/etc/polkit-1/rules.d/
+	install -Dt "$pkgdir/usr/share/libalpm/hooks" -m644 $srcdir/*.hook
 }

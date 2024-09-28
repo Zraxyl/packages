@@ -1,34 +1,35 @@
 pkgname=e2fsprogs
-pkgver=1.46.5
+pkgver=1.47.1
 pkgrel=1
 arch=('x86_64')
 depends=(glibc)
-makedepends=(systemd util-linux fuse2)
+makedepends=(systemd util-linux lvm2 fuse3)
 source=(https://www.kernel.org/pub/linux/kernel/people/tytso/$pkgname/v$pkgver/$pkgname-$pkgver.tar.xz)
 
 build() {
-        cd $pkgname-$pkgver
+	cd $pkgname-$pkgver
 
-        mkdir -vp build
-        cd build
+	mkdir -vp build
+	cd build
 
-        ../configure --prefix=/usr           \
-                     --bindir=/bin           \
-                     --with-root-prefix=""   \
-                     --enable-elf-shlibs     \
-                     --disable-libblkid      \
-                     --disable-libuuid       \
-                     --disable-uuidd         \
-                     --disable-fsck
+	../configure \
+	--prefix=/usr \
+	--bindir=/bin \
+	--with-root-prefix="" \
+	--enable-elf-shlibs \
+	--disable-libblkid \
+	--disable-libuuid \
+	--disable-uuidd \
+	--disable-fsck
 
-        make
+	make
 }
 package() {
 	cd $pkgname-$pkgver
 	cd build
 
-        make DESTDIR=$pkgdir install
-        make DESTDIR=$pkgdir install-libs
+	make DESTDIR=$pkgdir install
+	make DESTDIR=$pkgdir install-libs
 
-        chmod -v u+w $pkgdir/usr/lib/{libcom_err,libe2p,libext2fs,libss}.a
+	chmod -v u+w $pkgdir/usr/lib/{libcom_err,libe2p,libext2fs,libss}.a
 }

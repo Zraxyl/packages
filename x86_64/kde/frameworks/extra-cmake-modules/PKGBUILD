@@ -1,8 +1,8 @@
 pkgname=extra-cmake-modules
-pkgver=5.107.0
+pkgver=6.5.0
 pkgrel=1
 arch=('x86_64')
-durl=https://download.kde.org/stable/frameworks/5.107
+durl=https://download.kde.org/stable/frameworks/6.5
 depends=(cmake make)
 makdedepends=(python3-sphinx python3-requests qt5 qt6)
 source=("${durl}/${pkgname}-${pkgver}.tar.xz")

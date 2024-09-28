@@ -1,5 +1,5 @@
 pkgname=ceph
-pkgver=18.1.1
+pkgver=19.1.1
 pkgrel=1
 arch=('x86_64')
 depends=("zstd" 'bash' 'bc' 'bzip2' 'c-ares' 'cmake' 'coreutils'

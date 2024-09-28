@@ -1,23 +1,17 @@
 pkgname=glu
-pkgver=9.0.2
+pkgver=9.0.3
 pkgrel=1
 pkgdesc="Mesa OpenGL Utility library"
 arch=('x86_64')
 url="https://cgit.freedesktop.org/mesa/glu/"
 depends=('libglvnd')
 makedepends=('meson')
-source=(https://mesa.freedesktop.org/archive/$pkgname/$pkgname-$pkgver.tar.xz
-	0001-pkgconfig-Depend-on-opengl-when-built-with-libglvnd.patch
-	0002-pkgconfig-Drop-unneeded-lines-from-autotools-build.patch
-	0003-pkgconfig-meson-build-should-match-autotools-require.patch)
+source=(https://mesa.freedesktop.org/archive/$pkgname/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
 
 	# merged upstream
-	patch -Np1 -i ../0001-pkgconfig-Depend-on-opengl-when-built-with-libglvnd.patch
-	patch -Np1 -i ../0002-pkgconfig-Drop-unneeded-lines-from-autotools-build.patch
-	patch -Np1 -i ../0003-pkgconfig-meson-build-should-match-autotools-require.patch
 }
 
 build() {
@@ -26,7 +20,7 @@ build() {
 	-D default_library=shared
 
 	# Print config
-	meson configure build
+	#meson configure build
 
 	ninja -C build
 	meson compile -C build

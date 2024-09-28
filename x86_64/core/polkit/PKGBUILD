@@ -1,32 +1,29 @@
 pkgname=polkit
-pkgver=0.120
-pkgrel=5
+pkgver=125
+pkgrel=1
 arch=('x86_64')
-depends=(glib2 systemd duktape)
+depends=(glib2 linux-pam dbus systemd duktape)
 makedepends=(meson gtk-doc gobject-introspection git)
 commitid=
-source=(git+https://gitlab.freedesktop.org/polkit/polkit.git#commit=a6bedfd09b7bba753de7a107dc471da0db801858)
+source=(https://github.com/polkit-org/polkit/archive/refs/tags/$pkgver.tar.gz)
 
 build() {
-	meson build $pkgname	\
-	--prefix=/usr		\
-	--libdir=/usr/lib	\
-	-D tests=false		\
-	-D js_engine=duktape	\
-	-D man=false		\
-	-D session_tracking=libsystemd-login
+	meson \
+	build \
+	$pkgname-$pkgver \
+	--prefix=/usr \
+	--libdir=/usr/lib \
+	-D js_engine=duktape \
+	-D os_type=redhat \
+	-D polkitd_uid=102 \
+	-D polkitd_user=polkitd \
+	-D session_tracking=logind \
+	-D tests=false \
+	-D man=false
 
 	meson compile -C build
 }
 
 package() {
 	meson install -C build --destdir $pkgdir
-
-	install -d -o root -g 102 -m 750 $pkgdir/{etc,usr/share}/polkit-1/rules.d
-	mv $pkgdir/{etc,usr/share}/polkit-1/rules.d/50-default.rules
-
-	install -Dm644 /dev/stdin $pkgdir/usr/lib/sysusers.d/$pkgname.conf <<END
-u polkitd 102 "PolicyKit daemon"
-m polkitd proc
-END
 }

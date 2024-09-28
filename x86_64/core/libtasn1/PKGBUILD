@@ -1,19 +1,25 @@
 pkgname=libtasn1
-pkgver=4.17.0
-pkgrel=2
+pkgver=4.19.0
+pkgrel=1
 arch=('x86_64')
 depends=(glibc)
 source=(https://ftp.gnu.org/gnu/libtasn1/libtasn1-$pkgver.tar.gz)
 
+prepare() {
+	cd $pkgname-$pkgver
+
+	./configure \
+	--prefix=/usr
+}
+
 build() {
 	cd $pkgname-$pkgver
 
-	./configure --prefix=/usr
 	make
 }
 
 package() {
-        cd $pkgname-$pkgver
+	cd $pkgname-$pkgver
 
 	make DESTDIR=$pkgdir install
 }

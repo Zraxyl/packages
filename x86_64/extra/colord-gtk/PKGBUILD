@@ -1,0 +1,28 @@
+pkgname=colord-gtk
+pkgver=0.3.1
+pkgrel=1
+arch=('x86_64')
+depends=(colord gtk2+ gtk3+ gtk4+)
+makedepends=(gtk-doc gtk2+ asciidoc docbook-xml docbook-xsl python3-gobject python3-pygments)
+source=(https://www.freedesktop.org/software/colord/releases/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	mkdir -p build
+	meson $pkgname-$pkgver build \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	-D gtk2=true \
+	-D gtk3=true \
+	-D gtk4=true \
+	-D vapi=true \
+	-D docs=true \
+	-D man=true
+}
+
+build() {
+	meson compile -C build
+}
+
+package() {
+	meson install -C build --destdir $pkgdir
+}

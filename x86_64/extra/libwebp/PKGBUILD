@@ -1,5 +1,5 @@
 pkgname=libwebp
-pkgver=1.2.1
+pkgver=1.4.0
 pkgrel=1
 pkgdesc="WebP library and conversion tools"
 arch=(x86_64)

@@ -1,35 +1,33 @@
 pkgname=qpdf
-pkgver=10.6.3
+pkgver=11.9.1
 pkgrel=1
 arch=('x86_64')
-makedepends=('libjpeg' 'zlib' 'gnutls' 'python3-pip')
-source=(https://github.com/qpdf/qpdf/releases/download/release-${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz)
+depends=(gcc glibc gnutls libjpeg openssl zlib)
+makedepends=(python3-pip cmake)
+source=(https://github.com/qpdf/qpdf/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz)
 
 prepare() {
-	pip3 install sphinx latex
+    pip3 install setuptools
+    pip3 install sphinx latex
+
+    cmake \
+    -S $pkgname-$pkgver \
+    -B build \
+    -G Ninja \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D REQUIRE_CRYPTO_GNUTLS:BOOL=ON \
+    -D REQUIRE_CRYPTO_OPENSSL:BOOL=OFF \
+    -D ENABLE_QTC:BOOL=ON
 }
 
 build() {
-    cd ${pkgname}-${pkgver}
-    ./configure --prefix=/usr \
-    --disable-static \
-    --enable-crypto-gnutls \
-    --disable-crypto-openssl \
-    --disable-implicit-crypto \
-    --enable-show-failed-test-output \
-    --disable-doc-maintenance \
-    --disable-html-doc \
-    --disable-pdf-doc \
-    --disable-oss-fuzz
+    cd build
 
-    make doc-dist DOC_DEST=doc all
+    ninja
 }
 
 package_qpdf() {
-    cd ${pkgname}-${pkgver}
+    cd build
 
-    make DESTDIR="${pkgdir}/" install
-
-    install -Dm644 completions/bash/qpdf "${pkgdir}/usr/share/bash-completion/completions/qpdf"
-    install -Dm644 completions/zsh/_qpdf "${pkgdir}/usr/share/zsh/site-functions/_qpdf"
+    DESTDIR="${pkgdir}" ninja install
 }

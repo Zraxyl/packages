@@ -1,8 +1,9 @@
 pkgname=pixman
-pkgver=0.42.2
+pkgver=0.43.4
 pkgrel=1
 arch=('x86_64')
 depends=(libpng)
+makedepends=(meson)
 source=($pkgname-$pkgver.tar.gz::https://gitlab.freedesktop.org/$pkgname/$pkgname/-/archive/$pkgname-$pkgver/$pkgname-$pkgname-$pkgver.tar.gz)
 
 prepare() {

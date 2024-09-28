@@ -1,11 +1,11 @@
 pkgname=python3-gobject
-pkgver=3.42.1
+pkgver=3.44.2
 pkgrel=1
 arch=(x86_64)
 replace=(python-gobject)
 depends=(gobject-introspection python3 python3-cairo)
 makedepends=(cairo gobject-introspection git meson python3-pip)
-commitid=110abf1868c7d4175a3a6944e25b98c957e81db4  # 3.42.1
+commitid=6b746eddbc4834f4c23e4281ffb5b4024fcb2cdc  # 3.44.2
 source=("git+https://gitlab.gnome.org/GNOME/pygobject.git#commit=$commitid")
 
 build() {

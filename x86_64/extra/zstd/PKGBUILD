@@ -1,20 +1,33 @@
 pkgname=zstd
-pkgver=1.5.0
+pkgver=1.5.6
 pkgrel=1
 arch=('x86_64')
 depends=(glibc gcc zlib xz lz4)
-makedepends=()
+makedepends=(cmake ninja)
 source=(https://github.com/facebook/zstd/releases/download/v$pkgver/zstd-$pkgver.tar.gz)
 
+prepare() {
+	cmake \
+	-S $pkgname-$pkgver/build/cmake \
+	-B build \
+	-G Ninja \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D ZSTD_ZLIB_SUPPORT=ON \
+	-D ZSTD_LZMA_SUPPORT=ON \
+	-D ZSTD_LZ4_SUPPORT=ON \
+	-D ZSTD_BUILD_CONTRIB=ON \
+	-D ZSTD_PROGRAMS_LINK_SHARED=ON
+}
+
 build() {
-	cd $pkgname-$pkgver
-	make
-	make -C contrib/pzstd
+	cd build
+
+	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver
-	make PREFIX=/usr DESTDIR=$pkgdir install
-	ln -sf /usr/bin/zstd $pkgdir/usr/bin/zstdmt
-	install -Dm 755 contrib/pzstd/pzstd -t $pkgdir/usr/bin/
+	cd build
+
+	DESTDIR=$pkgdir ninja install
 }

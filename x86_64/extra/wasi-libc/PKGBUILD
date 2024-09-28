@@ -1,13 +1,12 @@
 pkgname=wasi-libc
-pkgver=0+222+ad51334
-pkgrel=2
-_commit=ad5133410f66b93a2381db5b542aad5e0964db96  # Adjust the Makefile for LLVM 13 
+pkgver=0+392+b9ef79d7
+pkgrel=1
 pkgdesc='WASI libc implementation for WebAssembly'
 arch=('x86_64')
 url='https://github.com/WebAssembly/wasi-libc'
 makedepends=('git' 'llvm' 'clang')
-source=("git+https://github.com/WebAssembly/wasi-libc.git#commit=${_commit}")
-options=('staticlibs')
+commitid=b9ef79d7dbd47c6c5bafdae760823467c2f60b70
+source=("git+https://github.com/WebAssembly/wasi-libc.git#commit=${commitid}")
 
 pkgver() {
 	cd ${pkgname}

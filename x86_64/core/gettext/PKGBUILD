@@ -1,6 +1,6 @@
 pkgname=gettext
-pkgver=0.21
-pkgrel=2
+pkgver=0.22
+pkgrel=1
 arch=('x86_64')
 depends=(bash glib2 glibc)
 source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz)

@@ -3,10 +3,10 @@ post_upgrade() {
   echo "# [ EVOLINX ]: Making new ramdisk..."
   echo "##"
 
-  export KERNEL_VERSION=6.2.10
+  export KERNEL_VERSION=$(cat /lib/modules/KERNELVERSION)
 
   echo "[ LINUX-INFO ]: Creating new ramdisk with target kernel $KERNEL_VERSION"
-  dracut --kver $KERNEL_VERSION-evolinx -m "base lvm kernel-modules" --filesystems "ext4 ext3" /boot/initramfs-$KERNEL_VERSION.img --force
+  dracut --kver $KERNEL_VERSION -m "base lvm kernel-modules" --filesystems "ext4 ext3" /boot/initramfs-$KERNEL_VERSION.img --force
 
   cp -fv /boot/initramfs-$KERNEL_VERSION.img /boot/default-initramfs.img
 

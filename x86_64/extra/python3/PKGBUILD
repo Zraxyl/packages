@@ -1,10 +1,10 @@
 pkgname=python3
-pkgver=3.10.1
-pkgrel=4
+pkgver=3.10.9
+pkgrel=1
 arch=('x86_64')
-#extraver=a3
-depends=('sqlite3' 'expat' 'libffi' 'tcl' 'bzip2' 'openssl' 'llvm' 'tk' 'bluez' 'libnsl')
-makedepends=('python3-pip')
+extraver=
+depends=('sqlite3' 'expat' 'libffi' 'tcl' 'bzip2' 'openssl' 'tk' 'libnsl' 'gdbm' 'libxcrypt' 'tzdata')
+makedepends=('python3-pip' 'llvm' 'bluez')
 source=(https://www.python.org/ftp/python/$pkgver/Python-${pkgver}${extraver}.tar.xz)
 
 prepare() {
@@ -16,27 +16,28 @@ prepare() {
 }
 
 build() {
-        cd Python-${pkgver}${extraver}
+	cd Python-${pkgver}${extraver}
 
-        ./configure					\
-		--prefix=/usr				\
-		--enable-shared				\
-		--with-system-expat			\
-		--with-system-ffi			\
-		--with-system-expat			\
-		--with-system-libmpdec			\
-		--enable-loadable-sqlite-extensions	\
-		--without-ensurepip			\
-		--with-tzpath=/usr/shared/zoneinfo	\
+	./configure \
+	--prefix=/usr \
+	--enable-shared \
+	--with-system-expat \
+	--with-system-ffi \
+	--with-system-expat \
+	--with-system-libmpdec \
+	--enable-loadable-sqlite-extensions \
+	--without-ensurepip \
+	--with-tzpath=/usr/shared/zoneinfo
 
-        make
+	make
 }
 
 package() {
-        cd Python-${pkgver}${extraver}
+	cd Python-${pkgver}${extraver}
 
 	sed -i 's/^all:.*$/all: build_all/' Makefile
 
-        make DESTDIR=$pkgdir install
+	make DESTDIR=$pkgdir install
+
 	ln -sf /usr/bin/python3 $pkgdir/usr/bin/python
 }

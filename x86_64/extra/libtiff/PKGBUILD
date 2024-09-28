@@ -1,6 +1,6 @@
 pkgname=libtiff
-pkgver=4.3.0
-pkgrel=2
+pkgver=4.7.0
+pkgrel=1
 arch=('x86_64')
 depends=(glibc libjpeg zlib xz zstd freeglut)
 makedepends=(mesa glu jbigkit)

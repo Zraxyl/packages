@@ -1,15 +1,18 @@
 pkgname=xfce4-settings
-pkgver=4.19.1
+pkgver=4.19.2
 xver=4.19
 pkgrel=1
 arch=('x86_64')
-depends=(exo garcon gnome-icon-theme lxde-icon-theme)
+depends=(exo garcon gnome-icon-theme lxde-icon-theme libcanberra libnotify
+	libxklavier colord libinput upower)
 source=(https://archive.xfce.org/src/xfce/$pkgname/$xver/$pkgname-$pkgver.tar.bz2)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure --prefix=/usr --sysconfdir=/etc
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

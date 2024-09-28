@@ -1,6 +1,6 @@
 pkgname=systemd
-pkgver=252.14
-pkgrel=1
+pkgver=251.20
+pkgrel=5
 arch=('x86_64')
 depends=('acl' 'gperf' 'lz4' 'xz' 'linux-pam' 'elfutils'
 	'kmod' 'libcap' 'libidn2' 'libgcrypt'
@@ -9,7 +9,7 @@ depends=('acl' 'gperf' 'lz4' 'xz' 'linux-pam' 'elfutils'
 	'libxkbcommon' 'cryptsetup'
 	'bash-completion' 'p11-kit'
 	'gnutls')
-makedepends=('meson' 'docbook-xsl' 'git' 'rsync' 'intltool' 'python3-pip')
+makedepends=('meson' 'docbook-xsl' 'git' 'rsync' 'intltool' 'python3-pip' 'gperf')
 source=("https://github.com/systemd/systemd-stable/archive/refs/tags/v${pkgver}.tar.gz"
 	'evolinx.conf'
 	'loader.conf'
@@ -23,7 +23,9 @@ source=("https://github.com/systemd/systemd-stable/archive/refs/tags/v${pkgver}.
 	'30-systemd-sysctl.hook'
 	'30-systemd-tmpfiles.hook'
 	'30-systemd-udev-reload.hook'
-	'30-systemd-update.hook')
+	'30-systemd-update.hook'
+	'filesystems-gperf.gperf'
+	'missing_magic.h')
 
 backup=(etc/pam.d/systemd-user
 	etc/systemd/coredump.conf
@@ -35,58 +37,70 @@ backup=(etc/pam.d/systemd-user
 	etc/systemd/networkd.conf)
 
 prepare() {
-	pip3 install setuptools
+	#pip3 install setuptools
 
-	pip3 install jinja2
+	#pip3 install jinja2
 
-        cd $pkgname-stable-$pkgver
-        
-        sed -i -e 's/GROUP="render"/GROUP="video"/' \
-        -e 's/GROUP="sgx", //' rules.d/50-udev-default.rules.in
-        
-        sed -i 's/+ want_libfuzzer.*$/and want_libfuzzer/' meson.build
+	cd $pkgname-stable-$pkgver
+
+	# Patches
+	cp -fv ${srcdir}/filesystems-gperf.gperf src/basic/
+	cp -fv ${srcdir}/missing_magic.h src/basic/
+
+	find . -type f -exec sed -i 's+/sbin/agetty+/usr/sbin/agetty+g' {} +
+
+	sed -i -e 's/GROUP="render"/GROUP="video"/' \
+	-e 's/GROUP="sgx", //' rules.d/50-udev-default.rules.in
+
+	sed -i 's/+ want_libfuzzer.*$/and want_libfuzzer/' meson.build
 }
 
 build() {
-	cd $pkgname-stable-$pkgver        
+	cd $pkgname-stable-$pkgver
 	mkdir -p build && cd build
 
-	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:$PATH	
+	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:$PATH
 	LANG=en_US.UTF-8 \
+	CFLAGS="-w" \
 	meson \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--buildtype=release \
-		-D blkid=true \
-		-D mode=release \
-		-D default-hierarchy=unified \
-		-D install-tests=false \
-		-D tests=false \
-		-D dns-servers='1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com 2606:4700:4700::1001#cloudflare-dns.com' \
-		-D docdir=/usr/share/doc/systemd \
-		-D dbuspolicydir=/usr/share/dbus-1/system.d \
-		-D sbat-distro='evolinx' \
-		-D sbat-distro-summary='Evolinx'\
-		-D sbat-distro-pkgname="${pkgname}" \
-		-D sbat-distro-version="${pkgver}" \
-		-D sbat-distro-url="https://evolinx.martinvlba.eu" \
-		..
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--bindir=/usr/bin \
+	--sbindir=/usr/sbin \
+	--libdir=/usr/lib \
+	--buildtype=release \
+	-D blkid=true \
+	-D mode=release \
+	-D default-hierarchy=unified \
+	-D install-tests=false \
+	-D tests=false \
+	-D dns-servers='1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com 2606:4700:4700::1001#cloudflare-dns.com' \
+	-D docdir=/usr/share/doc/systemd \
+	-D pamlibdir=/usr/lib/security \
+	-D dbuspolicydir=/usr/share/dbus-1/system.d \
+	-D sbat-distro='evolinx' \
+	-D sbat-distro-summary='Evolinx'\
+	-D sbat-distro-pkgname="${pkgname}" \
+	-D sbat-distro-version="${pkgver}" \
+	-D sbat-distro-url="https://evolinx.martinvlba.eu" \
+	..
 
 	ninja
 }
 
 package() {
+	export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
 	# Install bootctl conf file examples
 	install -D -m0644 evolinx.conf "$pkgdir"/usr/share/systemd/bootctl/evolinx.conf
 	install -D -m0644 evolinx.conf "$pkgdir"/usr/share/systemd/bootctl/initrd-evolinx.conf
 	install -D -m0644 loader.conf "$pkgdir"/usr/share/systemd/bootctl/loader.conf
 
 	cd $pkgname-stable-$pkgver/build
-	
-	LANG=en_US.UTF-8 ninja
-	LANG=en_US.UTF-8 DESTDIR=$pkgdir PREFIX=$pkgdir ninja install
 
+	LANG=en_US.UTF-8 ninja
+	LANG=en_US.UTF-8 DESTDIR=$pkgdir ninja install
 
 	install -D -m0644 $srcdir/systemd-user.pam $pkgdir/etc/pam.d/systemd-user
 	install -D -m0755 $srcdir/systemd-hook $pkgdir/usr/share/libalpm/scripts/systemd-hook

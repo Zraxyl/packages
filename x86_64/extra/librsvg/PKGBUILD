@@ -1,23 +1,35 @@
 pkgname=librsvg
-pkgver=2.57.0
+pkgver=2.59.0
 pkgrel=1
 arch=('x86_64')
-depends=('cairo' 'freetype2' 'gdk-pixbuf' 'cairo' 'pango' 'libxml2' 'glib2' 'vala')
-makedepends=('rust' 'gobject-introspection')
-source=(https://download.gnome.org/sources/$pkgname/2.57/$pkgname-$pkgver.tar.xz)
+depends=('cairo' 'freetype2' 'gdk-pixbuf' 'cairo' 'pango' 'libxml2' 'glib2' 'vala' 'dav1d')
+makedepends=('rust' 'gobject-introspection' 'meson' 'python3' 'cargo-c')
+pkgdesc="SVG rendering library"
+source=(https://download.gnome.org/sources/$pkgname/2.59/$pkgname-$pkgver.tar.xz)
 
-build() {
+prepare() {
 	cd $pkgname-$pkgver
 
-	./configure \
-	--prefix=/usr \
-	--enable-vala
+	cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
 
-	make
+	pip3 install tomli
+}
+
+build() {
+	mkdir -p build && cd build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	--wrap-mode=nofallback \
+	-D avif=enabled \
+	../$pkgname-$pkgver
+
+	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver
+	cd build
 
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir ninja install
 }

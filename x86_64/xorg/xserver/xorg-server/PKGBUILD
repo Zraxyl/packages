@@ -1,6 +1,6 @@
 pkgname=xorg-server
-pkgver=21.1.8
-pkgrel=1
+pkgver=21.1.13
+pkgrel=2
 arch=('x86_64')
 depends=(libmd pixman libx11 mesa libxtrans libxkbfile
 	libxfont2 libpciaccess libxv libxcvt libxmu libxrender
@@ -10,16 +10,12 @@ depends=(libmd pixman libx11 mesa libxtrans libxkbfile
 	acpid)
 makedepends=(xorgproto meson git)
 source=(https://x.org/archive/individual/xserver/$pkgname-$pkgver.tar.xz
-	xvfb-run
-	0002-xephyr_Dont_check_for_SeatId_anymore.patch)
+	xvfb-run)
 
 prepare() {
 	cd $pkgname-$pkgver
 
-	# Patch all diff's that havce been chosen from MR
-
-	echo "[!]: 0002-xephyr_Dont_check_for_SeatId_anymore.patch"
-	patch -Np1 -i $srcdir/0002-xephyr_Dont_check_for_SeatId_anymore.patch
+	# Patches
 }
 
 build() {

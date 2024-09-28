@@ -1,10 +1,9 @@
 pkgname=libarchive
-pkgver=3.6.1
+pkgver=3.7.5
 pkgrel=1
 arch=('x86_64')
 depends=(acl bzip2 expat lz4 openssl xz zlib zstd libxml2 nettle expat)
-source=(https://github.com/libarchive/libarchive/releases/download/v$pkgver/libarchive-$pkgver.tar.xz
-	0001-unescape-when-extracting-link.patch)
+source=(https://github.com/libarchive/libarchive/releases/download/v$pkgver/libarchive-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver

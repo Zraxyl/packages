@@ -1,5 +1,5 @@
 pkgname=cups
-pkgver=2.4.2
+pkgver=2.4.10
 pkgrel=2
 arch=('x86_64')
 depends=(libtiff cups-filters libpng acl linux-pam xdg-utils gnutls bc colord gzip
@@ -8,18 +8,14 @@ makedepends=(git)
 source=(https://github.com/OpenPrinting/cups/releases/download/v$pkgver/cups-$pkgver-source.tar.gz
 		cups.logrotate
         cups.pam
-        cups.sysusers
-        cups-2.4.0-statedir.patch
-        # bugfixes
-        cups-freebind.patch
-        guid.patch)
+        cups.sysusers)
 
 prepare() {
 	cd $pkgname-$pkgver
 
 	sed -e "s/format-truncation//" \
-		-i configure \
-		config-scripts/cups-compiler.m4
+	-i configure \
+	config-scripts/cups-compiler.m4
 
 	# Rebuild configure script
 	aclocal -I config-scripts
@@ -40,10 +36,11 @@ build() {
 	--with-logdir=/var/log/cups \
 	--with-docdir=/var/share/cups/etc \
 	--with-exe-file-perm=0755 \
-	--enable-dbus \
+	--enable-dbus=yes \
 	--with-cups-user=209 \
 	--with-cups-group=209 \
 	--enable-pam=yes \
+	--with-tls=gnutls \
 	--enable-raw-printing
 
 	make

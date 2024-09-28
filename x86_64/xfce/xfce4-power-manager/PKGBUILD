@@ -1,9 +1,9 @@
 pkgname=xfce4-power-manager
-pkgver=4.19.2
+pkgver=4.19.3
 xver=4.19
 pkgrel=1
 arch=('x86_64')
-depends=(libnotify upower xfce4-panel)
+depends=(libnotify upower xfce4-panel polkit networkmanager)
 source=(https://archive.xfce.org/src/xfce/$pkgname/$xver/$pkgname-$pkgver.tar.bz2
 	80-xfce-power.rules
 	org.xfce.power.policy)
@@ -11,10 +11,10 @@ source=(https://archive.xfce.org/src/xfce/$pkgname/$xver/$pkgname-$pkgver.tar.bz
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr		\
-	--sysconfdir=/etc	\
-	--enable-xfce4panel	\
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--enable-xfce4panel \
 	--enable-polkit
 
 	make

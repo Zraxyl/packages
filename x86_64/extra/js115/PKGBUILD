@@ -1,0 +1,41 @@
+pkgname=js115
+pkgver=115.4.0
+fver=115.4.0esr
+pkgrel=1
+pkgdesc="Standalone web browser from mozilla.org"
+url="https://www.mozilla.org/firefox/"
+arch=('x86_64')
+depends=(gcc readline bash zlib)
+makedepends=(autoconf autoconf2.13 imake m4 python3 python2 python3-pip clang
+	lld llvm rust zip)
+source=(https://archive.mozilla.org/pub/firefox/releases/$fver/source/firefox-$fver.source.tar.xz
+	mozconfig)
+
+prepare() {
+	mkdir -p mozbuild && cd mozbuild
+
+	pip install setuptools
+
+	./../firefox-$pkgver/js/src/configure \
+	--prefix=/usr \
+	--with-intl-api \
+	--with-system-zlib \
+	--with-system-icu \
+	--disable-jemalloc       \
+	--disable-debug-symbols  \
+	--enable-readline
+}
+
+build() {
+	cd mozbuild
+
+	make
+}
+
+package() {
+	cd mozbuild
+
+	make DESTDIR=$pkgdir install
+
+	rm -fv "$pkgdir"/usr/lib/*.ajs
+}

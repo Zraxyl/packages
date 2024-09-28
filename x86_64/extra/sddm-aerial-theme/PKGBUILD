@@ -1,8 +1,8 @@
 pkgname=sddm-aerial-theme
-pkgver=2023.3
+pkgver=2024.4
 pkgrel=1
 arch=(x86_64)
-depends=(qt5 gstreamer phonon-backend-gstreamer phonon gstreamer-vaapi gst-plugins-good)
+depends=(qt5 gstreamer phonon-backend-gstreamer phonon gstreamer-vaapi gst-plugins-good sddm)
 source=(https://git.martinvlba.eu/Evolinx/sddm-aerial-theme/archive/$pkgver.tar.gz)
 
 package() {

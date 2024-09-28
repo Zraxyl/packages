@@ -1,13 +1,26 @@
 pkgname=xmlto
-pkgver=0.0.28
+pkgver=0.0.29
 pkgrel=1
+pkgdesc="Convert xml to many other formats"
 arch=('x86_64')
-depends=(docbook-xml docbook-xsl libxslt)
-source=(https://releases.pagure.org/$pkgname/$pkgname-$pkgver.tar.bz2)
+depends=(libxslt)
+makedepends=(docbook-xsl)
+source=(https://pagure.io/xmlto/archive/$pkgver/xmlto-$pkgver.tar.gz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--libdir=/usr/lib
+}
 
 build() {
 	cd $pkgname-$pkgver
-	./configure --prefix=/usr --libdir=/usr/lib
+
 	make
 }
 

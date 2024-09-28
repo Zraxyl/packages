@@ -1,0 +1,26 @@
+pkgname=nlohmann-json
+pkgver=3.11.3
+pkgrel=1
+pkgdesc="JSON for Modern C++"
+arch=(x86_64)
+url="https://github.com/nlohmann/json"
+makedepends=(cmake git)
+source=($pkgname::git+$url.git#tag=v$pkgver)
+
+build() {
+    cmake \
+    -B build \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_LIBDIR=/usr/lib \
+    -D BUILD_TESTING=OFF \
+    -D JSON_MultipleHeaders=ON \
+    -S $pkgname \
+    -W no-dev
+
+    cmake --build build
+}
+
+package() {
+    DESTDIR="$pkgdir" cmake --install build
+}

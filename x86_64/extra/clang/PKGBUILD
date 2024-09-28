@@ -1,7 +1,7 @@
 pkgname=clang
-pkgver=16.0.5
-pkgrel=1
-makedepends=('cmake' 'python3' 'llvm' 'python3-sphinx')
+pkgver=18.1.8
+pkgrel=2
+makedepends=('cmake' 'libffi' 'python3' 'llvm' 'python3-sphinx')
 depends=('llvm' 'compiler-rt' 'gcc' 'python3')
 arch=('x86_64')
 psource=https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver

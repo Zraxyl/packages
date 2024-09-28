@@ -1,8 +1,8 @@
 pkgname=llvm
-pkgver=16.0.5
-pkgrel=1
+pkgver=18.1.8
+pkgrel=3
 depends=(libffi zstd libxml2 ncurses perl zlib libedit python3)
-makedepends=('cmake' 'ninja' 'pyython3-pip')
+makedepends=('cmake' 'ninja' 'python3-pip')
 arch=('x86_64')
 psource=https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver
 source=($psource/$pkgname-$pkgver.src.tar.xz

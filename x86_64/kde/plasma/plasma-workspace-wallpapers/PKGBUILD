@@ -1,12 +1,14 @@
 pkgname=plasma-workspace-wallpapers
-pkgver=5.27.4
+pkgver=5.27.6
 pkgrel=1
 arch=(x86_64)
 makedepends=(extra-cmake-modules qt5)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
 build() {
-	cmake -B build -S $pkgname-$pkgver \
+	cmake \
+	-B build \
+	-S $pkgname-$pkgver \
 	-DBUILD_TESTING=OFF
 
 	cmake --build build

@@ -1,6 +1,6 @@
 pkgname=glibc
-pkgver=2.38
-pkgrel=2
+pkgver=2.39
+pkgrel=1
 arch=('x86_64')
 depends=(libxcrypt filesystem lib32-libxcrypt tar xz)
 makedepends=(python3 bison m4 tar xz)
@@ -12,7 +12,8 @@ install=glibc.install
 source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz
 	sdt.h
 	sdt-config.h
-	reenable_DT_HASH.patch)
+	reenable_DT_HASH.patch
+	locales-install)
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -93,7 +94,10 @@ package() {
 	mkdir -pv $pkgdir/usr/lib/locale
 	make install_root=$pkgdir localedata/install-locales -j2
 
-	# Start of locale size HACK :)
+	mkdir -p $pkgdir/usr/sbin
+	cp -vf $srcdir/locales-install $pkgdir/usr/sbin
+	chmod +x $pkgdir/usr/sbin/locales-install
+
 	# Now lets compress the 200mb+ locale file and let bottle decompress it with script
 	# Saves alot from download size ( 200mb -> 10-20mb prolly )
 	oldpwd1=$(pwd)
@@ -101,7 +105,6 @@ package() {
 	tar cfJ locale-archive.tar.xz locale-archive
 	rm -f locale-archive
 	cd $oldpwd1
-	# End of locale size HACK :)
 
 	# 32bit
 	cd ../build32	

@@ -1,18 +1,16 @@
 pkgname=linux
-pkgver=6.2.10
+pkgver=6.11.0
+rname=6.11.y
 pkgdesc="The Linux kernel, modules and headers package"
 rver=6.2
 pkgrel=3
-dirname=$pkgname
+dirname=$pkgname-$rname
 arch=('x86_64')
 options=('!strip' 'emptydirs')
 install=linux.install
-makedepends=(rsync bison bc)
-commitid=5af9cc09e42142810dae6f47bfba5762fa36771e # Dont trim exports
-source=(https://git.martinvlba.eu/Evolinx/linux/archive/$commitid.tar.gz)
-
-# Deprecated as we ship modules/headers in 1 pkg now
-replaces=(linux-api-headers)
+makedepends=(rsync bison bc rdfind)
+source=(https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/snapshot/linux-6.11.y.tar.gz
+	config)
 
 export KBUILD_BUILD_HOST=evolinx-linux
 export KBUILD_BUILD_USER=$pkgname
@@ -21,20 +19,23 @@ export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EP
 prepare() {
 	cd $dirname
 
+	cp -fv $srcdir/config arch/x86/configs/evolinx_defconfig
+
 	echo "[!]: Cleaning src base"
 	make clean
 
 	echo "[!]: Running mrproper"
 	make mrproper
-}
-
-build() {
-	cd $dirname
 
 	echo "[!]: Getting up default config of evolinx"
 	make evolinx_defconfig
 
+	echo "[!]: Running menuconfig"
 	make menuconfig
+}
+
+build() {
+	cd $dirname
 
 	echo "[!]: Started making all"
 	make all -j7
@@ -48,7 +49,7 @@ package() {
 
 	echo "[!]: Installing modules"
 	make INSTALL_MOD_PATH=$pkgdir INSTALL_MOD_STRIP=1 modules_install
-	rm $pkgdir/lib/modules/$pkgver-evolinx/{source,build}
+	rm -f $pkgdir/lib/modules/$pkgver-evolinx/{source,build}
 
 	mkdir -p $pkgdir/boot
 
@@ -99,11 +100,11 @@ package() {
 	for arch in "$builddir"/arch/*/; do
 		[[ $arch = */x86/ ]] && continue
 		echo "Removing $(basename "$arch")"
-		rm -r "$arch"
+		rm -fr "$arch"
 	done
 
 	echo "[!]: Removing documentation"
-	rm -r "$builddir/Documentation"
+	rm -fr "$builddir/Documentation"
 
 	echo "[!]: Removing broken symlinks"
 	find -L "$builddir" -type l -printf 'Removing %P\n' -delete
@@ -116,5 +117,5 @@ package() {
 
 	echo "[!]: Adding src symlink to /usr/src/linux"
 	mkdir -p "$pkgdir/usr/src"
-	ln -sr "$builddir" "$pkgdir/usr/src/linux"
+	ln -sfr "$builddir" "$pkgdir/usr/src/linux"
 }

@@ -1,0 +1,31 @@
+pkgname=libproxy
+pkgver=0.5.8
+pkgrel=1
+arch=(x86_64)
+depends=(curl duktape glib2 glibc gcc)
+makedepends=(gobject-introspection gsettings-desktop-schemas meson vala)
+source=(https://github.com/$pkgname/$pkgname/archive/refs/tags/$pkgver.tar.gz)
+
+prepare() {
+	meson \
+	$pkgname-$pkgver \
+	build \
+	--buildtype=release \
+	--wrap-mode=nofallback \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	-D docs=false \
+	-D tests=false
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

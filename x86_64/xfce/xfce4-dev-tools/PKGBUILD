@@ -1,5 +1,5 @@
 pkgname=xfce4-dev-tools
-pkgver=4.19.0
+pkgver=4.19.1
 xver=4.19
 pkgrel=1
 arch=('x86_64')
@@ -9,10 +9,10 @@ source=(https://archive.xfce.org/src/xfce/$pkgname/$xver/$pkgname-$pkgver.tar.bz
 build() {
 	cd $pkgname-$pkgver
 
-	./configure			\
-	--prefix=/usr			\
-	--sysconfdir=/etc		\
-	--libexecdir=/usr/lib		\
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--libexecdir=/usr/lib \
 	--localstatedir=/var
 
 	make

@@ -1,0 +1,29 @@
+pkgname=ijs
+pkgver=0.35
+pkgrel=1
+arch=('x86_64')
+depends=(glibc bash)
+source=(https://openprinting.org/download/$pkgname/download/$pkgname-$pkgver.tar.bz2)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--libdir=/usr/lib
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

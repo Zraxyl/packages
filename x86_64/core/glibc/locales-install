@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# This is required as glibc package for evolinx has compressed locales for lesser download size
+
+glibc_cleanup() {
+    echo "[ GLIBC POSTINST ]: 1/2"
+    # Lets remove old unpacked locales, even if it dosent exist
+    cd /usr/lib/locale
+
+    rm -f locale-archive
+}
+
+glibc_unpack() {
+    echo "[ GLIBC POSTINST ]: 2/2"
+    # Unpack our big boy
+    cd /usr/lib/locale
+
+    tar xvf locale-archive.tar.xz
+}
+
+main() {
+    glibc_cleanup
+
+    glibc_unpack
+
+    echo "[ GLIBC POSTINST ]: Done"
+}
+
+main

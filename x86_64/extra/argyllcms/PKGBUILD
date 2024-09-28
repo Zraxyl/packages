@@ -1,0 +1,38 @@
+pkgname=argyllcms
+pkgver=3.3.0
+pkgrel=1
+arch=(x86_64)
+depends=(libpng libtiff libxinerama libxrandr libxss libxxf86vm openssl)
+makedepends=(unzip zip jam)
+source=(https://${pkgname}.com/Argyll_V${pkgver}_src.zip)
+
+prepare() {
+	rm -rf $pkgname-$pkgver
+	mv Argyll_V$pkgver $pkgname-$pkgver
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	jam \
+	-q \
+	-fJambase \
+	-sPREFIX=/usr \
+	-sDESTDIR=$pkgdir \
+	-sREFSUBDIR=share/$pkgname/ref \
+	all
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	jam \
+	-q \
+	-fJambase \
+	-sPREFIX=/usr \
+	-sDESTDIR=$pkgdir \
+	-sREFSUBDIR=share/$pkgname/ref \
+	install
+
+	install -Dm644 usb/55-Argyll.rules -t $pkgdir/usr/lib/udev/rules.d/
+}

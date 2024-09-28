@@ -1,20 +1,21 @@
 pkgname=thunar
-pkgver=4.19.2
+pkgver=4.19.3
 xver=4.19
 pkgrel=1
 arch=('x86_64')
-depends=(exo hicolor-icon-theme libgudev thunar-volman xfce4-panel gvfs pcre libexif)
+depends=(exo hicolor-icon-theme libgudev thunar-volman xfce4-panel gvfs pcre2 libexif
+	libnotify tumbler)
 source=(https://archive.xfce.org/src/xfce/$pkgname/$xver/$pkgname-$pkgver.tar.bz2)
 
 prepare() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr		\
-	--sysconfdir=/etc	\
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
 	--libexecdir=/usr/lib/xfce4 \
-	--enable-gudev		\
-	--enable-pcre		\
+	--enable-gudev \
+	--enable-pcre \
 	--enable-notifications
 
 }

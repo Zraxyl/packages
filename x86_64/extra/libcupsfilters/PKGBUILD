@@ -1,0 +1,34 @@
+pkgname=libcupsfilters
+pkgver=2.0.0
+pkgrel=1
+arch=('x86_64')
+depends=(cups libexif qpdf poppler libjpeg libpng libtiff lcms fontconfig dbus
+	ghostscript jbigkit)
+makedepends=('python3')
+source=(https://www.github.com/OpenPrinting/$pkgname/archive/refs/tags/$pkgver.tar.gz)
+
+prepare() {
+    cd "$pkgname"-$pkgver
+
+    autoreconf -fvi
+
+    ./configure \
+    --prefix=/usr  \
+    --sysconfdir=/etc \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin \
+    --localstatedir=/var \
+    --disable-mutool
+}
+
+build() {
+    cd "$pkgname"-$pkgver
+
+    make
+}
+
+package() {
+    cd "$pkgname"-$pkgver
+
+    make DESTDIR="$pkgdir/" install
+}

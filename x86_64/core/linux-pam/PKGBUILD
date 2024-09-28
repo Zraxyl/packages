@@ -1,11 +1,11 @@
 pkgname=linux-pam
-pkgver=1.5.2
-pkgrel=2
+pkgver=1.6.1
+pkgrel=1
 pkgdesc="PAM (Pluggable Authentication Modules) library"
 arch=('x86_64')
 license=('GPL2')
 url="http://linux-pam.org"
-depends=('glibc' 'libtirpc' 'libgcrypt')
+depends=('glibc' 'libtirpc' 'libnsl' 'libgcrypt' 'systemd')
 makedepends=('docbook-xml' 'docbook-xsl')
 backup=(etc/security/{access.conf,faillock.conf,group.conf,limits.conf,namespace.conf,namespace.init,pam_env.conf,time.conf}
 	etc/environment
@@ -15,8 +15,8 @@ backup=(etc/security/{access.conf,faillock.conf,group.conf,limits.conf,namespace
 	etc/pam.d/system-remote-login
 	etc/pam.d/system-services
 	etc/pam.d/other)
-source=(https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-$pkgver.tar.xz{,.asc}
-        pam.tmpfiles
+source=(https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-$pkgver.tar.xz
+	pam.tmpfiles
 	other
 	system-auth
 	system-local-login
@@ -26,23 +26,33 @@ source=(https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-
 
 options=('!emptydirs')
 
+prepare() {
+	cd Linux-PAM-$pkgver
+
+	./configure \
+	--libdir=/usr/lib \
+	--sbindir=/usr/bin \
+	--enable-logind \
+	--disable-db
+}
+
 build() {
-  cd Linux-PAM-$pkgver
-  ./configure \
-    --libdir=/usr/lib \
-    --sbindir=/usr/bin \
-    --disable-db
-  make
+	cd Linux-PAM-$pkgver
+
+	make
 }
 
 package() {
-	install -Dm 644 pam.tmpfiles "$pkgdir"/usr/lib/tmpfiles.d/pam.conf
 	cd Linux-PAM-$pkgver
+
 	make DESTDIR="$pkgdir" SCONFIGDIR=/etc/security install
+
+	install -Dm 644 ${srcdir}/pam.tmpfiles "$pkgdir"/usr/lib/tmpfiles.d/pam.conf
 
 	# set unix_chkpwd uid
 	chmod +s "$pkgdir"/usr/bin/unix_chkpwd
 
+	# Base pam files
 	install -dm755 $pkgdir/etc/pam.d
 	install -m644 -t $pkgdir/etc/pam.d $srcdir/system-auth
 	install -m644 -t $pkgdir/etc/pam.d $srcdir/system-local-login

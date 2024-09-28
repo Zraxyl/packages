@@ -1,32 +1,42 @@
 pkgname=lldb
-pkgver=13.0.1
+pkgver=18.1.8
 pkgrel=1
 arch=(x86_64)
 depends=(llvm clang python3)
 makedepends=(llvm cmake ninja swig python3-pip)
-source=(https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/$pkgname-$pkgver.src.tar.xz)
+psource=https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver
+source=($psource/$pkgname-$pkgver.src.tar.xz
+	$psource/llvm-$pkgver.src.tar.xz
+	$psource/cmake-$pkgver.src.tar.xz)
 
 prepare() {
-	mkdir -p $pkgname-$pkgver.src/build
+	mv $pkgname-$pkgver.src $pkgname
+	mv llvm-$pkgver.src llvm
+	mv cmake-$pkgver.src cmake
 
+	mkdir -p build
 	pip3 install six
 }
 
 build() {
-	cd $pkgname-$pkgver.src/build
+	cd build
 
-	cmake .. -G Ninja \
+	cmake ../$pkgname -G  \
+	Ninja \
     -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_INSTALL_PREFIX=/usr \
     -D CMAKE_SKIP_RPATH=ON \
     -D LLVM_LINK_LLVM_DYLIB=ON \
-    -D CLANG_LINK_CLANG_DYLIB=ON
+    -D CLANG_LINK_CLANG_DYLIB=ON \
+    -D LLVM_INCLUDE_BENCHMARKS=OFF \
+	-D LLVM_INCLUDE_TESTS=OFF \
+	-D SPHINX_WARNINGS_AS_ERRORS=OFF
 
 	ninja all
 }
 
 package() {
-	cd $pkgname-$pkgver.src/build
+	cd build
 
 	DESTDIR="$pkgdir" ninja install
 

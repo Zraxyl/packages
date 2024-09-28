@@ -1,8 +1,8 @@
 pkgname=powerdevil
-pkgver=5.27.4
+pkgver=5.27.6
 pkgrel=1
 arch=(x86_64)
-depends=(plasma-workspace bluez-qt networkmanager-qt)
+depends=(plasma-workspace bluez-qt networkmanager-qt kinfocenter)
 makedepends=(extra-cmake-modules kdoctools)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz{,.sig})
 

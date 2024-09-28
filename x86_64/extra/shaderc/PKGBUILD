@@ -1,0 +1,46 @@
+pkgname=shaderc
+pkgver=2024.2
+pkgrel=1
+arch=(x86_64)
+depends=(glibc gcc glslang spirv-tools)
+makedepends=(cmake ninja python3 spirv-headers)
+source=(https://github.com/google/shaderc/archive/v$pkgver/$pkgname-$pkgver.tar.gz)
+
+prepare() {
+	# Patching
+	cd $pkgname-$pkgver
+	sed '/examples/d;/third_party/d' -i CMakeLists.txt
+	sed '/build-version/d' -i glslc/CMakeLists.txt
+	cat <<- EOF > glslc/src/build-version.inc
+"${pkgver}\\n"
+"$(bottle -Q spirv-tools|cut -d \  -f 2|sed 's/-.*//')\\n"
+"$(bottle -Q glslang|cut -d \  -f 2|sed 's/-.*//')\\n"
+EOF
+	cd ../
+
+	mkdir -p build
+
+	CC=clang \
+	CXX=clang++ \
+	CPP=clang++ \
+	cmake \
+	-S $pkgname-$pkgver \
+	-B build \
+	-G Ninja \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D SHADERC_SKIP_TESTS=ON \
+	-D PYTHON_EXECUTABLE=python \
+	-D glslang_SOURCE_DIR=/usr/include/glslang
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

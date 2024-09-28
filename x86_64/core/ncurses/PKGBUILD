@@ -1,6 +1,6 @@
 pkgname=ncurses
 pkgver=6.3
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 depends=(glibc)
 makedepends=(autoconf-archive)
@@ -11,10 +11,13 @@ prepare() {
 
 	sed -i '/LIBTOOL_INSTALL/d' c++/Makefile.in
 
+	CFLAGS="-fPIC" \
+	LDFLAGS="-fPIC" \
 	./configure \
 	--prefix=/usr \
 	--mandir=/usr/share/man \
 	--with-shared \
+	--with-cxx-binding \
 	--with-cxx-shared \
 	--without-debug \
 	--with-normal \

@@ -1,8 +1,8 @@
 pkgname=lvm2
-pkgver=2.03.14
+pkgver=2.03.26
 pkgrel=1
 arch=('x86_64')
-depends=(libaio)
+depends=(libaio util-linux readline systemd)
 source=(https://sourceware.org/ftp/lvm2/LVM2.$pkgver.tgz)
 
 build() {
@@ -10,11 +10,28 @@ build() {
 
 	export PATH+=:/usr/sbin
 
-	./configure		\
-	--prefix=/usr		\
-	--enable-cmdlib		\
-	--enable-pkgconfig	\
-	--enable-usev_sync
+	./configure \
+	CONFIG_SHELL=/bin/bash \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-cmdlib \
+    --enable-dmeventd \
+    --enable-lvmpolld \
+    --enable-pkgconfig \
+    --enable-readline \
+    --enable-udev_rules \
+    --enable-udev_sync \
+    --enable-write_install \
+    --with-cache=internal \
+    --with-default-dm-run-dir=/run \
+    --with-default-locking-dir=/run/lock/lvm \
+    --with-default-pid-dir=/run \
+    --with-default-run-dir=/run/lvm \
+    --with-libexecdir=/usr/lib/lvm2 \
+    --with-systemdsystemunitdir=/usr/lib/systemd/system \
+    --with-thin=internal \
+    --with-udev-prefix=/usr
 
 	make
 }

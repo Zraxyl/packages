@@ -1,14 +1,28 @@
 pkgname=eglexternalplatform
-pkgver=1.1
+pkgver=1.2
 pkgrel=1
 arch=(x86_64)
+depends=(libglvnd)
 makedepends=(git)
-commitid=7c8f8e2218e46b1a4aa9538520919747f1184d86  # tags/1.1
-source=("git+https://github.com/NVIDIA/eglexternalplatform.git#commit=$commitid")
+source=("https://github.com/NVIDIA/eglexternalplatform/archive/refs/tags/1.2.tar.gz")
+
+prepare() {
+	mkdir -p build
+}
+
+build() {
+	cd build
+
+	meson \
+        --prefix=/usr \
+        --buildtype=release \
+	../$pkgname-$pkgver
+
+	ninja
+}
 
 package() {
-    cd $pkgname
+	cd build
 
-    install -Dt "$pkgdir/usr/include/EGL" -m644 interface/*
-    install -Dt "$pkgdir/usr/share/pkgconfig" -m644 *.pc
+	DESTDIR=$pkgdir ninja install
 }

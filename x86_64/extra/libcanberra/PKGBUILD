@@ -1,6 +1,6 @@
 pkgname=libcanberra
 pkgver=0.30
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 depends=(libvorbis alsa-lib pulseaudio libvorbis sound-theme-freedesktop)
 makedepends=(intltool tdb gtk2+ gtk3+)

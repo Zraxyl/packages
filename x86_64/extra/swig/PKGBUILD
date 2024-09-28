@@ -1,24 +1,30 @@
 pkgname=swig
-pkgver=4.0.2
+pkgver=4.2.1
 pkgrel=1
 arch=('x86_64')
-depends=('pcre' 'gcc')
-source=(https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz
-        jdk17.patch
-        python310.patch)
+depends=('pcre' 'zlib' 'gcc')
+source=(https://github.com/swig/swig/archive/refs/tags/v$pkgver.tar.gz
+	https://github.com/swig/swig/commit/3d515751.patch)
 
 prepare() {
 	cd ${pkgname}-${pkgver}
-	patch -Np1 -i ../jdk17.patch
 
-	# https://github.com/swig/swig/issues/2044
-	patch -Np1 -i ../python310.patch
+	# https://github.com/swig/swig/issues/2858
+	sed '/stl_no_default_constructor/d' -i Examples/test-suite/common.mk
+
+	# https://github.com/swig/swig/issues/2859
+	sed '/li_std_list/d' -i Examples/test-suite/java/Makefile.in
+
+	patch -p1 -i ../3d515751.patch
+
+	./autogen.sh
+
+	./configure \
+	--prefix=/usr
 }
 
 build() {
 	cd ${pkgname}-${pkgver}
-
-	./configure --prefix=/usr
 
 	make
 }

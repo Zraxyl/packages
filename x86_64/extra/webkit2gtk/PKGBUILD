@@ -1,43 +1,89 @@
 pkgname=webkit2gtk
-pkgver=2.36.4
+pkgver=2.41.91
 pkgrel=1
 arch=('x86_64')
-depends=(cairo gtk3+ icu libgudev libsecret libsoup libtasn1 libwebp mesa
+depends=(cairo gtk3+ gtk4+ icu libgudev libsecret libsoup libtasn1 libwebp mesa
 	openjpeg ruby3 sqlite3 which wpebackend-fdo gobject-introspection
-	hicolor-icon-theme libnotify gtk-doc harfbuzz wayland)
-makedepends=(cmake)
+	hicolor-icon-theme libnotify gtk-doc harfbuzz wayland bubblewrap
+	woff2 libavif unifdef xdg-dbus-proxy)
+makedepends=(cmake python3-pip)
 source=(https://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz)
 
+export PATH=~/.local/bin:$PATH
+
 prepare() {
-	mkdir -p build
+	mkdir -p build build3
+
+	pip install setuptools
+
+	pip install gi-docgen
+
+	cd $srcdir/build
+
+	cmake \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_SKIP_RPATH=ON \
+	-D PORT=GTK \
+	-D LIB_INSTALL_DIR=/usr/lib \
+	-D USE_LIBHYPHEN=OFF \
+	-D ENABLE_GLES2=ON \
+	-D ENABLE_GAMEPAD=OFF \
+	-D DBUS_PROXY_EXECUTABLE=/usr/bin/xdg-dbus-proxy \
+	-D ENABLE_INTROSPECTION=ON \
+	-D ENABLE_SPELLCHECK=OFF \
+	-D ENABLE_MINIBROWSER=ON \
+	-D GSTREAMER_ENABLE=ON \
+	-D USE_GTK4=ON \
+	-D USE_WOFF2=ON \
+	-D USE_AVIF=ON \
+	-D USE_JPEGXL=ON \
+	-D USE_WPE_RENDERER=ON \
+	-D ENABLE_BUBBLEWRAP_SANDBOX=ON \
+	-Wno-dev \
+	-G Ninja \
+	../webkitgtk-$pkgver
+
+	cd $srcdir/build3
+
+	cmake \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_SKIP_RPATH=ON \
+	-D PORT=GTK \
+	-D LIB_INSTALL_DIR=/usr/lib \
+	-D USE_LIBHYPHEN=OFF \
+	-D ENABLE_GLES2=ON \
+	-D ENABLE_GAMEPAD=OFF \
+	-D DBUS_PROXY_EXECUTABLE=/usr/bin/xdg-dbus-proxy \
+	-D ENABLE_INTROSPECTION=ON \
+	-D ENABLE_SPELLCHECK=OFF \
+	-D ENABLE_MINIBROWSER=ON \
+	-D GSTREAMER_ENABLE=ON \
+	-D USE_GTK4=OFF \
+	-D USE_WOFF2=ON \
+	-D USE_AVIF=ON \
+	-D USE_JPEGXL=ON \
+	-D USE_WPE_RENDERER=ON \
+	-D ENABLE_BUBBLEWRAP_SANDBOX=ON \
+	-Wno-dev \
+	-G Ninja \
+	../webkitgtk-$pkgver
+
 }
 
 build() {
-	cd build
+	cd $srcdir/build
+	ninja
 
-	cmake					\
-	-D CMAKE_BUILD_TYPE=Release		\
-	-D CMAKE_INSTALL_PREFIX=/usr		\
-	-D CMAKE_SKIP_RPATH=ON			\
-	-D PORT=GTK				\
-	-D LIB_INSTALL_DIR=/usr/lib		\
-	-D USE_LIBHYPHEN=OFF			\
-	-D ENABLE_GLES2=ON			\
-	-D ENABLE_GAMEPAD=OFF			\
-	-D ENABLE_SPELLCHECK=OFF		\
-	-D ENABLE_MINIBROWSER=ON		\
-	-D GSTREAMER_ENABLE=ON			\
-	-D USE_WOFF2=OFF			\
-	-D USE_SOUP2=ON				\
-	-D USE_WPE_RENDERER=ON			\
-	-D ENABLE_BUBBLEWRAP_SANDBOX=OFF	\
-	-Wno-dev -G Ninja ../webkitgtk-$pkgver
-
+	cd $srcdir/build3
 	ninja
 }
 
 package() {
-	cd build
+	cd $srcdir/build3
+	DESTDIR=$pkgdir ninja install
 
+	cd $srcdir/build
 	DESTDIR=$pkgdir ninja install
 }

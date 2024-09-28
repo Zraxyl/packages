@@ -1,0 +1,35 @@
+pkgname=volk
+pkgver=3.1.2
+pkgrel=1
+cpuver=0.9.0
+pkgdesc="The Vector-Optimized Library of Kernels from Gnuradio"
+arch=(x86_64)
+depends=(gcc orc python3)
+makedepends=(cmake python3-pip)
+source=(volk-$pkgver.tgz::https://github.com/gnuradio/volk/archive/v$pkgver.tar.gz
+	cpufeatures-$cpuver.tgz::https://github.com/google/cpu_features/archive/v$cpuver.tar.gz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	rm -rf cpu_features
+
+	ln -sf $srcdir/cpu_features-$cpuver cpu_features
+
+	pip install mako
+}
+
+build() {
+	cmake \
+	-S $pkgname-$pkgver \
+	-B build \
+	-D PYTHON_EXECUTABLE=/usr/bin/python3 \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-W no-dev
+
+	cmake --build build
+}
+
+package() {
+	DESTDIR="$pkgdir" cmake --install build
+}

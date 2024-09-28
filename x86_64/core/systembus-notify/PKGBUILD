@@ -1,9 +1,10 @@
 pkgname=systembus-notify
 pkgver=1.1
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(systemd glibc)
 makedepends=(gcc)
+backup=("etc/xdg/autostart/systembus-notify.desktop")
 source=(https://github.com/rfjakob/$pkgname/archive/v$pkgver/$pkgname-$pkgver.tar.gz)
 
 build() {

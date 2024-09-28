@@ -1,35 +1,50 @@
 pkgname=phonon
-pkgver=4.11.1
+pkgver=4.12.0
 pkgrel=2
 arch=('x86_64')
-depends=(glib2 qt5 pulseaudio phonon-backend-gstreamer)
+depends=(glib2 qt5 qt6 pulseaudio phonon-backend-gstreamer)
 makedepends=(cmake extra-cmake-modules)
 source=(https://download.kde.org/stable/phonon/$pkgver/phonon-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
 
-	mkdir -p build
+	mkdir -p build5 build6
 }
 
 build() {
-	cd $pkgname-$pkgver/build
+	cd $pkgname-$pkgver
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cd build5
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D PHONON_BUILD_QT6=OFF \
+	..
+
+	make
+
+	cd ../build6
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D PHONON_BUILD_QT6=ON \
 	..
 
 	make
 }
 
 package() {
-	cd $pkgname-$pkgver/build
+	cd $pkgname-$pkgver
 
+	cd build5
 	make DESTDIR=$pkgdir install
 
-        # Hacky way but its how i deal with it for now
-        mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
-        cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
-        rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+	cd ../build6
+	make DESTDIR=$pkgdir install
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
 }

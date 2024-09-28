@@ -1,0 +1,32 @@
+pkgname=glib-networking
+pkgver=2.80.0
+ever=2.80
+pkgrel=1
+arch=('x86_64')
+depends=(glib2 gnutls openssl gsettings-desktop-schemas libproxy)
+source=(https://download.gnome.org/sources/$pkgname/$ever/$pkgname-$pkgver.tar.xz)
+
+build() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build && cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	-D libproxy=enabled \
+	-D gnome_proxy=enabled \
+	-D environment_proxy=enabled \
+	-D openssl=enabled \
+	-D gnutls=enabled \
+	..
+
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+	
+	DESTDIR=$pkgdir ninja install
+}

@@ -5,9 +5,9 @@ Wants=network-pre.target
 
 [Service]
 Type=oneshot
-ExecStart=/bin/sh -c 'ebtables-restore < /etc/ebtables.conf'
-ExecReload=/bin/sh -c 'ebtables-restore < /etc/ebtables.conf'
-ExecStop=/bin/sh -c 'ebtables-restore < /dev/null'
+ExecStart=/bin/bash -c 'ebtables-restore < /etc/ebtables.conf'
+ExecReload=/bin/bash -c 'ebtables-restore < /etc/ebtables.conf'
+ExecStop=/bin/bash -c 'ebtables-restore < /dev/null'
 RemainAfterExit=yes
 
 [Install]

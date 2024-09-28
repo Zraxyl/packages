@@ -1,5 +1,5 @@
 pkgname=openjpeg
-pkgver=2.5.0
+pkgver=2.5.2
 pkgrel=1
 arch=('x86_64')
 depends=(glibc lcms libpng libtiff)
@@ -15,10 +15,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_BUILD_TYPE=Release	\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D BUILD_STATIC_LIBS=ON	\
+	cmake \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D BUILD_STATIC_LIBS=ON \
 	..
 
 	make

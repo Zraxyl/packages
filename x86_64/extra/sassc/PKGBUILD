@@ -1,6 +1,6 @@
 pkgname=sassc
 pkgver=3.6.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(libsass)
 makedepends=(base-devel)

@@ -1,29 +1,19 @@
 pkgname=libxslt
-pkgver=1.1.34
+pkgver=1.1.42
 pkgrel=1
 arch=(x86_64)
 depends=(libxml2 libgcrypt)
 makedepends=(git docbook-xsl)
 checkdepends=(docbook-xml python3)
-commitid=3653123f992db24cec417d12600f4c67388025e3  # tags/v1.1.34^0
+commitid=165219e5a3fc79cc4f529785e6e60f19a4b9222a  # tags/v1.1.42
 source=("git+https://gitlab.gnome.org/GNOME/libxslt.git#commit=$commitid"
-        0001-Make-generate-id-deterministic.patch
-        0002-Fix-manpage.patch)
+        0001-runtest-Print-output-causing-failure.patch)
 
 prepare() {
   cd $pkgname
 
-  # Fix build with libxml libxml2-2.9.12
-  git cherry-pick -n 9ae2f94df1721e002941b40665efb762aefcea1a
-  git cherry-pick -n 824657768aea2cce9c23e72ba8085cb5e44350c7
-  git cherry-pick -n 77c26bad0433541f486b1e7ced44ca9979376908
-
   # Make xsltproc output reproducible for packages which use it to generate documentation
-  patch -Np1 -i ../0001-Make-generate-id-deterministic.patch
-
-  # Fix manpage whitespace and rebuild the manpage
-  patch -Np1 -i ../0002-Fix-manpage.patch
-  rm doc/xsltproc.1
+  patch -Np1 -i ../0001-runtest-Print-output-causing-failure.patch
 
   NOCONFIGURE=1 ./autogen.sh
 }
@@ -31,7 +21,10 @@ prepare() {
 build() {
     cd $pkgname
 
-    ./configure --prefix=/usr
+    ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-python=/usr/bin/python3
 
     make
 }

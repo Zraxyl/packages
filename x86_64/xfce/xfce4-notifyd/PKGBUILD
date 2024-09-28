@@ -1,16 +1,18 @@
 pkgname=xfce4-notifyd
-pkgver=0.9.4
+pkgver=0.9.6
 xver=0.9
 pkgrel=1
 arch=('x86_64')
-depends=(xfce4-panel libnotify libxfce4ui)
+depends=(xfce4-panel libnotify libcanberra libxfce4ui)
+makedepends=(xfce4-dev-tools)
 source=(https://archive.xfce.org/src/apps/$pkgname/$xver/$pkgname-$pkgver.tar.bz2)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

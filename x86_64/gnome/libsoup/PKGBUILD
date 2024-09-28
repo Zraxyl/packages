@@ -1,11 +1,12 @@
 pkgname=libsoup
-pkgver=3.4.4
+pkgver=3.6.0
+ever=3.6
 pkgrel=1
 arch=('x86_64')
-depends=(glib-networking libpsl libxml2 sqlite3)
+depends=(glib-networking nghttp2 krb5 libpsl libxml2 sqlite3)
 # We need clang here as gcc has issues with -R arg
 makedepends=(clang llvm)
-source=(https://download.gnome.org/sources/$pkgname/3.4/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/$ever/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
@@ -14,10 +15,11 @@ build() {
 
 	CC=clang \
 	CXX=clang++ \
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
-	-D vapi=enabled		\
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D vapi=enabled \
+	--wrap-mode=nofallback \
 	..
 
 	ninja

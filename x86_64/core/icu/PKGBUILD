@@ -1,32 +1,62 @@
 pkgname=icu
-pkgver=72.1
-pkgrel=2
+pkgver=75.1
+rver=75-1
+pkgrel=1
 arch=('x86_64')
-depends=(glibc)
-makedepends=(llvm doxygen wget)
-source=(https://github.com/unicode-org/icu/releases/download/release-72-1/icu4c-72_1-src.tgz)
+comp_level="icu-74"
+depends=(glibc gcc bash)
+makedepends=(llvm clang doxygen wget)
+source=(https://github.com/unicode-org/icu/archive/refs/tags/release-${rver}.tar.gz
+	ICU-22132.patch)
 
 prepare() {
+	##
+	# This weird thing you see is an compatability layer for packages that havent yet been
+	# compiled with icu changes we do here.
+	##
+
 	mkdir -p comp && cd comp
 
-	wget https://github.com/unicode-org/icu/releases/download/release-69-1/icu4c-69_1-src.tgz
-	tar -xf icu4c-69_1-src.tgz
-	mv icu icu-69
+	#wget https://github.com/unicode-org/icu/releases/download/release-69-1/icu4c-69_1-src.tgz
+	#tar -xf icu4c-69_1-src.tgz
+	#mv icu icu-69
 
-	wget https://github.com/unicode-org/icu/releases/download/release-70-1/icu4c-70_1-src.tgz
-	tar -xf icu4c-70_1-src.tgz
-	mv icu icu-70
+	#wget https://github.com/unicode-org/icu/releases/download/release-70-1/icu4c-70_1-src.tgz
+	#tar -xf icu4c-70_1-src.tgz
+	#mv icu icu-70
+
+	#wget https://github.com/unicode-org/icu/releases/download/release-72-1/icu4c-72_1-src.tgz
+	#tar -xf icu4c-72_1-src.tgz
+	#mv icu icu-72
+
+	wget https://github.com/unicode-org/icu/releases/download/release-74-1/icu4c-74_1-src.tgz
+        tar -xf icu4c-74_1-src.tgz
+        mv icu icu-74
+
+	for ver in $comp_level
+	do
+		cd $ver/source
+		./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man
+	done
+
+	cd $srcdir/$pkgname-release-$rver/icu4c/source
+
+	patch -p1 -i $srcdir/ICU-22132.patch
+
+	./configure \
+	--prefix=/usr \
+	--mandir=/usr/share/man
 }
 
 build() {
 	# Compatability layer so older apps/prgrams can work still
 	cd comp/
 
-	for ver in icu-69 icu-70
+	for ver in $comp_level
 	do
 		cd $ver/source
-		./configure \
-		--prefix=/usr
 
 		make
 
@@ -34,10 +64,7 @@ build() {
 	done
 
 	# Compile new version here
-	cd $srcdir/$pkgname/source
-
-	./configure \
-	--prefix=/usr
+	cd $srcdir/$pkgname-release-$rver/icu4c/source
 
 	make
 }
@@ -45,7 +72,7 @@ build() {
 package() {
 	# Compatability
 	cd comp/
-	for ver in icu-69 icu-70
+	for ver in $comp_level
 	do
 		cd $ver/source
 		make DESTDIR=$pkgdir install
@@ -53,6 +80,6 @@ package() {
 	done
 
 	# Current release
-	cd $srcdir/$pkgname/source
+	cd $srcdir/$pkgname-release-$rver/icu4c/source
 	make DESTDIR=$pkgdir install
 }

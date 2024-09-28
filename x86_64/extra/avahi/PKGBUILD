@@ -1,6 +1,6 @@
 pkgname=avahi
 pkgver=v0.8.4.5
-pkgrel=1
+pkgrel=2
 arch=(x86_64)
 depends=(libdaemon dbus expat gdbm glib2 libcap libevent nss gobject-introspection python3-gobject python3-dbus)
 makedepends=(git m4 gtk3+)
@@ -9,6 +9,8 @@ source=(git+https://git.martinvlba.eu/Evolinx/avahi.git#commit=$commitid)
 
 prepare() {
 	cd $pkgname
+
+	autoreconf -fvi
 
 	./configure \
 	--prefix=/usr \
@@ -25,7 +27,7 @@ prepare() {
 build() {
 	cd $pkgname
 
-	make -j2
+	make -j1
 }
 
 package() {
@@ -34,5 +36,5 @@ package() {
 	make DESTDIR=$pkgdir install
 
 	echo 'u avahi - "Avahi mDNS/DNS-SD daemon"' |
-		install -Dm644 /dev/stdin "$pkgdir/usr/lib/sysusers.d/$pkgname.conf"
+	install -Dm644 /dev/stdin "$pkgdir/usr/lib/sysusers.d/$pkgname.conf"
 }

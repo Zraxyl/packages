@@ -1,8 +1,8 @@
 pkgname=dhcpcd
-pkgver=10.0.4
+pkgver=10.0.10
 pkgrel=1
 arch=('x86_64')
-depends=(glibc systemd libgudev libmd)
+depends=(glibc systemd openssl openresolv libgudev libmd)
 install=$pkgname.install
 source=(https://github.com/NetworkConfiguration/dhcpcd/releases/download/v$pkgver/dhcpcd-$pkgver.tar.xz
 	dhcpcd.install

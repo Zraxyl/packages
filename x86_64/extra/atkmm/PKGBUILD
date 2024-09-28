@@ -1,9 +1,9 @@
 pkgname=atkmm
-pkgver=2.28.2
+pkgver=2.36.3
 pkgrel=1
 arch=('x86_64')
 depends=(atk glibmm)
-source=(https://download.gnome.org/sources/$pkgname/2.28/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/2.36/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -14,9 +14,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
 	..
 
 	ninja

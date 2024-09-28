@@ -1,30 +1,18 @@
-diff -Naur filezilla-3.60.1/configure filezilla-3.60.1/configure
---- filezilla-3.60.1/configure	2022-06-01 16:58:25.000000000 +0300
-+++ filezilla-3.60.1/configure	2022-07-07 13:16:19.166690310 +0300
-@@ -18976,11 +18976,6 @@
-         equivalent variable and wxWidgets version is $MIN_WX_VERSION or above.
-     " "$LINENO" 5
-   fi
--  if test "${WX_VERSION_MAJOR}.${WX_VERSION_MINOR}" = "3.1"; then
--    as_fn_error $? "You must use wxWidgets 3.0.x, development versions of wxWidgets are not supported." "$LINENO" 5
--  elif test "${WX_VERSION_MAJOR}.${WX_VERSION_MINOR}" != "3.0"; then
--    as_fn_error $? "You must use wxWidgets 3.0.x, wxWidgets 3.2 or higher is not yet supported." "$LINENO" 5
--  fi
- 
-   if test "${WX_VERSION_MAJOR}.${WX_VERSION_MINOR}" = "3.0"; then
-     MAC_REQUIRES_AQUA="YES"
-diff -Naur filezilla-3.60.1/configure.ac filezilla-3.60.1/configure.ac
---- filezilla-3.60.1/configure.ac	2022-06-01 16:57:20.000000000 +0300
-+++ filezilla-3.60.1/configure.ac	2022-07-07 13:16:11.630736033 +0300
-@@ -185,11 +185,6 @@
+diff -aur aaa/configure.ac bbb/configure.ac
+--- aaa/configure.ac	2022-10-27 15:25:10.000000000 +0200
++++ bbb/configure.ac	2022-10-27 21:33:52.976284207 +0200
+@@ -178,13 +178,6 @@
          equivalent variable and wxWidgets version is $MIN_WX_VERSION or above.
      ])
    fi
 -  if test "${WX_VERSION_MAJOR}.${WX_VERSION_MINOR}" = "3.1"; then
 -    AC_MSG_ERROR([You must use wxWidgets 3.0.x, development versions of wxWidgets are not supported.])
 -  elif test "${WX_VERSION_MAJOR}.${WX_VERSION_MINOR}" != "3.0"; then
--    AC_MSG_ERROR([You must use wxWidgets 3.0.x, wxWidgets 3.2 or higher is not yet supported.])
+-    if ! echo "$WX_CPPFLAGS" | grep __WXMAC__ > /dev/null; then
+-      AC_MSG_ERROR([You must use wxWidgets 3.0.x, wxWidgets 3.2 or higher is not yet supported.])
+-    fi
 -  fi
-   
+ 
    if test "${WX_VERSION_MAJOR}.${WX_VERSION_MINOR}" = "3.0"; then
      MAC_REQUIRES_AQUA="YES"
+

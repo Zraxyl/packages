@@ -1,19 +1,19 @@
 pkgname=ninja
-pkgver=1.10.2
-pkgrel=3
+pkgver=1.12.1
+pkgrel=1
 arch=('x86_64')
 depends=('python3')
-source=(https://ftp.osuosl.org/pub/lfs/lfs-packages/11.0/ninja-$pkgver.tar.gz)
+source=(https://github.com/ninja-build/ninja/archive/refs/tags/v$pkgver.tar.gz)
 
 build() {
         cd $pkgname-$pkgver
 
-        sed -i '/int Guess/a \
-	int   j = 0;\
-	char* jobs = getenv( "NINJAJOBS" );\
-	if ( jobs != NULL ) j = atoi( jobs );\
-	if ( j > 0 ) return j;\
-	' src/ninja.cc
+        #sed -i '/int Guess/a \
+	#int   j = 0;\
+	#char* jobs = getenv( "NINJAJOBS" );\
+	#if ( jobs != NULL ) j = atoi( jobs );\
+	#if ( j > 0 ) return j;\
+	#' src/ninja.cc
 	
 	python3 configure.py --bootstrap
 	

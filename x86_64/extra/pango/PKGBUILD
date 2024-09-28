@@ -1,10 +1,10 @@
 pkgname=pango
-pkgver=1.50.7
+pkgver=1.54.0
 pkgrel=1
 arch=('x86_64')
 depends=(fontconfig freetype2 libxft harfbuzz fribidi glib2 cairo)
 makedepends=(gobject-introspection)
-source=(https://download.gnome.org/sources/$pkgname/1.50/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/1.54/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	mkdir -p $pkgname-$pkgver/build
@@ -13,10 +13,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
-	--wrap-mode=nofallback	\
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	--wrap-mode=nofallback \
 	..
 
 	ninja

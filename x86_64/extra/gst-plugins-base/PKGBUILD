@@ -1,5 +1,5 @@
 pkgname=gst-plugins-base
-pkgver=1.22.4
+pkgver=1.24.7
 pkgrel=1
 arch=('x86_64')
 depends=(

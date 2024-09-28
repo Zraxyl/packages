@@ -1,8 +1,8 @@
 pkgname=json-c
 arch=(x86_64)
-pkgver=0.15
+pkgver=0.18
 pkgrel=1
-makedepends=(cmake)
+makedepends=(cmake ninja)
 source=(https://s3.amazonaws.com/json-c_releases/releases/$pkgname-$pkgver.tar.gz)
 
 
@@ -10,17 +10,19 @@ build() {
 	mkdir build
 	cd build
 
-	cmake				\
-	-DCMAKE_INSTALL_PREFIX=/usr	\
-	-DCMAKE_BUILD_TYPE=Release	\
-	-DBUILD_STATIC_LIBS=OFF		\
+	cmake \
+	-G Ninja \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D ENABLE_THREADING=ON \
+	-D ENABLE_RDRAND=OFF \
 	../$pkgname-$pkgver
 
-	make
+	ninja
 }
 
 package() {
 	cd build
 
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir ninja install
 }

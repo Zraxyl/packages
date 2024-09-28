@@ -1,0 +1,27 @@
+pkgname=gtk-layer-shell
+pkgver=0.9.0
+pkgrel=1
+arch=(x86_64)
+depends=(gtk3+ wayland)
+makedepends=(gobject-introspection gtk-doc meson ninja)
+source=(https://github.com/wmww/$pkgname/archive/refs/tags/v$pkgver.tar.gz)
+
+prepare() {
+	meson \
+	$pkgname-$pkgver \
+	build \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

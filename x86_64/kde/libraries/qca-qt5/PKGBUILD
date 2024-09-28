@@ -1,8 +1,9 @@
 pkgname=qca-qt5
-pkgver=2.3.6
+pkgver=2.3.7
 pkgrel=1
 arch=(x86_64)
-depends=(qt5 nss pkcs11-helper botan)
+depends=(qt5 nss pkcs11-helper botan libgcrypt sasl2 openssl
+	ca-certificates)
 makedepends=(cmake doxygen qt5)
 source=(https://download.kde.org/stable/qca/$pkgver/qca-$pkgver.tar.xz)
 

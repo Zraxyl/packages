@@ -1,13 +1,14 @@
 pkgname=qt5
-pkgver=5.15.10
-pkgrel=2
+pkgver=5.15.15
+pkgrel=1
 arch=('x86_64')
 depends=(xorg-server xwayland alsa-lib cups glib2 harfbuzz icu libjpeg libpng libc++ llvm
 	libtiff libwebp libxkbcommon mesa pcre2 sqlite3 wayland xcb-util-image xcb-util-keysyms hunspell
 	xcb-util-renderutil xcb-util-wm libinput pciutils pulseaudio bluez libglvnd fontconfig double-conversion
 	gstreamer gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly ffmpeg pipewire jasper openal)
 makedepends=(extra-cmake-modules perl gtk3+ clang)
-commitid=3ea5c5562e52a5389095f71cfbba0ac8cca02ecc
+commitid=363456a62a1700ae6481a4a51fa8fd5781d0af86 # 5.15.15
+#commitid=3ea5c5562e52a5389095f71cfbba0ac8cca02ecc STABLE
 #commitid=d2861d63bfa74b1261b5e13aaeaee088a9e33800 # STABLE 5.15.10 old
 url=https://invent.kde.org/qt/qt/qt5.git
 source=(
@@ -22,6 +23,8 @@ source=(
 
 prepare() {
 	cd qt5
+
+	rm -rf qtlocation/src/3rdparty/mapbox-gl-native
 
 	# Fix git config ( Lets remove un-needed modules for less download size
 	git submodule deinit qtwebengine
@@ -51,6 +54,11 @@ prepare() {
 	# Reset all submodules to original changes
 	git submodule foreach --recursive git reset --hard
 
+	# Update mapgl project
+	rm -rf qtlocation/src/3rdparty/mapbox-gl-native
+	git clone https://github.com/maplibre/maplibre-native.git --depth=1 \
+	qtlocation/src/3rdparty/mapbox-gl-native
+
 	# Lets run configure only in prepare so it wont get reconfigured later on
 	# qtdocgallery is disabled as of its errors when compiled
 	./configure \
@@ -68,13 +76,20 @@ prepare() {
 	-opensource \
 	-system-sqlite \
 	-nomake tests \
+	-nomake examples \
 	-no-mimetype-database \
-    -no-use-gold-linker \
-    -no-reduce-relocations \
+	-no-use-gold-linker \
+	-no-reduce-relocations \
 	-no-rpath \
 	-skip qtwebengine \
 	-skip qtdocgallery \
 	-journald
+
+	# QTLocation Patch/Hack
+	#export bdir=qtlocation/src/3rdparty/mapbox-gl-native/deps/boost
+	#rm -rf ${bdir}/1.65.1/include/boost
+	#ln -sf /usr/include/boost ${bdir}/1.65.1/include/boost
+	#unset bdir
 }
 
 build() {

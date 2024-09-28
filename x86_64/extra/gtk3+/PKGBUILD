@@ -1,7 +1,7 @@
 opkgname=gtk+
 pkgname=gtk3+
-pkgver=3.24.36
-pkgrel=1
+pkgver=3.24.43
+pkgrel=2
 arch=('x86_64')
 install=gtk3.install
 depends=(atk cairo libxcursor libxinerama libxrandr libxi libepoxy gdk-pixbuf
@@ -40,6 +40,8 @@ build() {
 	-D gtk_doc=true \
 	../$opkgname-$pkgver
 
+	CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
+
 	meson compile
 }
 
@@ -56,6 +58,8 @@ gtk-font-name = Cantarell 11
 END
 
 	install -Dt "$pkgdir/usr/share/libalpm/hooks" -m644 $srcdir/gtk-query-immodules-3.0.hook
+
+	rm $pkgdir/usr/bin/gtk-update-icon-cache
 
 	# Install .la files
 	cp -rf $srcdir/la_support/* $pkgdir/usr/lib/

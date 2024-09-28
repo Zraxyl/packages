@@ -1,0 +1,27 @@
+pkgname=rdfind
+pkgver=1.6.0
+pkgrel=1
+arch=('x86_64')
+depends=(glibc nettle gcc)
+source=(https://github.com/pauldreik/rdfind/archive/refs/tags/releases/$pkgver.tar.gz)
+
+prepare() {
+	cd $pkgname-releases-$pkgver
+
+	./bootstrap.sh
+
+	./configure \
+	--prefix=/usr
+}
+
+build() {
+	cd $pkgname-releases-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-releases-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

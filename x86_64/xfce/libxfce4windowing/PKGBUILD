@@ -1,28 +1,34 @@
 pkgname=libxfce4windowing
-pkgver=4.19.2
+pkgver=4.19.4
 xver=4.19
 pkgrel=1
 arch=('x86_64')
-depends=('gdk-pixbuf' 'glib2' 'gtk+' 'libwnck' 'libx11' 'wayland')
+depends=('gdk-pixbuf' 'glib2' 'gtk+' 'libwnck' 'libx11' 'wayland' 'libdisplay-info')
 makedepends=('gobject-introspection' 'gtk-doc')
 source=(https://archive.xfce.org/src/xfce/$pkgname/$xver/$pkgname-$pkgver.tar.bz2)
 
-build() {
-  cd $pkgname-$pkgver
-  pip install pygments
+prepare() {
+    cd $pkgname-$pkgver
+    pip install pygments
 
-  ./configure \
+    ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
     --enable-gtk-doc \
     --enable-wayland \
     --enable-x11 \
     --disable-debug
-  make
+}
+
+build() {
+    cd $pkgname-$pkgver
+
+    make
 }
 
 package() {
-  cd $pkgname-$pkgver
-  make DESTDIR="$pkgdir" install
+    cd $pkgname-$pkgver
+
+    make DESTDIR="$pkgdir" install
 }
 

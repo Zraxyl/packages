@@ -1,0 +1,30 @@
+pkgname=dav1d
+pkgver=1.4.3
+pkgrel=1
+arch=(x86_64)
+depends=(glibc xxhash)
+makedepends=(meson nasm ninja base-devel)
+source=(https://downloads.videolan.org/pub/videolan/$pkgname/$pkgver/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	rm -rf build && mkdir -p build
+
+	meson \
+	--prefix=/usr \
+	-D testdata_tests=false \
+	-D enable_docs=false \
+	$pkgname-$pkgver \
+	build
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

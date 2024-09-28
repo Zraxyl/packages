@@ -1,5 +1,5 @@
 pkgname=xfconf
-pkgver=4.19.1
+pkgver=4.19.2
 xver=4.19
 pkgrel=1
 arch=('x86_64')
@@ -10,12 +10,14 @@ source=(https://archive.xfce.org/src/xfce/$pkgname/$xver/$pkgname-$pkgver.tar.bz
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr		\
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
 	--libdir=/usr/lib
 }
 
 package() {
 	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

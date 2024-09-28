@@ -7,15 +7,15 @@ makedepends=(cmake doxygen git ninja nodejs python3-pip)
 source=(https://github.com/fmtlib/fmt/releases/download/10.1.1/fmt-10.1.1.zip)
 
 prepare() {
-	cd $pkgname-$pkgver
+    cd $pkgname-$pkgver
 
-	rm -rf build
-	mkdir build
+    rm -rf build
+    mkdir build
 
-	cd build
+    cd build
 
-	cmake \
-	-G Ninja \
+    cmake \
+    -G Ninja \
     -D CMAKE_BUILD_TYPE=Releaase \
     -D CMAKE_INSTALL_PREFIX=/usr \
     -D BUILD_SHARED_LIBS=ON \

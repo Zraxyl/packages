@@ -1,11 +1,11 @@
 pkgname=gnome-online-accounts
-pkgver=3.48.0
+pkgver=3.52.0
 pkgrel=1
 arch=('x86_64')
 depends=(gcr json-glib rest webkit2gtk gobject-introspection
-	libsoup krb5)
+	libsoup krb5 libadwaita)
 makedepends=(vala)
-source=(https://download.gnome.org/sources/gnome-online-accounts/3.48/gnome-online-accounts-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/gnome-online-accounts/3.52/gnome-online-accounts-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -19,6 +19,8 @@ build() {
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
+	--wrap-mode=nofallback \
+	-D documentation=false \
 	..
 
 	ninja

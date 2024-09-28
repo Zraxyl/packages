@@ -1,10 +1,18 @@
 pkgname=jbigkit
 pkgver=2.1
-pkgrel=1
+pkgrel=2
 arch=(x86_64)
 depends=(glibc)
 makedepends=(gcc)
-source=(https://www.cl.cam.ac.uk/~mgk25/download/jbigkit-$pkgver.tar.gz)
+source=(https://www.cl.cam.ac.uk/~mgk25/download/jbigkit-$pkgver.tar.gz
+	bshared.patch)
+
+prepare() {
+	rm -rf shared
+	cp -rf $pkgname-$pkgver shared
+
+	patch -p1 -i $srcdir/bshared.patch -d shared/
+}
 
 build() {
 	cd "$srcdir"/$pkgname-$pkgver
@@ -13,13 +21,22 @@ build() {
 	[ "$CARCH" == "x86_64" ] && export CFLAGS="$CFLAGS -fPIC"
 
 	make CFLAGS="$CFLAGS"
+
+	cd $srcdir/shared
+	make CFLAGS="$CFLAGS"
 }
 
 package() {
 	cd $pkgname-$pkgver
 
+	# static libs
 	install -D -m644 libjbig/libjbig.a "$pkgdir"/usr/lib/libjbig.a
 	install -D -m644 libjbig/libjbig85.a "$pkgdir"/usr/lib/libjbig85.a
+
+	# shared libs
+	install -D -m755 ../shared/libjbig/*.so.* -t "$pkgdir"/usr/lib/
+
+	# Headers
 	install -D -m644 libjbig/jbig.h "$pkgdir"/usr/include/jbig.h
 	install -D -m644 libjbig/jbig_ar.h "$pkgdir"/usr/include/jbig_ar.h
 	install -D -m644 libjbig/jbig85.h "$pkgdir"/usr/include/jbig85.h

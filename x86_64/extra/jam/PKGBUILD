@@ -1,0 +1,26 @@
+pkgname=jam
+pkgver=2.5.2
+pkgrel=1
+arch=(x86_64)
+depends=(glibc)
+makedepends=(make gcc glibc zip unzip)
+source=(http://argyllcms.com/ajam-2.5.2-1.3.3.tgz)
+
+build() {
+	cd a$pkgname-$pkgver-1.3.3
+
+	# START OF HACK - hate to do these things but jam is dead with broken src ( maybe fork and fix? )
+	export CFLAGS="-W -Wall -Wno-implicit-int -Wno-implicit-function-declaration -Wno-incompatible-pointer-types"
+	echo "gcc ${CFLAGS} " '$@' > sgcc
+	chmod +x sgcc
+	export PATH="$(pwd):$PATH"
+	# END OF HACK
+
+	make CC=sgcc CFLAGS="$CFLAGS" prefix=/usr
+}
+
+package() {
+	cd a$pkgname-$pkgver-1.3.3
+	
+	make prefix=/usr DESTDIR=$pkgdir install
+}

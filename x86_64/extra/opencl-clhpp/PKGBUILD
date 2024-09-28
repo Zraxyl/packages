@@ -1,26 +1,38 @@
 pkgname=opencl-clhpp
-pkgver=2.0.16
+pkgver=2024.05.08
+mver=2.5.3
+uver=2.6.0
 pkgrel=1
 arch=('x86_64')
 url='https://github.com/KhronosGroup/OpenCL-CLHPP'
-makedepends=('cmake')
-source=("${pkgname}-${pkgver}.tar.gz::https://github.com/KhronosGroup/OpenCL-CLHPP/archive/v${pkgver}.tar.gz")
 depends=('opencl-headers')
+makedepends=('cmake')
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/KhronosGroup/OpenCL-CLHPP/archive/v${pkgver}.tar.gz"
+	cmock-$pkgver.tar.gz::https://github.com/ThrowTheSwitch/CMock/archive/refs/tags/v$mver.tar.gz
+	unity-$uver.tar.gz::https://github.com/ThrowTheSwitch/Unity/archive/refs/tags/v$uver.tar.gz)
+
+prepare() {
+	rm -rf "${srcdir}"/OpenCL-CLHPP-$pkgver/external/CMock
+	mv $srcdir/CMock-$mver "${srcdir}"/OpenCL-CLHPP-$pkgver/external/CMock
+
+	rm -rf "${srcdir}"/OpenCL-CLHPP-$pkgver/external/CMock/vendor/unity
+	mv $srcdir/Unity-$uver "${srcdir}"/OpenCL-CLHPP-$pkgver/external/CMock/vendor/unity
+}
 
 build() {
-	cd "${srcdir}"/OpenCL-CLHPP*/
+	cd "${srcdir}"/OpenCL-CLHPP-$pkgver
 
 	cmake -B build ./ \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D BUILD_DOCS=Off \
 	-D BUILD_EXAMPLES=Off \
-	-D BUILD_TESTS=Off
+	-D CLHPP_BUILD_TESTS=Off
 
 	make -C build
 }
 
 package() {
-	cd "${srcdir}"/OpenCL-CLHPP*/
+	cd "${srcdir}"/OpenCL-CLHPP-$pkgver
 
 	DESTDIR="$pkgdir" make -C build install
 }

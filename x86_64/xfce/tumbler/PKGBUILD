@@ -1,16 +1,17 @@
 pkgname=tumbler
 pkgver=4.19.1
 xver=4.19
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
-depends=(glibc)
+depends=(glibc glib2 curl freetype2 gdk-pixbuf gst-plugins-base libjpeg libpng poppler)
 source=(https://archive.xfce.org/src/xfce/$pkgname/$xver/$pkgname-$pkgver.tar.bz2)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

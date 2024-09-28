@@ -1,13 +1,13 @@
 pkgname=gcr
-pkgver=3.41.1
-pkgver2=4.1.0
-pkgrel=3
+pkgver=3.41.2
+pkgver2=4.3.0
+pkgrel=1
 arch=('x86_64')
 depends=(glib2 libgcrypt libsecret p11-kit gtk3+ gtk4+ gobject-introspection
 	gnupg openssh)
 makedepends=(gtk-doc valgrind libxslt)
 source=(https://download.gnome.org/sources/gcr/3.41/$pkgname-$pkgver.tar.xz
-	https://download.gnome.org/sources/gcr/4.1/$pkgname-$pkgver2.tar.xz)
+	https://download.gnome.org/sources/gcr/4.3/$pkgname-$pkgver2.tar.xz)
 
 ##
 # I hate it when some things depends on older things like gtk3 and gcr3 + gtk4 and gcr4

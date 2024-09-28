@@ -1,9 +1,9 @@
 pkgname=vte
-pkgver=0.74.1
+pkgver=0.78.0
 pkgrel=1
 arch=('x86_64')
 depends=(gtk+ gtk4+ libxml2 pcre2 icu vala gobject-introspection gnutls fribidi)
-makedepends=(clang)
+makedepends=(base-devel)
 source=(https://gitlab.gnome.org/GNOME/$pkgname/-/archive/$pkgver/$pkgver-$pkgver.tar.bz2)
 
 build() {
@@ -11,10 +11,16 @@ build() {
 
 	mkdir -p build && cd build
 
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
-	-D fribidi=false	\
+	# vapi is disabled as of gtk issues
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D fribidi=true \
+	-D gtk3=true \
+	-D gtk4=true \
+	-D vapi=false \
+	-D _systemd=true \
 	-D gnutls=true
 
 	ninja

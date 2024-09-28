@@ -1,0 +1,30 @@
+pkgname=mm-common
+pkgver=1.0.6
+pkgrel=1
+pkgdesc="Common build files of the C++ bindings"
+arch=(x86_64)
+depends=(perl perl-modules)
+makedepends=(meson)
+source=(https://gitlab.gnome.org/GNOME/mm-common/-/archive/$pkgver/$pkgname-$pkgver.tar.bz2)
+
+prepare() {
+	mkdir -p build && cd build
+
+	meson \
+        --prefix=/usr \
+        --buildtype=release \
+	-D use-network=true \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	meson compile
+}
+
+package() {
+	cd build
+
+	meson install --destdir $pkgdir
+}

@@ -1,13 +1,13 @@
 pkgname=evolution-data-server
-pkgver=3.48.4
-pkgrel=2
+pkgver=3.54.0
+pkgrel=1
 arch=(x86_64)
 depends=(gcr libical libsecret nss sqlite3
 	gobject-introspection gtk3+ icu libcanberra
 	openldap gnome-online-accounts libgweather
-	vala webkit2gtk db liboauth)
+	vala krb5 webkit2gtk db liboauth)
 makedepends=(gcc)
-source=(https://download.gnome.org/sources/$pkgname/3.48/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/3.54/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	mkdir -p $pkgname-$pkgver/build
@@ -23,7 +23,7 @@ build() {
 	-D ENABLE_INSTALLED_TESTS=OFF \
 	-D ENABLE_GOOGLE=OFF \
 	-D WITH_OPENLDAP=ON \
-	-D WITH_KRB5=OFF \
+	-D WITH_KRB5=ON \
 	-D ENABLE_INTROSPECTION=ON \
 	-D ENABLE_GTK_DOC=OFF \
 	-D WITH_LIBDB=ON \

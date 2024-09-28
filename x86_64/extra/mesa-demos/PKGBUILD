@@ -1,0 +1,33 @@
+pkgname=mesa-demos
+pkgver=9.0.0
+pkgrel=1
+arch=('x86_64')
+depends=(
+	mesa)
+source=(https://archive.mesa3d.org/demos/mesa-demos-$pkgver.tar.xz)
+
+prepare() {
+	mkdir -p build
+
+	pip3 install mako pyyaml ply
+}
+
+build() {
+	cd build
+
+ 	meson \
+ 	--prefix=/usr \
+ 	--buildtype=release \
+ 	-D with-system-data-files=true \
+ 	../mesa-demos-$pkgver
+
+	ninja -j6
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+
+ 	install -m 0755 src/egl/opengl/{eglgears_wayland,eglgears_x11,eglkms,egltri_wayland,egltri_x11,peglgears,xeglgears,xeglthreads} "${pkgdir}/usr/bin/"
+}

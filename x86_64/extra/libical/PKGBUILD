@@ -1,26 +1,29 @@
 pkgname=libical
-pkgver=3.0.13
+pkgver=3.0.18
 pkgrel=1
 arch=('x86_64')
-depends=(gobject-introspection vala)
-makedepends=(cmake)
+depends=(gobject-introspection glib2 icu libxml2)
+makedepends=(cmake vala gtk-doc docbook-xsl docbook-xml base-devel python3-pip)
 source=(https://github.com/libical/libical/releases/download/v$pkgver/libical-$pkgver.tar.gz)
 
 prepare() {
 	cd $pkgname-$pkgver
 
 	mkdir -p build
+
+	pip3 install setuptools
+	pip3 install pygments
 }
 
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-DCMAKE_INSTALL_PREFIX=/usr	\
-	-DCMAKE_BUILD_TYPE=Release	\
-	-DICAL_BUILD_DOCS=false		\
-	-DGOBJECT_INTROSPECTION=true	\
-	-DICAL_GLIB_VAPI=true		\
+	cmake \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DICAL_BUILD_DOCS=true	 \
+	-DGOBJECT_INTROSPECTION=true \
+	-DICAL_GLIB_VAPI=true \
 	..
 
 	make

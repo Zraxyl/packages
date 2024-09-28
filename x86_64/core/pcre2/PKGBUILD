@@ -1,20 +1,20 @@
 pkgname=pcre2
-pkgver=10.39
+pkgver=10.44
 pkgrel=1
 arch=('x86_64')
-depends=(valgrind libedit)
-source=(https://github.com/PhilipHazel/$pkgname/releases/download/$pkgname-$pkgver/$pkgname-$pkgver.tar.bz2)
+depends=(valgrind libedit zlib bzip2 readline)
+source=(https://github.com/PCRE2Project/$pkgname/releases/download/$pkgname-$pkgver/$pkgname-$pkgver.tar.bz2)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure			\
-	--prefix=/usr			\
-	--enable-unicode		\
-	--enable-jit			\
-	--enable-pcre2-16		\
-	--enable-pcre2-32		\
-	--enable-pcre2grep-libz		\
+	./configure \
+	--prefix=/usr \
+	--enable-unicode \
+	--enable-jit \
+	--enable-pcre2-16 \
+	--enable-pcre2-32 \
+	--enable-pcre2grep-libz \
 	--enable-pcre2grep-libbz2
 
 	make

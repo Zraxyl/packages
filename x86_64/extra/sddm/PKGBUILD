@@ -1,9 +1,9 @@
 pkgname=sddm
-pkgver=2023.3
+pkgver=2024.4
 pkgrel=1
 arch=(x86_64)
-depends=(xauth qt5 xorg-server base-fonts double-conversion drivers-xorg sddm-aerial-theme
-	wayland wayland-protocols mesa glu libglvnd gstreamer-vaapi gst-plugins-good phonon)
+depends=(xauth qt5 xorg-server base-fonts double-conversion drivers-xorg
+	wayland wayland-protocols mesa glu libglvnd gstreamer-vaapi gst-plugins-good)
 makedepends=(extra-cmake-modules python3 qt5)
 backup=('usr/share/sddm/scripts/wayland-session'
 		'usr/share/sddm/scripts/Xsetup'

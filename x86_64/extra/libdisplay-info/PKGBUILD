@@ -1,0 +1,26 @@
+pkgname=libdisplay-info
+pkgver=0.2.0
+pkgrel=1
+arch=(x86_64)
+depends=(glibc)
+makedepends=(hwdata meson ninja python3)
+source=(https://gitlab.freedesktop.org/emersion/$pkgname/-/archive/$pkgver/$pkgname-$pkgver.tar.gz)
+
+prepare() {
+	meson \
+	$pkgname-$pkgver \
+	build \
+	--prefix=/usr
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

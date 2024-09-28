@@ -1,15 +1,15 @@
 pkgname=jbig2dec
-pkgver=0.19
-gs_ver=gs9533
+pkgver=0.20
 pkgrel=1
 arch=(x86_64)
 depends=(libpng)
 makedepends=(make)
-source=(https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/$gs_ver/${pkgname}-${pkgver}.tar.gz)
+source=(https://github.com/ArtifexSoftware/jbig2dec/archive/refs/tags/$pkgver.tar.gz)
 
 prepare() {
 	cd $pkgname-$pkgver
 
+	./autogen.sh
 	autoreconf -fi
 
 	./configure \

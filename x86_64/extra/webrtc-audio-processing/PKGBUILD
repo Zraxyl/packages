@@ -1,21 +1,18 @@
 pkgname=webrtc-audio-processing
-pkgver=1.1
+pkgver=1.3
 pkgrel=1
 arch=('x86_64')
 depends=(gcc abseil-cpp)
 makedepends=(git meson)
-commitid=e31340c243f034e26e1e876f3f32fc842f5e5b5b
+commitid=9a202fb8c218223d24dfbbe6130053c68111e97a # file_wrapper.h: Fix build with GCC13
 source=(https://gitlab.freedesktop.org/pulseaudio/webrtc-audio-processing/-/archive/$commitid/webrtc-audio-processing-$commitid.tar.gz)
-
-# Old one, FAILS
-#source=(http://freedesktop.org/software/pulseaudio/webrtc-audio-processing/webrtc-audio-processing-$pkgver.tar.gz)
 
 prepare() {
 	cd $pkgname-$commitid
 
-	mkdir -p build
+	# Patching
 
-#	sed -i 's!absl_flags_registry!absl_flags_reflection!g' meson.build
+	mkdir -p build
 }
 
 build() {

@@ -5,7 +5,7 @@ _vers=(4.{2..5})
 
 pkgname=docbook-xml
 pkgver=${_vers[-1]}
-pkgrel=10
+pkgrel=11
 arch=(x86_64)
 install=docbook-xml.install
 source=(https://docbook.org/xml/4.1.2/docbkx412.zip)

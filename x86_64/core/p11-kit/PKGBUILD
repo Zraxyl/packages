@@ -1,8 +1,8 @@
 pkgname=p11-kit
-pkgver=0.24.1
+pkgver=0.25.1
 pkgrel=1
 arch=('x86_64')
-depends=(libtasn1 libffi systemd libtasn1 libffi)
+depends=(libtasn1 libffi systemd)
 source=(https://github.com/p11-glue/p11-kit/releases/download/$pkgver/p11-kit-$pkgver.tar.xz)
 
 build() {

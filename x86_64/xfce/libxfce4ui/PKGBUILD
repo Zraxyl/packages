@@ -1,19 +1,19 @@
 pkgname=libxfce4ui
 pkgver=4.19.5
 xver=4.19
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
-depends=(gtk+ xfconf gtk-doc gobject-introspection libgudev)
+depends=(gtk+ xfconf gtk-doc gobject-introspection libgudev startup-notification)
 makedepends=()
 source=(https://archive.xfce.org/src/xfce/$pkgname/$xver/$pkgname-$pkgver.tar.bz2)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr		\
-	--sysconfdir=/etc	\
-	--with-vendor-info='Drunk Linux'
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--with-vendor-info='Evolinx'
 
 	make
 }
