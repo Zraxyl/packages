@@ -1,17 +1,20 @@
 pkgname=packagekit
-pkgver=1.2.6
-pkgrel=1
+pkgver=1.3.0
+pkgrel=2
 arch=('x86_64')
-makedepends=('polkit' 'sqlite3' 'gobject-introspection' 'intltool' 'plymouth'
+depends=(glib2 bottle polkit sqlite3 bash-completion)
+makedepends=('polkit' 'sqlite3' 'gobject-introspection' 'intltool'
              'bash-completion' 'vala' 'meson' 'gst-plugins-base' 'gstreamer')
 options=('!emptydirs')
-commitid=8abe2d65bdc6950a7627ad89609cbb3fe446bcbb # Finish TODO's
-source=(https://git.martinvlba.eu/Evolinx/PackageKit/archive/evolinx-$pkgver.tar.gz)
+source=(https://git.martinvlba.eu/Evolinx/packagekit/archive/$pkgver.tar.gz)
 backup=('var/lib/PackageKit/transactions.db'
     'etc/PackageKit/alpm.d/bottle.conf'
     'etc/PackageKit/alpm.d/repos.list')
 
 build() {
+    CC="clang" \
+    CXX="clang++" \
+    CFLAGS=" -w " \
     meson "packagekit" build \
     --prefix=/usr \
     -D cron=false \

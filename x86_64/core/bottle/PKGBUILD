@@ -1,13 +1,13 @@
 pkgname=bottle
-pkgver=2023.4
-pkgrel=6
+pkgver=2024.4
+pkgrel=1
 arch=('x86_64')
 depends=(zstd bash glibc libarchive curl gpgme libassuan)
 
 export USE_STAGING=yes
 if [ "$USE_STAGING" == "yes" ]; then
 	# Staging
-	commitid=c20ea7eaec167b9720b1c8af938e8e6ac85b1629
+	commitid=ed71d2cf8dd4c112158db3b35848569262dfe228
 	branch=staging
 else
 	# Stable

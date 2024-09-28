@@ -1,6 +1,7 @@
 pkgname=wxwidgets
 rname=wxWidgets # Typical upper case namings :/
 pkgver=3.2.6
+compver=3.1.7
 pkgrel=1
 arch=(x86_64)
 depends=(gst-plugins-base glu webkit2gtk libnotify  expat
@@ -15,47 +16,72 @@ prepare() {
 	git cherry-pick -n 8ea22b5e
 	cd ..
 
-	mkdir gtk2 gtk3 gtk4 qt5
+	mkdir -p gtk2 gtk3 qt5
 
 	cmake \
 	-S $rname \
 	-B gtk2 \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_BUILD_TYPE=Release \
-	-D wxBUILD_TOOLKIT=gtk2
+	-D wxBUILD_TOOLKIT=gtk2 \
+	-D wxUSE_OPENGL=ON \
+	-D wxUSE_REGEX=sys\
+	-D wxUSE_ZLIB=sys \
+	-D wxUSE_EXPAT=sys \
+	-D wxUSE_LIBJPEG=sys \
+	-D wxUSE_LIBPNG=sys \
+	-D wxUSE_LIBTIFF=sys \
+	-D wxUSE_LIBLZMA=sys \
+	-D wxUSE_NANOSVG=sys \
+	-D wxUSE_LIBMSPACK=ON \
+	-D wxUSE_PRIVATE_FONTS=ON
+
 
 	cmake \
 	-S $rname \
 	-B gtk3 \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_BUILD_TYPE=Release \
-	-D wxBUILD_TOOLKIT=gtk3
-
-	cmake \
-	-S $rname \
-	-B gtk4 \
-	-D CMAKE_INSTALL_PREFIX=/usr \
-	-D CMAKE_BUILD_TYPE=Release \
-	-D wxBUILD_TOOLKIT=gtk4
+	-D wxBUILD_TOOLKIT=gtk3 \
+	-D wxUSE_OPENGL=ON \
+	-D wxUSE_REGEX=sys\
+	-D wxUSE_ZLIB=sys \
+	-D wxUSE_EXPAT=sys \
+	-D wxUSE_LIBJPEG=sys \
+	-D wxUSE_LIBPNG=sys \
+	-D wxUSE_LIBTIFF=sys \
+	-D wxUSE_LIBLZMA=sys \
+	-D wxUSE_NANOSVG=sys \
+	-D wxUSE_LIBMSPACK=ON \
+	-D wxUSE_PRIVATE_FONTS=ON
 
 	cmake \
 	-S $rname \
 	-B qt5 \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_BUILD_TYPE=Release \
-	-D wxBUILD_TOOLKIT=qt
+	-D wxBUILD_TOOLKIT=qt \
+	-D wxUSE_OPENGL=ON \
+	-D wxUSE_REGEX=sys\
+	-D wxUSE_ZLIB=sys \
+	-D wxUSE_EXPAT=sys \
+	-D wxUSE_LIBJPEG=sys \
+	-D wxUSE_LIBPNG=sys \
+	-D wxUSE_LIBTIFF=sys \
+	-D wxUSE_LIBLZMA=sys \
+	-D wxUSE_NANOSVG=sys \
+	-D wxUSE_LIBMSPACK=ON \
+	-D wxUSE_PRIVATE_FONTS=ON
 }
 
 build() {
 	cmake --build gtk2
 	cmake --build gtk3
-	cmake --build gtk4
 	cmake --build qt5
 }
 
 package() {
 	DESTDIR=$pkgdir cmake --install gtk2
 	DESTDIR=$pkgdir cmake --install gtk3
-	DESTDIR=$pkgdir cmake --install gtk4
 	DESTDIR=$pkgdir cmake --install qt5
 }

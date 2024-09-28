@@ -1,24 +1,28 @@
 pkgname=libxmlb
-pkgver=0.3.7
+pkgver=0.3.19
 pkgrel=1
+pkgdesc="Library to help create and query binary XML blobs"
+url="https://github.com/hughsie/libxmlb"
 arch=(x86_64)
-depends=(glib2 snowball xz)
-makedepends=(meson gobject-introspection gtk-doc)
-source=(https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz)
+depends=(glib2 snowball xz zstd)
+makedepends=(meson gobject-introspection shared-mime-info gtk-doc python3-pip)
+source=(https://github.com/hughsie/libxmlb/releases/download/$pkgver/${pkgname}-${pkgver}.tar.xz)
 
 build() {
-	meson \
-	$pkgname-$pkgver \
+    pip3 install pygments
+
+    meson \
+    $pkgname-$pkgver \
     build \
     --prefix=/usr \
     -D stemmer=true \
-    -D gtkdoc=false
+    -D gtkdoc=true
 
     ninja -C build
 }
 
 package() {
-	DESTDIR="${pkgdir}" meson install -C build
+    DESTDIR="${pkgdir}" meson install -C build
 
-	rm -rf "${pkgdir}"/usr/{lib,share}/installed-tests/
+    rm -rf "${pkgdir}"/usr/{lib,share}/installed-tests/
 }

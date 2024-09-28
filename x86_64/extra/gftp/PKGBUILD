@@ -1,0 +1,30 @@
+pkgname=gftp
+pkgver=2.9.1b
+pkgrel=1
+arch=(x86_64)
+depends=(glib2 gtk2+ gtk3+ readline openssh)
+makedepends=(base-devel)
+source=(https://github.com/masneyb/gftp/releases/download/$pkgver/gftp-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	CFLAGS=" -Wno-incompatible-pointer-types "
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make CFLAGS=" -Wno-incompatible-pointer-types "
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

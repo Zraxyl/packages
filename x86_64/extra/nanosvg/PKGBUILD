@@ -1,6 +1,6 @@
 pkgname=nanosvg
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 arch=(x86_64)
 depends=(glibc)
 makedepends=(git cmake)
@@ -12,6 +12,8 @@ prepare() {
 	patch -p1 -i $srcdir/001.patch -d $pkgname
 
 	mkdir -p build
+
+	CFLAGS=" -fPIC " \
 	cmake \
 	-S $pkgname \
 	-B build \
