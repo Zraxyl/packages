@@ -1,6 +1,8 @@
 pkgname=flatpak
-pkgver=1.15.4
+pkgver=1.15.10
 pkgrel=1
+url="https://flatpak.org"
+pkgdesc="Linux application sandboxing and distribution framework (formerly xdg-app)"
 arch=(x86_64)
 depends=(dbus glib2 curl polkit libxau libostree json-glib libarchive socat
 	python3 appstream systemd fuse3 bubblewrap xdg-dbus-proxy xdg-desktop-portal
@@ -11,17 +13,11 @@ options=(emptydirs)
 source=(https://github.com/flatpak/flatpak/releases/download/$pkgver/flatpak-$pkgver.tar.xz
 	# For desktop entries
 	flatpak.sh
-	# Patches
-	fusermount3.diff
-	# Modified services
-	flatpak-system-helper.service)
+	# flatpak repo
+	https://dl.flathub.org/repo/flathub.flatpakrepo)
 
 prepare() {
 	cd $pkgname-$pkgver
-
-	# Support fuse3
-	# https://bugs.archlinux.org/task/75623
-	patch -p1 -i ../fusermount3.diff
 
 	# Install some py3 modules so flatpak can be compiled
 	pip3 install pyparsing
@@ -32,6 +28,8 @@ build() {
 
 	meson build \
 	--prefix=/usr \
+	--sysconfdir=/etc \
+	--wrap-mode=nofallback \
 	-D dbus_config_dir=/usr/share/dbus-1/system.d \
 	-D selinux_module=disabled \
 	-D system_bubblewrap=bwrap \
@@ -53,8 +51,8 @@ package() {
 	rm -f $pkgdir/etc/profile.d/flatpak.sh
 	install -Dt "$pkgdir/etc/profile.d" -m644 $srcdir/flatpak.sh
 
-	# Overwrite default flatpak services
-	cp -vf $srcdir/flatpak-system-helper.service $pkgdir/usr/lib/systemd/system/
+	# Install official flatpak repo
+	install -Dt "$pkgdir/etc/flatpak/remotes.d" $srcdir/flathub.flatpakrepo
 
 	# Misc changes
 	mkdir -p $pkgdir/var/lib/ $pkgdir/usr/var/lib/flatpak

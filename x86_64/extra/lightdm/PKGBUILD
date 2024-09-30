@@ -1,10 +1,12 @@
 pkgname=lightdm
-pkgver=1.30.1
-pkgrel=2
+pkgver=1.32.0
+pkgrel=1
 arch=('x86_64')
-depends=(accountsservice xorg-server encodings garcon exo xorg-xkbcomp libgcrypt itstool linux-pam pcre vala gobject-introspection libpciaccess at-spi2-core gtk-doc glib2 libxcb libxdm lightdm-gtk-greeter)
-#source=(https://github.com/CanonicalLtd/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.xz
-source=(https://git.it-kuny.ch/drunk/source-code/lightdm/-/archive/$pkgver/$pkgname-$pkgver.tar.gz
+depends=(accountsservice xorg-server encodings garcon exo xorg-xkbcomp libgcrypt itstool
+	linux-pam pcre vala gobject-introspection libpciaccess at-spi2-core gtk-doc glib2
+	libxcb libxdm lightdm-gtk-greeter)
+makedepends=(yelp-xsl)
+source=(https://github.com/CanonicalLtd/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.xz
 	lightdm-default-config.patch
 	Xsession
 	lightdm.service
@@ -19,22 +21,22 @@ prepare() {
 
         patch -Np1 -i ../lightdm-default-config.patch
 
-	NOCONFIGURE=1 ./autogen.sh
+	#NOCONFIGURE=1 ./autogen.sh
 }
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure				\
-	--prefix=/usr				\
-	--libexecdir=/usr/lib/lightdm		\
-	--localstatedir=/var			\
-	--sysconfdir=/etc			\
-	--disable-tests				\
-	--disable-gtk-doc			\
-	--disable-gtk-doc-html			\
-	--disable-gtk-doc-pdf			\
-	--with-greeter-user=lightdm		\
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--libexecdir=/usr/lib/lightdm \
+	--localstatedir=/var \
+	--disable-tests \
+	--disable-gtk-doc \
+	--disable-gtk-doc-html \
+	--disable-gtk-doc-pdf \
+	--with-greeter-user=lightdm \
 	--with-greeter-session=lightdm-gtk-greeter
 
 	make

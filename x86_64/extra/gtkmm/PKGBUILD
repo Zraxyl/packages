@@ -1,24 +1,25 @@
 pkgname=gtkmm
-pkgver=3.24.5
+pkgver=4.16.0
 pkgrel=1
 arch=('x86_64')
-depends=(atkmm gtk+ pangomm)
-makedepends=(doxygen)
-source=(https://download.gnome.org/sources/$pkgname/3.24/$pkgname-$pkgver.tar.xz)
+depends=(atkmm gtk4+ pangomm glibmm cairomm cairo)
+makedepends=(doxygen mm-common)
+source=(https://download.gnome.org/sources/$pkgname/4.16/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
 
-	mkdir -p build
+	mkdir -p build && cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	..
 }
 
 build() {
 	cd $pkgname-$pkgver/build
-
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
-	..
 
 	ninja
 }

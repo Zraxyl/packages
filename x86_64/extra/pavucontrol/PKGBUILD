@@ -1,19 +1,29 @@
 pkgname=pavucontrol
-pkgver=5.0
-pkgrel=2
+pkgver=6.1
+pkgrel=1
 arch=('x86_64')
-depends=(gtkmm json-glib libcanberra libsigc++ pulseaudio)
+depends=(glib2 glibmm gtk4+ gtkmm json-glib libcanberra libsigc++ pulseaudio)
+makedepends=(meson)
 source=(https://freedesktop.org/software/pulseaudio/$pkgname/$pkgname-$pkgver.tar.xz)
 
-build() {
-	cd $pkgname-$pkgver
+prepare() {
+	mkdir -p build && cd build
 
-	./configure --prefix=/usr --enable-gtk3
-	make
+	meson \
+	../$pkgname-$pkgver \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	-D lynx=false
+}
+
+build() {
+	cd build
+
+	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver
+	cd build
 
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir ninja install
 }

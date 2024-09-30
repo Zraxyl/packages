@@ -1,29 +1,30 @@
 pkgname=lightdm-gtk-greeter
-pkgver=2.0.8
-pkgrel=5
+pkgver=2.0.9
+pkgrel=1
 arch=('x86_64')
-source=(git+https://github.com/Xubuntu/lightdm-gtk-greeter.git)
-depends=(gtk+ libxklavier)
+source=(https://github.com/Xubuntu/lightdm-gtk-greeter/releases/download/lightdm-gtk-greeter-$pkgver/lightdm-gtk-greeter-$pkgver.tar.gz)
+depends=(gtk3+ libxklavier lightdm libx11)
 makedepends=(exo git intltool gobject-introspection xfce4-dev-tools)
 
 build() {
-	cd $pkgname
-	
-	NOCONFIGURE=1 ./autogen.sh
+	cd $pkgname-$pkgver
 
-	./configure			\
-	--prefix=/usr			\
-	--sysconfdir=/etc		\
-	--with-libxklavier		\
-	--libexecdir=/usr/lib/lightdm	\
-	--disable-libido		\
-	--disable-libindicator		\
+	#NOCONFIGURE=1 ./autogen.sh
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--with-libxklavier \
+	--libexecdir=/usr/lib/lightdm \
+	--disable-libido \
+	--disable-libindicator \
 	--enable-kill-on-sigterm
 
 	make
 }
 
 package() {
-	cd $pkgname
+	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

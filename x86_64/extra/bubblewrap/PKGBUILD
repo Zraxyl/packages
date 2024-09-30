@@ -1,5 +1,5 @@
 pkgname=bubblewrap
-pkgver=0.7.0
+pkgver=0.10.0
 pkgrel=1
 arch=(x86_64)
 depends=(glibc libcap)
@@ -20,4 +20,6 @@ package() {
 	cd $pkgname-$pkgver
 
 	DESTDIR=$pkgdir ninja install -C build
+
+	chmod u+s "$pkgdir/usr/bin/bwrap"
 }

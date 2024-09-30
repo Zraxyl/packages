@@ -1,35 +1,42 @@
 pkgname=libostree
-pkgver=2022.7
+pkgver=2024.8
 pkgrel=1
 arch=(x86_64)
 depends=(glibc curl avahi dracut libsodium openssl
     libsoup fuse2 xz zlib)
 makedepends=(autoconf automake make python3 gpgme
     gtk-doc libarchive libxslt systemd gobject-introspection
-    bison python3-pygments)
-source=(https://github.com/ostreedev/ostree/releases/download/v2022.7/libostree-2022.7.tar.xz)
+    bison python3-pygments libsoup libsoup2 autoconf-archive)
+source=(https://github.com/ostreedev/ostree/releases/download/v$pkgver/libostree-$pkgver.tar.xz)
 
 prepare() {
     cd $pkgname-$pkgver
 
+    autoreconf -fvi
+
+    rm -rf bsdiff libglnx
+    git clone https://github.com/mendsley/bsdiff.git bsdiff
+    git clone https://gitlab.gnome.org/GNOME/libglnx libglnx
+
     ./configure \
     --prefix=/usr \
+    --sysconfdir=/etc \
     --enable-experimental-api \
     --with-curl \
-    --with-dracut \
+    --with-dracut=yesbutnoconf \
     --enable-gtk-doc \
     --with-openssl \
     --with-soup
 }
 
 build() {
-	cd $pkgname-$pkgver
+    cd $pkgname-$pkgver
 
     make
 }
 
 package() {
-	cd $pkgname-$pkgver
+    cd $pkgname-$pkgver
 
     make DESTDIR=$pkgdir install
 }
