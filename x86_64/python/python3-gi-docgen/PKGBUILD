@@ -1,4 +1,4 @@
-pkgname=gi-docgen
+pkgname=python3-gi-docgen
 pkgver=2022.1
 pkgrel=1
 arch=(x86_64)
