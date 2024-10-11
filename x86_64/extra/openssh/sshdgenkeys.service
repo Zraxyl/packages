@@ -1,7 +1,5 @@
 [Unit]
 Description=SSH Key Generation
-ConditionPathExists=|!/etc/ssh/ssh_host_dsa_key
-ConditionPathExists=|!/etc/ssh/ssh_host_dsa_key.pub
 ConditionPathExists=|!/etc/ssh/ssh_host_ecdsa_key
 ConditionPathExists=|!/etc/ssh/ssh_host_ecdsa_key.pub
 ConditionPathExists=|!/etc/ssh/ssh_host_ed25519_key
@@ -12,4 +10,3 @@ ConditionPathExists=|!/etc/ssh/ssh_host_rsa_key.pub
 [Service]
 ExecStart=/usr/bin/ssh-keygen -A
 Type=oneshot
-RemainAfterExit=yes

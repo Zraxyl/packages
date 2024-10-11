@@ -1,32 +1,35 @@
 pkgname=tracker
-pkgver=3.5.3
-pkgrel=2
+pkgver=3.8.0
+pkgrel=1
+pkgdesc="Low-footprint RDF triple store library with SPARQL 1.1 interface."
 arch=('x86_64')
 depends=(json-glib libseccomp vala gobject-introspection icu
-	libsoup python3-gobject tracker-miners)
+	libsoup python3-gobject)
 makedepends=(git gtk-doc)
-source=(https://download.gnome.org/sources/$pkgname/3.5/$pkgname-$pkgver.tar.xz)
+source=(https://gitlab.gnome.org/GNOME/tinysparql/-/archive/$pkgver/tinysparql-$pkgver.tar.gz)
 
 prepare() {
-	cd $pkgname-$pkgver
+	cd tinysparql-$pkgver
 
+	rm -rf build
 	mkdir -p build
 }
 
 build() {
-	cd $pkgname-$pkgver/build
+	cd tinysparql-$pkgver/build
 
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
 	-D man=false \
+	-D docs=false \
 	..
 
 	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver/build
+	cd tinysparql-$pkgver/build
 
 	DESTDIR=$pkgdir ninja install
 }

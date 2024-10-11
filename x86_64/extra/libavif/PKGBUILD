@@ -1,9 +1,10 @@
 pkgname=libavif
-pkgver=0.11.1
+pkgver=1.1.1
 pkgrel=1
+pkgdesc="Library for encoding and decoding .avif files"
 arch=(x86_64)
-depends=(libjpeg libpng zlib libaom)
-makedepends=(cmake gdk-pixbuf nasm pkgconf)
+depends=(dav1d gdk-pixbuf libjpeg libwebp libpng zlib libaom libyuv)
+makedepends=(cmake nasm pkgconf)
 source=(https://github.com/AOMediaCodec/$pkgname/archive/refs/tags/v$pkgver.tar.gz)
 
 prepare() {

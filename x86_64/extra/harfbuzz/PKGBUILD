@@ -1,8 +1,9 @@
 pkgname=harfbuzz
-pkgver=2.9.0
-pkgrel=2
+pkgver=10.0.1
+pkgrel=1
 arch=('x86_64')
-depends=(gobject-introspection glib2 icu freetype2)
+depends=(gobject-introspection glib2 icu freetype2 cairo)
+makedepends=(base-devel python3-pip)
 source=(https://github.com/$pkgname/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -12,11 +13,11 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
-	-Dgraphite=disabled	\
-	-Dbenchmark=disabled	\
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-Dgraphite=disabled \
+	-Dbenchmark=disabled \
 	..
 
 	ninja

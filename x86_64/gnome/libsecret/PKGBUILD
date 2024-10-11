@@ -1,8 +1,9 @@
 pkgname=libsecret
-pkgver=0.21.1
+pkgver=0.21.4
 pkgrel=1
+pkgdesc="GObject based library for accessing the Secret Service API"
 arch=('x86_64')
-depends=(glib2 gobject-introspection libgcrypt libxslt)
+depends=(glib2 gobject-introspection gnutls gjs libgcrypt libxslt)
 makedepends=(python3-pip)
 source=(https://download.gnome.org/sources/$pkgname/0.21/$pkgname-$pkgver.tar.xz)
 
@@ -19,6 +20,7 @@ build() {
 	--prefix=/usr \
 	--buildtype=release \
 	-D manpage=false \
+	-D gtk_doc=false \
 	..
 
 	ninja

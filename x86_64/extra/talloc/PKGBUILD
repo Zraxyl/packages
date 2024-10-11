@@ -1,9 +1,9 @@
 pkgname=talloc
-pkgver=2.3.3
+pkgver=2.4.2
 pkgrel=1
 pkgdesc="Hierarchical pool based memory allocator with destructors"
 arch=(x86_64)
-depends=(glibc)
+depends=(glibc libbsd libxcrypt)
 makedepends=(python3-pip)
 source=(https://www.samba.org/ftp/talloc/talloc-$pkgver.tar.gz)
 

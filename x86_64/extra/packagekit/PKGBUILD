@@ -1,12 +1,13 @@
 pkgname=packagekit
 pkgver=1.3.0
-pkgrel=2
+ever="_1"
+pkgrel=3
 arch=('x86_64')
 depends=(glib2 bottle polkit sqlite3 bash-completion)
 makedepends=('polkit' 'sqlite3' 'gobject-introspection' 'intltool'
              'bash-completion' 'vala' 'meson' 'gst-plugins-base' 'gstreamer')
 options=('!emptydirs')
-source=(https://git.martinvlba.eu/Evolinx/packagekit/archive/$pkgver.tar.gz)
+source=(https://git.martinvlba.eu/Evolinx/packagekit/archive/${pkgver}${ever}.tar.gz)
 backup=('var/lib/PackageKit/transactions.db'
     'etc/PackageKit/alpm.d/bottle.conf'
     'etc/PackageKit/alpm.d/repos.list')
@@ -22,6 +23,7 @@ build() {
     -D gstreamer_plugin=true \
     -D gtk_doc=false \
     -D gtk_module=false \
+    -D gobject_introspection=true \
     -D packaging_backend=alpm \
     -D systemd=true
 

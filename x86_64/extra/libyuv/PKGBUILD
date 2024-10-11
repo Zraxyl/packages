@@ -1,0 +1,26 @@
+pkgname=libyuv
+pkgver=r2426+464c51a03
+pkgrel=1
+pkgdesc="Library for YUV scaling"
+arch=(x86_64)
+depends=(libjpeg gcc)
+makedepends=(base-devel)
+commitid=464c51a0353c71f08fe45f683d6a97a638d47833
+source=($pkgname-$pkgver.tar.gz::https://chromium.googlesource.com/libyuv/libyuv/+archive/${commitid}.tar.gz)
+
+prepare() {
+	sed -i 's|yuvconvert ${JPEG_LIBRARY}|${ly_lib_shared} ${JPEG_LIBRARY}|' CMakeLists.txt
+
+	cmake \
+	-S . \
+	-B build \
+	-D CMAKE_INSTALL_PREFIX=/usr
+}
+
+build() {
+	make -C build
+}
+
+package() {
+	make -C build DESTDIR=$pkgdir install
+}

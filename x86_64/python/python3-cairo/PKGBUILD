@@ -1,22 +1,27 @@
 pkgname=python3-cairo
-pkgver=1.21.0
+pkgver=1.27.0
 pkgrel=1
+pkgdesc="Python bindings for cairo"
 arch=('x86_64')
-replace=(python-cairo)
 depends=(cairo python3)
 makedepends=(python3-pip)
 source=(https://github.com/pygobject/pycairo/releases/download/v$pkgver/pycairo-$pkgver.tar.gz)
 
-build() {
-	# Install deps
-	pip3 install setuptools
+prepare() {
+	meson \
+	pycairo-$pkgver \
+	build \
+	--prefix=/usr
+}
 
-	cd pycairo-$pkgver
-	python setup.py build
+build() {
+	meson compile -C build
 }
 
 package() {
-	cd pycairo-$pkgver
+	meson install -C build --destdir "$pkgdir"
 
-	python setup.py install --root="$pkgdir" --skip-build --optimize=1
+	# Compile and optimize
+	python -m compileall -d /usr/lib "$pkgdir/usr/lib"
+	python -O -m compileall -d /usr/lib "$pkgdir/usr/lib"
 }

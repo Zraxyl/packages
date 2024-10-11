@@ -1,16 +1,20 @@
 pkgname=python3-gobject
-pkgver=3.44.2
+pkgver=3.50.0
 pkgrel=1
+pkgdesc="PyGObject is a Python package which provides bindings for GObject based libraries such as GTK, GStreamer, WebKitGTK, GLib, GIO and many more."
 arch=(x86_64)
-replace=(python-gobject)
 depends=(gobject-introspection python3 python3-cairo)
 makedepends=(cairo gobject-introspection git meson python3-pip)
-commitid=6b746eddbc4834f4c23e4281ffb5b4024fcb2cdc  # 3.44.2
-source=("git+https://gitlab.gnome.org/GNOME/pygobject.git#commit=$commitid")
+source=("https://gitlab.gnome.org/GNOME/pygobject/-/archive/$pkgver/pygobject-$pkgver.tar.gz")
+
+prepare() {
+	meson \
+	pygobject-$pkgver \
+	build \
+	--prefix=/usr
+}
 
 build() {
-	meson pygobject build --prefix=/usr
-
 	meson compile -C build
 }
 

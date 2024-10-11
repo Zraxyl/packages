@@ -1,0 +1,26 @@
+pkgname=inih
+pkgver=58
+pkgrel=1
+pkgdesc='A simple .INI file parser written in C'
+arch=(x86_64)
+depends=(gcc glibc)
+makedepends=(git meson)
+commitid=5cc5e2c24642513aaa5b19126aad42d0e4e0923e
+source=(git+https://github.com/benhoyt/inih.git#tag=${commitid})
+
+prepare() {
+	meson \
+	-D default_library=both \
+	-D distro_install=true \
+	-D with_INIReader=true \
+	$pkgname \
+	build 
+}
+
+build() {
+	meson compile -C build
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install -C build
+}

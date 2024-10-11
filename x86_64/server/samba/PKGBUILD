@@ -1,20 +1,21 @@
 pkgname=samba
-pkgver=4.18.2
+pkgver=4.21.0
 pkgrel=2
 arch=(x86_64)
-depends=(python3 docbook-xsl libbsd db popt cups readline tevent
-		acl openldap libcap ldb linux-pam systemd gnutls talloc tdb
-		dbus libaio perl-modules libnsl libtirpc rpcsvc-proto jansson
-		ceph liburing gpgme acl krb5)
+url="https://www.samba.org"
+depends=(python3 libbsd db popt cups readline tevent dbus
+	acl openldap libcap ldb lmdb linux-pam systemd gnutls talloc tdb
+	dbus libaio libnsl libtirpc rpcsvc-proto jansson
+	ceph liburing gpgme acl krb5)
 backup=(etc/logrotate.d/samba
         etc/pam.d/samba
         etc/conf.d/samba
 	etc/samba/smb.conf)
-makedepends=(python3-pip)
+makedepends=(python3-pip docbook-xml docbook-xsl perl-modules)
 source=(https://us1.samba.org/samba/ftp/stable/${pkgname}-${pkgver}.tar.gz
-		samba-pam.conf
-		samba-tmp.conf
-		samba.logrotate)
+	samba-pam.conf
+	samba-tmp.conf
+	samba.logrotate)
 
 prepare() {
 	# Install some python made deps
@@ -31,6 +32,8 @@ prepare() {
 	./configure \
 	--prefix=/usr \
 	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--with-piddir=/run \
 	--enable-fhs \
 	--with-ads \
 	--with-ldap \
@@ -39,14 +42,17 @@ prepare() {
 	--with-systemd \
 	--systemd-install-services \
 	--with-pam \
-	--with-shared-modules=${idmap_modules},${pdb_modules},${auth_modules} \
+	--with-pammodulesdir=/usr/lib/security \
+	--private-libraries='ldb' \
+	--bundled-libraries='ldb,!lmdb,!tdb,!talloc,!pytalloc-util,!tevent,!popt,!pyldb-util' \
+	--with-shared-modules="${idmap_modules},${pdb_modules},${auth_modules},vfs_io_uring" \
 	--with-pammodulesdir=/usr/lib/security
 }
 
 build() {
 	cd $pkgname-$pkgver
 
-	#make -j6
+	make -j6
 }
 
 package() {
@@ -81,4 +87,8 @@ package() {
 	rm -f $pkgdir/usr/lib/python3.10/site-packages/{tevent.py,_ldb_text.py,_tdb_text.py,ldb.cpython-310-x86_64-linux-gnu.so,tdb.cpython-310-x86_64-linux-gnu.so,_tevent.cpython-310-x86_64-linux-gnu.so,talloc.cpython-310-x86_64-linux-gnu.so}
 
 	rm -rf $pkgdir/usr/share/man/man*/{ldb*,tdb*,talloc*}
+
+	rm -rf "${pkgdir}"/run
+	rm -rf "${pkgdir}"/var/{lock,run}
+	rm -rf "${pkgdir}"/etc/sysconfig
 }

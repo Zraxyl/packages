@@ -1,22 +1,42 @@
 pkgname=git
-pkgver=2.34.1
+pkgver=2.46.2
 pkgrel=1
 arch=('x86_64')
-source=(https://kernel.org/pub/software/scm/$pkgname/$pkgname-$pkgver.tar.gz)
+depends=(curl expat grep openssl pcre2 perl perl-modules shadow zlib
+	openssh python3 tk)
+optional=(libsecret)
+makedepends=(python3-pip xmlto docbook-xsl docbook-xml libxml2)
+source=(https://kernel.org/pub/software/scm/$pkgname/$pkgname-$pkgver.tar.xz)
 
-build() {
+prepare() {
         cd $pkgname-$pkgver
 
-	./configure	\
-	--prefix=/usr	\
+	./configure \
+	--prefix=/usr \
 	--with-gitconfig=/etc/gitconfig	\
 	--with-python=python3
+}
 
+build() {
+	cd $pkgname-$pkgver
+
+	INSTALL_SYMLINKS=1 \
+	MAN_BOLD_LITERAL=1 \
+	NO_PERL_CPAN_FALLBACKS=1 \
+	USE_LIBPCRE2=1 \
         make
 }
 
 package() {
 	cd $pkgname-$pkgver
-	make DESTDIR=$pkgdir install
-	
+
+	INSTALL_SYMLINKS=1 \
+	MAN_BOLD_LITERAL=1 \
+	NO_PERL_CPAN_FALLBACKS=1 \
+	USE_LIBPCRE2=1 \
+        make DESTDIR=$pkgdir install
+
+	# bash completion
+	mkdir -p "$pkgdir"/usr/share/bash-completion/completions/
+	install -m 0644 ./contrib/completion/git-completion.bash "$pkgdir"/usr/share/bash-completion/completions/git
 }

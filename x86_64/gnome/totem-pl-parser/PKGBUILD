@@ -1,6 +1,7 @@
 pkgname=totem-pl-parser
 pkgver=3.26.6
-pkgrel=1
+pkgrel=2
+pkgdesc="Simple GObject-based library to parse and save a host of playlist formats"
 arch=(x86_64)
 depends=(libsoup gobject-introspection libarchive libgcrypt)
 makedepends=(cmake gtk-doc)
@@ -13,7 +14,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	meson --prefix=/usr --buildtype=release ..
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	..
 
 	ninja
 }

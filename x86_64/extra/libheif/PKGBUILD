@@ -1,22 +1,27 @@
 pkgname=libheif
-pkgver=1.15.2
+pkgver=1.18.2
 pkgrel=1
+pkgdesc="An HEIF and AVIF file format decoder and encoder"
 arch=(x86_64)
-depends=(libaom libx265 libjpeg libpng gdk-pixbuf)
+depends=(libaom dav1d libx265 libjpeg libpng gdk-pixbuf)
+optional=(ffmpeg)
 makedepends=(make glibc)
 source=(https://github.com/strukturag/libheif/releases/download/v$pkgver/libheif-$pkgver.tar.gz)
 
+prepare() {
+	cmake \
+	-S $pkgname-$pkgver \
+	-B build \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D WITH_DAV1D=ON \
+	-D WITH_DDMPEG_DECODER=ON \
+	-D WITH_FFMPEG_DECODER_PLUGIN=ON
+}
+
 build() {
-	cd $pkgname-$pkgver
-
-	./configure \
-	--prefix=/usr
-
-	make
+	cmake --build build
 }
 
 package() {
-	cd $pkgname-$pkgver
-
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir cmake --install build
 }

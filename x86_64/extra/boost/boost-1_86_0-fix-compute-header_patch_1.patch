@@ -1,0 +1,37 @@
+From 79452d5279831ee59a650c17b71259a821f1a554 Mon Sep 17 00:00:00 2001
+From: mmitti <masashi-asuka@tempo.ocn.ne.jp>
+Date: Mon, 19 Aug 2024 10:34:47 +0900
+Subject: [PATCH] fixup to changing sha1::digest_type
+
+---
+ include/boost/compute/detail/sha1.hpp | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/include/boost/compute/detail/sha1.hpp b/include/boost/compute/detail/sha1.hpp
+index 5afe5f9c4..3a1820074 100644
+--- a/include/boost/compute/detail/sha1.hpp
++++ b/include/boost/compute/detail/sha1.hpp
+@@ -37,13 +37,22 @@ class sha1 {
+         }
+ 
+         operator std::string() {
++            #if BOOST_VERSION >= 108600
++            boost::uuids::detail::sha1::digest_type digest;
++            #else
+             unsigned int digest[5];
++            #endif
++
+             h.get_digest(digest);
+ 
+             std::ostringstream buf;
++            #if BOOST_VERSION >= 108600
++            for(int i = 0; i < 20; ++i)
++                buf << std::hex << std::setfill('0') << std::setw(2) << digest[i];
++            #else
+             for(int i = 0; i < 5; ++i)
+                 buf << std::hex << std::setfill('0') << std::setw(8) << digest[i];
+-
++            #endif
+             return buf.str();
+         }
+     private:

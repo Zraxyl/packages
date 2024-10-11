@@ -1,18 +1,18 @@
 pkgname=lmdb
-pkgver=0.9.29
+pkgver=0.9.33
 pkgrel=1
 arch=('x86_64')
 depends=(glibc)
-source=(https://github.com/LMDB/lmdb/archive/LMDB_$pkgver.tar.gz)
+source=(https://git.openldap.org/openldap/openldap/-/archive/LMDB_0.9.33/openldap-LMDB_$pkgver.tar.gz)
 
 build() {
-	cd lmdb-LMDB_$pkgver/libraries/liblmdb
+	cd openldap-LMDB_$pkgver/libraries/liblmdb
 
 	make
 }
 
 package() {
-	cd lmdb-LMDB_$pkgver/libraries/liblmdb
+	cd openldap-LMDB_$pkgver/libraries/liblmdb
 
 	make prefix=$pkgdir/usr install
 }

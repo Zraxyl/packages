@@ -1,6 +1,6 @@
 pkgname=libsamplerate
 pkgver=0.2.2
-pkgrel=2
+pkgrel=3
 arch=(x86_64)
 depends=(alsa-lib libsndfile opus)
 makedepends=(cmake ninja)
@@ -27,8 +27,8 @@ prepare() {
 }
 
 build() {
-	ninja -C build-shared
 	ninja -C build-static
+	ninja -C build-shared
 }
 
 package() {

@@ -6,7 +6,7 @@ Before=network-pre.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/nft -f /etc/nftables.conf
+ExecStart=/usr/sbin/nft -f /etc/nftables.conf
 
 [Install]
 WantedBy=multi-user.target

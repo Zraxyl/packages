@@ -1,9 +1,11 @@
 pkgname=tevent
-pkgver=0.11.0
+pkgver=0.16.1
 pkgrel=1
+url="https://tevent.samba.org/"
+pkgdesc='Event system based on the talloc memory management library'
 arch=(x86_64)
-depends=(talloc python3)
-makedepends=(cmocka)
+depends=(talloc)
+makedepends=(cmocka python3)
 source=(https://samba.org/ftp/tevent/${pkgname}-${pkgver}.tar.gz)
 
 prepare() {

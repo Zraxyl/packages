@@ -1,0 +1,59 @@
+pkgname=thrift
+pkgver=0.20.0
+pkgrel=1
+arch=(x86_64)
+depends=(openssl gcc)
+optional=(qt5)
+makedepends=(boost libevent qt5 go lua ruby3 nodejs)
+source=(https://dlcdn.apache.org/thrift/$pkgver/thrift-$pkgver.tar.gz)
+
+prepare() {
+	export GEM_HOME="$(gem env user_gemhome)"
+	export PATH="$PATH:$GEM_HOME/bin"
+
+	gem install bundler
+	gem install rake
+
+	cd $pkgname-$pkgver
+
+	./bootstrap.sh
+
+	./configure \
+	--prefix=/usr \
+	--enable-plugin \
+	--with-cpp \
+	--with-c_glib \
+	--with-qt5 \
+	--with-libevent \
+	--with-csharp \
+	--without-haskell \
+	--without-php \
+	--without-ruby \
+	--without-python \
+	--without-erlang \
+	--without-perl \
+	--without-java \
+	--without-c_sharp \
+	--without-d \
+	--without-php \
+	--with-go \
+	--without-lua \
+	--without-nodejs
+
+}
+
+build() {
+	export GEM_HOME="$(gem env user_gemhome)"
+	export PATH="$PATH:$GEM_HOME/bin"
+	cd $pkgname-$pkgver
+
+	make -j4
+}
+
+package() {
+	export GEM_HOME="$(gem env user_gemhome)"
+	export PATH="$PATH:$GEM_HOME/bin"
+	cd $pkgname-$pkgver
+
+	make DESTDIR="$pkgdir" install
+}

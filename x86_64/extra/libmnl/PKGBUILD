@@ -1,5 +1,5 @@
 pkgname=libmnl
-pkgver=1.0.4
+pkgver=1.0.5
 pkgrel=1
 arch=('x86_64')
 depends=(glibc)
@@ -9,7 +9,7 @@ source=(https://www.netfilter.org/projects/$pkgname/files/$pkgname-$pkgver.tar.b
 build() {
 	cd $pkgname-$pkgver
 
-	./configure	\
+	./configure \
 	--prefix=/usr
 
 	make
@@ -19,4 +19,7 @@ package() {
 	cd $pkgname-$pkgver
 
 	make DESTDIR=$pkgdir install
+
+	# Conflicting files with existing packages
+	rm $pkgdir/usr/share/man/man3/bytes.3
 }

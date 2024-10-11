@@ -1,5 +1,5 @@
 pkgname=libnftnl
-pkgver=1.2.6
+pkgver=1.2.7
 pkgrel=1
 arch=('x86_64')
 depends=(libmnl)
@@ -9,7 +9,7 @@ source=(https://netfilter.org/projects/libnftnl/files/libnftnl-$pkgver.tar.xz)
 build() {
 	cd $pkgname-$pkgver
 
-	./configure	\
+	./configure \
 	--prefix=/usr
 
 	make

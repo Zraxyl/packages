@@ -1,5 +1,5 @@
 pkgname=libqalculate
-pkgver=4.1.1
+pkgver=5.2.0
 pkgrel=1
 arch=(x86_64)
 depends=(gmp mpfr libxml2 curl icu gettext readline doxygen)
@@ -15,7 +15,8 @@ build() {
 	cd $pkgname-$pkgver
 
 	./configure \
-	--prefix=/usr
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

@@ -1,6 +1,6 @@
 pkgname=polkit
 pkgver=125
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(glib2 linux-pam dbus systemd duktape)
 makedepends=(meson gtk-doc gobject-introspection git)

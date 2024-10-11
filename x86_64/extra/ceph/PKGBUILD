@@ -1,5 +1,5 @@
 pkgname=ceph
-pkgver=19.1.1
+pkgver=19.2.0
 pkgrel=1
 arch=('x86_64')
 depends=("zstd" 'bash' 'bc' 'bzip2' 'c-ares' 'cmake' 'coreutils'
@@ -9,13 +9,22 @@ depends=("zstd" 'bash' 'bc' 'bzip2' 'c-ares' 'cmake' 'coreutils'
     'libuv' 'libxml2' 'libpciaccess' 'lz4' 'ncurses' 'python3-pip'
     'nss' 'numactl' 'openssl' 'parted' 'pcre' 'pcre2' 'pkgconf' 'libcap-ng'
     'procps-ng' 'sed' 'systemd' 'valgrind' 'yaml' 'yasm' 'zlib' 'openldap'
-    'cryptsetup' 'openjdk-17' 'lua')
+    'cryptsetup' 'openjdk-17' 'lua' 'thrift')
 makedepends=(python3-pip boost)
 options=('emptydirs' '!lto')
-source=(https://download.ceph.com/tarballs/${pkgname}-${pkgver}.tar.gz)
+source=(https://download.ceph.com/tarballs/${pkgname}-${pkgver}.tar.gz
+	https://github.com/ceph/ceph/pull/59644.patch)
+
+# Ceph is broken and needs time to heal its source code
+# ceph is behind with upstream boost so the code cant be built right now ( 2024.10.01 )
+# So we will create empty metapackage until it gets fixed with newer releases
+export IS_BROKEN=true
 
 prepare() {
     cd "${pkgname}-${pkgver}"
+
+    # Patches
+    patch -p1 -i ../59644.patch
 
     # Install python3 needed modules ( may need more attention on cleaner dev env's )
     pip3 install setuptools
@@ -41,7 +50,7 @@ prepare() {
     export CXXFLAGS+=" ${CPPFLAGS} -w"
     export PYTHON_VERSION="$(python3 --version | awk '{print $2}')"
     export PYTHON_INCLUDE_DIR="$(python3 -c "from sysconfig import get_path; print(get_path('include'))")"
-    export CMAKE_BUILD_TYPE='RelWithDebInfo'
+    export CMAKE_BUILD_TYPE='Release'
     export CMAKE_WARN_UNUSED_CLI=no
 
     cmake \
@@ -88,12 +97,17 @@ prepare() {
 }
 
 build() {
-    cd "${pkgname}-${pkgver}"
+    if [ "${IS_BROKEN}" = "false" ]; then
+        cd "${pkgname}-${pkgver}"
 
-    cmake --build build -j4
+        cmake --build build -j4
+    else
+        echo "Wont build it"
+    fi
 }
 
 package() {
+    if [ "${IS_BROKEN}" = "false" ]; then
     cd "${pkgname}-${pkgver}"
 
     make -C build DESTDIR=$pkgdir install
@@ -123,4 +137,7 @@ package() {
     install -D -d -m750 -o 340 -g 340 "$pkgdir/var/lib/ceph/mgr"
     install -D -d -m750 -o 340 -g 340 "$pkgdir/var/lib/ceph/osd"
 
+    else
+        echo "Gonna be empty metapackage"
+    fi
 }

@@ -1,27 +1,33 @@
 pkgname=exiv2
-pkgver=0.27.5
+pkgver=0.28.3
 pkgrel=1
+pkgdesc="Exif, Iptc and XMP metadata manipulation library and tools"
 arch=(x86_64)
-depends=(expat gettext curl)
+depends=(expat gettext curl inih)
 makedepends=(python3)
 source=(https://github.com/Exiv2/exiv2/archive/v$pkgver/$pkgname-$pkgver.tar.gz)
 
-build() {
+prepare() {
 	cd $pkgname-$pkgver
 
-	cmake -B build -G Ninja \
+	cmake \
+	-B build \
+	-G Ninja \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_SKIP_RPATH=ON \
-    -D EXIV2_BUILD_SAMPLES=ON \
-    -D EXIV2_BUILD_UNIT_TESTS=OFF \
-    -D EXIV2_ENABLE_VIDEO=ON \
-    -D EXIV2_ENABLE_NLS=ON \
-    -D EXIV2_ENABLE_XMP=ON \
-    -D EXIV2_ENABLE_CURL=ON \
-    -D EXIV2_ENABLE_WEBREADY=ON \
-    -D EXIV2_ENABLE_BMFF=ON
+	-D EXIV2_BUILD_SAMPLES=ON \
+	-D EXIV2_BUILD_UNIT_TESTS=OFF \
+	-D EXIV2_ENABLE_VIDEO=ON \
+	-D EXIV2_ENABLE_NLS=ON \
+	-D EXIV2_ENABLE_XMP=ON \
+	-D EXIV2_ENABLE_CURL=ON \
+	-D EXIV2_ENABLE_WEBREADY=ON \
+	-D EXIV2_ENABLE_BMFF=ON
+}
 
-    ninja -C build
+build() {
+	cd $pkgname-$pkgver
+	ninja -C build
 }
 
 package() {

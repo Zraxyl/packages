@@ -1,9 +1,11 @@
 pkgname=ldb
-pkgver=2.5.0
+pkgver=2.9.1
 pkgrel=1
+pkgdesc='Schema-less, ldap like, API and database'
+url="https://ldb.samba.org/"
 arch=(x86_64)
 depends=(talloc tevent tdb popt lmdb)
-makedepends=(python3 cmocka tevent docbook-xsl)
+makedepends=(talloc tevent db lmdb docbook-xsl)
 source=(https://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz)
 
 prepare() {

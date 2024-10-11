@@ -1,14 +1,19 @@
 pkgname=openssh
-pkgver=9.4p1
+pkgver=9.9p1
 pkgrel=1
+pkgdesc="SSH protocol implementation for remote login, command execution and file transfer"
 arch=('x86_64')
-depends=(glibc krb5 libedit openssl
-	linux-pam zlib xauth)
+depends=(glibc krb5 libxcrypt libedit openssl linux-pam zlib xauth)
+makedepends=(base-devel)
+backup=(etc/pam.d/sshd
+	etc/ssh/ssh_config
+	etc/ssh/sshd_config)
 source=(https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$pkgname-$pkgver.tar.gz
 	sshdgenkeys.service
 	sshd.service
-	sshd.conf
-	sshd.pam)
+	ssh-agent.service
+	sshd.pam
+	openssh.tmpfiles)
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -41,6 +46,7 @@ build() {
 	--with-kerberos5=/usr \
 	--with-xauth=/usr/bin/xauth \
 	--with-pid-dir=/run \
+	--with-default-path='/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin' \
 	--disable-strip \
 	--disable-security-key
 
@@ -56,6 +62,9 @@ package() {
 
 	install -Dm644 ../sshdgenkeys.service -t "$pkgdir"/usr/lib/systemd/system/
 	install -Dm644 ../sshd.service -t "$pkgdir"/usr/lib/systemd/system/
-	install -Dm644 ../sshd.conf -t "$pkgdir"/usr/lib/tmpfiles.d/
+	install -Dm644 ../ssh-agent.service -t "$pkgdir"/usr/lib/systemd/user/
 	install -Dm644 ../sshd.pam "$pkgdir"/etc/pam.d/sshd
+
+
+	install -Dm644 ../openssh.tmpfiles -t "$pkgdir"/usr/lib/tmpfiles.d/
 }

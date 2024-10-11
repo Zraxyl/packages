@@ -1,0 +1,29 @@
+pkgname=msgraph
+pkgver=0.2.3
+pkgrel=1
+pkgdesc="A shared library for accessing MS Graph API"
+arch=(x86_64)
+depends=(glib2 json-glib gnome-online-accounts libsoup gobject-introspection)
+makedepends=(base-devel)
+source=(https://gitlab.gnome.org/GNOME/msgraph/-/archive/$pkgver/msgraph-$pkgver.tar.gz)
+
+prepare() {
+	meson \
+	$pkgname-$pkgver \
+	build \
+	--prefix=/usr \
+	-D tests=false \
+	-D gtk_doc=false
+}
+
+build() {
+	cd build
+
+	meson compile
+}
+
+package() {
+	cd build
+
+	meson install --destdir "$pkgdir"
+}

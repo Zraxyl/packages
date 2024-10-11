@@ -1,9 +1,10 @@
 pkgname=gexiv2
-pkgver=0.14.2
+pkgver=0.14.3
 pkgrel=1
+pkgdesc="GObject-based wrapper around the Exiv2 library"
 arch=(x86_64)
-depends=(exiv2 vala)
-makedepends=(python3 gtk-doc)
+depends=(exiv2 glib2)
+makedepends=(python3 vala meson gtk-doc)
 source=(https://download.gnome.org/sources/$pkgname/0.14/$pkgname-$pkgver.tar.xz)
 
 prepare() {

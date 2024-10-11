@@ -1,5 +1,5 @@
 pkgname=tdb
-pkgver=1.4.5
+pkgver=1.4.12
 pkgrel=1
 pkgdesc='Trivial Database similar to GDBM but allows simultaneous commits'
 arch=(x86_64)
@@ -10,7 +10,8 @@ source=(https://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz)
 build() {
 	cd ${pkgname}-${pkgver}
 
-	./configure --prefix=/usr \
+	./configure \
+	--prefix=/usr \
 	--localstatedir=/var \
 	--sysconfdir=/etc/samba
 

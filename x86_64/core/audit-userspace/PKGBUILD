@@ -1,13 +1,24 @@
 pkgname=audit-userspace
 pkgver=4.0.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(glibc bash krb5 libcap-ng libcap openldap)
 makedepends=(python3 swig)
+options=(emptydirs)
 source=(https://github.com/linux-audit/$pkgname/archive/refs/tags/v$pkgver.tar.gz
 	audit.tmpfiles
 	# Patches
 	4.0.2-flagtab_h.patch::https://github.com/linux-audit/audit-userspace/commit/6b9b74acba4db9edbab8595474d2323eb7eef51f.patch)
+backup=(
+	etc/libaudit.conf
+	etc/audit/audit-stop.rules
+	etc/audit/auditd.conf
+	etc/audit/audisp-remote.conf
+	etc/audit/zos-remote.conf
+	etc/audit/plugins.d/af_unix.conf
+	etc/audit/plugins.d/au-remote.conf
+	etc/audit/plugins.d/audispd-zos-remote.conf
+	etc/audit/plugins.d/syslog.conf)
 
 prepare() {
 	mkdir -p build
@@ -33,8 +44,8 @@ prepare() {
 	--enable-systemd=yes \
 	--enable-zos-remote \
 	--with-io_uring=yes \
-    --with-libcap-ng=yes \
-    --with-python3=yes
+	--with-libcap-ng=yes \
+	--with-python3=yes
 }
 
 build() {
@@ -46,13 +57,16 @@ build() {
 package() {
 	cd build
 
+	make DESTDIR=$pkgdir install
+
 	# Add log dir
 	install -vdm 700 "$pkgdir/var/log/$pkgname/"
 
 	# Add rules.d dir
 	install -vdm 755 "$pkgdir/etc/audit/rules.d/"
 
-	make DESTDIR=$pkgdir install
+	install -vdm 755 "$pkgdir/usr/share/factory/"
+	cp -av "$pkgdir/etc" "$pkgdir/usr/share/factory/"
 
 	# add tmpfiles.d integration for factory files and file permissions
 	install -vDm 644 ../audit.tmpfiles \

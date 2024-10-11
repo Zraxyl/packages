@@ -93,37 +93,37 @@ SigLevel = Optional TrustAll
 
 # Open source games that are non-proprietary
 [games]
-Server = http://files.martinvlba.eu/evolinx/$repo/packages/
+Server = http://files.martinvlba.eu/evolinx-staging/$repo/packages/
 SigLevel = Optional TrustAll
 
 # Example being wine and darling
 [layers]
-Server = http://files.martinvlba.eu/evolinx/$repo/packages/
+Server = http://files.martinvlba.eu/evolinx-staging/$repo/packages/
 SigLevel = Optional TrustAll
 
 # Example steam
 [proprietary]
-Server = http://files.martinvlba.eu/evolinx/$repo/packages/
+Server = http://files.martinvlba.eu/evolinx-staging/$repo/packages/
 SigLevel = Optional TrustAll
 
 # Example httpd also known as apache
 [server]
-Server = http://files.martinvlba.eu/evolinx/$repo/packages/
+Server = http://files.martinvlba.eu/evolinx-staging/$repo/packages/
 SigLevel = Optional TrustAll
 
 # Example aircrack-ng
 [pentest]
-Server = http://files.martinvlba.eu/evolinx/$repo/packages/
+Server = http://files.martinvlba.eu/evolinx-staging/$repo/packages/
 SigLevel = Optional TrustAll
 
 # For perl modules
 [perl]
-Server = http://files.martinvlba.eu/evolinx/$repo/packages/
+Server = http://files.martinvlba.eu/evolinx-staging/$repo/packages/
 SigLevel = Optional TrustAll
 
 # For python modules
 [python]
-Server = http://files.martinvlba.eu/evolinx/$repo/packages/
+Server = http://files.martinvlba.eu/evolinx-staging/$repo/packages/
 SigLevel = Optional TrustAll
 
 #

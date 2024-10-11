@@ -1,6 +1,6 @@
 pkgname=iptables
 pkgver=1.8.9
-pkgrel=1
+pkgrel=2
 arch=(x86_64)
 depends=(libnftnl libpcap libcap libnfnetlink bash)
 backup=(etc/ethertypes etc/iptables/{ip,ip6}tables.rules)
@@ -16,9 +16,7 @@ prepare() {
 	rm include/linux/types.h
 
 	ln -rs libiptc/linux_list.h include/libiptc
-}
 
-build() {
 	cd build
 
 	../$pkgname-$pkgver/configure \
@@ -29,6 +27,10 @@ build() {
 	--enable-libipq \
 	--enable-devel \
 	--enable-shared
+}
+
+build() {
+	cd build
 
 	make
 }

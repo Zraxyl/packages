@@ -1,8 +1,8 @@
 pkgname=libbsd
-pkgver=0.11.5
+pkgver=0.12.2
 pkgrel=1
 arch=('x86_64')
-depends=(libmd)
+depends=(glibc libmd)
 makedepends=(gcc libmd)
 source=(https://libbsd.freedesktop.org/releases/$pkgname-$pkgver.tar.xz)
 

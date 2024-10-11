@@ -1,14 +1,14 @@
 pkgname=bottle
 pkgver=2024.4
-pkgrel=1
+pkgrel=3
 arch=('x86_64')
-depends=(zstd bash glibc libarchive curl gpgme libassuan)
+depends=(zstd bash glibc libarchive curl gpgme libassuan nettle)
 
 export USE_STAGING=yes
 if [ "$USE_STAGING" == "yes" ]; then
 	# Staging
 	commitid=ed71d2cf8dd4c112158db3b35848569262dfe228
-	branch=staging
+	branch=bottle
 else
 	# Stable
 	commitid=76450251d000de0832889292a26acad560698ace
@@ -22,8 +22,14 @@ build() {
 	meson \
 	--prefix=/usr \
 	-D doxygen=enabled \
+	-D curl=enabled \
+	-D crypto=openssl \
+	-D gpgme=enabled \
+	-D i18n=true \
 	-D scriptlet-shell=/bin/bash \
-	-D ldconfig=/usr/bin/ldconfig \
+	-D ldconfig=/sbin/ldconfig \
+	-D pkg-ext=.pkg.tar.gz \
+	-D src-ext=.src.tar.gz \
 	build
 
 	ninja -C build
@@ -33,7 +39,7 @@ package() {
 	cd $pkgname
 	
 	mkdir -vp $pkgdir
-	export DESTDIR=$pkgdir/
+	export DESTDIR=$pkgdir
 	
 	ninja -C build install
 

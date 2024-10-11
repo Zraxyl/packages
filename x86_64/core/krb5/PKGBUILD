@@ -1,7 +1,7 @@
 pkgname=krb5
 pkgver=1.21.3
 relver=1.21
-pkgrel=1
+pkgrel=3
 arch=('x86_64')
 depends=(e2fsprogs openldap keyutils libverto lmdb openssl)
 makedepends=(perl)
@@ -50,6 +50,7 @@ package() {
 
 	install -Dpm 644 config-files/krb5.conf -t "${pkgdir}/etc"
 	install -Dpm 644 config-files/kdc.conf -t "${pkgdir}/var/lib/krb5kdc"
+	install -Dm 644 util/ac_check_krb5.m4 -t "${pkgdir}/usr/share/aclocal"
 
 	install -Dm 644 "${srcdir}"/krb5-{kadmind.service,kdc.service,kpropd.service,kpropd@.service,kpropd.socket} \
 	-t "${pkgdir}/usr/lib/systemd/system"

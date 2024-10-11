@@ -1,9 +1,12 @@
 pkgname=iana-etc
-pkgver=20231023
+pkgver=20240814
+pro_ver=20240503
+s_ports="service-names-port-numbers-${pkgver}"
+s_pro="protocol-numbers-${pro_ver}"
 pkgrel=1
 arch=('x86_64')
-source=(https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xml
-	https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xml)
+source=(https://sources.archlinux.org/other/packages/iana-etc/${s_ports}.xml
+	https://sources.archlinux.org/other/packages/iana-etc/${s_pro}.xml)
 
 build() {
 	gawk -F"[<>]" '
@@ -12,7 +15,7 @@ BEGIN { print "# Full data: /usr/share/iana-etc/protocol-numbers.iana\n" }
 (/<value/) { v=$3 }
 (/<name/ && $3!~/ /) { n=$3 }
 (/<\/record/ && n && v!="") { printf "%-12s %3i %s\n", tolower(n),v,n }
-' protocol-numbers.xml > "${srcdir}/protocols.done"
+' ${s_pro}.xml > "${srcdir}/protocols.done"
 
 	gawk -F"[<>]" '
 BEGIN { print "# Full data: /usr/share/iana-etc/port-numbers.iana\n" }
@@ -22,12 +25,16 @@ BEGIN { print "# Full data: /usr/share/iana-etc/port-numbers.iana\n" }
 (/<protocol/) { p=$3 }
 (/Unassigned/ || /Reserved/ || /historic/) { c=1 }
 (/<\/record/ && n && u && p && !c) { printf "%-15s %5i/%s\n", n,u,p }
-' service-names-port-numbers.xml > "${srcdir}/services.done"
+' ${s_ports}.xml > "${srcdir}/services.done"
 
 }
 
 package() {
-	install -d -m 755 $pkgdir/usr/share/iana-etc/
-	install -m 644 services.done $pkgdir/usr/share/iana-etc/services
-	install -m 644 protocols.done $pkgdir/usr/share/iana-etc/protocols
+	install -d $pkgdir/etc
+	
+	install -m 644 services.done $pkgdir/etc/services
+	install -m 644 protocols.done $pkgdir/etc/protocols
+
+	install -Dm644 ${s_ports}.xml "${pkgdir}/usr/share/iana-etc/port-numbers.iana"
+	install -Dm644 ${s_pro}.xml "${pkgdir}/usr/share/iana-etc/protocol-numbers.iana"
 }
