@@ -1,0 +1,27 @@
+pkgname=xdm
+pkgver=1.1.16
+pkgrel=1
+pkgdesc="X Display Manage"
+arch=('x86_64')
+depends=('libx11' 'libxau' 'xcb-proto' 'libxaw' 'libxdmcp' 'libxext' 'libxft'
+	'libxinerama' 'libxmu' 'libxpm' 'libxrender' 'libxt' 'linux-pam'
+	'libxtrans' 'xrdb' 'sessreg')
+source=(https://gitlab.freedesktop.org/xorg/app/xdm/-/archive/xdm-$pkgver/$pkgname-$pkgver.tar.gz)
+
+build() {
+        cd xdm*/
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+
+	make
+}
+
+package() {
+	cd xdm*/
+
+	make DESTDIR=$pkgdir install
+}

@@ -1,18 +1,24 @@
 pkgname=xinit
-pkgver=1.4.1
-pkgrel=2
+pkgver=1.4.2
+pkgrel=1
+pkgdesc="X.Org initialisation program"
 arch=('x86_64')
-depends=('libxau' 'xcb-proto' 'libxtrans' 'xorgproto')
-source=(https://x.org/releases/individual/app/$pkgname-$pkgver.tar.bz2)
+depends=('libx11' 'xauth' 'xrdb')
+makedepends=('util-macros')
+source=(https://x.org/releases/individual/app/$pkgname-$pkgver.tar.xz)
 
 build() {
         cd $pkgname-$pkgver
 
-	./configure --prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+
 	make
 }
 
 package() {
 	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

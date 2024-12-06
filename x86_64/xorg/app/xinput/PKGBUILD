@@ -1,16 +1,18 @@
 pkgname=xinput
-pkgver=1.6.3
+pkgver=1.6.4
 pkgrel=1
+pkgdesc="Small commandline tool to configure devices"
 arch=(x86_64)
 depends=(libx11 libxi xrandr libxinerama)
 makedepends=(util-macros xorgproto libxfixes)
-source=(https://xorg.freedesktop.org/archive/individual/app/$pkgname-$pkgver.tar.bz2)
+source=(https://xorg.freedesktop.org/archive/individual/app/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
 
 	./configure \
-	--prefix=/usr
+	--prefix=/usr \
+	--sysconfdir=/etc
 }
 
 build() {

@@ -1,21 +1,24 @@
 pkgname=xrdb
-pkgver=master
+pkgver=1.2.2
 pkgrel=1
+pkgdesc="X server resource database utility"
 arch=('x86_64')
-depends=(libx11)
-source=(git+https://gitlab.freedesktop.org/xorg/app/$pkgname.git)
+depends=(libx11 libxmu)
+makedepends=(util-macros)
+source=(https://xorg.freedesktop.org/archive/individual/app/xrdb-$pkgver.tar.xz)
 
 build() {
-	cd $pkgname
+	cd $pkgname-$pkgver
 
-	./autogen.sh
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
-	./configure --prefix=/usr
 	make
 }
 
 package() {
-	cd $pkgname
+	cd $pkgname-$pkgver
 
 	make DESTDIR=$pkgdir install
 }

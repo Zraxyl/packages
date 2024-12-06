@@ -1,16 +1,18 @@
 pkgname=xmessage
-pkgver=1.0.5
+pkgver=1.0.7
 pkgrel=1
+pkgdesc="Display a message or query in a window"
 arch=('x86_64')
-depends=(libxaw)
+depends=(libxaw libx11 libxt)
 makedepends=(util-macros)
-source=(https://xorg.freedesktop.org/archive/individual/app/xmessage-${pkgver}.tar.bz2)
+source=(https://xorg.freedesktop.org/archive/individual/app/xmessage-${pkgver}.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure	\
-	--prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }
