@@ -1,14 +1,15 @@
 pkgname=libxfont2
-pkgver=2.0.5
+pkgver=2.0.7
 pkgrel=1
+pkgdesc="X11 font rasterisation library"
 arch=('x86_64')
-depends=(freetype2 libxtrans xorgproto libfontenc)
-source=(https://xorg.freedesktop.org/archive/individual/lib/libXfont2-$pkgver.tar.bz2)
+depends=(freetype2 zlib util-macros xorgproto libfontenc)
+source=(https://xorg.freedesktop.org/archive/individual/lib/libXfont2-$pkgver.tar.xz)
 
 build() {
 	cd libXfont2-$pkgver
 
-	./configure		\
+	./configure \
 	--prefix=/usr
 
 	make
@@ -16,5 +17,6 @@ build() {
 
 package() {
 	cd libXfont2-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

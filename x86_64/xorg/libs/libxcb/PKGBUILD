@@ -1,5 +1,5 @@
 pkgname=libxcb
-pkgver=1.14
+pkgver=1.17.0
 pkgrel=1
 arch=('x86_64')
 depends=('libxau' 'xcb-proto')
@@ -8,11 +8,16 @@ source=(https://xorg.freedesktop.org/archive/individual/lib/$pkgname-$pkgver.tar
 build() {
         cd $pkgname-$pkgver
 
-	PYTHON=python3 ./configure --prefix=/usr --without-doxygen
+	PYTHON=python3 \
+	./configure \
+	--prefix=/usr \
+	--without-doxygen
+
 	make
 }
 
 package() {
 	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

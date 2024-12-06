@@ -1,16 +1,17 @@
 pkgname=libxft
-pkgver=2.3.4
+pkgver=2.3.8
 pkgrel=1
+pkgdesc="FreeType-based font drawing library for X"
 arch=('x86_64')
-depends=(fontconfig libxrender)
+depends=(fontconfig libxrender xorgproto)
 makedepends=(pkgconf)
-source=(https://xorg.freedesktop.org/releases/individual/lib/libXft-${pkgver}.tar.bz2)
+source=(https://xorg.freedesktop.org/releases/individual/lib/libXft-${pkgver}.tar.xz)
 
 build() {
 	cd libXft-$pkgver
 
-	./configure		\
-	--prefix=/usr		\
+	./configure \
+	--prefix=/usr \
 	--sysconfdir=/etc
 
 	make

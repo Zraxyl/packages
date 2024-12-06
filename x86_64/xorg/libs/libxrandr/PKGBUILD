@@ -1,15 +1,18 @@
 pkgname=libxrandr
-pkgver=1.5.2
+pkgver=1.5.4
 pkgrel=1
+pkgdesc="X11 RandR extension library"
 arch=('x86_64')
 depends=('libx11' 'libxext' 'libxrender')
 makedepends=('util-macros' 'xorgproto' 'libx11' 'libxrender')
-source=(https://xorg.freedesktop.org/releases/individual/lib/libXrandr-$pkgver.tar.bz2)
+source=(https://xorg.freedesktop.org/releases/individual/lib/libXrandr-$pkgver.tar.xz)
 
 build() {
 	cd libXrandr-$pkgver
 
-	./configure --prefix=/usr --sysconfdir=/etc
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 }
 
 package() {

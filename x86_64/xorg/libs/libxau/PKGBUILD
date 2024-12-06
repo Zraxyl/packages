@@ -1,14 +1,17 @@
 pkgname=libxau
-pkgver=1.0.9
+pkgver=1.0.11
 pkgrel=1
+pkgdesc="X11 authorisation library"
 arch=('x86_64')
-depends=('xorgproto')
-source=(https://x.org/pub/individual/lib/libXau-$pkgver.tar.bz2)
+depends=('glibc' 'xorgproto')
+source=(https://x.org/pub/individual/lib/libXau-$pkgver.tar.xz)
 
 build() {
         cd libXau-$pkgver
 
-	./configure --prefix=/usr
+	./configure \
+	--prefix=/usr
+
 	make
 }
 

@@ -1,17 +1,25 @@
 pkgname=libxtst
-pkgver=1.2.3
+pkgver=1.2.5
 pkgrel=1
+pkgdesc="library for XTEST & RECORD extensions"
 arch=('x86_64')
-makedepends=(libxtrans util-macros xorgproto libxi)
-source=(https://xorg.freedesktop.org/releases/individual/lib/libXtst-$pkgver.tar.bz2)
+depends=('libx11' 'libxext' 'libxi' 'xorgproto')
+makedepends=(util-macros)
+source=(https://xorg.freedesktop.org/releases/individual/lib/libXtst-$pkgver.tar.xz)
 
 build() {
 	cd libXtst-$pkgver
-	./configure --prefix=/usr --libdir=/usr/lib --sysconfdir=/etc
+
+	./configure \
+	--prefix=/usr \
+	--libdir=/usr/lib \
+	--sysconfdir=/etc
+
 	make
 }
 
 package() {
 	cd libXtst-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

@@ -1,23 +1,28 @@
 pkgname=libxdamage
-pkgver=1.1.5
-pkgrel=4
+pkgver=1.1.6
+pkgrel=1
+pkgdesc="X11 damaged region extension library"
 arch=('x86_64')
-depends=('libx11')
-source=(https://x.org/releases/individual/lib/libXdamage-$pkgver.tar.gz)
+depends=('libx11' 'libxfixes')
+source=(https://x.org/releases/individual/lib/libXdamage-$pkgver.tar.xz)
 
 build() {
         cd libXdamage-$pkgver
 
-	./configure --prefix=/usr
+	./configure \
+	--prefix=/usr
+
 	make
 }
 
 check() {
 	cd libXdamage-$pkgver
+
 	make check
 }
 
 package() {
 	cd libXdamage-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

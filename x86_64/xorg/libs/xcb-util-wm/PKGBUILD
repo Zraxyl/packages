@@ -1,15 +1,16 @@
 pkgname=xcb-util-wm
-pkgver=0.4.1
+pkgver=0.4.2
 pkgrel=1
+pkgdesc="client and window-manager helpers for ICCCM"
 arch=('x86_64')
 depends=(libxcb)
 makedepends=(util-macros xorgproto)
-source=(https://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2)
+source=(https://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
+	./configure \
 	--prefix=/usr
 
 	make

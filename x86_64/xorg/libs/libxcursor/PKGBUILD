@@ -1,18 +1,22 @@
 pkgname=libxcursor
-pkgver=1.2.0
+pkgver=1.2.3
 pkgrel=1
+pkgdesc="X cursor management library"
 arch=('x86_64')
-depends=('libxfixes' 'libxrender')
-source=(https://xorg.freedesktop.org/archive/individual/lib/libXcursor-$pkgver.tar.bz2)
+depends=('libx11' 'libxfixes' 'libxrender' 'xorgproto' 'adwaita-icon-theme')
+source=(https://xorg.freedesktop.org/archive/individual/lib/libXcursor-$pkgver.tar.xz)
 
 build() {
         cd libXcursor-$pkgver
 
-	./configure --prefix=/usr
+	./configure \
+	--prefix=/usr
+
 	make
 }
 
 package() {
 	cd libXcursor-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

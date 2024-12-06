@@ -1,16 +1,17 @@
 pkgname=libxinerama
-pkgver=1.1.4
+pkgver=1.1.5
 pkgrel=1
+pkgdesc="X11 Xinerama extension library"
 arch=('x86_64')
-depends=(libxext)
-source=(https://xorg.freedesktop.org/releases/individual/lib/libXinerama-$pkgver.tar.bz2)
+depends=(libx11 libxext xorgproto)
+source=(https://xorg.freedesktop.org/releases/individual/lib/libXinerama-$pkgver.tar.xz)
 
 build() {
 	cd libXinerama-$pkgver
 
-	./configure		\
-	--prefix=/usr		\
-	--sysconfdir=/etc LIBS=-lX11
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

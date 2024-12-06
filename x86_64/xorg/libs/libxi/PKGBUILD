@@ -1,17 +1,24 @@
 pkgname=libxi
-pkgver=1.7.10
-pkgrel=1
+pkgver=1.8.2
+pkgrel=2
+pkgdesc="X11 Input extension library"
 arch=('x86_64')
-makedepends=(libxtrans util-macros xorgproto)
-source=(https://xorg.freedesktop.org/releases/individual/lib/libXi-$pkgver.tar.bz2)
+makedepends=(libx11 libxext libxfixes xorgproto util-macros)
+source=(https://xorg.freedesktop.org/releases/individual/lib/libXi-$pkgver.tar.xz)
 
 build() {
 	cd libXi-$pkgver
-	./configure --prefix=/usr --libdir=/usr/lib --sysconfdir=/etc
+
+	./configure \
+	--prefix=/usr \
+	--libdir=/usr/lib \
+	--sysconfdir=/etc
+
 	make
 }
 
 package() {
 	cd libXi-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

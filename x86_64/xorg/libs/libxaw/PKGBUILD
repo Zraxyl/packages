@@ -1,20 +1,22 @@
 pkgname=libxaw
-pkgver=1.0.14
+pkgver=1.0.16
 pkgrel=2
+pkgdesc="X11 Athena Widget library"
 arch=('x86_64')
-depends=('libxau' 'xcb-proto' 'libxpm' xorgproto libxext libxt libxmu libice libsm)
-source=(https://gitlab.freedesktop.org/xorg/lib/libxaw/-/archive/libXaw-$pkgver/libXaw-$pkgver.tar.gz)
+depends=('libx11' 'libxext' 'libxmu' 'libxpm' 'libxt' 'xorgproto')
+source=(https://xorg.freedesktop.org/archive/individual/lib/libXaw-$pkgver.tar.xz)
 
 build() {
-        cd libxaw*
+        cd libXaw-$pkgver
 
-	NOCONFIGURE=1 ./autogen.sh
+	./configure \
+	--prefix=/usr
 
-	./configure --prefix=/usr
 	make
 }
 
 package() {
-	cd libxaw*
+	cd libXaw-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

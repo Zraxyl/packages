@@ -1,20 +1,23 @@
 pkgname=libxt
-pkgver=master
+pkgver=1.3.1
 pkgrel=1
+pkgdesc="X11 toolkit intrinsics library"
 arch=('x86_64')
-depends=(libxext libx11 xorgproto)
-source=(git+https://gitlab.freedesktop.org/xorg/lib/libxt.git)
+depends=(libxext libx11 libice libsm xorgproto)
+source=(https://xorg.freedesktop.org/archive/individual/lib/libXt-$pkgver.tar.xz)
 
 build() {
-	cd $pkgname
+	cd libXt-$pkgver
 
-	NOCONFIGURE=1 ./autogen.sh
-	./configure --prefix=/usr --libdir=/usr/lib
+	./configure \
+	--prefix=/usr \
+	--libdir=/usr/lib
+
 	make
 }
 
 package() {
-	cd $pkgname
+	cd libXt-$pkgver
 
 	make DESTDIR=$pkgdir install
 }

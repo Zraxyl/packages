@@ -1,8 +1,10 @@
 pkgname=libxkbcommon
-pkgver=1.3.1
-pkgrel=2
+pkgver=1.7.0
+pkgrel=1
+pkgdesc="Keymap handling library for toolkits and window systems"
 arch=('x86_64')
-depends=(xkeyboard-config wayland wayland-protocols)
+depends=(xkeyboard-config wayland bash)
+makedepends=(wayland-protocols libxcb libxml2 meson xorgproto)
 source=(https://xkbcommon.org/download/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -12,7 +14,11 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	meson --prefix=/usr --buildtype=release -Denable-docs=false ..
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-Denable-docs=false \
+	..
 
 	ninja
 }

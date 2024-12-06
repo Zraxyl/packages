@@ -1,6 +1,7 @@
 pkgname=xcb-util-errors
 pkgver=1.0.1
-pkgrel=1
+pkgrel=2
+pkgdesc="XCB errors library"
 arch=('x86_64')
 depends=(libxcb)
 makedepends=(util-macros xorgproto)
@@ -9,7 +10,7 @@ source=(https://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.xz)
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
+	./configure \
 	--prefix=/usr
 
 	make

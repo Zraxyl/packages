@@ -1,19 +1,29 @@
 pkgname=libxcvt
-pkgver=0.1.1
+pkgver=0.1.2
 pkgrel=1
+pkgdesc="library providing a standalone version of the X server implementation of the VESA CVT standard timing modelines generator"
 arch=('x86_64')
 makedepends=('meson')
 source=(https://xorg.freedesktop.org/archive/individual/lib/$pkgname-$pkgver.tar.xz)
 
-build() {
+prepare() {
         cd $pkgname-$pkgver
 	mkdir -p build && cd build
 
-	meson --prefix=/usr ..
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	..
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
 	meson compile
 }
 
 package() {
 	cd $pkgname-$pkgver/build
+
 	DESTDIR=$pkgdir meson install
 }

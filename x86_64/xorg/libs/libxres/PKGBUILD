@@ -1,15 +1,18 @@
 pkgname=libxres
-pkgver=1.2.1
+pkgver=1.2.2
 pkgrel=1
+pkgdesc="X11 Resource extension library"
 arch=('x86_64')
 depends=(libxext)
-makedepends=(util-macros xorgproto)
-source=(https://xorg.freedesktop.org/releases/individual/lib/libXres-${pkgver}.tar.bz2)
+makedepends=(util-macros xorgproto libx11 libxext)
+source=(https://xorg.freedesktop.org/releases/individual/lib/libXres-${pkgver}.tar.xz)
 
 build() {
 	cd "libXres-${pkgver}"
 
-	./configure --prefix=/usr --sysconfdir=/etc
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

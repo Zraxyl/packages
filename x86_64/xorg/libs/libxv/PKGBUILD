@@ -1,15 +1,18 @@
 pkgname=libxv
-pkgver=1.0.11
+pkgver=1.0.12
 pkgrel=1
+pkgdesc="X11 Video extension library"
 arch=('x86_64')
-depends=(libxext)
+depends=(libxext libx11 xorgproto)
 makedepends=(xorgproto)
-source=(https://xorg.freedesktop.org/releases/individual/lib/libXv-${pkgver}.tar.bz2)
+source=(https://xorg.freedesktop.org/releases/individual/lib/libXv-${pkgver}.tar.xz)
 
 build() {
 	cd libXv-${pkgver}
 
-	./configure --prefix=/usr
+	./configure \
+	--sysconfdir=/etc \
+	--prefix=/usr
 
 	make
 }

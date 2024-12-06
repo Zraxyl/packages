@@ -1,14 +1,20 @@
 pkgname=libxtrans
-pkgver=1.4.0
-pkgrel=2
+pkgver=1.5.2
+pkgrel=1
+pkgdesc="X transport library"
 arch=('x86_64')
-depends=('libxau' 'xcb-proto')
-source=(https://x.org/releases/individual/lib/xtrans-$pkgver.tar.gz)
+depends=('xcb-proto')
+makedepends=(base-devel python3-pip)
+source=(https://x.org/releases/individual/lib/xtrans-$pkgver.tar.xz)
 
 build() {
         cd xtrans-$pkgver
 
-	PYTHON=python3 ./configure --prefix=/usr --without-doxygen
+	PYTHON=python3 \
+	./configure \
+	--prefix=/usr \
+	--without-doxygen
+
 	make
 }
 

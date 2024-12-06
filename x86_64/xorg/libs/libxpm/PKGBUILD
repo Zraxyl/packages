@@ -1,20 +1,24 @@
 pkgname=libxpm
-pkgver=3.5.13
+pkgver=3.5.17
 pkgrel=1
+pkgdesc="X11 pixmap library"
 arch=('x86_64')
-depends=('libxau' 'xcb-proto')
+depends=('libx11' 'libxext' 'libxt')
 source=(https://gitlab.freedesktop.org/xorg/lib/libxpm/-/archive/libXpm-$pkgver/libXpm-$pkgver.tar.gz)
 
 build() {
         cd libxpm*
 
-	NOCONFIGURE=1 ./autogen.sh
+	autoreconf -fvi
 
-	./configure --prefix=/usr
+	./configure \
+	--prefix=/usr
+
 	make
 }
 
 package() {
 	cd libxpm*
+
 	make DESTDIR=$pkgdir install
 }
