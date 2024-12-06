@@ -1,20 +1,27 @@
 pkgname=xkeyboard-config
-pkgver=2.39
+pkgver=2.43
 pkgrel=1
+pkgdesc="X keyboard configuration files"
 arch=('x86_64')
-depends=(fontconfig libxcb)
+makedepends=(fontconfig libxcb python3-pip libxslt)
 source=(https://x.org/pub/individual/data/$pkgname/$pkgname-$pkgver.tar.xz)
 
 prepare() {
-	mkdir -p $pkgname-$pkgver/build
-}
+	pip install strenum
 
-build() {
+	mkdir -p $pkgname-$pkgver/build
 	cd $pkgname-$pkgver/build
 
 	meson \
 	--prefix=/usr \
+	--sysconfdir=/etc \
+	-D compat-rules=true \
 	-D xorg-rules-symlinks=true \
+	../
+}
+
+build() {
+	cd $pkgname-$pkgver/build
 
 	ninja
 }
