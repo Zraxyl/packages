@@ -1,23 +1,32 @@
 pkgname=xf86-video-intel
-pkgver=master
-pkgrel=4
+pkgver=2.99.917
+pkgrel=1
+pkgdesc='X.org Intel i810/i830/i915/945G/G965+ video drivers'
 arch=('x86_64')
-depends=(xorg-server xcb-util libxinerama)
-source=(git+https://anongit.freedesktop.org/git/xorg/driver/xf86-video-intel.git)
+depends=(libdrm libpciaccess libx11 libxcb libxdamage libxext libxfixes libxrender
+	libxshmfence libxvmc mesa pixman systemd xcb-util libxcursor libxinerama libxrandr
+	libxss libxtst libxv)
+makedepends=(xorg-server base-devel)
+commitid=ce811e78882d9f31636351dfe65351f4ded52c74
+source=(https://gitlab.freedesktop.org/xorg/driver/${pkgname}/-/archive/$commitid/${pkgname}-${commitid}.tar.gz)
+
+prepare() {
+	# The need to add libXv has been added because meson scripts dont link against
+	# to it by default and cause linking error with undefined symbol/function
+	LDFLAGS=" -lXv" \
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	$pkgname-$commitid \
+	build
+}
 
 build() {
-	cd $pkgname
-
-	./autogen.sh
-
-	./configure		\
-	--prefix=/usr
-
-	make
+	ninja -C build
 }
 
 package() {
-	cd $pkgname
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir ninja -C build install
+
 	mkdir -p $pkgdir/etc/X11/xorg.conf.d
 }

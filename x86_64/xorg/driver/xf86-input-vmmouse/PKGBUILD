@@ -1,0 +1,33 @@
+pkgname=xf86-input-vmmouse
+pkgver=13.2.0
+pkgrel=1
+pkgdesc="X.org VMWare Mouse input driver"
+arch=(x86_64)
+depends=(systemd)
+makedepends=(xorg-server xorgproto)
+source=(https://xorg.freedesktop.org//releases/individual/driver/${pkgname}-${pkgver}.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--with-udev-rules-dir=/usr/lib/udev/rules.d
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+
+	rm -rfv "${pkgdir}"/usr/{lib,share}/hal
+}

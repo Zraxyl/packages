@@ -1,21 +1,26 @@
 pkgname=xf86-input-wacom
-pkgver=0.40.0
-pkgrel=4
+pkgver=1.2.3
+pkgrel=1
+pkgdesc="X.Org Wacom tablet driver"
 arch=('x86_64')
-depends=(libevdev mtdev xorg-server libxinerama)
+depends=(libx11 libxi libxinerama libxrandr systemd)
+makedepends=(xorg-server gobject-introspection meson python3-gobject)
 source=(https://github.com/linuxwacom/$pkgname/releases/download/$pkgname-$pkgver/$pkgname-$pkgver.tar.bz2)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }
 
 package() {
 	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
+
 	mkdir -p $pkgdir/etc/X11/xorg.conf.d
 }

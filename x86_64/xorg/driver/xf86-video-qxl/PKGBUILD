@@ -1,10 +1,11 @@
 pkgname=xf86-video-qxl
-pkgver=0.1.5
+pkgver=0.1.6
 pkgrel=1
+pkgdesc="Xorg X11 qxl video driver"
 arch=('x86_64')
-depends=(xorg-server libxfont2 systemd)
-makedepends=(spice-protocol xorgproto libcacard git)
-commitid=52e975263fe88105d151297768c7ac675ed94122
+depends=(libxfont2 spice systemd libdrm libpciaccess libxv libxrandr libxrender)
+makedepends=(xorg-server spice-protocol libcacard git)
+commitid=f6f75e1b03ca0d25d546cf9e80d0317bd644bc8d
 source=(git+https://gitlab.freedesktop.org/xorg/driver/xf86-video-qxl.git#commit=$commitid)
 
 prepare() {

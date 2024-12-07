@@ -1,6 +1,7 @@
 pkgname=xorg-server
-pkgver=21.1.13
-pkgrel=2
+pkgver=21.1.14
+pkgrel=1
+pkgdesc="Xorg X server"
 arch=('x86_64')
 depends=(libmd pixman libx11 mesa libxtrans libxkbfile
 	libxfont2 libpciaccess libxv libxcvt libxmu libxrender

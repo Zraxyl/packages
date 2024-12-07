@@ -1,6 +1,7 @@
 pkgname=xwayland
-pkgver=24.1.2
-pkgrel=2
+pkgver=24.1.4
+pkgrel=1
+pkgdesc="run X clients under wayland"
 arch=('x86_64')
 depends=('nettle' 'libepoxy' 'systemd' 'libxfont2' 
 	'pixman' 'xorg-server' 'libxcvt' 'egl-wayland'

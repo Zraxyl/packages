@@ -1,21 +1,26 @@
 pkgname=xf86-input-synaptics
-pkgver=1.9.1
-pkgrel=4
+pkgver=1.9.2
+pkgrel=1
+pkgdesc="Synaptics driver for notebook touchpads"
 arch=('x86_64')
-depends=(libevdev xorg-server)
-source=(https://x.org/pub/individual/driver/$pkgname-$pkgver.tar.bz2)
+depends=(libevdev libxtst)
+makedepends=(xorg-server libx11 libxi xorgproto)
+source=(https://x.org/pub/individual/driver/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }
 
 package() {
 	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
+
 	mkdir -p $pkgdir/etc/X11/xorg.conf.d
 }

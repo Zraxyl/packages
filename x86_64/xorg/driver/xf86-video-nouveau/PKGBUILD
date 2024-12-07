@@ -1,28 +1,30 @@
 pkgname=xf86-video-nouveau
-pkgver=1.0.17
-pkgrel=4
+pkgver=1.0.18
+pkgrel=1
+pkgdesc="Open Source 3D acceleration driver for nVidia cards"
 arch=('x86_64')
-depends=(xorg-server mesa)
-source=(https://x.org/pub/individual/driver/$pkgname-$pkgver.tar.bz2
-	xorg-server-21.1.diff)
+depends=(libdrm mesa systemd)
+makedepends=(xorg-server xorgproto)
+source=(https://x.org/pub/individual/driver/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
 
-	patch -Np1 -i ../xorg-server-21.1.diff
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 }
 
 build() {
 	cd $pkgname-$pkgver
-
-	./configure		\
-	--prefix=/usr
 
 	make
 }
 
 package() {
 	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
+
 	mkdir -p $pkgdir/etc/X11/xorg.conf.d
 }

@@ -1,14 +1,18 @@
 pkgname=xf86-video-vesa
-pkgver=2.5.0
-pkgrel=4
+pkgver=2.6.0
+pkgrel=1
+pkgdesc="X.org vesa video driver"
 arch=('x86_64')
-depends=(xorg-server)
-source=(https://x.org/pub/individual/driver/$pkgname-$pkgver.tar.bz2)
+depends=(glibc libxrender libxrandr)
+makedepends=(xorg-server)
+source=(https://x.org/pub/individual/driver/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure --prefix=/usr
+	./configure \
+	--prefix=/usr
+
 	make
 }
 

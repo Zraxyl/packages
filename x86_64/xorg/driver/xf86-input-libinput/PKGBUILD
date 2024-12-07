@@ -1,21 +1,26 @@
 pkgname=xf86-input-libinput
-pkgver=1.1.0
-pkgrel=5
+pkgver=1.5.0
+pkgrel=1
+pkgdesc="Generic input driver for the X.Org server based on libinput"
 arch=('x86_64')
-depends=(libevdev mtdev xorg-server libinput)
-source=(https://x.org/pub/individual/driver/$pkgname-$pkgver.tar.bz2)
+depends=(libevdev mtdev libinput libx11 libxi)
+makedepends=(xorg-server xorgproto)
+source=(https://x.org/pub/individual/driver/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }
 
 package() {
 	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
+
 	mkdir -p $pkgdir/etc/X11/xorg.conf.d
 }

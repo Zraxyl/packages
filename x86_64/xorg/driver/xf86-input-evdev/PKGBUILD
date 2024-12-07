@@ -1,21 +1,26 @@
 pkgname=xf86-input-evdev
-pkgver=2.10.6
-pkgrel=4
+pkgver=2.11.0
+pkgrel=1
+pkgdesc="X.org evdev input driver"
 arch=('x86_64')
-depends=(libevdev mtdev xorg-server)
-source=(https://x.org/pub/individual/driver/$pkgname-$pkgver.tar.bz2)
+depends=(libevdev mtdev xorgproto)
+makedepends=(xorg-server)
+source=(https://x.org/pub/individual/driver/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }
 
 package() {
 	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
+
 	mkdir -p $pkgdir/etc/X11/xorg.conf.d
 }
