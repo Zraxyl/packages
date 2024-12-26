@@ -1,5 +1,5 @@
-# Evolutionary Linux | Evolinx
-## All build files for all the pkg's in evolinx distro
+# ZRAXYL
+## All build files for all the pkg's in zraxyl distro
 
 ### Wiki
-* [Contribution](https://git.martinvlba.eu/Evolinx/internal_pkgbuild/wiki/Contribution)
+* [Contribution](#)
