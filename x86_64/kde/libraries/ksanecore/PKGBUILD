@@ -1,8 +1,9 @@
 pkgname=ksanecore
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
+pkgdesc="Library providing logic to interface scanners"
 arch=('x86_64')
-depends=(sane qt5 ki18n)
+depends=(sane qt6 ki18n)
 makedepends=(cmake extra-cmake-modules)
 source=(https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz)
 
@@ -15,9 +16,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D QT_MAJOR_VERSION=6 \
 	..
 
 	make

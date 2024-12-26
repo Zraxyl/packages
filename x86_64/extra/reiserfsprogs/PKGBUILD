@@ -1,6 +1,6 @@
 pkgname=reiserfsprogs
 pkgver=3.6.27
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(util-linux)
 makedepends=(gcc)
@@ -13,13 +13,13 @@ prepare() {
 	patch -Np1 -i ../reiserfsprogs-3.6.27-loff_t.patch
 
 	autoreconf -fi
+
+	./configure \
+	--prefix=/usr
 }
 
 build() {
 	cd $pkgname-$pkgver
-
-	./configure	\
-	--prefix=/usr
 
 	make
 }

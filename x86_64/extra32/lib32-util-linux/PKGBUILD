@@ -1,32 +1,39 @@
-_pkgbasename=util-linux
-pkgname=lib32-${_pkgbasename}
-_pkgmajor=2.37
-_realver=${_pkgmajor}.2
-pkgver=${_realver/-/}
-pkgrel=2
+rname=util-linux
+pkgname=lib32-${rname}
+pkgver=2.40.2
+pkgrel=1
 pkgdesc='Miscellaneous system utilities for Linux (32-bit)'
 url='https://github.com/karelzak/util-linux'
 arch=('x86_64')
-depends=("${_pkgbasename}")
+depends=(util-linux lib32-libxcrypt lib32-linux-pam lib32-sqlite3
+	lib32-systemd lib32-ncurses)
 license=('GPL2')
 options=('!emptydirs')
-source=("https://www.kernel.org/pub/linux/utils/util-linux/v${_pkgmajor}/${_pkgbasename}-${_realver}.tar."{xz,sign})
+source=("https://www.kernel.org/pub/linux/utils/util-linux/v2.40/$rname-$pkgver.tar.xz")
+
+prepare() {
+	cd $rname-$pkgver
+
+	export CC="gcc -m32"
+	export CXX="g++ -m32"
+	export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--libdir=/usr/lib32
+}
+
 build() {
-  cd "${_pkgbasename}-${_realver}"
+	cd $rname-$pkgver
 
-        export CC="gcc -m32"
-        export CXX="g++ -m32"
-        export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
-
-  ./configure \
-      --libdir=/usr/lib32
-
-  make lib{uuid,blkid,fdisk,mount,smartcols}.la
+	make
+	make lib{uuid,blkid,fdisk,mount,smartcols}.la
 }
 
 package() {
-  make -C "${_pkgbasename}-${_realver}" \
-    DESTDIR="${pkgdir}" \
-    install-usrlib_execLTLIBRARIES \
-    install-pkgconfigDATA
+	make -C $rname-$pkgver \
+	DESTDIR="${pkgdir}" \
+	install-usrlib_execLTLIBRARIES \
+	install-pkgconfigDATA
 }

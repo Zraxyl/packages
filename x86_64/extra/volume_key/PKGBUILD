@@ -1,31 +1,33 @@
 pkgname=volume_key
 pkgver=0.3.12
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
-depends=(cryptsetup glib2 gpgme nss)
-makedepends=(gcc python3)
-source=(https://github.com/felixonmars/volume_key/archive/volume_key-$pkgver.tar.gz)
+depends=(util-linux cryptsetup glib2 gpgme nspr nss)
+makedepends=(base-devel python3-pip swig)
+commitid="b6825e9977a9823a991e2c109cfc663c1c805e9f"
+source=(git+https://pagure.io/volume_key.git#commit=$commitid
+	revert_faulty_translations.patch::https://pagure.io/volume_key/c/32a877f2ae60ad1ed19eaf3516906bbecc47b8ab.patch)
 
 prepare() {
-	cd $pkgname*-$pkgver
+	cd $pkgname
+
+	patch -p1 -R -i ../revert_faulty_translations.patch
 
 	autoreconf -fiv
 }
 
 build() {
-	cd $pkgname*-$pkgver
+	cd $pkgname
 
-	./configure		\
-	--prefix=/usr		\
-	--without-python	\
-	--without-python3	\
-	--without-swig
+	export CFLAGS+=" $(python3-config --includes)"
+	./configure \
+	--prefix=/usr
 
 	make
 }
 
 package() {
-	cd $pkgname*-$pkgver
+	cd $pkgname
 
 	make DESTDIR=$pkgdir install
 }

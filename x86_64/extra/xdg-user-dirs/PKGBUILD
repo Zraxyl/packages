@@ -1,6 +1,7 @@
 pkgname=xdg-user-dirs
 pkgver=0.18
-pkgrel=1
+pkgrel=2
+pkgdesc='Manage user directories like ~/Desktop and ~/Music'
 arch=('x86_64')
 depends=(bash systemd)
 makedepends=(docbook-xsl git)
@@ -16,8 +17,8 @@ prepare() {
 build() {
 	cd $pkgname
 
-	./configure		\
-	--prefix=/usr		\
+	./configure \
+	--prefix=/usr \
 	--sysconfdir=/etc
 
 	make

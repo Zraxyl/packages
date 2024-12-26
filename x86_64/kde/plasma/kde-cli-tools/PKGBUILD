@@ -1,8 +1,11 @@
 pkgname=kde-cli-tools
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="Tools based on KDE Frameworks to better interact with the system"
 arch=('x86_64')
-depends=(kcmutils kactivities kdesu kdoctools kparts plasma-workspace)
+depends=(kcmutils kcompletion kconfig kcoreaddons kdesu ki18n
+	kiconthemes kio kparts kservice kwidgetsaddons kwindowsystem
+	qt6)
 makedepends=(cmake qt5 extra-cmake-modules)
 durl=https://download.kde.org/stable/plasma
 source=($durl/$pkgver/$pkgname-$pkgver.tar.xz)

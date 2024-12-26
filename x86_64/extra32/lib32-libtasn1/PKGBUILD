@@ -1,6 +1,6 @@
 _pkgbase=libtasn1
 pkgname=lib32-${_pkgbase}
-pkgver=4.18.0
+pkgver=4.19.0
 pkgrel=1
 pkgdesc="The ASN.1 library used in GNUTLS (32 bit)"
 arch=('x86_64')
@@ -15,10 +15,11 @@ build() {
 
 	cd ${_pkgbase}-${pkgver}
 
-	./configure --prefix=/usr \
+	./configure \
+	--prefix=/usr \
 	--libdir=/usr/lib32 \
-	--with-packager=Archlinux \
-	--with-packager-bug-reports="http://bugs.archlinux.org/" \
+	--with-packager=Evolinx \
+	--with-packager-bug-reports="https://bugs.martinvlba.eu/" \
 	--with-packager-version=${pkgver}-${pkgrel}
 
 	make

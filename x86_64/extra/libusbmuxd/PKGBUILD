@@ -1,0 +1,29 @@
+pkgname=libusbmuxd
+pkgver=2.1.0
+pkgrel=1
+pkgdesc="Client library to multiplex connections from and to iOS devices"
+arch=('x86_64')
+depends=(gcc glibc libimobiledevice-glue libplist)
+makedepends=(base-devel python3-pip)
+source=(https://github.com/libimobiledevice/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.bz2)
+
+prepare() {
+	pip3 install cython
+
+	cd $pkgname-$pkgver
+
+	./configure \
+	--prefix=/usr
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

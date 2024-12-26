@@ -1,5 +1,5 @@
 pkgname=lib32-icu
-pkgver=70.1
+pkgver=75.1
 pkgrel=1
 pkgdesc="International Components for Unicode library (32 bit)"
 arch=('x86_64')
@@ -14,7 +14,10 @@ build() {
 
 	cd icu/source
 
-	./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib32
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--libdir=/usr/lib32
 
 	make
 }

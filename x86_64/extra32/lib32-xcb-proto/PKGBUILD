@@ -1,0 +1,30 @@
+rname=xcb-proto
+pkgname=lib32-$rname
+pkgver=1.14.1
+pkgrel=2
+arch=('x86_64')
+depends=($rname)
+source=(https://xorg.freedesktop.org/archive/individual/proto/$rname-$pkgver.tar.xz)
+
+prepare() {
+	cd $rname-$pkgver
+
+	PYTHON=python3 \
+	./configure \
+	--prefix=/usr \
+	--libdir=/usr/lib32
+}
+
+build() {
+	cd $rname-$pkgver
+
+	make
+}
+
+package() {
+	cd $rname-$pkgver
+
+	make DESTDIR=$pkgdir install
+
+	rm -rf $pkgdir/usr/{bin,share}
+}

@@ -1,6 +1,7 @@
 pkgname=libseccomp
-pkgver=2.5.4
+pkgver=2.5.5
 pkgrel=1
+pkgdesc="Enhanced seccomp library"
 arch=('x86_64')
 depends=(glibc)
 makedepends=(valgrind gperf python3-pip libtool)
@@ -17,8 +18,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver
 
-	./configure	\
-	--prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 

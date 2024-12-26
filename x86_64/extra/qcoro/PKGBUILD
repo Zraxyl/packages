@@ -1,0 +1,23 @@
+pkgname=qcoro
+pkgver=0.11.0
+pkgrel=1
+pkgdesc="C++ Coroutines for Qt"
+arch=(x86_64)
+depends=(qt6)
+makedepends=(base-devel)
+source=(https://github.com/qcoro/qcoro/archive/refs/tags/v$pkgver.tar.gz)
+
+prepare() {
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-S $pkgname-$pkgver \
+	-B build
+}
+
+build() {
+	cmake --build build
+}
+
+package() {
+	DESTDIR=$pkgdir cmake --install build
+}

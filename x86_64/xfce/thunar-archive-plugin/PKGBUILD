@@ -1,7 +1,7 @@
 pkgname=thunar-archive-plugin
 pkgver=0.5.2
 xver=0.5
-pkgrel=4
+pkgrel=5
 arch=('x86_64')
 depends=(thunar hicolor-icon-theme)
 source=(https://archive.xfce.org/src/thunar-plugins/$pkgname/$xver/$pkgname-$pkgver.tar.bz2)
@@ -11,10 +11,10 @@ optdepends=(
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
-	--prefix=/usr		\
-	--libexecdir=/usr/lib/xfce4 \
-	--sysconfdir=/etc
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--libexecdir=/usr/lib/xfce4
 
 	make
 }

@@ -1,9 +1,11 @@
 pkgname=plasma-pa
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="Plasma applet for audio volume management using PulseAudio"
 arch=(x86_64)
-depends=(plasma-workspace pulseaudio perl libcanberra
-    sound-theme-freedesktop)
+depends=(kcmutils kconfig kcoreaddons kdbusaddons kdeclarative kglobalaccel ki18n
+	kirigami kitemmodels kstatusnotifieritem ksvg libcanberra libplasma
+	pulseaudio plasma-workspace pulseaudio-qt qt6)
 makedepends=(extra-cmake-modules kdoctools)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
@@ -18,5 +20,8 @@ build() {
 package() {
     DESTDIR="$pkgdir" cmake --install build
 
-    ln -sf kcms/kcm_pulseaudio.so $pkgdir/usr/lib/qt/plugins/kcm_pulseaudio.so
+    # Hacky way but its how i deal with it for now
+    mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+    cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+    rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
 }

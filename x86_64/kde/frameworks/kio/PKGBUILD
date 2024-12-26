@@ -1,10 +1,15 @@
 pkgname=kio
-pkgver=5.107.0
+pkgver=6.8.0
 pkgrel=1
+pkgdesc="Resource and network access abstraction"
 arch=('x86_64')
-depends=(kjobwidgets kbookmarks libxslt kwallet ktextwidgets kded solid)
-makedepends=(cmake extra-cmake-modules kdoctools qt5 doxygen)
-durl=https://download.kde.org/stable/frameworks/5.107
+depends=(acl karchive kauth kbookmarks kcolorscheme kcompletion
+	kconfig kcoreaddons kcrash kdbusaddons kguiaddons
+	ki18n kiconthemes kitemviews kjobwidgets kservice
+	kwallet kwidgetsaddons kwindowsystem libxml2
+	libxslt qt6 solid util-linux kded kdoctools)
+makedepends=(cmake extra-cmake-modules doxygen)
+durl=https://download.kde.org/stable/frameworks/6.8
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -16,9 +21,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

@@ -1,10 +1,10 @@
 pkgname=lightdm
 pkgver=1.32.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(accountsservice xorg-server encodings garcon exo xorg-xkbcomp libgcrypt itstool
 	linux-pam pcre vala gobject-introspection libpciaccess at-spi2-core gtk-doc glib2
-	libxcb libxdm lightdm-gtk-greeter)
+	libxcb xdm lightdm-gtk-greeter libxklavier)
 makedepends=(yelp-xsl)
 source=(https://github.com/CanonicalLtd/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.xz
 	lightdm-default-config.patch

@@ -1,11 +1,12 @@
 pkgname=poppler
-pkgver=23.09.0
+pkgver=24.11.0
 dataver=0.4.12
 edataver="0.4.11-2"
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 depends=(fontconfig openjpeg cairo lcms nss curl
-	gpgme nspr libpng freetype2 libtiff glib2)
+	gpgme nspr libpng freetype2 libtiff glib2
+	qt5 qt6)
 makedepends=(cmake gtk-doc python3-pip python3-pygments)
 source=(https://poppler.freedesktop.org/$pkgname-$pkgver.tar.xz
 	https://poppler.freedesktop.org/$pkgname-data-$dataver.tar.gz

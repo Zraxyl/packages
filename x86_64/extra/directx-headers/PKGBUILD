@@ -1,7 +1,7 @@
 pkgname=directx-headers
-pkgdesc="DirectX headers for using D3D12"
-pkgver=1.614.0
+pkgver=1.614.1
 pkgrel=1
+pkgdesc="DirectX headers for using D3D12"
 arch=('x86_64')
 makedepends=('meson')
 source=(https://github.com/microsoft/DirectX-Headers/archive/refs/tags/v$pkgver.tar.gz)
@@ -10,10 +10,10 @@ build() {
 	# LTO breaks mesa...
 	export CXXFLAGS="$CXXFLAGS -fno-lto"
 
-	meson				\
-	--prefix=/usr			\
-	DirectX-Headers-$pkgver build	\
-	-Dbuild-test=false
+	meson \
+	--prefix=/usr \
+	DirectX-Headers-$pkgver build \
+	-D build-test=false
 
 	ninja -C build
 }

@@ -1,0 +1,28 @@
+pkgname=squashfuse
+pkgver=0.5.2
+pkgrel=1
+pkgdesc="FUSE filesystem to mount squashfs archives"
+arch=(x86_64)
+depends=(fuse2 glibc lz4 xz zlib zstd)
+makedepends=(base-devel)
+source=(https://github.com/vasi/squashfuse/archive/$pkgver/$pkgname-$pkgver.tar.gz)
+
+build() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+
+	# Missing headers
+	install -Dm644 *.h -t "$pkgdir"/usr/include/squashfuse
+}

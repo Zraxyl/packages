@@ -1,25 +1,23 @@
 pkgname=unicode-character-database
-pkgver=14.0.0
+pkgver=15.1.0
 pkgrel=1
+pkgdesc="Unicode Character Database"
 arch=(x86_64)
-makedepends=(lynx)
+makedepends=(base-devel)
 source=("UCD-$pkgver.zip::https://www.unicode.org/Public/zipped/$pkgver/UCD.zip"
-        "Unihan-$pkgver.zip::https://www.unicode.org/Public/zipped/$pkgver/Unihan.zip"
-        "unicode-license.html::https://www.unicode.org/license.html")
+	"Unihan-$pkgver.zip::https://www.unicode.org/Public/zipped/$pkgver/Unihan.zip")
 noextract=({UCD,Unihan}-$pkgver.zip)
 
-build() {
-    lynx -dump -display_charset=utf-8 unicode-license.html > LICENSE
-}
-
 package() {
-    for _f in UCD Unihan; do
-        install -Dm644 $_f-$pkgver.zip "$pkgdir/usr/share/unicode/$_f.zip"
-        bsdtar -C "$pkgdir/usr/share/unicode" -x --no-same-owner --no-same-permissions -f $_f-$pkgver.zip
-    done
+	local f
 
-    ln -s . "$pkgdir/usr/share/unicode/ucd"
-    for _f in $pkgname unicode-data unidata; do
-        ln -s unicode "$pkgdir/usr/share/$_f"
-    done
+	for f in UCD Unihan; do
+		install -Dm644 $f-$pkgver.zip "$pkgdir/usr/share/unicode/$f.zip"
+		bsdtar -C "$pkgdir/usr/share/unicode" -x --no-same-owner --no-same-permissions -f $f-$pkgver.zip
+	done
+
+	ln -s . "$pkgdir/usr/share/unicode/ucd"
+	for f in $pkgname unicode-data unidata; do
+		ln -s unicode "$pkgdir/usr/share/$f"
+	done
 }

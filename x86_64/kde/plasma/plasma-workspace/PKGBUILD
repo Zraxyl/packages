@@ -1,14 +1,24 @@
 pkgname=plasma-workspace
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="KDE Plasma Workspace"
 arch=('x86_64')
-depends=(knotifyconfig ktexteditor xrdb kholidays xmessage prison libqalculate
-	kpeople kactivities-stats kquickcharts ksysguard kwin kscreen libxft sddm
-	kitemmodels phonon-backend-gstreamer phonon kpipewire networkmanager-qt
-	modemmanager-qt breeze kio-extras kio-fuse kquickcharts layer-shell-qt
-	kuserfeedback qt5-webengine)
-makedepends=(extra-cmake-modules kdoctools baloo networkmanager-qt plasma-wayland-protocols
-	kunitconversion kinit sddm)
+depends=(accountsservice appstream dbus fontconfig freetype2 icu kactivitymanagerd
+	karchive kauth kbookmarks kcmutils kcolorscheme kcompletion kconfig
+	kconfigwidgets kcoreaddons kcrash kdbusaddons kde-cli-tools kdeclarative
+	kded kglobalaccel kguiaddons kholidays ki18n kiconthemes kidletime kio
+	kio-extras kio-fuse kirigami kirigami-addons kitemmodels kjobwidgets
+	knewstuff knotifications knotifyconfig kpackage kparts kpipewire
+	kquickcharts krunner kscreenlocker kservice kstatusnotifieritem ksvg
+	ksystemstats ktexteditor ktextwidgets kunitconversion kuserfeedback
+	kwallet kwayland kwidgetsaddons kwin kwindowsystem kxmlgui layer-shell-qt
+	libcanberra libice libkexiv2 libksysguard libplasma libsm libx11 libxcb
+	libxcrypt libxcursor libxfixes libxft libxtst phonon plasma-activities
+	plasma-activities-stats plasma5support prison qt6 libqalculate
+	solid systemd wayland xcb-util xcb-util-image xmessage xrdb xwayland zlib
+	baloo networkmanager-qt xdg-desktop-portal-gtk polkit-qt)
+makedepends=(extra-cmake-modules kdoctools plasma-wayland-protocols
+	kunitconversion)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-${pkgver}.tar.xz)
 
 prepare() {
@@ -20,10 +30,11 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake						\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-D INSTALL_SDDM_WAYLAND_SESSION=ON \
+	-D BUILD_TESTING=OFF \
 	-Wno-dev ..
 
 	make

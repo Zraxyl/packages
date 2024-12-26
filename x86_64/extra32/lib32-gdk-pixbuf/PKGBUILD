@@ -1,11 +1,11 @@
 pkgname=lib32-gdk-pixbuf
-pkgver=2.42.8
+pkgver=2.42.9
 pkgrel=1
 arch=(x86_64)
 depends=(lib32-glib2 lib32-libpng lib32-libtiff lib32-libjpeg gdk-pixbuf)
 makedepends=(git meson)
 commitid=bca00032ad68d0b0aa2c1f7558db931e52bd9cd2 # 2.42.8
-source=("git+https://gitlab.gnome.org/GNOME/gdk-pixbuf.git#commit=$commitid"
+source=("https://download.gnome.org/sources/gdk-pixbuf/2.42/gdk-pixbuf-$pkgver.tar.xz"
 	gdk-pixbuf-query-loaders-32.hook
 )
 
@@ -14,7 +14,9 @@ build() {
 	export CXX="g++ -m32"
 	export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
 
-	meson gdk-pixbuf build \
+	meson \
+	gdk-pixbuf-$pkgver \
+	build \
 	--prefix=/usr \
 	--libdir /usr/lib32 \
 	--wrap-mode=nofallback \

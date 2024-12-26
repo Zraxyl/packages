@@ -1,8 +1,9 @@
 pkgname=libkomparediff2
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
+pkgdesc="Library to compare files and strings"
 arch=('x86_64')
-depends=(kio)
+depends=(kconfig kconfigwidgets kcoreaddons ki18n kio kxmlgui qt6)
 makedepends=(cmake extra-cmake-modules)
 source=(https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz)
 

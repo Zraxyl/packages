@@ -1,10 +1,10 @@
 pkgname=kio-fuse
-pkgver=5.0.1
+pkgver=5.1.0
 pkgrel=1
 arch=('x86_64')
-depends=(fuse2 fuse3 kio)
+depends=(fuse3 kcoreaddons kio qt6)
 makedepends=(extra-cmake-modules)
-source=(https://download.kde.org/stable/$pkgname/$pkgver/$pkgname-$pkgver.tar.xz)
+source=(https://download.kde.org/stable/$pkgname/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -15,9 +15,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake						\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D QT_MAJOR_VERSION=6 \
 	-Wno-dev ..
 
 	make

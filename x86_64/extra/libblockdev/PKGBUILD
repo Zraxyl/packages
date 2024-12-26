@@ -1,17 +1,25 @@
 pkgname=libblockdev
-pkgver=2.26
+pkgver=3.2.1
 pkgrel=1
 pkgdesc="A library for manipulating block devices"
 arch=('x86_64')
 url="https://github.com/rhinstaller/libblockdev"
-depends=('dosfstools' 'lvm2' 'parted' 'kmod' 'yaml' 'libbytesize' 'volume_key')
-makedepends=('gobject-introspection' 'systemd' 'python3')
-source=(https://github.com/storaged-project/libblockdev/releases/download/2.26-1/libblockdev-2.26.tar.gz)
+depends=(glib2 glibc kmod glib2 systemd btrfs-progs cryptsetup lvm2 e2fsprogs
+	keyutils json-glib libatasmart libbytesize yaml parted volume_key
+	python3 python3-gobject ndctl libtracefs libtraceevent libnvme)
+makedepends=('gobject-introspection' 'systemd' 'python3-pip' 'python3-pygments')
+source=(https://github.com/storaged-project/libblockdev/releases/download/$pkgver/libblockdev-$pkgver.tar.gz)
+
+prepare() {
+	cd "$srcdir"/$pkgname-$pkgver
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
 
 build() {
 	cd "$srcdir"/$pkgname-$pkgver
-
-	./configure --prefix=/usr --sysconfdir=/etc --without-lvm_dbus --without-dmraid
 
 	make
 }

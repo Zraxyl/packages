@@ -1,10 +1,11 @@
 pkgname=kservice
-pkgver=5.107.0
+pkgver=6.8.0
 pkgrel=1
+pkgdesc="Advanced plugin and service introspection"
 arch=('x86_64')
-depends=(ki18n kconfig kdbusaddons kconfig kcoreaddons)
-makedepends=(cmake extra-cmake-modules qt5 bison doxygen kdoctools)
-durl=https://download.kde.org/stable/frameworks/5.107
+depends=(ki18n kconfig kconfig kcoreaddons qt6)
+makedepends=(cmake extra-cmake-modules bison doxygen kdoctools)
+durl=https://download.kde.org/stable/frameworks/6.8
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -16,9 +17,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

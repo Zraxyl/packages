@@ -1,9 +1,13 @@
 pkgname=xdg-desktop-portal-kde
-realver=5.27.6
-pkgver=5.27.6
+realver=6.2.4
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="A backend implementation for xdg-desktop-portal using Qt/KF5"
 arch=('x86_64')
-depends=(plasma-framework kirigami2 kio-fuse xdg-desktop-portal)
+depends=(kconfig kcoreaddons kcrash kglobalaccel ki18n kiconthemes kio
+	kio-fuse kirigami kitemviews knotifications kpipewire kservice kstatusnotifieritem
+	kwayland kwindowsystem libxkbcommon plasma-workspace qt6
+	wayland xdg-desktop-portal)
 makedepends=(extra-cmake-modules plasma-wayland-protocols)
 source=(https://download.kde.org/stable/plasma/$realver/$pkgname-$pkgver.tar.xz)
 

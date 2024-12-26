@@ -1,6 +1,6 @@
 pkgname=filesystem
-pkgver=1
-pkgrel=11
+pkgver=2
+pkgrel=2
 arch=('x86_64')
 depends=(iana-etc)
 backup=(etc/dircolors.sh
@@ -36,7 +36,8 @@ source=(dircolors.sh
 	usb.conf
 	passwd
 	group
-	issue)
+	issue
+	os-release)
 
 build() {
 	echo "Nothing here to do..."
@@ -81,7 +82,7 @@ package() {
 
 	# /etc
 	install -d $pkgdir/etc
-	for p in profile shells resolv.conf inputrc fstab hostname hosts passwd group issue; do
+	for p in profile shells resolv.conf inputrc fstab hostname hosts passwd os-release group issue; do
 		install -m0644 $p $pkgdir/etc
 	done
 

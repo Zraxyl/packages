@@ -1,22 +1,24 @@
 _pkgbasename=gtk2
 pkgname=lib32-${_pkgbasename}+
 pkgver=2.24.33
-pkgrel=1
+pkgrel=2
 pkgdesc="GObject-based multi-platform GUI toolkit (legacy) (32-bit)"
 arch=('x86_64')
 url="https://www.gtk.org/"
 install=gtk2+.install
-depends=(lib32-{'atk>','pango','cairo','gdk-pixbuf'}
+depends=(lib32-{'pango','cairo','gdk-pixbuf'}
          lib32-lib{xcursor,'xrandr','xi',xinerama,xcomposite,xdamage}
-         gtk2+ lib32-cups)
+         gtk2+ lib32-cups lib32-at-spi2-core)
 makedepends=('python3')
 source=(https://download.gnome.org/sources/gtk+/2.24/gtk+-${pkgver}.tar.xz
-        xid-collision-debug.patch)
+        0001.patch
+	0002.patch)
 
 prepare() {
   cd "${srcdir}/gtk+-${pkgver}"
 
-  patch -Np1 -i "${srcdir}/xid-collision-debug.patch"
+  patch -p1 -i ../0001.patch
+  patch -p1 -i ../0002.patch
 }
 
 build() {
@@ -26,6 +28,7 @@ build() {
 
   cd "${srcdir}/gtk+-${pkgver}"
 
+  CFLAGS=" -Wno-error=implicit-int -Wno-error=incompatible-pointer-types" \
   ./configure --prefix=/usr \
       --sysconfdir=/etc \
       --localstatedir=/var \

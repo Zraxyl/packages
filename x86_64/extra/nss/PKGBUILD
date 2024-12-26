@@ -1,6 +1,6 @@
 pkgname=nss
-pkgver=3.104
-fver=3_104
+pkgver=3.107
+fver=3_107
 pkgrel=1
 pkgdesc="Network Security Services"
 url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS"

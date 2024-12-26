@@ -1,6 +1,6 @@
 pkgname=lib32-libtirpc
 pkgver=1.3.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(libtirpc)
 makedepends=(gcc)
@@ -13,10 +13,10 @@ build() {
 	export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 	export CFLAGS="$CFLAGS -Wno-format-truncation"
 
-	./configure		\
-	--prefix=/usr		\
-	--disable-gssapi	\
-	--libdir=/usr/lib32	\
+	./configure \
+	--prefix=/usr \
+	--disable-gssapi \
+	--libdir=/usr/lib32 \
 	--sysconfdir=/etc
 
 	make

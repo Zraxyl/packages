@@ -1,8 +1,9 @@
 pkgname=atkmm
 pkgver=2.36.3
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
-depends=(atk glibmm)
+depends=('at-spi2-core' 'glibmm' 'libsigc++')
+makedepends=(mm-common)
 source=(https://download.gnome.org/sources/$pkgname/2.36/$pkgname-$pkgver.tar.xz)
 
 prepare() {

@@ -1,13 +1,13 @@
 _pkgbasename=libxcb
 pkgname=lib32-$_pkgbasename
 pkgver=1.14
-pkgrel=2
+pkgrel=3
 pkgdesc="X11 client-side library (32-bit)"
 arch=(x86_64)
 url="https://xcb.freedesktop.org/"
-depends=('lib32-libxdmcp' 'lib32-libxau' $_pkgbasename)
+depends=('lib32-libxdmcp' 'lib32-libxau' $_pkgbasename 'lib32-xcb-proto')
 makedepends=('pkgconf' 'libxslt' 'python3' 'util-macros'
-             'autoconf' 'xorgproto')
+             'autoconf' 'xorgproto' 'xcb-proto')
 license=('custom')
 source=(https://xorg.freedesktop.org/archive/individual/lib/$_pkgbasename-$pkgver.tar.xz{,.sig})
 build() {

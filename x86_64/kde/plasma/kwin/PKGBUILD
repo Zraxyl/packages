@@ -1,11 +1,16 @@
 pkgname=kwin
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="An easy to use, but flexible, composited Window Manager"
 arch=(x86_64)
-depends=(breeze kcmutils kscreenlocker lcms libxcvt
-	wireplumber pipewire xcb-util-cursor krunner
-	plasma-wayland-protocols wayland-protocols hwdata
-	libdrm kscreen plasma-framework)
+depends=(breeze kauth kcmutils kcolorscheme kconfig kconfigwidgets kcoreaddons
+	kcrash kdbusaddons kdeclarative kdecoration kglobalaccel kglobalacceld
+	kguiaddons ki18n kidletime kirigami kitemmodels knewstuff knotifications
+	kpackage kquickcharts kscreenlocker kservice ksvg kwayland kwidgetsaddons
+	kwindowsystem kxmlgui lcms libcanberra libdisplay-info libdrm libei
+	libepoxy libinput pipewire libplasma libx11 libxcb libxcvt libxi
+	libxkbcommon mesa plasma-activities qt6 wayland systemd
+	xcb-util-cursor xcb-util-keysyms xcb-util-wm)
 makedepends=(extra-cmake-modules qt5 kdoctools krunner)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 install=$pkgname.install

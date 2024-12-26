@@ -1,16 +1,19 @@
 pkgname=qt5-webengine
-pkgver=5.15.15
+pkgver=5.15.18
 pkgrel=1
+pkgdesc="Provides support for web applications using the Chromium browser project"
 arch=('x86_64')
-depends=(qt5 nodejs nss pciutils llvm clang bison ffmpeg minizip double-conversion
-	libx264 libx265 pipewire)
+depends=(qt5 ffmpeg libevent libvpx libxcomposite libxdamage libxkbfile libxrandr
+	libxslt libxss libxtst minizip nss pciutils qt5 snappy pipewire ffmpeg-5)
 makedepends=(extra-cmake-modules python3-pip python2-pip python2-setuptools)
-commitid_engine=21ddfe15f638a36160cb11d00639c3126c1aed7c # 5.15.15
-source=(qt5-webengine-python3.patch
-        qt5-webengine-chromium-python3.patch
-        qt5-webengine-ffmpeg5.patch
+commitid_engine=87ceb6a2ef5ee25d56f765dc533728c4ca4787e0 # 5.15.18
+source=(qt5-webengine-ffmpeg5.patch
+        qt5-webengine-ffmpeg7.patch
         qt5-webengine-pipewire-0.3.patch
-        clang-16-support.patch)
+        qt5-webengine-icu-75.patch
+        qt5-webengine-ninja-1.12.patch
+        python3.12-imp.patch
+        python3.12-six.patch)
 url=https://invent.kde.org/qt/qt
 
 prepare() {
@@ -18,7 +21,7 @@ prepare() {
 
 	# Clone and checkout proper qtwebengine src
 	if [ ! -d $srcdir/qtwebengine ]; then
-		git clone $url/qtwebengine.git -b 5.15 qtwebengine
+		git clone $url/qtwebengine.git -b 5.15.18 qtwebengine
 	else
 		echo "No clone needed as dir exists"
 	fi
@@ -35,13 +38,20 @@ prepare() {
 
 	# patching time
 	set +e
-	patch -p1 -i "$srcdir"/qt5-webengine-python3.patch # Fix build with Python 3
-	patch -p1 -d src/3rdparty -i "$srcdir"/qt5-webengine-chromium-python3.patch
-
-	patch -p1 -d src/3rdparty -i "$srcdir"/qt5-webengine-ffmpeg5.patch # Fix build with ffmpeg 5
-	patch -p1 -d src/3rdparty -i "$srcdir"/qt5-webengine-pipewire-0.3.patch # Port to pipewire 0.3
-
-	patch -p0 -i "$srcdir"/clang-16-support.patch # Fix chromium build error ( static constexpr T kMax = static_cast )
+	# Fix build with ffmpeg 5
+	patch -p1 -d src/3rdparty -i "$srcdir"/qt5-webengine-ffmpeg5.patch
+	# Port to pipewire 0.3
+	patch -p1 -d src/3rdparty -i "$srcdir"/qt5-webengine-pipewire-0.3.patch
+	# Fix build with ICU 75
+	patch -p2 -d src/3rdparty/chromium -i "$srcdir"/qt5-webengine-icu-75.patch
+	# Fix build with ninja 1.12
+	patch -p2 -d src/3rdparty/chromium -i "$srcdir"/qt5-webengine-ninja-1.12.patch
+	# Fix build with python 3.12 - patch from Debian
+	patch -p1 -d src/3rdparty/chromium -i "$srcdir"/python3.12-imp.patch
+	# Fix build with python 3.12 - patch from Debian
+	patch -p1 -d src/3rdparty/chromium -i "$srcdir"/python3.12-six.patch
+	# Fix build with ffmpeg 7 - Chromium patches
+	patch -p1 -d src/3rdparty/chromium -i "$srcdir"/qt5-webengine-ffmpeg7.patch
 	set -e
 }
 
@@ -49,14 +59,19 @@ build() {
 	mkdir -p qtwebengine/build
 	cd qtwebengine/build
 
+        export LDFLAGS+=" -L/usr/lib/ffmpeg5.1"
+        export PKG_CONFIG_PATH="/usr/lib/ffmpeg5.1/pkgconfig/:$PKG_CONFIG_PATH"
+
 	qmake ../ \
 	CONFIG+=force_debug_info \
 	EXTRA_GN="use_lld=true is_clang=true clang_use_chrome_plugins=false"  -- \
-	-system-ffmpeg \
+	-proprietary-codecs \
 	-webp \
 	-spellchecker \
 	-webengine-icu \
-	-webengine-webrtc-pipewire
+	-webengine-kerberos \
+	-webengine-webrtc-pipewire \
+	-webengine-python-version python3
 
 	make
 }

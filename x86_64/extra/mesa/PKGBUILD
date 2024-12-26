@@ -1,20 +1,43 @@
 pkgname=mesa
-pkgver=24.2.2
-pkgrel=1
+pkgver=24.3.2
+pkgrel=2
+pkgdesc="Open-source OpenGL drivers"
 arch=('x86_64')
-depends=(
-	# X11
+depends=(# X11
 	'libxcb' 'libx11' 'libxext' 'libxfixes' 'libxshmfence' 'libxrender' 'libxvmc' 'libxxf86vm'
+
 	# Other
 	'wayland' 'wayland-protocols' 'vulkan-icd-loader' 'libomxil-bellagio' 'libclc' 'libglvnd'
 	'valgrind' 'libunwind' 'opencl-icd-loader' 'libpciaccess'
 	'vdpau' 'glslang' 'libva' 'llvm'  'lm-sensors' 'spirv-llvm-translator'
 	'libepoxy' 'gtk3+' 'libc++' 'libx264' 'libx265' 'fontconfig' 'libdrm'
-	'libdecor' 'polly'
-	)
+	'libdecor' 'polly')
 makedepends=('meson' 'directx-headers' 'vulkan-headers' 'opencl-headers' 'python3-pip' 'clang' 'cmake' 'byacc'
-	'bison' 'rust' 'cbindgen' 'rust-bindgen')
-source=(https://mesa.freedesktop.org/archive/$pkgname-$pkgver.tar.xz)
+	'bison' 'rust' 'cbindgen' 'rust-bindgen' 'wayland-protocols')
+
+declare -A rust_crates=(
+   equivalent      1.0.1
+   hashbrown       0.14.1
+   indexmap        2.2.6
+   once_cell       1.8.0
+   paste           1.0.14
+   pest            2.7.11
+   pest_derive     2.7.11
+   pest_generator  2.7.11
+   pest_meta       2.7.11
+   proc-macro2     1.0.86
+   quote           1.0.33
+   roxmltree       0.20.0
+   syn             2.0.68
+   ucd-trie        0.1.6
+   unicode-ident   1.0.12
+)
+
+for rust_crate in "${!rust_crates[@]}"; do
+	rustv="${rust_crates[$rust_crate]}"
+	source=(https://mesa.freedesktop.org/archive/$pkgname-$pkgver.tar.xz
+		$rust_crate-$rustv.tar.gz::https://crates.io/api/v1/crates/$rust_crate/$rustv/download)
+done
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -23,7 +46,7 @@ prepare() {
 	#echo "[!]: Installing mako with pip"
 	pip3 install mako pyyaml ply
 
-	sed '1s/python/&3/' -i bin/symbols-check.py
+	echo "$pkgver-zraxyl.$pkgrel" >VERSION
 }
 
 build() {
@@ -31,43 +54,47 @@ build() {
 
 	cd build
 
+	CFLAGS+=" -g1"
+	CXXFLAGS+=" -g1"
+	export MESON_PACKAGE_CACHE_DIR="$srcdir"
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
 	-D b_lto=true \
 	-D b_ndebug=true \
 	-D platforms=x11,wayland \
-	-D gallium-drivers=r300,r600,llvmpipe,radeonsi,nouveau,virgl,svga,i915,iris,crocus,zink,d3d12 \
-	-D vulkan-drivers=amd,intel,intel_hasvk,swrast \
-	-D vulkan-layers=device-select,intel-nullhw,overlay \
-	-D dri3=enabled \
+	-D gallium-drivers=r300,r600,llvmpipe,softpipe,radeonsi,nouveau,virgl,svga,i915,iris,crocus,zink,d3d12 \
+	-D vulkan-drivers=amd,intel,intel_hasvk,swrast,nouveau,virtio \
+	-D vulkan-layers=device-select,intel-nullhw,overlay,screenshot \
 	-D egl=enabled \
 	-D gallium-extra-hud=true \
 	-D gallium-nine=true \
-	-D gallium-omx=bellagio \
 	-D gallium-opencl=icd \
 	-D gallium-va=enabled \
 	-D gallium-vdpau=enabled \
 	-D gallium-xa=enabled \
 	-D gallium-rusticl=true \
-	-D rust_std=2021 \
 	-D gbm=enabled \
 	-D gles1=enabled \
 	-D gles2=enabled \
 	-D glvnd=enabled \
 	-D glx=dri \
-	-D libunwind=enabled \
+	-D libunwind=disabled \
 	-D llvm=enabled \
 	-D shared-llvm=enabled \
 	-D lmsensors=enabled \
 	-D osmesa=true \
 	-D tools=all \
+	-D rust_std=2021 \
 	-D shared-glapi=enabled \
+	-D android-libbacktrace=disabled \
 	-D microsoft-clc=disabled \
-	-D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
 	-D vmware-mks-stats=true \
 	-D valgrind=enabled \
 	../$pkgname-$pkgver/
+
+	# Removed forced codecs as licenses need to be checked what can or not be enabled
+	# -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc
 
 	ninja -j6
 }

@@ -1,5 +1,5 @@
 pkgname=qemu
-pkgver=7.1.0
+pkgver=9.1.1
 pkgrel=1
 arch=(x86_64)
 depends=(cairo cdrtools gdk-pixbuf glib2
@@ -11,9 +11,9 @@ depends=(cairo cdrtools gdk-pixbuf glib2
     alsa-lib pulseaudio jack2 libcap-ng libusb mesa
     libiscsi libssh lzo libglvnd
     snappy bzip2 zstd spice spice-protocol)
-makedepends=(curl make gcc clang)
+makedepends=(curl make gcc clang python3-pip)
 options=(!strip !emptydirs)
-source=(http://download.qemu-project.org/$pkgname-$pkgver.tar.xz
+source=(https://download.qemu.org/$pkgname-$pkgver.tar.xz
 	65-kvm.rules
 	qemu-guest-agent.service
 	qemu-binfmt.conf)
@@ -21,6 +21,8 @@ install=qemu.install
 
 prepare() {
 	mkdir -p $pkgname-$pkgver/build
+
+	pip3 install tomli
 
 	cd $pkgname-$pkgver/build
 	./../configure \

@@ -1,8 +1,9 @@
 pkgname=flatpak-kcm
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="Flatpak Permissions Management KCM"
 arch=('x86_64')
-depends=(flatpak systemsettings kcmutils)
+depends=(flatpak kcmutils kconfig kcoreaddons ki18n kirigami kitemmodels qt6)
 makedepends=(cmake extra-cmake-modules)
 durl=https://download.kde.org/stable/plasma/$pkgver
 source=($durl/$pkgname-$pkgver.tar.xz)

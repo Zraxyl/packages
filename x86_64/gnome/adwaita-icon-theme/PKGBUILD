@@ -1,10 +1,10 @@
 pkgname=adwaita-icon-theme
-pkgver=45.0
+pkgver=47.0
 pkgrel=1
 arch=('x86_64')
 depends=('gtk+' 'librsvg')
 makedepends=(git)
-source=(https://download.gnome.org/sources/$pkgname/45/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/47/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver

@@ -1,6 +1,6 @@
 post_upgrade() {
   echo "##"
-  echo "# [ EVOLINX ]: Making new ramdisk..."
+  echo "# [ ZRAXYL ]: Making new ramdisk..."
   echo "##"
 
   export KERNEL_VERSION=$(cat /lib/modules/KERNELVERSION)
@@ -11,13 +11,13 @@ post_upgrade() {
   cp -fv /boot/initramfs-$KERNEL_VERSION.img /boot/default-initramfs.img
 
   echo "##"
-  echo "# [ EVOLINX ]: Please update youre systemd-boot ( IF NEEDED ) config to use"
+  echo "# [ ZRAXYL ]: Please update youre systemd-boot ( IF NEEDED ) config to use"
   echo "# -> /boot/initramfs-$KERNEL_VERSION.img : Auto made and kept also"
   echo "# -> /boot/default-initramfs.img : For emergency/normal usage"
   echo "##"
 
   # Sleep a bit
-  echo "[ EVOLINX ]: Sleeping a bit..."
+  echo "[ ZRAXYL ]: Sleeping a bit..."
   sleep 10
 }
 

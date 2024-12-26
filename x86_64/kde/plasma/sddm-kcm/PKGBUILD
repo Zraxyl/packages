@@ -1,8 +1,10 @@
 pkgname=sddm-kcm
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="KDE Config Module for SDDM"
 arch=(x86_64)
-depends=(sddm knewstuff systemsettings double-conversion)
+depends=(karchive kauth kcmutils kconfig kcoreaddons ki18n kio kirigami
+	knewstuff kservice kwidgetsaddons qt6 sddm)
 makedepends=(extra-cmake-modules kdoctools)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 

@@ -1,7 +1,7 @@
 _name=expat
 pkgname=lib32-expat
-pkgver=2.4.2
-pkgrel=1
+pkgver=2.6.3
+pkgrel=3
 pkgdesc='An XML Parser library'
 arch=(x86_64)
 url=https://libexpat.github.io/
@@ -34,6 +34,6 @@ build() {
 package() {
 	cd "$pkgname-$pkgver"
 	make VERBOSE=1 DESTDIR="$pkgdir" -C build install
-	ln -sf libexpat.so.1.8.2 $pkgdir/usr/lib32/libexpat.so
+	ln -sf libexpat.so.1 $pkgdir/usr/lib32/libexpat.so
 	rm -rf "${pkgdir}"/usr/{bin,include,share/man,share/doc}
 }

@@ -1,6 +1,7 @@
 pkgname=oxygen-sounds
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="The Oxygen Sound Theme"
 arch=('x86_64')
 makedepends=(cmake extra-cmake-modules)
 durl=https://download.kde.org/stable/plasma/$pkgver
@@ -15,9 +16,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

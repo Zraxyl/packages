@@ -1,9 +1,12 @@
 pkgname=gwenview
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
 arch=('x86_64')
-depends=(kactivities baloo libkdcraw kparts kitemmodels cfitsio phonon purpose
-    perl exiv2 kimageannotator)
+depends=(baloo exiv2 kcolorscheme kcompletion kconfig kconfigwidgets
+	kcoreaddons kfilemetadata kguiaddons ki18n kiconthemes kimageannotator
+	kio kitemviews kitemmodels kjobwidgets kparts kservice kwidgetsaddons kxmlgui
+	lcms libjpeg libkdcraw libpng libtiff libx11 phonon plasma-activities
+	purpose qt6 solid wayland kimageformats)
 makedepends=(cmake extra-cmake-modules kdoctools)
 durl=https://download.kde.org/stable/release-service/$pkgver/src
 source=($durl/$pkgname-$pkgver.tar.xz)
@@ -17,10 +20,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
+	cmake \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D GWENVIEW_SEMANTICINFO_BACKEND="Baloo" \
-	-D CMAKE_BUILD_TYPE=Release	\
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

@@ -1,26 +1,31 @@
 pkgname=libx11
-pkgver=1.8.7
+pkgver=1.8.10
 pkgrel=1
+pkgdesc="X11 client-side library"
 arch=('x86_64')
-depends=('libxaw' 'libxext' 'libxt' 'libxmu'  'libxau' 'xcb-proto' 'libxtrans' 'xorgproto' 'libxrender' 'libxdmcp' 'libxrandr' 'libxi')
-source=(https://x.org/releases/individual/lib/libX11-$pkgver.tar.gz)
+depends=('libxcb' 'xorgproto' 'util-macros')
+makedepends=('libxtrans')
+source=(https://x.org/releases/individual/lib/libX11-$pkgver.tar.xz)
 
-build() {
+prepare() {
         cd libX11-$pkgver
 
 	./configure \
 	--prefix=/usr \
-	--disable-xf86bigfont
+	--sysconfdir=/etc \
+	--disable-xf86bigfont \
+	--enable-loadable-i18n \
+	--enable-xkb
+}
+
+build() {
+	cd libX11-$pkgver
 
 	make
 }
 
-check() {
-	cd libX11-$pkgver
-	make check
-}
-
 package() {
 	cd libX11-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

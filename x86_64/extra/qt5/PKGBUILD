@@ -1,11 +1,12 @@
 pkgname=qt5
 pkgver=5.15.15
-pkgrel=1
+pkgrel=3
 arch=('x86_64')
 depends=(xorg-server xwayland alsa-lib cups glib2 harfbuzz icu libjpeg libpng libc++ llvm
 	libtiff libwebp libxkbcommon mesa pcre2 sqlite3 wayland xcb-util-image xcb-util-keysyms hunspell
 	xcb-util-renderutil xcb-util-wm libinput pciutils pulseaudio bluez libglvnd fontconfig double-conversion
-	gstreamer gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly ffmpeg pipewire jasper openal)
+	gstreamer gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly ffmpeg pipewire jasper openal
+	xrandr xcb-util-cursor xinput libmng tslib libiconv libb2 flite)
 makedepends=(extra-cmake-modules perl gtk3+ clang)
 commitid=363456a62a1700ae6481a4a51fa8fd5781d0af86 # 5.15.15
 #commitid=3ea5c5562e52a5389095f71cfbba0ac8cca02ecc STABLE

@@ -1,5 +1,5 @@
 pkgname=npth
-pkgver=1.6
+pkgver=1.7
 pkgrel=1
 arch=('x86_64')
 depends=(glibc)
@@ -8,7 +8,9 @@ source=(https://www.gnupg.org/ftp/gcrypt/npth/$pkgname-$pkgver.tar.bz2)
 build() {
 	cd $pkgname-$pkgver
 
-	./configure --prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

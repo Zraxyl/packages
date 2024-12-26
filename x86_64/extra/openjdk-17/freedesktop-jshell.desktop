@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=OpenJDK Java 17 Shell
+Comment=OpenJDK Java 17 Shell
+Keywords=java;shell
+Exec=/opt/jdk-17/bin/jshell
+Terminal=true
+Type=Application
+Icon=java
+Categories=Application;System;
+

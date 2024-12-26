@@ -13,7 +13,7 @@ ac_add_options --disable-bootstrap
 ## Branding
 ac_add_options --enable-official-branding
 ac_add_options --enable-update-channel=release
-ac_add_options --with-distribution-id=org.drunklinux
+ac_add_options --with-distribution-id=org.zraxyl
 ac_add_options --with-unsigned-addon-scopes=app,system
 ac_add_options --allow-addon-sideload
 export MOZILLA_OFFICIAL=1
@@ -34,8 +34,6 @@ ac_add_options --enable-jack
 ac_add_options --enable-crashreporter
 ac_add_options --disable-updater
 ac_add_options --disable-tests
-
-## Evolinx / LFS Feature
 
 # The following option unsets Telemetry Reporting. With the Addons Fiasco,
 # Mozilla was found to be collecting user's data, including saved passwords and

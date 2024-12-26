@@ -1,6 +1,7 @@
 pkgname=libksba
-pkgver=1.6.0
+pkgver=1.6.7
 pkgrel=1
+pkgdesc="Library for working with X.509 certificates, CMS data and related objects"
 arch=('x86_64')
 depends=(libgpg-error)
 makedepends=(valgrind)
@@ -9,7 +10,9 @@ source=(https://www.gnupg.org/ftp/gcrypt/libksba/libksba-$pkgver.tar.bz2)
 build() {
 	cd $pkgname-$pkgver
 
-	./configure --prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

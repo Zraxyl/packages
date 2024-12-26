@@ -1,6 +1,6 @@
 _pkgbasename=nettle
 pkgname=lib32-$_pkgbasename
-pkgver=3.7.3
+pkgver=3.10
 pkgrel=1
 pkgdesc="A low-level cryptographic library (32-bit)"
 arch=('x86_64')

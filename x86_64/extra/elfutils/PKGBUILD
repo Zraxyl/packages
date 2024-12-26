@@ -1,6 +1,7 @@
 pkgname=elfutils
-pkgver=0.190
+pkgver=0.192
 pkgrel=1
+pkgdesc="Handle ELF object files and DWARF debugging information"
 arch=('x86_64')
 depends=(glibc)
 makedepends=(bzip2 curl libarchive sqlite3 xz zlib zstd)
@@ -13,6 +14,7 @@ build() {
 	--prefix=/usr \
 	--sysconfdir=/etc \
 	--program-prefix="eu-" \
+	--enable-deterministic-archives \
 	--disable-debuginfod
 
 	make

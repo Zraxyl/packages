@@ -1,7 +1,8 @@
 pkgname=attica
-pkgver=6.5.0
-rver=6.5
+pkgver=6.8.0
+rver=6.8
 pkgrel=1
+pkgdesc="Qt library that implements the Open Collaboration Services API"
 arch=('x86_64')
 depends=(qt5)
 makedepends=(cmake extra-cmake-modules docbook-xml docbook-xsl)

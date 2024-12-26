@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This is required as glibc package for evolinx has compressed locales for lesser download size
+# This is required as glibc package for zraxyl has compressed locales for lesser download size
 
 glibc_cleanup() {
     echo "[ GLIBC POSTINST ]: 1/2"

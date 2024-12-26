@@ -1,6 +1,7 @@
 pkgname=libpcap
-pkgver=1.10.1
+pkgver=1.10.5
 pkgrel=1
+pkgdesc="A system-independent interface for user-level packet capture"
 arch=(x86_64)
 depends=(glibc libnl bash libusb)
 makedepends=(bluez dbus)
@@ -15,7 +16,8 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver
 
-	./configure --prefix=/usr \
+	./configure \
+	--prefix=/usr \
 	--enable-ipv6 \
 	--enable-bluetooth \
 	--enable-usb \

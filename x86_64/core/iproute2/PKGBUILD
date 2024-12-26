@@ -1,22 +1,31 @@
 pkgname=iproute2
-pkgver=5.16.0
+pkgver=6.12.0
 pkgrel=1
+pkgdesc="IP routing utilities"
 arch=('x86_64')
-depends=(glibc elfutils)
+depends=(glibc elfutils libbpf libcap iptables db)
+makedepends=(base-devel)
 source=(https://www.kernel.org/pub/linux/utils/net/$pkgname/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	# Disable werror
+	sed -i 's/-Werror//' Makefile
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
 
 build() {
         cd $pkgname-$pkgver
-
-        sed -i /ARPD/d Makefile
-        rm -fv man/man8/arpd.8
-
-        [ -e /usr/lib/pkgconfig/xtables.pc ] || sed -i 's/m_ipt.o//' tc/Makefile
 
         make
 }
 
 package() {
 	cd $pkgname-$pkgver
+
         make DESTDIR=$pkgdir install
 }

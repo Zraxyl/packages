@@ -1,0 +1,30 @@
+pkgname=slang
+pkgver=2.3.3
+pkgrel=1
+pkgdesc="S-Lang is a powerful interpreted language"
+backup=('etc/slsh.rc')
+arch=(x86_64)
+depends=(pcre2)
+makedepends=(gcc base-devel)
+options=('!makeflags')
+source=(https://www.jedsoft.org/releases/slang/slang-$pkgver.tar.bz2)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

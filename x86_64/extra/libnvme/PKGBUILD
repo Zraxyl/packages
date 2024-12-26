@@ -1,0 +1,32 @@
+pkgname=libnvme
+pkgver=1.10
+pkgrel=1
+arch=(x86_64)
+depends=(json-c openssl keyutils dbus)
+makedepends=(base-devel meson swig python3-pip)
+source=(https://github.com/linux-nvme/libnvme/archive/refs/tags/v$pkgver.tar.gz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	-D libdbus=auto \
+	-D docs-build=false \
+	$pkgname-$pkgver \
+	build
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

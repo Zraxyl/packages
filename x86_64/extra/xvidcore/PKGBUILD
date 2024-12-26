@@ -1,0 +1,30 @@
+pkgname=xvidcore
+pkgver=1.3.7
+pkgrel=1
+pkgdesc="XviD is an open source MPEG-4 video codec"
+arch=(x86_64)
+depends=(glibc)
+makedepends=(base-devel nasm)
+source=(https://downloads.xvid.com/downloads/xvidcore-$pkgver.tar.gz)
+
+prepare() {
+	cd $pkgname/build/generic
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
+
+build() {
+	cd $pkgname/build/generic
+
+	make
+}
+
+package() {
+	cd $pkgname/build/generic
+
+	make DESTDIR=$pkgdir install
+}

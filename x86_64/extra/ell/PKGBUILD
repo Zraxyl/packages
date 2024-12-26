@@ -1,6 +1,7 @@
 pkgname=ell
-pkgver=0.48
+pkgver=0.71
 pkgrel=1
+pkgdesc="Embedded Linux library"
 arch=('x86_64')
 depends=(glibc dbus)
 source=(https://mirrors.edge.kernel.org/pub/linux/libs/$pkgname/$pkgname-$pkgver.tar.xz)
@@ -8,8 +9,9 @@ source=(https://mirrors.edge.kernel.org/pub/linux/libs/$pkgname/$pkgname-$pkgver
 build() {
 	cd $pkgname-$pkgver
 
-	./configure	\
-	--prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

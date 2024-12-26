@@ -1,5 +1,5 @@
 pkgname=freetype2
-pkgver=2.11.1
+pkgver=2.13.3
 pkgrel=1
 arch=('x86_64')
 depends=(zlib bzip2 bash libpng harfbuzz brotli)
@@ -13,8 +13,9 @@ build() {
         sed -r "s:.*(#.*SUBPIXEL_RENDERING) .*:\1:" \
             -i include/freetype/config/ftoption.h
 
-        ./configure	\
-	--prefix=/usr	\
+        ./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
 	--enable-freetype-config
 
         make

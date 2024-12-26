@@ -1,8 +1,12 @@
 pkgname=konsole
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
+pkgdesc="KDE terminal emulator"
 arch=(x86_64)
-depends=(knotifyconfig kpty kparts knewstuff)
+depends=(icu kbookmarks kcolorscheme kconfig kconfigwidgets kcoreaddons
+	kcrash kdbusaddons ki18n kiconthemes kio knewstuff knotifications
+	knotifyconfig kparts kpty kservice ktextwidgets kwidgetsaddons kwindowsystem
+	kxmlgui qt6 bash keditbookmarks)
 makedepends=(extra-cmake-modules kdoctools)
 source=(https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz)
 

@@ -1,0 +1,116 @@
+pkgname=ffmpeg-4
+pkgver=4.4.5
+pkgrel=1
+pkgdesc="FFmpeg is a free and open-source software project consisting of a suite of libraries and programs for handling video, audio, and other multimedia files and streams"
+arch=('x86_64')
+depends=(fdk-aac freetype2 lame libtheora
+    libvorbis libvpx opus libx264 libx265
+    libass vdpau alsa-lib fribidi gmp gnutls libssh
+    jack2 libdrm libglvnd pulseaudio libva v4l-utils
+    libxext sdl2 opencl-icd-loader libaom bzip2 fontconfig
+    gsm pipewire libbluray librsvg libsndfile xvidcore)
+makedepends=(nasm yasm clang vulkan-headers opencl-headers)
+source=(https://ffmpeg.org/releases/ffmpeg-$pkgver.tar.xz)
+
+prepare() {
+    cd ffmpeg-$pkgver
+
+    sed -i 's/-lflite"/-lflite -lasound"/' configure
+}
+
+build() {
+    cd ffmpeg-$pkgver
+
+    # No support to these yet
+    #--enable-avisynth \
+    #--enable-ladspa \
+    #--enable-libiec61883 \
+    #--enable-libbs2b \
+    #--enable-libmfx \
+    #--enable-libmodplug \
+    #--enable-libopencore_amrnb \
+    #--enable-libopencore_amrwb \
+    #--enable-libopenmpt \
+    #--enable-librav1e \
+    #--enable-libspeex \
+    #--enable-libsoxr \
+    #--enable-libsrt \
+    #--enable-libvidstab \
+    #--enable-libvmaf \
+    #--enable-libsvtav1 \
+    #--enable-libzimg \
+    #--enable-nvdec \
+    #--enable-nvenc \
+    #--enable-amf \
+
+    CC=clang \
+    CXX=clang++ \
+    CPP=clang++ \
+    ./configure \
+    --prefix=/usr \
+    --incdir=/usr/include/ffmpeg4.4 \
+    --libdir=/usr/lib/ffmpeg4.4 \
+    --disable-doc \
+    --disable-programs \
+    --disable-stripping \
+    --enable-cuda-llvm \
+    --enable-lto \
+    --enable-libxvid \
+    --enable-fontconfig \
+    --enable-gmp \
+    --enable-gnutls \
+    --enable-gpl \
+    --enable-libaom \
+    --disable-libdav1d \
+    --enable-libass \
+    --enable-libbluray \
+    --enable-libdrm \
+    --enable-libfreetype \
+    --enable-libfribidi \
+    --enable-libgsm \
+    --enable-libjack \
+    --enable-libmp3lame \
+    --enable-libopenjpeg \
+    --enable-libopus \
+    --enable-libpulse \
+    --enable-librsvg \
+    --enable-libssh \
+    --enable-libtheora \
+    --enable-libv4l2 \
+    --enable-libvorbis \
+    --enable-libvpx \
+    --enable-libwebp \
+    --enable-libx264 \
+    --enable-libx265 \
+    --enable-libxcb \
+    --enable-libxml2 \
+    --enable-opencl \
+    --enable-opengl \
+    --enable-shared \
+    --enable-version3 \
+    --enable-vulkan
+
+    make -j4
+}
+
+package() {
+    cd ffmpeg-$pkgver
+
+    make DESTDIR=$pkgdir install
+
+    cd "${pkgdir}"
+
+    local f
+    for f in usr/lib/ffmpeg4.4/*; do
+      if [[ $f == *.so ]]; then
+        ln -srf -- usr/lib/"$(readlink "$f")" "$f"
+      elif [[ ! -d $f ]]; then
+        mv "$f" usr/lib
+      fi
+    done
+
+    # Move static libs to ffmpeg4.4 dir as of ffmpeg conflict
+    mv usr/lib/*.a usr/lib/ffmpeg4.4/
+
+    rm -rf usr/share
+}

@@ -1,29 +1,52 @@
 pkgname=ncurses
-pkgver=6.3
-pkgrel=3
+pkgver=6.5
+pkgrel=1
+pkgdesc="System V Release 4.0 curses emulation library"
 arch=('x86_64')
 depends=(glibc)
 makedepends=(autoconf-archive)
-source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz)
+source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz
+	$pkgname-6.3-libs.patch
+	$pkgname-6.3-pkgconfig.patch)
 
 prepare() {
 	cd $pkgname-$pkgver
 
-	sed -i '/LIBTOOL_INSTALL/d' c++/Makefile.in
+	# Patching
+	patch -Np1 -i $srcdir/$pkgname-6.3-libs.patch
+	patch -Np1 -i $srcdir/$pkgname-6.3-pkgconfig.patch
 
+	# Configure
 	CFLAGS="-fPIC" \
 	LDFLAGS="-fPIC" \
 	./configure \
 	--prefix=/usr \
+	--disable-root-access \
+	--disable-root-environ \
+	--disable-setuid-environ \
+	--enable-widec \
+	--enable-pc-files \
 	--mandir=/usr/share/man \
-	--with-shared \
 	--with-cxx-binding \
 	--with-cxx-shared \
-	--without-debug \
-	--with-normal \
-	--enable-pc-files \
-	--enable-widec \
-	--with-versioned-syms
+	--with-manpage-format=normal \
+	--with-pkg-config-libdir=/usr/lib/pkgconfig \
+	--with-shared \
+	--with-versioned-syms \
+	--with-xterm-kbs=del \
+	--without-ada
+
+# 	./configure \
+# 	--prefix=/usr \
+# 	--mandir=/usr/share/man \
+# 	--with-shared \
+# 	--with-cxx-binding \
+# 	--with-cxx-shared \
+# 	--without-debug \
+# 	--with-normal \
+# 	--enable-pc-files \
+# 	--enable-widec \
+# 	--with-versioned-syms
 }
 
 build() {
@@ -37,21 +60,33 @@ package() {
 
 	make DESTDIR=$pkgdir install
 
-	mkdir -p $pkgdir/lib
-	mv -v $pkgdir/usr/lib/libncursesw.so.6* $pkgdir/lib
-	mkdir -p $pkgdir/usr/lib
-	ln -sfv ../../lib/$(readlink $pkgdir/usr/lib/libncursesw.so) $pkgdir/usr/lib/libncursesw.so
+# 	mkdir -p $pkgdir/lib
+# 	mv -v $pkgdir/usr/lib/libncursesw.so.6* $pkgdir/lib
+# 	mkdir -p $pkgdir/usr/lib
+# 	ln -sfv ../../lib/$(readlink $pkgdir/usr/lib/libncursesw.so) $pkgdir/usr/lib/libncursesw.so
 
-	for lib in ncurses form panel menu ; do
-	    rm -vf		    $pkgdir/usr/lib/lib${lib}.so
-	    echo "INPUT(-l${lib}w)" > $pkgdir/usr/lib/lib${lib}.so
-	mkdir -p $pkgdir/usr/lib/pkgconfig/
-	    ln -sfv ${lib}w.pc	$pkgdir/usr/lib/pkgconfig/${lib}.pc
+# 	for lib in ncurses form panel menu; do
+# 	    rm -vf $pkgdir/usr/lib/lib${lib}.so
+# 	    echo "INPUT(-l${lib}w)" > $pkgdir/usr/lib/lib${lib}.so
+# 	    mkdir -p $pkgdir/usr/lib/pkgconfig/
+# 	    ln -sfv ${lib}w.pc	$pkgdir/usr/lib/pkgconfig/${lib}.pc
+# 	done
+
+	# fool packages looking to link to non-wide-character ncurses libraries
+	for lib in ncurses ncurses++ form panel menu; do
+		printf "INPUT(-l%sw)\n" "${lib}" > "$pkgdir/usr/lib/lib${lib}.so"
+		ln -sv ${lib}w.pc "$pkgdir/usr/lib/pkgconfig/${lib}.pc"
 	done
 
-	rm -vf		     $pkgdir/usr/lib/libcursesw.so
-	echo "INPUT(-lncursesw)" > $pkgdir/usr/lib/libcursesw.so
-	ln -sfv libncurses.so      $pkgdir/usr/lib/libcurses.so
+	echo 'INPUT(-lncursesw)' > $pkgdir/usr/lib/libcursesw.so
+	ln -sfv libncurses.so $pkgdir/usr/lib/libcurses.so
+
+	local _pkgver=${pkgver/_*/}
+	for lib in tic tinfo; do
+		printf "INPUT(libncursesw.so.%s)\n" "${_pkgver:0:1}" > "$pkgdir/usr/lib/lib${lib}.so"
+		ln -sv libncursesw.so.${pkgver:0:1} "$pkgdir/usr/lib/lib${lib}.so.${_pkgver:0:1}"
+		ln -sv ncursesw.pc "$pkgdir/usr/lib/pkgconfig/${lib}.pc"
+	done
 
 	# Some backwards compatability for foreign tools
 	# Example where compiling AOSP will whine about missing *.5 lib symlink

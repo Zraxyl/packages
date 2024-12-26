@@ -1,11 +1,13 @@
 pkgname=discover
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="KDE and Plasma resources management GUI"
 arch=(x86_64)
-depends=(knewstuff kitemmodels kcmutils kidletime hicolor-icon-theme kirigami2 discount
-	flatpak purpose packagekit-qt5 appstream libostree flatpak-kcm xdg-desktop-portal-kde
-	kuserfeedback)
-makedepends=(extra-cmake-modules plasma-framework)
+depends=(appstream attica discount glib2 kcmutils kconfig kcoreaddons
+	kcrash kdbusaddons ki18n kiconthemes kidletime kio kirigami kirigami-addons
+	kjobwidgets knewstuff knotifications kservice kstatusnotifieritem kuserfeedback
+	kwidgetsaddons kwindowsystem purpose qcoro qt6 flatpak packagekit-qt)
+makedepends=(extra-cmake-modules)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz
 	bottle-changes.patch)
 

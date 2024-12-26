@@ -1,0 +1,30 @@
+pkgname=tslib
+pkgver=1.23
+pkgrel=1
+pkgdesc="Touchscreen Access Library"
+arch=(x86_64)
+depends=(glibc)
+makedepends=(base-devel)
+source=(https://github.com/kergoth/tslib/releases/download/$pkgver/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

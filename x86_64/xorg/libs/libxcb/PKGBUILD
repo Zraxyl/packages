@@ -1,8 +1,10 @@
 pkgname=libxcb
 pkgver=1.17.0
-pkgrel=1
+pkgrel=2
+pkgdesc="X11 client-side library"
 arch=('x86_64')
-depends=('libxau' 'xcb-proto')
+depends=('libxau' 'libxdmcp' 'xcb-proto')
+makedepends=(util-macros xorgproto python3 libxslt)
 source=(https://xorg.freedesktop.org/archive/individual/lib/$pkgname-$pkgver.tar.xz)
 
 build() {
@@ -11,6 +13,9 @@ build() {
 	PYTHON=python3 \
 	./configure \
 	--prefix=/usr \
+	--sysconfdir=/etc \
+	--enable-xinput \
+	--enable-xkb \
 	--without-doxygen
 
 	make

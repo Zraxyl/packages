@@ -1,8 +1,10 @@
 pkgname=plasma-wayland-protocols
-pkgver=1.10.0
+pkgver=1.15.0
 pkgrel=1
+pkgdesc="Plasma Specific Protocols for Wayland"
 arch=('x86_64')
-makedepends=(extra-cmake-modules qt5 wayland)
+depends=(wayland)
+makedepends=(extra-cmake-modules qt6 wayland)
 source=(https://download.kde.org/stable/plasma-wayland-protocols/plasma-wayland-protocols-$pkgver.tar.xz)
 
 prepare() {
@@ -14,9 +16,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake						\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make

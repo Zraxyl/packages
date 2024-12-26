@@ -1,0 +1,41 @@
+pkgname=libiconv
+pkgver=1.18
+pkgrel=1
+pkgdesc="GNU charset conversion library"
+arch=(x86_64)
+depends=(glibc)
+makedepends=(base-devel)
+source=(https://ftp.gnu.org/pub/gnu/$pkgname/$pkgname-$pkgver.tar.gz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	#autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--enable-extra-encodings
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+
+	# move references from iconv to libiconv
+	mv -v "$pkgdir"/usr/include/{iconv.h,libiconv.h}
+	mv -v "$pkgdir"/usr/bin/{iconv,libiconv}
+	mv -v "$pkgdir"/usr/share/man/man1/{,lib}iconv.1
+	mv -v "$pkgdir"/usr/share/man/man3/{,libiconv_}iconv.3
+	mv -v "$pkgdir"/usr/share/man/man3/{,libiconv_}iconvctl.3
+	mv -v "$pkgdir"/usr/share/man/man3/{,libiconv_}iconv_open.3
+	mv -v "$pkgdir"/usr/share/man/man3/{,libiconv_}iconv_close.3
+	mv -v "$pkgdir"/usr/share/man/man3/{,libiconv_}iconv_open_into.3
+}

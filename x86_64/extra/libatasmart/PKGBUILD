@@ -1,16 +1,25 @@
 pkgname=libatasmart
 pkgver=0.19
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(glibc)
 makedepends=(gcc)
-source=(http://0pointer.de/public/libatasmart-$pkgver.tar.xz)
+source=(http://0pointer.de/public/libatasmart-$pkgver.tar.xz
+	0002-Drop-our-own-many-bad-sectors-heuristic.patch)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	patch -Np1 -i ../0002-Drop-our-own-many-bad-sectors-heuristic.patch
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr
+}
 
 build() {
 	cd $pkgname-$pkgver
-
-	./configure	\
-	--prefix=/usr
 
 	make
 }

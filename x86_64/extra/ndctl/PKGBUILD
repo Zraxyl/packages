@@ -1,27 +1,31 @@
 pkgname=ndctl
-pkgver=72.1
+pkgver=79
 pkgrel=1
 arch=('x86_64')
-depends=('iniparser' 'json-c' 'keyutils' 'kmod')
+depends=('iniparser' 'json-c' 'keyutils' 'kmod' 'libtraceevent' 'libtracefs')
 makedepends=('asciidoctor' 'bash-completion' 'systemd' 'xmlto')
 source=(https://github.com/pmem/ndctl/archive/refs/tags/v$pkgver.tar.gz)
 
 prepare() {
-	cd $pkgname-$pkgver
+	rm -rf build
+	mkdir -p build
 
-	./autogen.sh
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	-D docs=disabled \
+	$pkgname-$pkgver \
+	build
 }
 
 build() {
-	cd $pkgname-$pkgver
+	cd build
 
-	./configure CFLAGS='-g -O2' --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib
-
-	make
+	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver
+	cd build
 
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir ninja install
 }

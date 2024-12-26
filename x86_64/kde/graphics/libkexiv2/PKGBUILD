@@ -1,8 +1,9 @@
 pkgname=libkexiv2
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
+pkgdesc="A library to manipulate pictures metadata"
 arch=('x86_64')
-depends=(qt5 exiv2)
+depends=(qt6 exiv2)
 makedepends=(cmake extra-cmake-modules double-conversion)
 durl=https://download.kde.org/stable/release-service/$pkgver/src
 source=($durl/$pkgname-$pkgver.tar.xz)
@@ -16,9 +17,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D QT_MAJOR_VERSION=6 \
 	-Wno-dev ..
 
 	make -j7

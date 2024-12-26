@@ -1,0 +1,39 @@
+pkgname=opencv
+pkgver=4.10.0
+pkgrel=1
+pkgdesc="Open Source Computer Vision Library"
+arch=(x86_64)
+depends=(abseil-cpp ffmpeg freetype2 glib2 glibc gst-plugins-base gstreamer harfbuzz
+	libglvnd libjpeg libpng libtiff libwebp openexr openjpeg zlib qt6
+	fmt opencl-icd-loader openjdk-17 protobuf)
+makedepends=(base-devel ant cmake)
+source=($pkgname-$pkgver.tar.gz::https://github.com/opencv/opencv/archive/refs/tags/$pkgver.tar.gz
+	${pkgname}_contrib.tar.gz::https://github.com/opencv/opencv_contrib/archive/refs/tags/$pkgver.tar.gz)
+
+prepare() {
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_CXX_STANDARD=17 \
+	-D BUILD_EXAMPLES=OFF \
+	-D BUILD_TESTS=OFF \
+	-D BUILD_PERF_TESTS=OFF \
+	-D WITH_TBB=ON \
+	-D INSTALL_C_EXAMPLES=ON \
+	-D OPENCV_SKIP_PYTHON_LOADER=ON \
+	-D OPENCV_ENABLE_NONFREE=ON \
+	-D BUILD_PROTOBUF=OFF \
+	-D WITH_CUDA=OFF \
+	-D OPENCV_EXTRA_MODULES_PATH=$srcdir/opencv_contrib-$pkgver/modules \
+	-D OPENCV_SKIP_PYTHON_LOADER=ON \
+	-D OPENCV_GENERATE_PKGCONFIG=ON \
+	-S $pkgname-$pkgver \
+	-B build
+}
+
+build() {
+	cmake --build build
+}
+
+package() {
+	DESTDIR=$pkgdir cmake --install build
+}

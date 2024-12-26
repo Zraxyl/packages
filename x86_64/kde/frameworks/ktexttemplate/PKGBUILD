@@ -1,0 +1,38 @@
+pkgname=ktexttemplate
+pkgver=6.8.0
+pkgrel=1
+pkgdesc="Library to allow application developers to separate the structure of documents from the data they contain"
+arch=('x86_64')
+pkgdesc='Advanced embeddable text editor'
+depends=(qt6)
+makedepends=(cmake extra-cmake-modules git)
+durl=https://download.kde.org/stable/frameworks/6.8
+source=($durl/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-Wno-dev ..
+
+	make -j7
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	make DESTDIR=$pkgdir install
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}

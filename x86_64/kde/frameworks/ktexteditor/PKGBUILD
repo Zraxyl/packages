@@ -1,11 +1,14 @@
 pkgname=ktexteditor
-pkgver=5.107.0
+pkgver=6.8.0
 pkgrel=1
+pkgdesc="Advanced embeddable text editor"
 arch=('x86_64')
 pkgdesc='Advanced embeddable text editor'
-depends=(kauth kparts syntax-highlighting editorconfig-core-c)
-makedepends=(qt5 cmake extra-cmake-modules git)
-durl=https://download.kde.org/stable/frameworks/5.107
+depends=(editorconfig-core-c karchive kauth kcodecs kcolorscheme kcompletion
+	kconfig kconfigwidgets kcoreaddons kguiaddons ki18n kio kitemviews
+	kparts kwidgetsaddons kxmlgui qt6 sonnet syntax-highlighting)
+makedepends=(cmake extra-cmake-modules git)
+durl=https://download.kde.org/stable/frameworks/6.8
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -17,9 +20,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

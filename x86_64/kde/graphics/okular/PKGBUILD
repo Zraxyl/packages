@@ -1,10 +1,12 @@
 pkgname=okular
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
+pkgdesc="Document Viewer"
 arch=('x86_64')
-depends=(djvulibre libspectre libkexiv2 zip poppler kpty kactivities threadweaver
-    kjs kparts purpose discount phonon djvulibre libkexiv2 libspectre poppler)
-makedepends=(cmake extra-cmake-modules kdoctools khtml)
+depends=(kconfig kconfigwidgets kcoreaddons ki18n kio kjobwidgets
+	kwidgetsaddons kxmlgui libksane threadweaver qt6
+	kpty discount djvulibre libkexiv2 libspectre)
+makedepends=(cmake extra-cmake-modules kdoctools)
 durl=https://download.kde.org/stable/release-service
 source=($durl/$pkgver/src/$pkgname-$pkgver.tar.xz)
 
@@ -17,9 +19,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D QT_MAJOR_VERSION=6 \
 	-D FORCE_NOT_REQUIRED_DEPENDENCIES="QMobipocket;Poppler;CHM;LibZip;EPub;" \
 	-Wno-dev ..
 

@@ -1,6 +1,6 @@
 pkgname=dracut
 pkgver=059
-pkgrel=2
+pkgrel=3
 pkgdesc="Dracut the event driven initramfs infrastructure"
 url="https://github.com/dracutdevs/dracut"
 arch=('x86_64')
@@ -15,7 +15,7 @@ build() {
 
 	./configure \
 	--prefix=/usr \
-	--bindir=/bin \
+	--sysconfdir=/etc \
 	--libexecdir=/usr/lib
 
 	make

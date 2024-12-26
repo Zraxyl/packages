@@ -1,8 +1,9 @@
 pkgname=alsa-tools
-pkgver=1.2.5
-pkgrel=3
+pkgver=1.2.11
+pkgrel=1
+pkgdesc="Advanced tools for certain sound cards"
 arch=('x86_64')
-depends=(alsa-lib libsndfile) # python3-gobject and python3-pyalsa ( this needs to be compiled over for pyhton repo )
+depends=(alsa-lib hicolor-icon-theme)
 makedepends=(gtk2+ gtk+ fltk)
 optdepends=(
 	'fltk: hdspconf, hdspmixer'

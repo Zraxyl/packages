@@ -1,9 +1,9 @@
 _pkgbasename=cups
 pkgname=lib32-$_pkgbasename
-pkgver=2.4.1
+pkgver=2.4.2
 pkgrel=1
 arch=('x86_64')
-depends=(lib32-libtiff lib32-libpng lib32-gnutls cups)
+depends=(lib32-libtiff lib32-libpng lib32-gnutls lib32-openssl cups)
 source=(https://github.com/OpenPrinting/cups/releases/download/v${pkgver}/cups-${pkgver}-source.tar.gz{,.sig}
         cups-freebind.patch
         guid.patch

@@ -1,9 +1,9 @@
 pkgname=mesa-demos
 pkgver=9.0.0
-pkgrel=1
+pkgrel=2
+pkgdesc="Mesa demos"
 arch=('x86_64')
-depends=(
-	mesa)
+depends=(mesa)
 source=(https://archive.mesa3d.org/demos/mesa-demos-$pkgver.tar.xz)
 
 prepare() {

@@ -1,18 +1,27 @@
 pkgname=at-spi2-core
-pkgver=2.40.3
-pkgrel=1
+pkgver=2.54.0
+pkgrel=3
+pkgdesc="Protocol definitions and daemon for D-Bus at-spi"
 arch=('x86_64')
-depends=(dbus glib2 libx11 libxtst)
-source=(https://download.gnome.org/sources/$pkgname/2.40/$pkgname-$pkgver.tar.xz)
+replaces=(atk at-spi2-atk)
+depends=(dbus glib2 gsettings-desktop-schemas libx11 libxi libxtst
+	systemd libxfixes)
+source=(https://download.gnome.org/sources/$pkgname/2.54/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver
 	mkdir -p build && cd build
-	meson --prefix=/usr --libdir=/usr/lib --buildtype=release ..
+	meson \
+	--prefix=/usr \
+	--libdir=/usr/lib \
+	--buildtype=release \
+	..
+
 	ninja
 }
 
 package() {
 	cd $pkgname-$pkgver/build
+
 	DESTDIR=$pkgdir ninja install
 }

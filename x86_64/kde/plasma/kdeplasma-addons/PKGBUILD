@@ -1,9 +1,14 @@
 pkgname=kdeplasma-addons
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="All kind of addons to improve your Plasma experience"
 arch=('x86_64')
-depends=(plasma-workspace kunitconversion plasma-desktop purpose)
-makedepends=(extra-cmake-modules qt5-webengine)
+depends=(icu kauth kcmutils kconfig kcoreaddons kdbusaddons kdeclarative kglobalaccel
+	kholidays ki18n kiconthemes kio kirigami kirigami-addons kitemmodels
+	kjobwidgets knewstuff knotifications kpackage krunner kservice
+	ksvg kunitconversion kwidgetsaddons kwin kwindowsystem kxmlgui libplasma
+	plasma-workspace plasma5support qt6 sonnet networkmanager-qt)
+makedepends=(extra-cmake-modules)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -15,9 +20,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

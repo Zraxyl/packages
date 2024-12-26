@@ -1,0 +1,44 @@
+pkgname=qca
+pkgver=2.3.9
+pkgrel=1
+pkgdesc="Qt Cryptographic Architecture"
+arch=(x86_64)
+depends=(qt5 qt6 nss pkcs11-helper botan libgcrypt sasl2 openssl
+	ca-certificates)
+makedepends=(cmake doxygen)
+source=(https://download.kde.org/stable/qca/$pkgver/qca-$pkgver.tar.xz)
+
+prepare() {
+	cmake \
+	-B build-qt5 \
+	-S qca-$pkgver \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D QT6=OFF \
+	-D BUILD_TESTS=OFF \
+	-D QCA_INSTALL_IN_QT_PREFIX=ON \
+	-D QCA_MAN_INSTALL_DIR=/usr/share/man
+
+	cmake \
+	-B build-qt6 \
+	-S qca-$pkgver \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D QT6=ON \
+	-D BUILD_TESTS=OFF \
+	-D QCA_INSTALL_IN_QT_PREFIX=ON \
+	-D QCA_MAN_INSTALL_DIR=/usr/share/man
+}
+
+build() {
+	cmake --build build-qt5
+	cmake --build build-qt6
+}
+
+package() {
+	DESTDIR="$pkgdir" cmake --install build-qt5
+	DESTDIR="$pkgdir" cmake --install build-qt6
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}

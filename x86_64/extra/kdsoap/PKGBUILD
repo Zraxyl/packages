@@ -1,8 +1,9 @@
 pkgname=kdsoap
-pkgver=2.1.1
+pkgver=2.2.0
 pkgrel=1
+pkgdesc="Qt-based client-side and server-side SOAP component"
 arch=('x86_64')
-depends=(qt5)
+depends=(qt6)
 makedepends=(cmake extra-cmake-modules)
 durl=https://github.com/KDAB/KDSoap/releases/download
 source=($durl/$pkgname-$pkgver/$pkgname-$pkgver.tar.gz)
@@ -16,9 +17,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=None	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D KDSoap_QT6=ON \
 	-Wno-dev ..
 
 	make -j7

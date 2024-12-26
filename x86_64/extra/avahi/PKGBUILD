@@ -1,14 +1,17 @@
 pkgname=avahi
 pkgver=v0.8.4.5
-pkgrel=2
+pkgrel=3
 arch=(x86_64)
 depends=(libdaemon dbus expat gdbm glib2 libcap libevent nss gobject-introspection python3-gobject python3-dbus)
 makedepends=(git m4 gtk3+)
-commitid=a13da0547768d4e9d56d7a6d9799a940d125f96a
-source=(git+https://git.martinvlba.eu/Evolinx/avahi.git#commit=$commitid)
+commitid=1dade81cbf4d3e3f49784e44e543cd77046c79df
+source=(git+https://github.com/avahi/avahi.git#commit=$commitid)
 
 prepare() {
 	cd $pkgname
+
+	# Hacky way to rename but avahi as we see wants distro name in configure....
+	find . -type f -exec sed -i 's+archlinux+zraxyl+g' {} +
 
 	autoreconf -fvi
 
@@ -19,7 +22,7 @@ prepare() {
 	--with-autoipd-user=avahi \
 	--with-autoipd-group=avahi \
 	--with-systemdsystemunitdir=/usr/lib/systemd/system \
-	--with-distro=evolinx \
+	--with-distro=zraxyl \
 	--disable-mono \
 	--disable-manpages
 }
@@ -27,7 +30,7 @@ prepare() {
 build() {
 	cd $pkgname
 
-	make -j1
+	make -j4
 }
 
 package() {

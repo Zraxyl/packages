@@ -3,13 +3,14 @@ pkgver=0.14.3
 pkgrel=1
 pkgdesc="GObject-based wrapper around the Exiv2 library"
 arch=(x86_64)
-depends=(exiv2 glib2)
-makedepends=(python3 vala meson gtk-doc)
+depends=(exiv2 glib2 python3-gobject)
+makedepends=(vala meson gtk-doc gobject-introspection)
 source=(https://download.gnome.org/sources/$pkgname/0.14/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
 
+	rm -rf build
 	mkdir -p build
 }
 
@@ -19,6 +20,9 @@ build() {
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
+	-D tests=false \
+	-D vapi=false \
+	-D gtk_doc=false \
 	..
 
 	ninja

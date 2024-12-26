@@ -1,0 +1,38 @@
+pkgname=pulseaudio-qt
+pkgver=1.6.1
+pkgrel=2
+pkgdesc="Qt bindings for libpulse"
+arch=('x86_64')
+depends=(pulseaudio qt6)
+makedepends=(cmake extra-cmake-modules)
+durl=https://download.kde.org/stable/$pkgname
+source=($durl/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D QT_MAJOR_VERSION=6 \
+	-Wno-dev ..
+
+	make -j7
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	make DESTDIR=$pkgdir install
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}

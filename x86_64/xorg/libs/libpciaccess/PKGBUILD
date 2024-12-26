@@ -1,0 +1,26 @@
+pkgname=libpciaccess
+pkgver=0.18.1
+pkgrel=1
+pkgdesc="X11 PCI access library"
+arch=('x86_64')
+depends=('fontconfig' 'libxcb')
+source=(https://x.org/releases/individual/lib/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	meson \
+	--prefix=/usr \
+	$pkgname-$pkgver \
+	build
+}
+
+build() {
+        cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

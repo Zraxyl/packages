@@ -1,10 +1,10 @@
 pkgname=lib32-libffi
 rpkgname=libffi
-pkgver=3.4.3
+pkgver=3.4.6
 pkgrel=1
 depends=(libffi)
 arch=('x86_64')
-source=(ftp://sourceware.org/pub/$rpkgname/$rpkgname-$pkgver.tar.gz)
+source=(https://github.com/libffi/libffi/releases/download/v$pkgver/libffi-$pkgver.tar.gz)
 
 build() {
 cd $rpkgname-$pkgver

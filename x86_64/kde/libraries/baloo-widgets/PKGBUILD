@@ -1,0 +1,39 @@
+pkgname=baloo-widgets
+pkgver=24.08.3
+pkgrel=1
+pkgdesc="Widgets for Baloo"
+arch=('x86_64')
+depends=(baloo kconfig kcoreaddons kfilemetadata ki18n kio kservice
+	kwidgetsaddons qt6)
+makedepends=(cmake extra-cmake-modules kdoctools doxygen)
+durl=https://download.kde.org/stable/release-service/$pkgver/src
+source=($durl/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D BUILD_WITH_QT6=ON \
+	-Wno-dev ..
+
+	make -j7
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	make DESTDIR=$pkgdir install
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}

@@ -1,6 +1,7 @@
 pkgname=gstreamer
-pkgver=1.24.7
-pkgrel=1
+pkgver=1.24.10
+pkgrel=2
+pkgdesc="Multimedia graph framework - core"
 arch=('x86_64')
 depends=(
 	# GStreamer
@@ -25,7 +26,7 @@ build() {
 	--wrap-mode=nofallback \
 	--prefix=/usr \
 	--buildtype=release \
-	-D package-origin=https://evolinx.martinvlba.eu \
+	-D package-origin=https://zraxyl.eu \
 
 	ninja
 }

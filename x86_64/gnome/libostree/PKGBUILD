@@ -1,5 +1,5 @@
 pkgname=libostree
-pkgver=2024.8
+pkgver=2024.9
 pkgrel=1
 arch=(x86_64)
 depends=(glibc curl avahi dracut libsodium openssl

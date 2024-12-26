@@ -1,21 +1,34 @@
 pkgname=gnupg
-pkgver=2.2.32
+pkgver=2.5.1
 pkgrel=1
 pkgdesc='Complete and free implementation of the OpenPGP standard'
 url='https://www.gnupg.org/'
 license=('GPL')
 arch=('x86_64')
-depends=('npth' 'libgpg-error' 'libgcrypt' 'libksba' 'libassuan')
+depends=('npth' 'libgpg-error' 'libgcrypt' 'libksba' 'libassuan' 'libusb' 'bzip2')
 source=("https://gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
-	'drop-import-clean.patch'
-	'avoid-beta-warning.patch')
+	dirmngr.{service,socket}
+	gpg-agent{,-{browser,extra,ssh}}.socket
+	'gpg-agent.service'
+	#$pkgname-2.4-avoid_beta_warning.patch
+	#$pkgname-2.4-drop_import_clean.patch
+	#$pkgname-2.4-revert_default_rfc4880bis.patch
+	#$pkgname-2.4-keep-systemd-support.patch
+	#$pkgname-2.4-keyboxd-systemd-support.patch
+	)
 
 install=gnupg.install
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	patch -p1 -i ../avoid-beta-warning.patch
-	patch -p1 -i ../drop-import-clean.patch
+	local src
+	for src in "${source[@]}"; do
+		src="${src%%::*}"
+		src="${src##*/}"
+		[[ $src = *.patch ]] || continue
+		msg2 "Applying patch $src..."
+		patch -Np1 < "../$src"
+	done
 
 	# improve reproducibility
 	rm doc/gnupg.info*
@@ -26,11 +39,13 @@ prepare() {
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--sbindir=/usr/bin \
-		--libexecdir=/usr/lib/gnupg \
-		--enable-maintainer-mode \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--sbindir=/usr/bin \
+	--libexecdir=/usr/lib/gnupg \
+	--enable-maintainer-mode \
+	--disable-tests \
+	--disable-doc
 
 	make
 }
@@ -41,5 +56,17 @@ package() {
 	ln -s gpg "${pkgdir}"/usr/bin/gpg2
 	ln -s gpgv "${pkgdir}"/usr/bin/gpgv2
 
-	install -Dm 644 doc/examples/systemd-user/*.* -t "${pkgdir}/usr/lib/systemd/user"
+	local systemdir="$pkgdir/usr/lib/systemd/"
+	local wantsdir="${systemdir}user/sockets.target.wants/"
+	install -vdm 755 "$wantsdir"
+
+	local unit
+	for unit in ../*.{service,socket}; do
+		case $unit in
+			*@.*) install -vDm 644 "$unit" -t "${systemdir}system/" ;;
+			*.socket) ln -sv "../${unit##*/}" -t "$wantsdir" ;&
+			*) install -vDm 644 "$unit" -t "${systemdir}user/" ;;
+		esac
+	done
+
 }

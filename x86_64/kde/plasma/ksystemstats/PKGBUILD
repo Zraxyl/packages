@@ -1,14 +1,18 @@
 pkgname=ksystemstats
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="A plugin based system monitoring daemon"
 arch=(x86_64)
-depends=(libksysguard networkmanager-qt)
-makedepends=(extra-cmake-modules networkmanager-qt)
+depends=(kcoreaddons kcrash ki18n kio libksysguard lm-sensors qt6
+	solid libnl networkmanager-qt systemd)
+makedepends=(extra-cmake-modules)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
 build() {
-	cmake -B build -S $pkgname-$pkgver \
-	-DBUILD_TESTING=OFF
+	cmake \
+	-B build \
+	-S $pkgname-$pkgver \
+	-D BUILD_TESTING=OFF
 
 	cmake --build build
 }

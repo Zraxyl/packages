@@ -1,6 +1,6 @@
 pkgname=wayland-protocols
-pkgver=1.37
-pkgrel=2
+pkgver=1.39
+pkgrel=1
 arch=('x86_64')
 depends=('wayland')
 source=(https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/$pkgver/downloads/$pkgname-$pkgver.tar.xz)

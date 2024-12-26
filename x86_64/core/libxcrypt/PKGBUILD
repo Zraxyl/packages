@@ -1,5 +1,5 @@
 pkgname=libxcrypt
-pkgver=4.4.28
+pkgver=4.4.36
 pkgrel=1
 pkgdesc='Modern library for one-way hashing of passwords'
 arch=('x86_64')

@@ -1,10 +1,11 @@
 pkgname=kguiaddons
-pkgver=5.107.0
+pkgver=6.8.0
 pkgrel=1
+pkgdesc="Addons to QtGui"
 arch=('x86_64')
-depends=(qt5 plasma-wayland-protocols)
+depends=(qt6 plasma-wayland-protocols libx11 libxcb)
 makedepends=(clang cmake extra-cmake-modules)
-durl=https://download.kde.org/stable/frameworks/5.107
+durl=https://download.kde.org/stable/frameworks/6.8
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

@@ -1,0 +1,37 @@
+pkgname=phonon-backend-vlc
+pkgver=0.12.0
+pkgrel=1
+arch=('x86_64')
+depends=(phonon vlc qt6 qt5)
+makedepends=(base-devel extra-cmake-modules)
+source=(https://download.kde.org/stable/phonon/phonon-backend-vlc/$pkgver/phonon-backend-vlc-$pkgver.tar.xz)
+
+prepare() {
+	mkdir -p build5 build6
+
+	cmake \
+	-S $pkgname-$pkgver \
+	-B build5 \
+	-G Ninja \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D PHONON_BUILD_QT5=ON
+
+	cmake \
+	-S $pkgname-$pkgver \
+	-B build6 \
+	-G Ninja \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D PHONON_BUILD_QT5=OFF
+}
+
+build() {
+	ninja -C build5
+	ninja -C build6
+}
+
+package() {
+	DESTDIR=$pkgdir ninja -C build5 install
+	DESTDIR=$pkgdir ninja -C build6 install
+}

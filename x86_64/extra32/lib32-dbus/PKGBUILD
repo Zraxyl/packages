@@ -3,7 +3,7 @@ pkgver=1.12.20
 pkgrel=1
 arch=('x86_64')
 depends=(systemd)
-makedepends=(lib32-glib2 lib32-expat git autoconf-archive)
+makedepends=(lib32-glib2 lib32-expat lib32-systemd git autoconf-archive)
 source=(https://dbus.freedesktop.org/releases/dbus/dbus-$pkgver.tar.gz
 	no-fatal-warnings.diff)
 
@@ -23,20 +23,20 @@ build() {
 	export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 	#export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
 
-	./configure		\
-	--prefix=/usr                           \
-	--libdir=/usr/lib32			\
-	--sysconfdir=/etc                       \
-	--localstatedir=/var                    \
-	--libexecdir=/usr/lib/dbus-1.0          \
-	runstatedir=/var/run                    \
-	--with-console-auth-dir=/var/run/console        \
-	--with-dbus-user=dbus                   \
-	--with-system-pid-file=/var/run/dbus/pid        \
-	--with-system-socket=/var/run/dbus/system_bus_socket    \
+	./configure \
+	--prefix=/usr \
+	--libdir=/usr/lib32 \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--libexecdir=/usr/lib/dbus-1.0 \
+	runstatedir=/var/run \
+	--with-console-auth-dir=/var/run/console \
+	--with-dbus-user=dbus \
+	--with-system-pid-file=/var/run/dbus/pid \
+	--with-system-socket=/var/run/dbus/system_bus_socket \
 	--with-systemdsystemunitdir=/usr/lib/systemd/system \
-	--enable-systemd                        \
-	--enable-user-session                   \
+	--enable-systemd \
+	--enable-user-session \
 	--with-x
 
 	make

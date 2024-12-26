@@ -1,0 +1,26 @@
+pkgname=zxing-cpp
+pkgver=2.2.1
+pkgrel=1
+pkgdesc="A C++ library to decode QRCode"
+arch=(x86_64)
+depends=(glibc)
+makedepends=(base-devel)
+source=(https://github.com/zxing-cpp/zxing-cpp/archive/refs/tags/v$pkgver.tar.gz)
+
+prepare() {
+	cmake \
+	-S $pkgname-$pkgver \
+	-B build \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D BUILD_EXAMPLES=OFF \
+	-D BUILD_UNIT_TESTS=OFF
+}
+
+build() {
+	cmake --build build
+}
+
+package() {
+	DESTDIR=$pkgdir cmake --install build
+}

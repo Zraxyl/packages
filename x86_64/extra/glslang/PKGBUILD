@@ -1,8 +1,8 @@
 pkgname=glslang
-pkgver=14.3.0
+pkgver=15.0.0
 stools=2024.3
 sheaders=1.3.290.0
-pkgrel=2
+pkgrel=1
 pkgdesc='OpenGL and OpenGL ES shader front end and validator'
 arch=('x86_64')
 depends=('gcc' 'llvm' 'clang' 'spirv-tools')

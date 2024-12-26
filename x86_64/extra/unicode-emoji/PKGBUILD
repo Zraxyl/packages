@@ -1,6 +1,7 @@
 pkgname=unicode-emoji
-pkgver=14.0
+pkgver=15.1
 pkgrel=1
+pkgdesc="Unicode Emoji Data Files"
 arch=(x86_64)
 depends=('unicode-character-database')
 source=("emoji-sequences-$pkgver.txt::http://www.unicode.org/Public/emoji/$pkgver/emoji-sequences.txt"

@@ -1,8 +1,12 @@
 pkgname=plasma-nm
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="Plasma applet written in QML for managing network connections"
 arch=(x86_64)
-depends=(plasma-workspace modemmanager-qt networkmanager-qt qca-qt5)
+depends=(kcmutils kcolorscheme kcompletion kconfig kcoreaddons kdbusaddons
+	kdeclarative ki18n kio kirigami knotifications kquickcharts ksvg
+	kwallet kwidgetsaddons kwindowsystem modemmanager libplasma modemmanager-qt
+	networkmanager-qt plasma-workspace prison qca qcoro solid qt6)
 makedepends=(extra-cmake-modules)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
@@ -15,9 +19,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

@@ -1,0 +1,39 @@
+pkgname=packagekit-qt
+pkgver=1.1.2
+pkgrel=2
+pkgdesc="Qt bindings for PackageKit"
+arch=('x86_64')
+depends=('packagekit' 'qt5' 'qt6')
+makedepends=('cmake')
+source=("https://github.com/PackageKit/PackageKit-Qt/archive/refs/tags/v$pkgver.tar.gz")
+
+prepare() {
+	mkdir -p build5 build6
+
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D BUILD_WITH_QT6=OFF \
+	-S PackageKit-Qt-${pkgver} \
+	-B build5
+
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D BUILD_WITH_QT6=ON \
+	-S PackageKit-Qt-${pkgver} \
+	-B build6
+}
+
+build() {
+	cmake --build build5
+	cmake --build build6
+}
+
+package() {
+        DESTDIR="${pkgdir}" cmake --install build5
+	DESTDIR="${pkgdir}" cmake --install build6
+
+	# Hacky way but its how i deal with it for now
+        mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+        cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+        rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}

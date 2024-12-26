@@ -1,23 +1,15 @@
 pkgname=lib32-freetype2
-pkgver=2.11.1
-pkgrel=1
+pkgver=2.13.3
+pkgrel=2
 pkgdesc="Font rasterization library (32-bit)"
 url="https://www.freetype.org/"
 arch=(x86_64)
 depends=(lib32-zlib lib32-bzip2 lib32-libpng lib32-brotli freetype2)
 makedepends=(meson)
-source=(https://download-mirror.savannah.gnu.org/releases/freetype/freetype-$pkgver.tar.xz{,.sig}
-	0001-Enable-table-validation-modules.patch
-	0002-Enable-subpixel-rendering.patch
-	0003-Enable-infinality-subpixel-hinting.patch
-	0004-Enable-long-PCF-family-names.patch)
+source=(https://download-mirror.savannah.gnu.org/releases/freetype/freetype-$pkgver.tar.xz)
 
 prepare() {
 	cd freetype-$pkgver
-	patch -Np1 -i ../0001-Enable-table-validation-modules.patch
-	patch -Np1 -i ../0002-Enable-subpixel-rendering.patch
-	patch -Np1 -i ../0003-Enable-infinality-subpixel-hinting.patch
-	patch -Np1 -i ../0004-Enable-long-PCF-family-names.patch
 }
 
 build() {
@@ -36,5 +28,5 @@ build() {
 package() {
 	meson install -C build --destdir="$pkgdir"
 
-	rm -r "$pkgdir"/usr/include
+	rm -rf "$pkgdir"/usr/{bin,share,include}
 }

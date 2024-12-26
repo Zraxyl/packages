@@ -1,0 +1,44 @@
+pkgname=drkonqi
+pkgver=6.2.4
+pkgrel=1
+pkgdesc="The KDE crash handler"
+arch=('x86_64')
+depends=(gdb kcmutils kconfig kcoreaddons kcrash ki18n kidletime kio kirigami
+	kitemmodels knotifications kservice kstatusnotifieritem kwallet
+	kwidgetsaddons kwindowsystem polkit-qt python3 qt6 syntax-highlighting)
+makedepends=(cmake extra-cmake-modules python3-pip)
+durl=https://download.kde.org/stable/plasma/$pkgver
+source=($durl/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	pip3 install psutil pygdbmi sentry_sdk
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D BUILD_TESTING=OFF \
+	-D WITH_GDB12=ON \
+	-D WITH_PYTHON_VENDORING=OFF \
+	-Wno-dev ..
+
+	make -j7
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	make DESTDIR=$pkgdir install
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}

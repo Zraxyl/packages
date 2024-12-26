@@ -1,5 +1,5 @@
 pkgname=amdvlk
-pkgver=2024.Q3.2
+pkgver=2024.Q4.3
 pkgrel=1
 arch=(x86_64)
 depends=('glibc' 'ncurses')
@@ -10,7 +10,7 @@ options=('!lto')
 prepare() {
   mkdir -p amdvlk && cd amdvlk
 
-  git config --global user.email "builder@evolinx.org"
+  git config --global user.email "builder@zraxyl.org"
   git config --global user.name "Builder Bob"  
 
   repo init -u https://github.com/GPUOpen-Drivers/AMDVLK.git -b refs/tags/v-$pkgver

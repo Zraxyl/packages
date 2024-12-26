@@ -1,8 +1,10 @@
 pkgname=polkit-kde-agent
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="Daemon providing a polkit authentication UI for KDE"
 arch=('x86_64')
-depends=(kiconthemes kdbusaddons kcrash)
+depends=(kcoreaddons kcrash kdbusaddons ki18n kirigami kwindowsystem polkit-qt
+	qt6)
 makedepends=(cmake extra-cmake-modules kdoctools)
 durl=https://download.kde.org/stable/plasma/$pkgver
 source=($durl/$pkgname-1-$pkgver.tar.xz)
@@ -16,9 +18,9 @@ prepare() {
 build() {
 	cd $pkgname-1-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

@@ -1,0 +1,33 @@
+pkgname=libtatsu
+pkgver=1.0.4
+pkgrel=1
+pkgdesc='Library handling the communication with Apple Tatsu Signing Server (TSS)'
+arch=('x86_64')
+depends=(gcc glibc libplist openssl curl)
+makedepends=(base-devel python3-pip)
+source=(https://github.com/libimobiledevice/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.bz2)
+
+prepare() {
+	pip3 install cython
+
+	cd $pkgname-$pkgver
+
+	echo "${pkgver}" > .tarball-version
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

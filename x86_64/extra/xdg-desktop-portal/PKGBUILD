@@ -1,10 +1,10 @@
 pkgname=xdg-desktop-portal
-pkgver=1.16.0
-pkgrel=3
+pkgver=1.18.4
+pkgrel=1
+pkgdesc="Desktop integration portals for sandboxed apps"
 arch=(x86_64)
-depends=(glib2 fuse3 rtkit pipewire fuse3 gsettings-desktop-schemas
-	systemd libportal flatpak xdg-dbus-proxy )
-makedepends=(meson xmlto docbook-xsl)
+depends=(fuse3 gdk-pixbuf glib2 json-glib pipewire rtkit systemd)
+makedepends=(base-devel meson xmlto docbook-xsl flatpak libportal)
 source=(https://github.com/flatpak/xdg-desktop-portal/releases/download/$pkgver/xdg-desktop-portal-$pkgver.tar.xz)
 
 prepare() {
@@ -16,7 +16,6 @@ build() {
 
 	meson \
 	--prefix=/usr \
-	-D pipewire=enabled \
 	-D libportal=enabled \
 	..
 

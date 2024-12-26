@@ -1,6 +1,7 @@
 pkgname=lvm2
-pkgver=2.03.26
+pkgver=2.03.27
 pkgrel=1
+pkgdesc='The Linux-native asynchronous I/O facility (aio) library'
 arch=('x86_64')
 depends=(libaio util-linux readline systemd)
 source=(https://sourceware.org/ftp/lvm2/LVM2.$pkgver.tgz)
@@ -14,24 +15,24 @@ build() {
 	CONFIG_SHELL=/bin/bash \
 	--prefix=/usr \
 	--sysconfdir=/etc \
-    --localstatedir=/var \
-    --enable-cmdlib \
-    --enable-dmeventd \
-    --enable-lvmpolld \
-    --enable-pkgconfig \
-    --enable-readline \
-    --enable-udev_rules \
-    --enable-udev_sync \
-    --enable-write_install \
-    --with-cache=internal \
-    --with-default-dm-run-dir=/run \
-    --with-default-locking-dir=/run/lock/lvm \
-    --with-default-pid-dir=/run \
-    --with-default-run-dir=/run/lvm \
-    --with-libexecdir=/usr/lib/lvm2 \
-    --with-systemdsystemunitdir=/usr/lib/systemd/system \
-    --with-thin=internal \
-    --with-udev-prefix=/usr
+	--localstatedir=/var \
+	--enable-cmdlib \
+	--enable-dmeventd \
+	--enable-lvmpolld \
+	--enable-pkgconfig \
+	--enable-readline \
+	--enable-udev_rules \
+	--enable-udev_sync \
+	--enable-write_install \
+	--with-cache=internal \
+	--with-default-dm-run-dir=/run \
+	--with-default-locking-dir=/run/lock/lvm \
+	--with-default-pid-dir=/run \
+	--with-default-run-dir=/run/lvm \
+	--with-libexecdir=/usr/lib/lvm2 \
+	--with-systemdsystemunitdir=/usr/lib/systemd/system \
+	--with-thin=internal \
+	--with-udev-prefix=/usr
 
 	make
 }

@@ -1,5 +1,5 @@
 pkgname=fribidi
-pkgver=1.0.9
+pkgver=1.0.16
 pkgrel=1
 arch=('x86_64')
 source=(https://github.com/$pkgname/$pkgname/releases/download/v$pkgver/$pkgname-$pkgver.tar.xz)
@@ -11,9 +11,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
 	..
 
 	ninja

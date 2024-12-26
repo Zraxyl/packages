@@ -1,8 +1,12 @@
 pkgname=kate
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
+pkgdesc="Advanced text editor"
 arch=('x86_64')
-depends=(plasma-framework knewstuff kitemmodels ktexteditor kactivities)
+depends=(kbookmarks kcolorscheme kcompletion kconfig kconfigwidgets kcoreaddons
+	kcrash kdbusaddons kguiaddons ki18n kiconthemes kio knewstuff kparts
+	kservice ktexteditor ktextwidgets kuserfeedback kwidgetsaddons
+	kwindowsystem kxmlgui qt6 syntax-highlighting)
 makedepends=(cmake extra-cmake-modules)
 source=(https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz)
 
@@ -15,9 +19,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

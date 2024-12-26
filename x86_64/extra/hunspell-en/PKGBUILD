@@ -1,0 +1,59 @@
+pkgname=hunspell-en
+pkgver=2020.12.07
+pkgrel=1
+pkgdesc="English hunspell dictionaries"
+arch=(x86_64)
+depends=(hunspell)
+source=(https://downloads.sourceforge.net/project/wordlist/speller/$pkgver/hunspell-en_US-large-$pkgver.zip
+	https://downloads.sourceforge.net/project/wordlist/speller/$pkgver/hunspell-en_AU-large-$pkgver.zip
+	https://downloads.sourceforge.net/project/wordlist/speller/$pkgver/hunspell-en_CA-large-$pkgver.zip
+	https://downloads.sourceforge.net/project/wordlist/speller/$pkgver/hunspell-en_GB-large-$pkgver.zip)
+
+package() {
+	install -vDm 644 *.dic *.aff -t "$pkgdir/usr/share/hunspell"
+	install -d "$pkgdir"/usr/share/qt{,6}/qtwebengine_dictionaries/
+
+	# Hunspell mess
+	pushd "$pkgdir/usr/share/hunspell/"
+		en_US_aliases="en_US"
+		en_AU_aliases="en_AU"
+		en_CA_aliases="en_CA"
+		en_GB_aliases="en_AG en_BS en_BW en_BZ en_DK en_GB en_GH en_HK en_IE en_IN en_JM en_NA en_NG en_NZ en_SG en_TT en_ZA en_ZW"
+
+		for lang in $en_US_aliases; do
+			ln -s en_US-large.aff $lang.aff
+			ln -s en_US-large.dic $lang.dic
+		done
+
+		for lang in $en_AU_aliases; do
+			ln -s en_AU-large.aff $lang.aff
+			ln -s en_AU-large.dic $lang.dic
+		done
+
+		for lang in $en_CA_aliases; do
+			ln -s en_CA-large.aff $lang.aff
+			ln -s en_CA-large.dic $lang.dic
+		done
+
+		for lang in $en_GB_aliases; do
+			ln -s en_GB-large.aff $lang.aff
+			ln -s en_GB-large.dic $lang.dic
+		done
+	popd
+
+	# Install webengine dictionaries   
+	#install -d "$pkgdir"/usr/share/qt{,6}/qtwebengine_dictionaries/
+	#for _file in "$pkgdir"/usr/share/hunspell/*.dic; do
+	#	_filename=$(basename $_file)
+	#	/usr/lib/qt6/qwebengine_convert_dict $_file "$pkgdir"/usr/share/qt6/qtwebengine_dictionaries/${_filename/\.dic/\.bdic}
+	#	ln -rs "$pkgdir"/usr/share/qt6/qtwebengine_dictionaries/${_filename/\.dic/\.bdic} "$pkgdir"/usr/share/qt/qtwebengine_dictionaries/
+	#done
+
+	# myspell symlinks
+	install -dm755 "${pkgdir}/usr/share/myspell/dicts"
+	pushd "$pkgdir/usr/share/myspell/dicts"
+		for file in "$pkgdir/usr/share/hunspell/"*; do
+			ln -sv "/usr/share/hunspell/$(basename "$file")" .
+		done
+	popd
+}

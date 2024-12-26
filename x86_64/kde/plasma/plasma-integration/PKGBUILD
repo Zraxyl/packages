@@ -1,10 +1,13 @@
 pkgname=plasma-integration
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="Qt Platform Theme integration plugins for the Plasma workspaces"
 arch=('x86_64')
-depends=(kio kwayland libxcursor noto-fonts ttf-hack qqc2-desktop-style perl
-	plasma-wayland-protocols)
-makedepends=(cmake extra-cmake-modules breeze)
+depends=(kcolorscheme kcompletion kconfig kcoreaddons kguiaddons ki18n
+	kiconthemes kio kjobwidgets kservice kstatusnotifieritem
+	kwidgetsaddons kwindowsystem kxmlgui libxcb libxcursor noto-fonts
+	qqc2-breeze-style qqc2-desktop-style qt6 wayland xdg-desktop-portal-kde)
+makedepends=(cmake extra-cmake-modules breeze plasma-wayland-protocols)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -16,9 +19,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D BUILD_QT5=OFF \
 	-Wno-dev ..
 
 	make -j7

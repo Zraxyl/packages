@@ -1,10 +1,11 @@
 pkgname=kidletime
-pkgver=5.107.0
+pkgver=6.8.0
 pkgrel=1
+pkgdesc="Monitoring user activity"
 arch=('x86_64')
-depends=(libxss qt5)
+depends=(libxss qt6 libx11 libxcb libxext)
 makedepends=(cmake extra-cmake-modules plasma-wayland-protocols wayland-protocols)
-durl=https://download.kde.org/stable/frameworks/5.107
+durl=https://download.kde.org/stable/frameworks/6.8
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

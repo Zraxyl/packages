@@ -1,10 +1,11 @@
 pkgname=kpackage
-pkgver=5.107.0
+pkgver=6.8.0
 pkgrel=1
+pkgdesc="Framework that lets applications manage user installable packages of non-binary assets"
 arch=('x86_64')
-depends=(karchive ki18n kcoreaddons)
-makedepends=(cmake extra-cmake-modules qt5 doxygen kdoctools)
-durl=https://download.kde.org/stable/frameworks/5.107
+depends=(karchive ki18n kcoreaddons qt6)
+makedepends=(cmake extra-cmake-modules doxygen kdoctools)
+durl=https://download.kde.org/stable/frameworks/6.8
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -16,9 +17,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

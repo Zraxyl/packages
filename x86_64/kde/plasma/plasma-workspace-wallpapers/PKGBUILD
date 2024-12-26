@@ -1,8 +1,9 @@
 pkgname=plasma-workspace-wallpapers
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="Additional wallpapers for the Plasma Workspace"
 arch=(x86_64)
-makedepends=(extra-cmake-modules qt5)
+makedepends=(extra-cmake-modules qt6)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
 build() {

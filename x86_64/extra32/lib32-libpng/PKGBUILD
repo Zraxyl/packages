@@ -1,6 +1,6 @@
 _pkgbasename=libpng
 pkgname=lib32-$_pkgbasename
-pkgver=1.6.37
+pkgver=1.6.44
 _libversion=16
 pkgrel=1
 pkgdesc="A collection of routines used to create PNG format graphics files (32-bit)"

@@ -1,10 +1,11 @@
 pkgname=kimageformats
-pkgver=5.107.0
+pkgver=6.8.0
 pkgrel=1
+pkgdesc="Image format plugins for Qt"
 arch=('x86_64')
-depends=(qt5 karchive libavif libheif libjxl libraw openexr)
+depends=(qt6 imath karchive libavif libheif libjxl libraw openexr)
 makedepends=(cmake extra-cmake-modules)
-durl=https://download.kde.org/stable/frameworks/5.107
+durl=https://download.kde.org/stable/frameworks/6.8
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

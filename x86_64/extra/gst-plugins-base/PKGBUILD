@@ -1,6 +1,7 @@
 pkgname=gst-plugins-base
-pkgver=1.24.7
-pkgrel=1
+pkgver=1.24.10
+pkgrel=2
+pkgdesc="Multimedia graph framework - base plugins"
 arch=('x86_64')
 depends=(
 	# GStreamer family
@@ -25,9 +26,8 @@ build() {
 	--wrap-mode=nofallback \
 	--prefix=/usr \
 	--buildtype=release	\
-	-D package-origin=https://evolinx.martinvlba.eu \
-	-D gst-plugins-base:package-name="[GStreamer-BASE]: $pkgver - EVOLINX" \
-	-D gst-plugins-base:package-origin=https://evolinx.martinvlba.eu
+	-D package-origin=https://zraxyl.eu \
+	-D gst-plugins-base:package-name="[GStreamer-BASE]: $pkgver - ZRAXYL"
 
 	ninja
 }

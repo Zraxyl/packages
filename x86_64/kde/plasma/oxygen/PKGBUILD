@@ -1,9 +1,12 @@
 pkgname=oxygen
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="KDE Oxygen style"
 arch=('x86_64')
-depends=(plasma-workspace oxygen-sounds oxygen-icons5)
-makedepends=(cmake extra-cmake-modules)
+depends=(frameworkintegration kcmutils kcolorscheme kcompletion kconfig
+	kconfigwidgets kcoreaddons kdecoration kguiaddons ki18n
+	kwidgetsaddons kwindowsystem libxcb qt6)
+makedepends=(cmake extra-cmake-modules libplasma)
 durl=https://download.kde.org/stable/plasma/${pkgver}/
 source=($durl/$pkgname-$pkgver.tar.xz)
 
@@ -16,9 +19,11 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D BUILD_QT5=OFF \
+	-D BUILD_TESTING=OFF \
 	-Wno-dev ..
 
 	make -j7

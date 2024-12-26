@@ -1,10 +1,12 @@
 pkgname=knewstuff
-pkgver=5.107.0
+pkgver=6.8.0
 pkgrel=1
+pkgdesc="Support for downloading application assets from the network"
 arch=('x86_64')
-depends=(kio kpackage attica syndication appstream kirigami2)
-makedepends=(cmake extra-cmake-modules qt5 doxygen)
-durl=https://download.kde.org/stable/frameworks/5.107
+depends=(karchive kconfig kcoreaddons ki18n kpackage kwidgetsaddons qt6
+	syndication kirigami attica)
+makedepends=(cmake extra-cmake-modules doxygen)
+durl=https://download.kde.org/stable/frameworks/6.8
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -16,10 +18,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
-	-D BUILD_QCH=ON			\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D BUILD_QCH=ON \
 	-Wno-dev ..
 
 	make -j7

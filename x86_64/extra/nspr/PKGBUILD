@@ -1,5 +1,5 @@
 pkgname=nspr
-pkgver=4.35
+pkgver=4.36
 pkgrel=1
 pkgdesc="Netscape Portable Runtime"
 url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSPR"

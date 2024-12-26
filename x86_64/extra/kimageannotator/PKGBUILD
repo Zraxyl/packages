@@ -1,15 +1,21 @@
 pkgname=kimageannotator
-pkgver=0.5.3
-pkgrel=2
+pkgver=0.7.1
+pkgrel=1
+pkgdesc="Tool for annotating images"
 arch=(x86_64)
-depends=(qt5 kcolorpicker)
-makedepends=(cmake qt5)
+depends=(qt6 kcolorpicker)
+makedepends=(base-devel)
 source=(https://github.com/ksnip/kImageAnnotator/archive/v$pkgver/$pkgname-$pkgver.tar.gz)
 
 build() {
-    cmake -B build -S kImageAnnotator-$pkgver \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBUILD_SHARED_LIBS=ON
+    cmake \
+    -B build \
+    -S kImageAnnotator-$pkgver \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D BUILD_SHARED_LIBS=ON \
+    -D BUILD_WITH_QT5=OFF \
+    -D BUILD_WITH_QT6=ON \
+    -D QT_MAJOR_VERSION=6
 
     cmake --build build
 }

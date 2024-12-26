@@ -1,8 +1,8 @@
 pkgname=kpipewire
-pkgver=5.27.6
-pkgrel=3
+pkgver=6.2.4
+pkgrel=1
 arch=('x86_64')
-depends=(kwayland ki18n kcoreaddons pipewire libepoxy ffmpeg)
+depends=(ffmpeg kcoreaddons ki18n libdrm libepoxy pipewire libva mesa qt6)
 makedepends=(extra-cmake-modules plasma-wayland-protocols)
 durl=https://download.kde.org/stable/plasma/$pkgver
 source=($durl/$pkgname-$pkgver.tar.xz)
@@ -16,9 +16,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

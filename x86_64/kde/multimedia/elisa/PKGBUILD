@@ -1,8 +1,11 @@
 pkgname=elisa
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
+pkgdesc="A simple music player aiming to provide a nice experience for its users"
 arch=('x86_64')
-depends=(baloo kirigami2 kdeclarative vlc)
+depends=(kcolorscheme kconfig kcoreaddons kcrash kdbusaddons kfilemetadata
+	ki18n kiconthemes kio kirigami kirigami-addons kitemviews kxmlgui
+	qqc2-desktop-style qt6 vlc)
 makedepends=(cmake extra-cmake-modules)
 durl=https://download.kde.org/stable/release-service/$pkgver/src
 source=($durl/$pkgname-$pkgver.tar.xz)

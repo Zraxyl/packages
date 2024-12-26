@@ -1,9 +1,9 @@
 pkgname=base-minimal
-pkgver=2024.1
+pkgver=2024.4
 pkgrel=1
 pkgdesc="Base minimal metapckage alike pkg to give user/dev needed CLI-System"
 arch=('x86_64')
-source=(neofetch os-release os-branch)
+source=()
 conflicts=(base-chroot base-system)
 depends=(
 	# Base minimal packages
@@ -22,8 +22,10 @@ package() {
 
 	# Make rootfs structure
 	mkdir -vp $pkgdir/etc/systemd/system/
-	cp -f ../../os-branch $pkgdir/etc
 
-	mkdir -vp $pkgdir/usr/bin
-	cp -f ../../neofetch $pkgdir/usr/bin && chmod +x $pkgdir/usr/bin/neofetch
+	if [ "$USE_STAGING" == "yes" ]; then
+		echo "staging" > $pkgdir/etc/os-branch
+	else
+		echo "stable" > $pkgdir/etc/os-branch
+	fi
 }

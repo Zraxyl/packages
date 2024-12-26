@@ -1,9 +1,11 @@
 pkgname=skanlite
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
+pkgdesc="Image Scanning Application"
 arch=('x86_64')
-depends=(kio libksane)
-makedepends=(cmake extra-cmake-modules kdoctools qt5)
+depends=(kconfig kconfigwidgets kcoreaddons ki18n kio kjobwidgets
+	kwidgetsaddons kxmlgui libksane)
+makedepends=(cmake extra-cmake-modules kdoctools qt6)
 durl=https://download.kde.org/stable/release-service/$pkgver/src
 source=($durl/$pkgname-$pkgver.tar.xz)
 
@@ -16,9 +18,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D QT_MAJOR_VERSION=6 \
 	-D BUILD_TESTING=OFF \
 	-Wno-dev ..
 

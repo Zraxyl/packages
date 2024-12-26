@@ -1,5 +1,5 @@
 pkgname=flatpak
-pkgver=1.15.10
+pkgver=1.15.12
 pkgrel=1
 url="https://flatpak.org"
 pkgdesc="Linux application sandboxing and distribution framework (formerly xdg-app)"
@@ -34,7 +34,8 @@ build() {
 	-D selinux_module=disabled \
 	-D system_bubblewrap=bwrap \
 	-D system_dbus_proxy=xdg-dbus-proxy \
-	-D tests=false
+	-D tests=false \
+	-D gir=disabled
 
 	ninja -C build
 }

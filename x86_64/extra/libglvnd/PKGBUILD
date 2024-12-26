@@ -1,6 +1,6 @@
 pkgname=libglvnd
 pkgver=1.7.0
-pkgrel=1
+pkgrel=3
 pkgdesc="The GL Vendor-Neutral Dispatch library"
 arch=('x86_64')
 url="https://gitlab.freedesktop.org/glvnd/libglvnd"

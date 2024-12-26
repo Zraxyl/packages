@@ -1,33 +1,22 @@
 pkgname=keditbookmarks
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
-arch=('x86_64')
-depends=(kparts)
-makedepends=(cmake extra-cmake-modules)
-durl=https://download.kde.org/stable/release-service/$pkgver/src
-source=($durl/$pkgname-$pkgver.tar.xz)
-
-prepare() {
-	cd $pkgname-$pkgver
-
-	mkdir -p build
-}
+pkgdesc="Bookmark Organizer and Editor"
+arch=(x86_64)
+depends=(kcodecs kcompletion kconfig kconfigwidgets kcoreaddons ki18n
+	kiconthemes kio kparts kwidgetsaddons kwindowsystem kxmlgui qt6)
+makedepends=(extra-cmake-modules kdoctools)
+source=(https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz)
 
 build() {
-	cd $pkgname-$pkgver/build
+	cmake -B build -S $pkgname-$pkgver \
+	-DBUILD_TESTING=OFF
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
-	-Wno-dev ..
-
-	make -j7
+	cmake --build build
 }
 
 package() {
-	cd $pkgname-$pkgver/build
-
-	make DESTDIR=$pkgdir install
+	DESTDIR="$pkgdir" cmake --install build
 
 	# Hacky way but its how i deal with it for now
 	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore

@@ -2,6 +2,7 @@ pkgname=directx-shader-compiler
 pkgver=1.8.2407
 rname="DirectXShaderCompiler-$pkgver"
 pkgrel=1
+pkgdesc='A compiler for HLSL to DXIL (DirectX Intermediate Language)'
 arch=('x86_64')
 depends=(ncurses)
 makedepends=('cmake' 'ninja' 'python3-pip' 'directx-headers'
@@ -15,8 +16,10 @@ prepare() {
     #########
     git clone https://github.com/microsoft/DirectX-Headers.git \
     ${pkgname}-DirectX-Headers
+
     git clone https://github.com/KhronosGroup/SPIRV-Headers \
     ${pkgname}-SPIRV-Headers
+
     git clone https://github.com/KhronosGroup/SPIRV-Tools \
     ${pkgname}-SPIRV-Tools
     #########

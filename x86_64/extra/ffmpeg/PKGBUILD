@@ -1,17 +1,18 @@
 pkgname=ffmpeg
-pkgver=6.0
-pkgrel=3
+pkgver=7.1
+pkgrel=2
+pkgdesc="FFmpeg is a free and open-source software project consisting of a suite of libraries and programs for handling video, audio, and other multimedia files and streams"
 arch=('x86_64')
 depends=(fdk-aac freetype2 lame libtheora
     libvorbis libvpx opus libx264 libx265
     libass vdpau alsa-lib fribidi gmp gnutls libssh
     jack2 libdrm libglvnd pulseaudio libva v4l-utils
     libxext sdl2 opencl-icd-loader libaom bzip2 fontconfig
-    gsm pipewire libbluray libjxl librsvg libsndfile)
+    gsm pipewire libbluray libjxl librsvg libsndfile
+    dav1d)
 makedepends=(nasm yasm clang vulkan-headers opencl-headers)
 source=(https://ffmpeg.org/releases/ffmpeg-$pkgver.tar.xz
-    chromium-av_stream_get_first_dts.patch
-    ffmpeg-vmaf2.x.patch)
+    chromium-av_stream_get_first_dts.patch)
 
 prepare() {
     cd $pkgname-$pkgver
@@ -20,8 +21,6 @@ prepare() {
 
     echo "[ PATCH ]: [1/1]"
     patch -p1 -i ../chromium-av_stream_get_first_dts.patch
-    #echo "[ PATCH ]: [2/2]"
-    #patch -p1 -i ../ffmpeg-vmaf2.x.patch
 }
 
 build() {
@@ -32,7 +31,6 @@ build() {
     #--enable-ladspa \
     #--enable-libiec61883 \
     #--enable-libbs2b \
-    #--enable-libdav1d \
     #--enable-libmfx \
     #--enable-libmodplug \
     #--enable-libopencore_amrnb \
@@ -45,12 +43,14 @@ build() {
     #--enable-libvidstab \
     #--enable-libvmaf \
     #--enable-libsvtav1 \
-    #--enable-libxvid \
     #--enable-libzimg \
     #--enable-nvdec \
     #--enable-nvenc \
     #--enable-amf \
 
+    CC=clang \
+    CXX=clang++ \
+    CPP=clang++ \
     ./configure \
     --prefix=/usr \
     --enable-cuda-llvm \
@@ -60,6 +60,8 @@ build() {
     --enable-gnutls \
     --enable-gpl \
     --enable-libaom \
+    --enable-libdav1d \
+    --enable-libxvid \
     --enable-libass \
     --enable-libbluray \
     --enable-libdrm \

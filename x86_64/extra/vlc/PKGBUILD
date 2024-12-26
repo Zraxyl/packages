@@ -1,9 +1,10 @@
 pkgname=vlc
-pkgver=3.0.17.4
+pkgver=3.0.21
 pkgrel=1
+pkgdesc="VLC: the ultimate media player"
 arch=(x86_64)
 depends=('libxpm' 'lua' 'libidn'
-	'ffmpeg' 'xcb-util-keysyms' 'tar' 'libxinerama'
+	'ffmpeg-5' 'xcb-util-keysyms' 'tar' 'libxinerama'
 	'libsecret' 'libarchive' 'qt5' 'attr'
 	'freetype2' 'fribidi' 'harfbuzz' 'vdpau'
 	'fontconfig' 'libxml2' 'gnutls' 'wayland-protocols' 'double-conversion')
@@ -12,12 +13,12 @@ makedepends=('gst-plugins-base' 'libnotify'
 	'libmtp' 'samba' 'libssh2' 'mesa' 'protobuf'
 	'libogg' 'libvpx' 'libvorbis' 'opus' 'libtheora'
 	'libpng' 'libjpeg' 'libass' 'bison'
-	'pulseaudio' 'alsa-lib' 'jack2')
-source=(https://github.com/videolan/vlc/archive/refs/tags/$pkgver.tar.gz
+	'pulseaudio' 'alsa-lib' 'jack2' 'kwallet')
+source=(https://code.videolan.org/videolan/vlc/-/archive/$pkgver-1/vlc-$pkgver-1.tar.gz
 	update-vlc-plugin-cache.hook)
 
 prepare() {
-	cd $pkgname-$pkgver
+	cd $pkgname-$pkgver-1
 
 	sed -e 's:truetype/ttf-dejavu:TTF:g' -i modules/visualization/projectm.cpp
 
@@ -25,35 +26,37 @@ prepare() {
 
 	sed -e 's|-Werror-implicit-function-declaration||g' -i configure
 
-	export BUILDCC=gcc
-	export CXXFLAGS+=" -std=c++11"
-	export CPPFLAGS+=" -I/usr/include/samba-4.0"
-	export CFLAGS+=" -I/usr/include/samba-4.0 -ffat-lto-objects"
+	export BUILDCC=clang
+	export CFLAGS+=" -ffat-lto-objects -Wno-incompatible-pointer-types"
+	export LDFLAGS+=" -L/usr/lib/ffmpeg5.1"
+	export CXXFLAGS+=" -std=c++17"
+	export CPPFLAGS+=" -ffat-lto-objects -Wno-incompatible-pointer-types"
+	export PKG_CONFIG_PATH="/usr/lib/ffmpeg5.1/pkgconfig/:$PKG_CONFIG_PATH"
 
 	# NOTICE: This is very minimal build of vlc as of missing deps for extra vlc plugins!!!
-
 	./configure \
 	--prefix=/usr \
 	--sysconfdir=/etc \
 	--with-kde-solid=/usr/share/solid/actions/ \
 	--enable-nls \
 	--disable-a52 \
+	--disable-rpath \
 	--enable-vdpau
 }
 
 build() {
-	cd $pkgname-$pkgver
+	cd $pkgname-$pkgver-1
 
 	make
 }
 
 package() {
-	cd $pkgname-$pkgver
+	cd $pkgname-$pkgver-1
 
 	make DESTDIR="${pkgdir}" install
 
 	for res in 16 32 48 128 256; do
-		install -Dm 644 "$srcdir/vlc-$pkgver/share/icons/${res}x${res}/vlc.png" \
+		install -Dm 644 "share/icons/${res}x${res}/vlc.png" \
 		"${pkgdir}/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png"
 	done
 

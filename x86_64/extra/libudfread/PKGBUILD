@@ -1,0 +1,30 @@
+pkgname=libudfread
+pkgver=1.1.2
+pkgrel=1
+pkgdesc="UDF reader"
+arch=(x86_64)
+depends=(tar gzip bzip2)
+makedepends=(base-devel)
+source=(https://code.videolan.org/videolan/libudfread/-/archive/1.1.2/libudfread-$pkgver.tar.gz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

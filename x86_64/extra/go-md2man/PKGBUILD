@@ -1,6 +1,7 @@
 pkgname=go-md2man
-pkgver=2.0.1
+pkgver=2.0.6
 pkgrel=1
+pkgdesc='Converts markdown into roff (man pages)'
 arch=('x86_64')
 makedepends=(go)
 source=($pkgname-$pkgver.tar.gz::"https://github.com/cpuguy83/go-md2man/archive/v$pkgver.tar.gz")
@@ -8,7 +9,7 @@ source=($pkgname-$pkgver.tar.gz::"https://github.com/cpuguy83/go-md2man/archive/
 build() {
 	cd $pkgname-$pkgver
 
-	export GOFLAGS="-buildmode=pie -mod=vendor -trimpath"
+	export GOFLAGS="-buildmode=pie -trimpath"
 	export CGO_LDFLAGS="$LDFLAGS"
 
 	go build -o go-md2man .

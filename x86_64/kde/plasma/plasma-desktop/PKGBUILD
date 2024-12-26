@@ -1,10 +1,20 @@
 pkgname=plasma-desktop
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="KDE Plasma Desktop"
 arch=('x86_64')
-depends=(gawk kdelibs4support polkit-kde-agent kmenuedit systemsettings baloo accountsservice xdg-user-dirs ibus libevdev qqc2-desktop-style baloo)
-makedepends=(extra-cmake-modules kdoctools xf86-input-evdev xf86-input-synaptics xf86-input-libinput
-	scim kdesignerplugin intltool qt5 kinit)
+depends=(attica baloo noto-fonts icu kauth kbookmarks kcmutils kcodecs kcompletion
+	kconfig kconfigwidgets kcoreaddons kdeclarative kglobalaccel kguiaddons
+	ki18n kiconthemes kio kirigami kirigami-addons kitemmodels kitemviews
+	kjobwidgets kmenuedit knewstuff knotifications knotifyconfig
+	kpackage kpipewire krunner kservice ksvg kwidgetsaddons kwindowsystem
+	kxmlgui libcanberra libksysguard libplasma libx11 libxcb libxcursor
+	libxi libxkbcommon libxkbfile plasma-activities plasma-activities-stats
+	plasma-workspace plasma5support polkit-kde-agent powerdevil qt6 sdl2 solid
+	sonnet systemsettings wayland xcb-util-keysyms xdg-user-dirs bluedevil
+	glib2 ibus kscreen packagekit-qt plasma-nm plasma-pa)
+makedepends=(extra-cmake-modules intltool kdoctools wayland-protocols xf86-input-libinput
+	xorg-server)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
 prepare() {

@@ -1,6 +1,6 @@
 post_upgrade() {
   echo "##"
-  echo "# [ EVOLINX ]: Adding default boot entries for systemd-boot..."
+  echo "# [ SYSTEM ]: Adding default boot entries for systemd-boot..."
   echo "##"
 
   # Get / mount partition label

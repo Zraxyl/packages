@@ -1,21 +1,21 @@
 pkgname=brotli
-pkgver=1.0.9
-pkgrel=2
+pkgver=1.1.0
+pkgrel=1
 pkgdesc='Brotli compression library'
 arch=(x86_64)
 url=https://github.com/google/brotli
-makedepends=(
-	cmake git python3-pip
-)
-_tag=e61745a6b7add50d380cfd7d3883dd6c62fc2c71
-source=(git+https://github.com/google/brotli#tag=${_tag})
+depends=(glibc)
+makedepends=(cmake git python3-pip)
+source=(https://github.com/google/brotli/archive/refs/tags/v$pkgver.tar.gz)
 
 prepare() {
 	pip3 install setuptools
 }
 
 build() {
-	cmake -S brotli -B build \
+	cmake \
+	-S brotli-$pkgver \
+	-B build \
 	-D CMAKE_BUILD_TYPE=Release \
 	-D CMAKE_INSTALL_PREFIX=/usr
 
@@ -23,7 +23,7 @@ build() {
 }
 
 package() {
-	cd $pkgname
+	cd $pkgname-$pkgver
 
 	# Python3 module ( usable if python3 gets installed by dev/user )
 	python3 setup.py install -O1 --root=$pkgdir

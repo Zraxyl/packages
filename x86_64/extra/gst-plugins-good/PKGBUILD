@@ -1,6 +1,7 @@
 pkgname=gst-plugins-good
-pkgver=1.24.7
-pkgrel=1
+pkgver=1.24.10
+pkgrel=2
+pkgdesc="Multimedia graph framework - good plugins"
 arch=('x86_64')
 depends=(
 	# GStreamer family
@@ -23,10 +24,11 @@ build() {
 	meson \
 	--wrap-mode=nofallback \
 	--prefix=/usr \
-	--buildtype=release	\
-	-D package-origin=https://evolinx.martinvlba.eu \
-	-D gst-plugins-good:package-name="[GStreamer-GOOD]: $pkgver - EVOLINX" \
-	-D gst-plugins-good:package-origin=https://evolinx.martinvlba.eu
+	--buildtype=release \
+	-D qt5=disabled \
+	-D qt6=disabled \
+	-D package-origin=https://zraxyl.eu \
+	-D gst-plugins-good:package-name="[GStreamer-GOOD]: $pkgver - ZRAXYL"
 
 	ninja
 }

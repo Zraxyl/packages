@@ -1,0 +1,30 @@
+pkgname=libmng
+pkgver=2.0.3
+pkgrel=1
+pkgdesc="A collection of routines used to create and manipulate MNG format graphics files"
+arch=(x86_64)
+depends=(lcms libjpeg zlib)
+makedepends=(base-devel)
+source=(https://downloads.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

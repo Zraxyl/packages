@@ -1,14 +1,17 @@
 pkgname=alsa-utils
-pkgver=1.2.8
+pkgver=1.2.13
 pkgrel=1
+pkgdesc="Advanced Linux Sound Architecture - Utilities"
 arch=('x86_64')
-depends=(alsa-lib)
+depends=(alsa-lib libsamplerate ncurses pciutils psmisc bash)
 source=(https://alsa-project.org/files/pub/utils/$pkgname-$pkgver.tar.bz2)
 
 build() {
 	cd $pkgname-$pkgver
 
-	./configure --prefix=/usr --with-curses=ncursesw
+	./configure \
+	--prefix=/usr \
+	--with-curses=ncursesw
 
 	make
 }

@@ -1,0 +1,29 @@
+pkgname=bluedevil
+pkgver=6.2.4
+pkgrel=1
+pkgdesc="Integrate the Bluetooth technology within KDE workspace and applications"
+arch=(x86_64)
+depends=(bluez-qt kcmutils kconfig kcoreaddons kdbusaddons kdeclarative ki18n kio
+	kirigami kjobwidgets knotifications kservice ksvg kwidgetsaddons kwindowsystem
+	libplasma qt6 bluez)
+makedepends=(extra-cmake-modules kdoctools plasma-wayland-protocols)
+source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz{,.sig})
+
+build() {
+	cmake \
+	-B build \
+	-S $pkgname-$pkgver \
+	-D CMAKE_INSTALL_LIBEXECDIR=lib \
+	-D BUILD_TESTING=OFF
+
+	cmake --build build
+}
+
+package() {
+	DESTDIR="$pkgdir" cmake --install build
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}

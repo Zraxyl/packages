@@ -1,6 +1,7 @@
 pkgname=xdg-dbus-proxy
-pkgver=0.1.4
+pkgver=0.1.6
 pkgrel=1
+pkgdesc="Filtering proxy for D-Bus connections"
 arch=(x86_64)
 depends=(glib2 dbus)
 makedepends=(meson xmlto docbook-xsl)
@@ -8,28 +9,23 @@ source=(https://github.com/flatpak/xdg-dbus-proxy/releases/download/$pkgver/xdg-
 
 prepare() {
 	mkdir -p $pkgname-$pkgver/build
+
+	cd $pkgname-$pkgver/build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	..
 }
 
 build() {
 	cd $pkgname-$pkgver/build
 
-#	meson . build \
-#	--prefix=/usr
-
-#	ninja
-
-	./../configure \
-	--prefix=/usr \
-	--enable-pipewire \
-	--disable-geoclue
-
-	make
+	ninja
 }
 
 package() {
 	cd $pkgname-$pkgver/build
 
-#	DESTDIR=$pkgdir ninja install
-
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir ninja install
 }

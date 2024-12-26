@@ -1,0 +1,41 @@
+pkgname=plasma-systemmonitor
+pkgver=6.2.4
+pkgrel=1
+pkgdesc="An interface for monitoring system sensors, process information and other system resources"
+arch=('x86_64')
+depends=(kconfig kcoreaddons kcrash kdbusaddons kdeclarative kglobalaccel
+	ki18n kiconthemes kio kirigami kirigami-addons kitemmodels
+	knewstuff kquickcharts kservice ksystemstats kwindowsystem
+	libksysguard qt6)
+makedepends=(extra-cmake-modules kdoctools)
+source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-${pkgver}.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	mkdir -p build
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-Wno-dev \
+	..
+
+	make
+	
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+
+	make DESTDIR=$pkgdir install
+
+	# Hacky way but its how i deal with it for now
+	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
+	cp -rf $pkgdir/usr/lib64/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/usr/lib64 $pkgdir/usr/lib/ignore
+}

@@ -1,21 +1,24 @@
 pkgname=usbutils
-pkgver=014
-pkgrel=2
+pkgver=018
+pkgrel=1
+pkgdesc="A collection of USB tools to query connected USB devices"
 arch=('x86_64')
-depends=(libusb)
-makedepends=(glibc wget)
+depends=(hwdata libusb coreutils python3)
+makedepends=(glibc wget base-devel)
 source=(https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-$pkgver.tar.xz)
 
+prepare() {
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	$pkgname-$pkgver \
+	build
+}
+
 build() {
-	cd $pkgname-$pkgver
-
-	./configure --prefix=/usr --datadir=/usr/share/hwdata
-
-	make
+	ninja -C build
 }
 
 package() {
-	cd $pkgname-$pkgver
-
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir ninja -C build install
 }

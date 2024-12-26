@@ -1,6 +1,6 @@
 _pkgbasename=libxi
 pkgname=lib32-$_pkgbasename
-pkgver=1.8
+pkgver=1.8.2
 pkgrel=1
 pkgdesc="X11 Input extension library (32-bit)"
 arch=('x86_64')
@@ -8,7 +8,7 @@ url="https://xorg.freedesktop.org"
 depends=('lib32-libxext' 'lib32-libxfixes' $_pkgbasename)
 makedepends=('pkgconf' 'xorgproto' 'util-macros'  automake)
 license=('custom')
-source=(${url}/releases/individual/lib/libXi-${pkgver}.tar.bz2{,.sig})
+source=(${url}/releases/individual/lib/libXi-${pkgver}.tar.xz)
 
 build() {
 	export CC="gcc -m32"

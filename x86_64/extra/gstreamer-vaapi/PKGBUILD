@@ -1,6 +1,7 @@
 pkgname=gstreamer-vaapi
-pkgver=1.24.7
+pkgver=1.24.10
 pkgrel=1
+pkgdesc='VA-API-based decoder, encoder, postprocessing and video sink elements for GStreamer'
 arch=('x86_64')
 depends=(
 	# GStreamer
@@ -24,7 +25,7 @@ build() {
 	--wrap-mode=nofallback \
 	--prefix=/usr \
 	--buildtype=release \
-	-D package-origin=https://evolinx.martinvlba.eu \
+	-D package-origin=https://zraxyl.eu \
 
 	ninja
 }

@@ -1,0 +1,30 @@
+pkgname=libdmtx
+pkgver=0.7.7
+pkgrel=1
+pkgdesc="A software for reading and writing Data Matrix 2D barcodes"
+arch=(x86_64)
+depends=(glibc)
+makedepends=(base-devel)
+source=(https://github.com/dmtx/libdmtx/archive/refs/tags/v$pkgver.tar.gz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

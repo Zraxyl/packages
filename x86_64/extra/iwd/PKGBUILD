@@ -1,0 +1,38 @@
+pkgname=iwd
+pkgver=3.3
+pkgrel=1
+pkgdesc="Internet Wireless Daemon"
+arch=(x86_64)
+depends=(ell glibc readline qrencode dbus systemd)
+makedepends=(base-devel)
+source=(https://www.kernel.org/pub/linux/network/wireless/iwd-${pkgver}.tar.xz
+	0001-use-network-group-for-unprivileged-access.diff)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	patch -Np1 -i ../0001-use-network-group-for-unprivileged-access.diff
+
+	autoreconf -fvi
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--enable-wired \
+	--enable-ofono \
+	--enable-hwsim \
+	--disable-tools
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make install DESTDIR="${pkgdir}"
+}

@@ -1,0 +1,34 @@
+pkgname=newt
+pkgver=0.52.24
+tcl_ver=8.6
+pkgrel=1
+pkgdesc="Not Erik's Windowing Toolkit - text mode windowing with slang"
+arch=(x86_64)
+depends=(gpm popt slang python3 tcl)
+makedepends=(base-devel)
+source=(https://releases.pagure.org/newt/newt-$pkgver.tar.gz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	echo '#define USE_INTERP_RESULT 1' >> config.h
+	sed -i "s:tcl8.4:tcl$_tclver:" Makefile.in
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

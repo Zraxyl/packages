@@ -1,7 +1,7 @@
 pkgname=lib32-ncurses
 rpkgname=ncurses
-pkgver=6.2
-pkgrel=2
+pkgver=6.3
+pkgrel=1
 arch=('x86_64')
 source=(https://ftp.gnu.org/gnu/$rpkgname/$rpkgname-$pkgver.tar.gz)
 
@@ -14,23 +14,23 @@ build() {
         export CXX="g++ -m32"
         export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
 
-	./configure		\
-	--prefix=/usr		\
-	--disable-db-install	\
-	--enable-widec		\
-	--enable-pc-files	\
-	--libdir=/usr/lib32	\
+	./configure \
+	--prefix=/usr \
+	--disable-db-install \
+	--enable-widec \
+	--enable-pc-files \
+	--libdir=/usr/lib32 \
 	--mandir=/usr/share/man \
-	--with-cxx-binding	\
-	--with-cxx-shared	\
+	--with-cxx-binding \
+	--with-cxx-shared \
 	--with-pkg-config-libdir=/usr/lib32/pkgconfig \
-	--with-shared		\
-	--with-versioned-syms	\
-	--without-ada		\
-	--without-debug		\
-	--without-manpages	\
-	--without-progs		\
-	--without-tack		\
+	--with-shared \
+	--with-versioned-syms \
+	--without-ada \
+	--without-debug	 \
+	--without-manpages \
+	--without-progs \
+	--without-tack \
 	--without-tests
 
         make

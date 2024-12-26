@@ -1,19 +1,22 @@
 pkgname=kscreenlocker
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="Library and components for secure lock screen architecture"
 arch=(x86_64)
-depends=(linux-pam kcrash kglobalaccel kidletime kwayland kdeclarative perl kservice
-	ki18n layer-shell-qt knotifications solid kwindowsystem
-	kpackage kxmlgui kscreen)
-makedepends=(extra-cmake-modules kdoctools kcmutils libxcursor)
+depends=(kconfig kcoreaddons kcrash kdeclarative kglobalaccel ki18n kidletime kio
+	kirigami knotifications kpackage ksvg kwindowsystem kxmlgui layer-shell-qt
+	libkscreen libx11 libxcb libxi qt6 wayland xcb-util-keysyms kcmutils)
+makedepends=(extra-cmake-modules kdoctools)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz
-	kde.pam)
+	kde.pam
+	kde-fingerprint.pam
+	kde-smartcard.pam)
 
 build() {
 	cmake -B build -S $pkgname-$pkgver \
 	-D CMAKE_INSTALL_LIBEXECDIR=/usr/lib \
 	-D PAM_REQUIRED=ON \
-	-D QT_MAJOR_VERSION=5 \
+	-D QT_MAJOR_VERSION=6 \
 	-D BUILD_TESTING=OFF
 
 	cmake --build build
@@ -22,8 +25,9 @@ build() {
 package() {
 	DESTDIR="$pkgdir" cmake --install build
 
-	mkdir -p $pkgdir/etc/pam.d/
-	cp -f kde.pam $pkgdir/etc/pam.d/kde
+	install -Dm644 "$srcdir"/kde.pam "$pkgdir"/etc/pam.d/kde
+	install -Dm644 "$srcdir"/kde-fingerprint.pam "$pkgdir"/etc/pam.d/kde-fingerprint
+	install -Dm644 "$srcdir"/kde-smartcard.pam "$pkgdir"/etc/pam.d/kde-smartcard
 
 	# Hacky way but its how i deal with it for now
 	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore

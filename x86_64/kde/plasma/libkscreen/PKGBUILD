@@ -1,13 +1,16 @@
 pkgname=libkscreen
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="KDE screen management software"
 arch=(x86_64)
-depends=(qt5 libxrandr kwayland kconfig)
-makedepends=(extra-cmake-modules doxygen qt5 plasma-wayland-protocols)
+depends=(libxcb qt6 wayland)
+makedepends=(extra-cmake-modules doxygen plasma-wayland-protocols)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
 build() {
-	cmake -B build -S $pkgname-$pkgver \
+	cmake \
+	-B build \
+	-S $pkgname-$pkgver \
 	-DCMAKE_INSTALL_LIBEXECDIR=lib \
 	-DBUILD_TESTING=OFF \
 	-DBUILD_QCH=ON

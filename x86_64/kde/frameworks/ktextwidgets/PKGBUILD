@@ -1,10 +1,12 @@
 pkgname=ktextwidgets
-pkgver=5.107.0
+pkgver=6.8.0
 pkgrel=1
+pkgdesc="Advanced text editing widgets"
 arch=('x86_64')
-depends=(kcompletion kconfigwidgets sonnet qt5)
+depends=(kcolorscheme kcompletion kconfig ki18n kwidgetsaddons
+	qt6 sonnet)
 makedepends=(cmake extra-cmake-modules doxygen)
-durl=https://download.kde.org/stable/frameworks/5.107
+durl=https://download.kde.org/stable/frameworks/6.8
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -16,9 +18,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

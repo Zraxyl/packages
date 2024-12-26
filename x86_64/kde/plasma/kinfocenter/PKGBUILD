@@ -1,13 +1,18 @@
 pkgname=kinfocenter
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="A utility that provides information about a computer system"
 arch=(x86_64)
-depends=(systemsettings glu vulkan-tools wayland xorg-xdpyinfo mesa)
-makedepends=(extra-cmake-modules plasma-framework kdoctools)
+depends=(glu iproute2 kauth kcmutils kconfig kcoreaddons kdeclarative ki18n
+	kio kirigami kservice pulseaudio libusb mesa qt6 solid systemsettings
+	vulkan-tools)
+makedepends=(extra-cmake-modules kdoctools)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
 build() {
-    cmake -B build -S $pkgname-$pkgver \
+    cmake \
+    -B build \
+    -S $pkgname-$pkgver \
     -D CMAKE_INSTALL_PREFIX=/usr \
     -D BUILD_TESTING=OFF
 

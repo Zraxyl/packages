@@ -1,17 +1,25 @@
 pkgname=libportal
-pkgver=0.6
+pkgver=0.8.1
 pkgrel=1
+pkgdesc="GIO-style async APIs for most Flatpak portals"
 arch=(x86_64)
-depends=(glib2 gobject-introspection gtk2+ gtk3+ gtk4+ qt5)
+depends=(glib2 gobject-introspection gtk2+ gtk3+ gtk4+ qt5 qt6)
 makedepends=(meson gi-docgen vala gobject-introspection)
 source=(https://github.com/flatpak/libportal/releases/download/$pkgver/libportal-$pkgver.tar.xz)
 
-build() {
+prepare() {
 	cd $pkgname-$pkgver
 
-	meson build \
+	meson \
 	--prefix=/usr \
-	-D docs=false
+	--sysconfdir=/etc \
+	-D docs=false \
+	-D vapi=false \
+	build
+}
+
+build() {
+	cd $pkgname-$pkgver
 
 	ninja -C build
 }

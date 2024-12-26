@@ -1,8 +1,9 @@
 pkgname=libksane
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
+pkgdesc="An image scanning library"
 arch=('x86_64')
-depends=(ktextwidgets kwallet sane ksanecore)
+depends=(ki18n ksanecore ktextwidgets kwallet kwidgetsaddons qt6)
 makedepends=(cmake extra-cmake-modules)
 durl=https://download.kde.org/stable/release-service/$pkgver/src
 source=($durl/$pkgname-$pkgver.tar.xz)
@@ -16,9 +17,10 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D QT_MAJOR_VERSION=6 \
 	-D BUILD_TESTING=OFF \
 	-Wno-dev ..
 

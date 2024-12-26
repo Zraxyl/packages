@@ -1,6 +1,7 @@
 pkgname=libtool
-pkgver=2.4.6
-pkgrel=2
+pkgver=2.5.4
+pkgrel=1
+pkgdesc="A generic library support script"
 arch=('x86_64')
 depends=(glibc bash tar)
 source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz)
@@ -8,7 +9,9 @@ source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz)
 build() {
         cd $pkgname-$pkgver
 
-        ./configure --prefix=/usr
+        ./configure \
+	--prefix=/usr
+
         make
 }
 

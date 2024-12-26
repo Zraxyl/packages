@@ -1,9 +1,10 @@
 pkgname=layer-shell-qt
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="Qt component to allow applications to make use of the Wayland wl-layer-shell protocol"
 arch=(x86_64)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
-depends=(qt5)
+depends=(qt6 wayland)
 makedepends=(extra-cmake-modules wayland-protocols)
 
 build() {

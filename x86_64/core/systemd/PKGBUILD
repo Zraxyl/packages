@@ -1,6 +1,6 @@
 pkgname=systemd
 pkgver=251.20
-pkgrel=5
+pkgrel=6
 arch=('x86_64')
 depends=('acl' 'gperf' 'lz4' 'xz' 'linux-pam' 'elfutils'
 	'kmod' 'libcap' 'libidn2' 'libgcrypt'
@@ -11,7 +11,7 @@ depends=('acl' 'gperf' 'lz4' 'xz' 'linux-pam' 'elfutils'
 	'gnutls')
 makedepends=('meson' 'docbook-xsl' 'git' 'rsync' 'intltool' 'python3-pip' 'gperf')
 source=("https://github.com/systemd/systemd-stable/archive/refs/tags/v${pkgver}.tar.gz"
-	'evolinx.conf'
+	'zraxyl.conf'
 	'loader.conf'
 	'systemd-user.pam'
 	'systemd-hook'
@@ -37,9 +37,9 @@ backup=(etc/pam.d/systemd-user
 	etc/systemd/networkd.conf)
 
 prepare() {
-	#pip3 install setuptools
+	pip3 install setuptools
 
-	#pip3 install jinja2
+	pip3 install jinja2
 
 	cd $pkgname-stable-$pkgver
 
@@ -79,11 +79,11 @@ build() {
 	-D docdir=/usr/share/doc/systemd \
 	-D pamlibdir=/usr/lib/security \
 	-D dbuspolicydir=/usr/share/dbus-1/system.d \
-	-D sbat-distro='evolinx' \
-	-D sbat-distro-summary='Evolinx'\
+	-D sbat-distro='zraxyl' \
+	-D sbat-distro-summary='Zraxyl'\
 	-D sbat-distro-pkgname="${pkgname}" \
 	-D sbat-distro-version="${pkgver}" \
-	-D sbat-distro-url="https://evolinx.martinvlba.eu" \
+	-D sbat-distro-url="https://zraxyl.eu" \
 	..
 
 	ninja
@@ -93,8 +93,8 @@ package() {
 	export PATH=/bin:/sbin:/usr/bin:/usr/sbin
 
 	# Install bootctl conf file examples
-	install -D -m0644 evolinx.conf "$pkgdir"/usr/share/systemd/bootctl/evolinx.conf
-	install -D -m0644 evolinx.conf "$pkgdir"/usr/share/systemd/bootctl/initrd-evolinx.conf
+	install -D -m0644 zraxyl.conf "$pkgdir"/usr/share/systemd/bootctl/zraxyl.conf
+	install -D -m0644 zraxyl.conf "$pkgdir"/usr/share/systemd/bootctl/initrd-zraxyl.conf
 	install -D -m0644 loader.conf "$pkgdir"/usr/share/systemd/bootctl/loader.conf
 
 	cd $pkgname-stable-$pkgver/build

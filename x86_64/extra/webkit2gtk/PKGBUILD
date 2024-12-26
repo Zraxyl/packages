@@ -1,6 +1,6 @@
 pkgname=webkit2gtk
-pkgver=2.46.1
-pkgrel=3
+pkgver=2.47.2
+pkgrel=1
 arch=('x86_64')
 depends=(cairo gtk3+ gtk4+ icu libgudev libsecret libsoup libsoup2 libtasn1 libwebp mesa
 	openjpeg ruby3 sqlite3 which wpebackend-fdo gobject-introspection

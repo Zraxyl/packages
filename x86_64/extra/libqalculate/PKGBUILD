@@ -1,6 +1,7 @@
 pkgname=libqalculate
-pkgver=5.2.0
+pkgver=5.4.0
 pkgrel=1
+pkgdesc="Multi-purpose desktop calculator"
 arch=(x86_64)
 depends=(gmp mpfr libxml2 curl icu gettext readline doxygen)
 source=(https://github.com/Qalculate/$pkgname/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz)

@@ -1,16 +1,22 @@
 pkgname=dosfstools
 pkgver=4.2
-pkgrel=1
+pkgrel=2
+pkgdesc="DOS filesystem utilities"
 arch=('x86_64')
 depends=(glibc)
 source=(https://github.com/dosfstools/dosfstools/releases/download/v$pkgver/dosfstools-$pkgver.tar.gz)
 
-build() {
+prepare() {
 	cd $pkgname-$pkgver
 
-	./configure --prefix=/               \
-                    --enable-compat-symlinks \
-                    --mandir=/usr/share/man
+	./configure \
+	--prefix=/usr \
+	--enable-compat-symlinks \
+	--mandir=/usr/share/man
+}
+
+build() {
+	cd $pkgname-$pkgver
 
         make
 }

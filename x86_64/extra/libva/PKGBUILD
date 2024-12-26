@@ -1,32 +1,22 @@
 pkgname=libva
-pkgver=2.13.0
+pkgver=2.22.0
 pkgrel=1
 pkgdesc='Video Acceleration (VA) API for Linux'
 arch=(x86_64)
-url=https://01.org/linuxmedia/vaapi
+url=http://intel.github.io/libva/
 license=(MIT)
 depends=(
-	libdrm
-	libx11
-	libxext
-	libxfixes
-	wayland
-)
-makedepends=(
-	git
-	libglvnd
-	mesa
-	meson
-)
-
+	libdrm libglvnd libx11 libxext libxfixes
+	wayland)
+makedepends=(git mesa meson)
 backup=(etc/libva.conf)
-_tag=8d948cc076cb255b442afe4f0f4e04cbc80785bf
-source=(git+https://github.com/intel/libva.git#tag=${_tag})
+commitid=217da1c28336d6a7e9c0c4cb8f1c303968a675f1
+source=(git+https://github.com/intel/libva.git#tag=${commitid})
 
 build() {
 	CFLAGS+=" -DENABLE_VA_MESSAGING"  # Option missing
-	meson libva build	\
-	--prefix=/usr		\
+	meson libva build \
+	--prefix=/usr \
 	--buildtype=release
 
 	ninja -C build

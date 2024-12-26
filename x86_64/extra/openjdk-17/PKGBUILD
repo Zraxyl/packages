@@ -1,0 +1,89 @@
+pkgname=openjdk-17
+bver="0"
+ever='+'"${bver}"
+pkgver=17.0.15
+pkgrel=1
+pkgdesc="OpenJDK Java 17 development kit"
+arch=(x86_64)
+url="https://openjdk.java.net/"
+depends=(ca-certificates  freetype2 harfbuzz hicolor-icon-theme lcms
+	elfutils giflib libjpeg libnet libpng nss alsa-lib cpio zip unzip)
+makedepends=(libx11 libxext libxrandr libxrender libxt libxtst gtk3+)
+source=(https://github.com/openjdk/jdk17u-dev/archive/refs/tags/jdk-${pkgver}${ever}.tar.gz
+	freedesktop-java.desktop
+	freedesktop-jconsole.desktop
+	freedesktop-jshell.desktop)
+
+prepare() {
+	rm -rf jdk_src
+	mv jdk17u-dev-jdk-$pkgver-$bver jdk_src
+
+	cd jdk_src
+
+	jdk_features="zgc,shenandoahgc"
+
+	bash \
+	configure \
+	--prefix=/opt/jdk-17 \
+	--sysconfdir=/etc \
+	--with-jvm-features="${jdk_features}" \
+	--with-stdc++lib=dynamic \
+	--with-libjpeg=system \
+	--with-giflib=system \
+	--with-libpng=system \
+	--with-lcms=system \
+	--with-zlib=system \
+	--with-harfbuzz=system \
+	--with-native-debug-symbols=internal \
+	--enable-unlimited-crypto \
+	--disable-warnings-as-errors \
+	--with-vendor-name="ZRALYX"
+
+	find "${srcdir}/${_imgdir}" -iname '*.so' -exec chmod +x {} \;
+}
+
+build() {
+	cd jdk_src
+
+	make
+}
+
+package() {
+	cd jdk_src
+
+	install -vdm755 $pkgdir/opt/jdk-17
+	install -vdm755 $pkgdir/usr/bin
+
+	cp -Rv build/linux-x86_64-server-release/images/jdk/* $pkgdir/opt/jdk-17
+
+	cd $pkgdir
+	find . -type f -name "*_batch" -exec rm {} \;
+	find . -type f -name "*.cmdline" -exec rm {} \;
+	find . -type f -name "*.filelist" -exec rm {} \;
+	find . -type f -name "*.log" -exec rm {} \;
+	find . -type f -name "*.pubapi" -exec rm {} \;
+	find . -type f -name "*.vardeps" -exec rm {} \;
+	find . -type f -name "*_vardeps" -exec rm {} \;
+	cd $srcdir/jdk_src
+
+	rm -f $pkgdir/opt/jdk-17/_optimize_image*
+
+	for q in jar javac jcmd jdeprscan jhsdb jlink jpackage jshell jstatd serialver jarsigner javadoc jconsole jdeps jimage jmap jps jstack keytool java javap jdb jfr jinfo jmod jrunscript jstat rmiregistry; do
+		ln -sf /opt/jdk-17/bin/${q} $pkgdir/usr/bin/${q}
+	done
+
+	install -Dm 644 ${srcdir}/freedesktop-java.desktop \
+	${pkgdir}/usr/share/applications/freedesktop-java.desktop
+
+	install -Dm 644 ${srcdir}/freedesktop-jconsole.desktop \
+	${pkgdir}/usr/share/applications/freedesktop-jconsole.desktop
+
+	install -Dm 644 ${srcdir}/freedesktop-jshell.desktop \
+	${pkgdir}/usr/share/applications/freedesktop-jshell.desktop
+
+	# Icons
+	for s in 16 24 32 48; do
+		install -vDm644 src/java.desktop/unix/classes/sun/awt/X11/java-icon${s}.png \
+		$pkgdir/usr/share/icons/hicolor/${s}x${s}/apps/java.png
+	done
+}

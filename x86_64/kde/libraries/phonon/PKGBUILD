@@ -1,6 +1,6 @@
 pkgname=phonon
 pkgver=4.12.0
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 depends=(glib2 qt5 qt6 pulseaudio phonon-backend-gstreamer)
 makedepends=(cmake extra-cmake-modules)

@@ -1,7 +1,0 @@
-## IMPORTANT!!!
-
-* Always change linux.install kernel version strings!!!
-
-## Why not just automate kernel version string search from /lib/modules?
-* Doing it may break the automation if
-    * User has added some .ko files manually that bottle wont remove ( meaning the old kernel dir will be there with new one )

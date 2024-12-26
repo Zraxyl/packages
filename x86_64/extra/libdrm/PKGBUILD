@@ -1,8 +1,9 @@
 pkgname=libdrm
-pkgver=2.4.123
+pkgver=2.4.124
 pkgrel=1
+pkgdesc="Userspace interface to kernel DRM services"
 arch=('x86_64')
-depends=('libxcb' 'libxau' 'xorgproto' 'libpciaccess')
+depends=('glibc' 'libpciaccess')
 makedepends=('cairo')
 source=(https://dri.freedesktop.org/$pkgname/$pkgname-$pkgver.tar.xz)
 

@@ -1,8 +1,10 @@
 pkgname=cbindgen
-pkgver=0.26.0
+pkgver=0.27.0
 pkgrel=1
+pkgdesc="A tool for generating C bindings to Rust code"
 arch=('x86_64')
-depends=(rust)
+depends=(glibc)
+makedepends=(cmake rust)
 source=(https://github.com/eqrion/$pkgname/archive/v$pkgver/$pkgname-$pkgver.tar.gz)
 
 prepare() {

@@ -1,0 +1,32 @@
+pkgname=libtracefs
+pkgver=1.8.1
+pkgrel=1
+pkgdesc="Linux kernel trace event library"
+arch=(x86_64)
+depends=(glibc libtraceevent)
+makedepends=(base-devel xmlto meson ninja)
+source=(https://git.kernel.org/pub/scm/libs/libtrace/libtracefs.git/snapshot/libtracefs-$pkgver.tar.gz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	-D doc=false \
+	$pkgname-$pkgver \
+	build
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

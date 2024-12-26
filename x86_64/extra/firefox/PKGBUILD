@@ -1,6 +1,6 @@
 pkgname=firefox
-pkgver=130.0.0
-fver=130.0
+pkgver=133.0.3
+fver=133.0.3
 pkgrel=1
 pkgdesc="Standalone web browser from mozilla.org"
 url="https://www.mozilla.org/firefox/"
@@ -74,19 +74,19 @@ END
 	local distini="$pkgdir/usr/lib/$pkgname/distribution/distribution.ini"
 	install -Dvm644 /dev/stdin "$distini" <<END
 [Global]
-id=evolinx
+id=zraxyl
 version=stable
-about=Mozilla Firefox for Evolinx
+about=Mozilla Firefox for Zraxyl
 [Preferences]
-app.distributor=evolinx
+app.distributor=zraxyl
 app.distributor.channel=$pkgname
-app.partner.evolinx=evolinx
+app.partner.zraxyl=zraxyl
 END
 
 	mkdir -pv $pkgdir/usr/share/applications
 	mkdir -pv $pkgdir/usr/share/pixmaps
 
-	install -Dvm644 $srcdir/firefox.desktop $pkgdir/usr/share/applications/$pkgname.desktop
+	install -Dvm644 $srcdir/firefox.desktop -t $pkgdir/usr/share/applications/$pkgname.desktop
 
 	#
 	# ICONS
@@ -94,19 +94,19 @@ END
 
 	local o theme=official
 	for o in 16 22 24 32 48 64 128 256; do
-        install -Dvm644 browser/branding/$theme/default$o.png \
-            "$pkgdir/usr/share/icons/hicolor/${o}x${o}/apps/$pkgname.png"
-    done
+		install -Dvm644 browser/branding/$theme/default$o.png \
+		"$pkgdir/usr/share/icons/hicolor/${o}x${o}/apps/$pkgname.png"
+	done
 
-    install -Dvm644 browser/branding/$theme/content/about-logo.png \
-        "$pkgdir/usr/share/icons/hicolor/192x192/apps/$pkgname.png"
+	install -Dvm644 browser/branding/$theme/content/about-logo.png \
+		"$pkgdir/usr/share/icons/hicolor/192x192/apps/$pkgname.png"
 
-    install -Dvm644 browser/branding/$theme/content/about-logo@2x.png \
-        "$pkgdir/usr/share/icons/hicolor/384x384/apps/$pkgname.png"
+	install -Dvm644 browser/branding/$theme/content/about-logo@2x.png \
+		"$pkgdir/usr/share/icons/hicolor/384x384/apps/$pkgname.png"
 
-    install -Dvm644 browser/branding/$theme/content/about-logo.svg \
-        "$pkgdir/usr/share/icons/hicolor/scalable/apps/$pkgname.svg"
+	install -Dvm644 browser/branding/$theme/content/about-logo.svg \
+		"$pkgdir/usr/share/icons/hicolor/scalable/apps/$pkgname.svg"
 
-    install -Dvm644 $srcdir/identity-icons-brand.svg \
-		"$pkgdir/usr/share/icons/hicolor/symbolic/apps/$pkgname-symbolic.svg"
+	install -Dvm644 $srcdir/identity-icons-brand.svg \
+		-t "$pkgdir/usr/share/icons/hicolor/symbolic/apps/$pkgname-symbolic.svg"
 }

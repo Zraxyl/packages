@@ -1,10 +1,9 @@
 pkgname=bottle
 pkgver=2024.4
-pkgrel=3
+pkgrel=8
 arch=('x86_64')
 depends=(zstd bash glibc libarchive curl gpgme libassuan nettle)
-
-export USE_STAGING=yes
+USE_STAGING=yes
 if [ "$USE_STAGING" == "yes" ]; then
 	# Staging
 	commitid=ed71d2cf8dd4c112158db3b35848569262dfe228
@@ -14,7 +13,7 @@ else
 	commitid=76450251d000de0832889292a26acad560698ace
 	branch=bottle
 fi
-source=(git+https://git.martinvlba.eu/evolinx/bottle.git#commit=${commitid})
+source=(git+https://git.evolinx.eu/evolinx/bottle.git#commit=${commitid})
 
 build() {
 	cd $pkgname

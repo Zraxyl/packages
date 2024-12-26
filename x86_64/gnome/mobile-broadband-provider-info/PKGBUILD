@@ -1,0 +1,25 @@
+pkgname=mobile-broadband-provider-info
+pkgver=20240407
+pkgrel=1
+pkgdesc="APN configuration presets for mobile broadband connections"
+arch=('x86_64')
+depends=()
+makedepends=(base-devel libxslt)
+source=(https://gitlab.gnome.org/GNOME/$pkgname/-/archive/$pkgver/$pkgname-$pkgver.tar.gz)
+
+prepare() {
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	$pkgname-$pkgver \
+	build
+}
+
+build() {
+	ninja -C build
+}
+
+package() {
+	DESTDIR=$pkgdir ninja -C build install
+}

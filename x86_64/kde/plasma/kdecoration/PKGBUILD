@@ -1,14 +1,17 @@
 pkgname=kdecoration
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="Plugin based library to create window decorations"
 arch=(x86_64)
-depends=(ki18n kcoreaddons)
+depends=(ki18n qt6)
 makedepends=(extra-cmake-modules)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
 build() {
-	cmake -B build -S $pkgname-$pkgver \
-	-DBUILD_TESTING=OFF
+	cmake \
+	-B build \
+	-S $pkgname-$pkgver \
+	-D BUILD_TESTING=OFF
 
 	cmake --build build
 }

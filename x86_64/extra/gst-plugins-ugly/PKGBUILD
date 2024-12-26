@@ -1,6 +1,7 @@
 pkgname=gst-plugins-ugly
-pkgver=1.24.7
-pkgrel=1
+pkgver=1.24.10
+pkgrel=2
+pkgdesc="Multimedia graph framework - ugly plugins"
 arch=('x86_64')
 depends=(
 	# GStreamer family
@@ -23,10 +24,9 @@ build() {
 	meson \
 	--wrap-mode=nofallback \
 	--prefix=/usr \
-	--buildtype=release	\
-	-D package-origin=https://evolinx.martinvlba.eu \
-	-D gst-plugins-ugly:package-name="[GStreamer-UGLY]: $pkgver - EVOLINX" \
-	-D gst-plugins-ugly:package-origin=https://evolinx.martinvlba.eu
+	--buildtype=release \
+	-D package-origin=https://zraxyl.eu \
+	-D gst-plugins-ugly:package-name="[GStreamer-UGLY]: $pkgver - ZRAXYL"
 
 	ninja
 }

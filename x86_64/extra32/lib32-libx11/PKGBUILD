@@ -1,6 +1,6 @@
 _pkgbasename=libx11
 pkgname=lib32-$_pkgbasename
-pkgver=1.7.3.1
+pkgver=1.8.7
 pkgrel=2
 pkgdesc="X11 client-side library (32-bit)"
 arch=(x86_64)
@@ -17,10 +17,10 @@ build() {
 
 	cd libX11-${pkgver}
 
-	./configure		\
-	--prefix=/usr		\
-	--disable-xf86bigfont	\
-	--libdir=/usr/lib32	\
+	./configure \
+	--prefix=/usr \
+	--disable-xf86bigfont \
+	--libdir=/usr/lib32 \
 	--disable-specs
 
 	sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool

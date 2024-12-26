@@ -1,6 +1,6 @@
 pkgname=libgudev
 pkgver=238
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=('systemd' 'glib2' 'gobject-introspection')
 commitid=df7c9c9940160307aaeb31347f4776a46f8736a9

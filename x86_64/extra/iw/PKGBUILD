@@ -1,6 +1,7 @@
 pkgname=iw
-pkgver=5.16
+pkgver=6.9
 pkgrel=1
+pkgdesc="nl80211 based CLI configuration utility for wireless devices"
 arch=('x86_64')
 depends=('libnl')
 source=("https://www.kernel.org/pub/software/network/$pkgname/$pkgname-$pkgver.tar.xz")

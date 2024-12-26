@@ -1,8 +1,9 @@
 pkgname=bluez
-pkgver=5.63
-pkgrel=1
+pkgver=5.79
+pkgrel=3
+pkgdesc="Daemons for the bluetooth protocol stack"
 arch=('x86_64')
-depends=(dbus libical systemd alsa-lib json-c ell)
+depends=(dbus libical systemd alsa-lib json-c ell cups)
 makedepends=(python3-pip)
 source=(https://www.kernel.org/pub/linux/bluetooth/${pkgname}-${pkgver}.tar.xz
 	bluetooth.modprobe)
@@ -26,7 +27,9 @@ build() {
 	--enable-hid2hci \
 	--enable-deprecated \
 	--enable-experimental \
-	--disable-manpages
+	--disable-manpages \
+	--enable-datafiles \
+	--enable-library
 
 	make
 }

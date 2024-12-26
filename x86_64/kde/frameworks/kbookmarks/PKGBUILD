@@ -1,10 +1,11 @@
 pkgname=kbookmarks
-pkgver=5.107.0
+pkgver=6.8.0
 pkgrel=1
+pkgdesc="Support for bookmarks and the XBEL format"
 arch=('x86_64')
-depends=(kxmlgui)
-makedepends=(cmake qt5 extra-cmake-modules doxygen)
-durl=https://download.kde.org/stable/frameworks/5.107
+depends=(kconfig kcoreaddons kwidgetsaddons qt6)
+makedepends=(cmake extra-cmake-modules doxygen)
+durl=https://download.kde.org/stable/frameworks/6.8
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -16,9 +17,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

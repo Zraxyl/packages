@@ -1,22 +1,30 @@
 pkgname=alsa-lib
-pkgver=1.2.9
-pkgrel=1
+pkgver=1.2.13
+pkgrel=2
+pkgdesc="An alternative implementation of Linux sound support"
 arch=('x86_64')
 depends=(doxygen python3 alsa-topology-conf alsa-ucm-conf alsa-firmware)
 source=(https://alsa-project.org/files/pub/lib/$pkgname-$pkgver.tar.bz2)
 
-build() {
+prepare() {
 	cd $pkgname-$pkgver
+
+	autoreconf -fvi
 
 	./configure \
 	--prefix=/usr \
+	--sysconfdir=/etc \
 	--without-debug
+}
+
+build() {
+	cd $pkgname-$pkgver
 
 	make
 }
 
 package() {
-	# Alsa
 	cd $pkgname-$pkgver
+
 	make DESTDIR=$pkgdir install
 }

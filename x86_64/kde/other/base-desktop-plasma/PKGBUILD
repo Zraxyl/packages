@@ -1,0 +1,35 @@
+pkgname=base-desktop-plasma
+pkgver=2024.4
+pkgrel=1
+pkgdesc="Evolinx KDE/Plasma desktop metapackage"
+arch=('x86_64')
+replaces=(evolinx-desktop-plasma-clean)
+install=plasma.install
+depends=(
+	# Language packs
+	hunspell hunspell-en
+
+	# Login ( suggest sddm as wayland can be launched here + theming )
+	sddm
+
+	# Desktop + Frameworks
+	plasma-desktop sddm-kcm frameworkintegration breeze breeze-gtk breeze-icons
+	plasma-workspace plasma-workspace-wallpapers kio-extras oxygen-icons polkit-kde-agent
+	kdeplasma-addons phonon-backend-gstreamer phonon-backend-vlc plasma-integration
+	ocean-sound-theme plasma-browser-integration kio-fuse
+
+	# Applications
+	konsole spectacle dolphin kate firefox gwenview okular
+	elisa systemsettings discover plasma-systemmonitor
+
+	# Other
+	powerdevil plasma-pa plasma-nm plymouth
+	avahi print-manager wireplumber acpid)
+
+build() {
+	echo "[*]: It's a metapackage"
+}
+
+package() {
+	echo "[*]: It's a metapackage"
+}

@@ -1,8 +1,14 @@
 pkgname=dolphin
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
+pkgdesc="KDE File Manager"
 arch=('x86_64')
-depends=(knewstuff kio-extras kcmutils kparts kactivities)
+depends=(baloo baloo-widgets kbookmarks kcmutils kcodecs kcolorscheme
+	kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons
+	kfilemetadata ki18n kiconthemes kio kio-extras kjobwidgets
+	knewstuff knotifications kparts kservice ktextwidgets
+	kuserfeedback kwidgetsaddons kwindowsystem kxmlgui phonon
+	qt6 solid purpose)
 makedepends=(cmake kdoctools extra-cmake-modules)
 source=(https://download.kde.org/stable/release-service/${pkgver}/src/$pkgname-$pkgver.tar.xz)
 
@@ -15,9 +21,9 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
 	make -j7

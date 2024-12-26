@@ -1,13 +1,18 @@
 pkgname=libksysguard
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="Library to retrieve information on the current status of computer hardware"
 arch=(x86_64)
-depends=(libxres qt5-webengine kdeclarative knewstuff libpcap)
-makedepends=(extra-cmake-modules kdoctools qt5)
+depends=(kauth kconfig kcoreaddons kdeclarative ki18n kirigami kitemmodels
+	knewstuff kpackage kquickcharts kservice libnl libpcap lm-sensors
+	qt6 solid zlib)
+makedepends=(extra-cmake-modules kdoctools)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
 build() {
-	cmake -B build -S $pkgname-$pkgver \
+	cmake \
+	-B build \
+	-S $pkgname-$pkgver \
 	-DCMAKE_INSTALL_LIBEXECDIR=lib
 
 	cmake --build build

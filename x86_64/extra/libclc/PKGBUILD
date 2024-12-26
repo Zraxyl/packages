@@ -1,6 +1,7 @@
 pkgname=libclc
-pkgver=13.0.1
+pkgver=18.1.8
 pkgrel=1
+pkgdesc="Library requirements of the OpenCL C programming language"
 arch=(x86_64)
 makedepends=('clang' 'llvm' 'cmake' 'ninja' 'python3' 'spirv-llvm-translator')
 source=(https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/$pkgname-$pkgver.src.tar.xz)
@@ -12,9 +13,11 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver.src/build
 
-	cmake .. -G Ninja		\
-	-D CMAKE_BUILD_TYPE=Release	\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
+	cmake \
+	.. \
+	-G Ninja \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D LLVM_SPIRV=/usr/bin/llvm-spirv
 
 	ninja

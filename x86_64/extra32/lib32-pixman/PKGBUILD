@@ -1,6 +1,6 @@
 _pkgbasename=pixman
 pkgname=lib32-$_pkgbasename
-pkgver=0.40.0
+pkgver=0.43.4
 pkgrel=1
 pkgdesc="Pixman library (32-bit)"
 arch=('x86_64')
@@ -8,19 +8,27 @@ url="https://xorg.freedesktop.org"
 depends=($_pkgbasename)
 source=(https://xorg.freedesktop.org/releases/individual/lib/${_pkgbasename}-${pkgver}.tar.xz)
 
-build() {
+prepare() {
 	export CC="gcc -m32"
 	export CXX="g++ -m32"
 	export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 
-	cd "${srcdir}/${_pkgbasename}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib32
+	rm -rf build
+	mkdir -p build
 
-	make
+	meson \
+	--prefix=/usr \
+	--libdir=/usr/lib32 \
+	${_pkgbasename}-${pkgver} \
+	build
+}
+
+build() {
+	ninja -C build
 }
 
 package() {
-	cd "${srcdir}/${_pkgbasename}-${pkgver}"
-	make DESTDIR="${pkgdir}" install
+	cd build
+	DESTDIR="${pkgdir}" ninja install
 	rm -rf "${pkgdir}"/usr/include
 }

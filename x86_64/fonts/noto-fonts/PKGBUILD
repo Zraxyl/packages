@@ -1,10 +1,14 @@
 pkgname=noto-fonts
-pkgver=20220518
-commitid=0288738a4eb56671e7abe246f44e22792be39845
+pkgver=2024.12.01
+emver=2.047
 pkgrel=1
+pkgdesc="Google Noto fonts"
 arch=(x86_64)
-makedepends=(python3-pip)
-source=($pkgname-$commitid.tar.gz::https://github.com/googlefonts/noto-fonts/archive/$commitid.tar.gz
+makedepends=(python3-pip git)
+cjk=4efc595762d1f4b4fa504bccfe8e59de91fda063
+source=(git+https://github.com/notofonts/notofonts.github.io#tag=noto-monthly-release-$pkgver
+	git+https://github.com/googlefonts/noto-cjk.git#commit=${cjk}
+	git+https://github.com/googlefonts/noto-emoji.git#tag=v${emver}
 	66-noto-sans.conf 66-noto-serif.conf 66-noto-mono.conf
 	46-noto-sans.conf 46-noto-serif.conf 46-noto-mono.conf)
 
@@ -17,24 +21,19 @@ build() {
 }
 
 package() {
-	cd $pkgbase-*/
-
-	# Remove duplicated fonts
-	rm {un,}hinted/ttf/NotoSansTifinagh/NotoSansTifinagh[AGHRST]*.ttf
-
-	install -Dm644 unhinted/ttf/Noto*/*.tt[fc] -t "$pkgdir"/usr/share/fonts/noto
-	install -Dm644 hinted/ttf/Noto*/*.tt[fc] -t "$pkgdir"/usr/share/fonts/noto
-	install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/noto-fonts
-
-	# Move to noto-fonts-extra
-	rm -f "$pkgdir"/usr/share/fonts/noto/Noto*{Condensed,SemiBold,Extra}*.ttf
-
-	# Install fontconfig files
+	# Usual fonts
+	cd notofonts/
+	install -Dm644 fonts/*/hinted/ttf/*.tt[fc] -t "$pkgdir"/usr/share/fonts/noto
+	install -Dm644 fonts/*/hinted/ttf/*{-Condensed,-Semi,-Extra}*.tt[fc] -t "$pkgdir"/usr/share/fonts/noto
 	install -Dm644 "$srcdir"/*.conf -t "$pkgdir"/usr/share/fontconfig/conf.avail/
 	install -d "$pkgdir"/usr/share/fontconfig/conf.default
 	ln -rs "$pkgdir"/usr/share/fontconfig/conf.avail/* "$pkgdir"/usr/share/fontconfig/conf.default
+	cd ../
 
-	cp hinted/ttf/Noto*/*{Condensed,SemiBold,Extra}*.tt[fc] "$pkgdir"/usr/share/fonts/noto
-	install -Dm644 hinted/ttf/{Arimo,Cousine,Tinos}/*.ttf -t "$pkgdir"/usr/share/fonts/croscore
+	# CJK
+	install -Dm644 noto-cjk/*/OTC/*.ttc -t "$pkgdir"/usr/share/fonts/noto-cjk
 
+	# Emoji
+	cd noto-emoji/
+	install -m644 fonts/NotoColorEmoji.ttf "$pkgdir"/usr/share/fonts/noto
 }

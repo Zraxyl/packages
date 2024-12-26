@@ -1,0 +1,29 @@
+pkgname=libplist
+pkgver=2.6.0
+pkgrel=1
+pkgdesc="Library to handle Apple Property List files"
+arch=('x86_64')
+depends=(gcc glibc)
+makedepends=(base-devel python3-pip)
+source=(https://github.com/libimobiledevice/libplist/releases/download/$pkgver/libplist-$pkgver.tar.bz2)
+
+prepare() {
+	pip3 install cython
+
+	cd $pkgname-$pkgver
+
+	./configure \
+	--prefix=/usr
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

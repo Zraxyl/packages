@@ -1,5 +1,5 @@
 pkgname=go
-pkgver=1.23.1
+pkgver=1.23.4
 pkgrel=1
 pkgdesc='Core compiler tools for the Go programming language'
 arch=('x86_64')

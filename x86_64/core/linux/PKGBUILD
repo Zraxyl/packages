@@ -1,25 +1,25 @@
 pkgname=linux
-pkgver=6.11.0
+pkgver=6.11.4
 rname=6.11.y
 pkgdesc="The Linux kernel, modules and headers package"
-rver=6.2
+rver=6.11
 pkgrel=3
-dirname=$pkgname-$rname
+dirname="${pkgname}-${pkgver}"
 arch=('x86_64')
 options=('!strip' 'emptydirs')
 install=linux.install
 makedepends=(rsync bison bc rdfind)
-source=(https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/snapshot/linux-6.11.y.tar.gz
+source=(https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/snapshot/linux-$pkgver.tar.gz
 	config)
 
-export KBUILD_BUILD_HOST=evolinx-linux
+export KBUILD_BUILD_HOST=zraxyl-linux
 export KBUILD_BUILD_USER=$pkgname
 export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EPOCH})"
 
 prepare() {
 	cd $dirname
 
-	cp -fv $srcdir/config arch/x86/configs/evolinx_defconfig
+	cp -fv $srcdir/config arch/x86/configs/zraxyl_defconfig
 
 	echo "[!]: Cleaning src base"
 	make clean
@@ -27,8 +27,8 @@ prepare() {
 	echo "[!]: Running mrproper"
 	make mrproper
 
-	echo "[!]: Getting up default config of evolinx"
-	make evolinx_defconfig
+	echo "[!]: Getting up default config of zraxyl"
+	make zraxyl_defconfig
 
 	echo "[!]: Running menuconfig"
 	make menuconfig
@@ -49,17 +49,17 @@ package() {
 
 	echo "[!]: Installing modules"
 	make INSTALL_MOD_PATH=$pkgdir INSTALL_MOD_STRIP=1 modules_install
-	rm -f $pkgdir/lib/modules/$pkgver-evolinx/{source,build}
+	rm -f $pkgdir/lib/modules/$pkgver-zraxyl/{source,build}
 
 	mkdir -p $pkgdir/boot
 
 	echo "[!]: Installing vmlinuz"
-	cp arch/x86/boot/bzImage $pkgdir/boot/vmlinuz-evolinx
-	cp .config $pkgdir/boot/config-evolinx
-	echo "${pkgver}-evolinx" > $pkgdir/lib/modules/KERNELVERSION
+	cp arch/x86/boot/bzImage $pkgdir/boot/vmlinuz-zraxyl
+	cp .config $pkgdir/boot/config-zraxyl
+	echo "${pkgver}-zraxyl" > $pkgdir/lib/modules/KERNELVERSION
 
 	echo "[!]: Installing build files..."
-	local builddir="$pkgdir/lib/modules/$pkgver-evolinx/build"
+	local builddir="$pkgdir/lib/modules/$pkgver-zraxyl/build"
 	install -Dt "$builddir" -m644 .config Makefile Module.symvers System.map \
 	vmlinux
 

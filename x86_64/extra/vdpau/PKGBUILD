@@ -1,6 +1,6 @@
 pkgname=vdpau
 pkgver=1.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Nvidia VDPAU library"
 arch=(x86_64)
 url='https://www.freedesktop.org/wiki/Software/VDPAU/'
@@ -8,11 +8,15 @@ depends=('libxext')
 source=("https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/$pkgver/libvdpau-$pkgver.tar.gz")
 makedepends=('xorgproto' 'git' 'meson')
 
-build() {
-	meson lib$pkgname-$pkgver build	\
-	--prefix=/usr		\
+prepare() {
+	meson \
+	lib$pkgname-$pkgver \
+	build \
+	--prefix=/usr \
 	--buildtype=release
+}
 
+build() {
 	ninja -C build
 }
 

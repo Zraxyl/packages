@@ -1,0 +1,36 @@
+_pkgbasename=libassuan
+pkgname=lib32-$_pkgbasename
+pkgver=3.0.1
+pkgrel=1
+pkgdesc="IPC library used by some GnuPG related software"
+arch=(x86_64)
+depends=('lib32-libgpg-error' $_pkgbasename)
+source=(https://gnupg.org/ftp/gcrypt/${_pkgbasename}/${_pkgbasename}-${pkgver}.tar.bz2)
+
+prepare() {
+	cd ${_pkgbasename}-${pkgver}
+
+	autoreconf -fvi
+}
+
+build() {
+	export CC="gcc -m32"
+	export CXX="g++ -m32"
+	export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+
+	cd ${_pkgbasename}-${pkgver}
+
+	./configure \
+	--prefix=/usr \
+	--libdir=/usr/lib32 \
+	--enable-shared
+
+	make
+}
+
+package() {
+	cd ${_pkgbasename}-${pkgver}
+
+	make DESTDIR="${pkgdir}" install
+	rm -rf "${pkgdir}"/usr/{include,share,bin,sbin}
+}

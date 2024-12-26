@@ -1,5 +1,5 @@
 pkgname=iptables
-pkgver=1.8.9
+pkgver=1.8.11
 pkgrel=2
 arch=(x86_64)
 depends=(libnftnl libpcap libcap libnfnetlink bash)
@@ -17,7 +17,7 @@ prepare() {
 
 	ln -rs libiptc/linux_list.h include/libiptc
 
-	cd build
+	cd ../build
 
 	../$pkgname-$pkgver/configure \
 	--prefix=/usr \

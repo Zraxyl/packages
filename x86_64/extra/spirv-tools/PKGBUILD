@@ -1,6 +1,7 @@
 pkgname=spirv-tools
-pkgver=2024.3
+pkgver=2024.4.rc2
 pkgrel=1
+pkgdesc="API and commands for processing SPIR-V modules"
 arch=(x86_64)
 depends=(glibc gcc)
 makedepends=(cmake ninja spirv-headers python3)
@@ -9,6 +10,8 @@ source=(SPIRV-Tools.tar.gz::https://github.com/KhronosGroup/SPIRV-Tools/archive/
 prepare() {
 	mkdir -p build
 
+	CC=clang \
+	CXX=clang++ \
 	cmake \
 	-S SPIRV-Tools-$pkgver \
 	-B build \

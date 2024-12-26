@@ -1,6 +1,6 @@
 pkgname=exiv2
 pkgver=0.28.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Exif, Iptc and XMP metadata manipulation library and tools"
 arch=(x86_64)
 depends=(expat gettext curl inih)

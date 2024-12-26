@@ -1,11 +1,14 @@
 pkgname=kio-extras
-pkgver=23.04.0
+pkgver=24.08.3
 pkgrel=1
+pkgdesc="Additional components to increase the functionality of KIO"
 arch=('x86_64')
-depends=(kio libmtp phonon syntax-highlighting libxcursor samba
-	kdsoap-ws-discovery-client kdnssd libkexiv2 libssh kactivities-stats
-	kimageformats openexr perl)
-makedepends=(extra-cmake-modules kdoctools gperf kactivities-stats)
+depends=(karchive kcmutils kconfig kcoreaddons kdbusaddons kdnssd kdsoap
+	kdsoap-ws-discovery-client ki18n kio kservice ktextwidgets kwidgetsaddons
+	libimobiledevice libkexiv2 libmtp libplist libssh libxcursor phonon
+	plasma-activities qt6 samba solid syntax-highlighting kimageformats libappimage
+	openexr perl plasma-activities-stats)
+makedepends=(extra-cmake-modules kdoctools gperf qcoro)
 source=(https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -17,10 +20,12 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=Release	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
 	-D LIBAPPIMAGE_LIBRARIES=libappimage.so \
+	-D QT_MAJOR_VERSION=6 \
+	-D INTERFACE_QT_MAJOR_VERSION=6 \
 	-Wno-dev ..
 
 	make -j7

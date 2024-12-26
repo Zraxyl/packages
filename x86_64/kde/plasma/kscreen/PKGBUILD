@@ -1,10 +1,11 @@
 pkgname=kscreen
-pkgver=5.27.6
+pkgver=6.2.4
 pkgrel=1
+pkgdesc="KDE screen management software"
 arch=(x86_64)
-depends=(libkscreen plasma-framework qt5 kdbusaddons kdeclarative kglobalaccel
-	ki18n kiconthemes kcmutils kxmlgui plasma-framework kservice kpackage double-conversion
-	layer-shell-qt)
+depends=(kcmutils kconfig kcoreaddons kdbusaddons ki18n kirigami ksvg
+	kwindowsystem layer-shell-qt libkscreen libplasma libx11
+	libxcb libxi plasma5support qt6)
 makedepends=(extra-cmake-modules kcmutils)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 
@@ -19,7 +20,7 @@ package() {
 	DESTDIR="$pkgdir" cmake --install build
 
 	# Another weird hack
-	ln -sf kcms/kcm_kscreen.so $pkgdir/usr/lib/qt/plugins/kcm_kscreen.so
+	#ln -sf kcms/kcm_kscreen.so $pkgdir/usr/lib/qt/plugins/kcm_kscreen.so
 
 	# Hacky way but its how i deal with it for now
 	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore

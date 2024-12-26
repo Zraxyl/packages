@@ -1,5 +1,5 @@
 pkgname=libgpg-error
-pkgver=1.42
+pkgver=1.50
 pkgrel=1
 arch=('x86_64')
 source=(https://gnupg.org/ftp/gcrypt/$pkgname/$pkgname-$pkgver.tar.bz2)
@@ -7,7 +7,9 @@ source=(https://gnupg.org/ftp/gcrypt/$pkgname/$pkgname-$pkgver.tar.bz2)
 build() {
 	cd $pkgname-$pkgver
 
-	./configure --prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

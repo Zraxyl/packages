@@ -1,10 +1,11 @@
 pkgname=kauth
-pkgver=5.107.0
+pkgver=6.8.0
 pkgrel=1
+pkgdesc="Abstraction to system policy and authentication features"
 arch=('x86_64')
-depends=(kcoreaddons polkit-qt)
+depends=(kcoreaddons kwindowsystem polkit-qt qt6)
 makedepends=(cmake extra-cmake-modules clang)
-durl=https://download.kde.org/stable/frameworks/5.107
+durl=https://download.kde.org/stable/frameworks/6.8
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

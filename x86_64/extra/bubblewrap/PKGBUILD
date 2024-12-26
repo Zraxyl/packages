@@ -1,6 +1,6 @@
 pkgname=bubblewrap
 pkgver=0.10.0
-pkgrel=1
+pkgrel=2
 arch=(x86_64)
 depends=(glibc libcap)
 makedepends=(libxslt docbook-xsl git meson bash-completion)
@@ -21,5 +21,10 @@ package() {
 
 	DESTDIR=$pkgdir ninja install -C build
 
-	chmod u+s "$pkgdir/usr/bin/bwrap"
+	mkdir -p $pkgdir/etc/sysctl.d
+	echo kernel.unprivileged_userns_clone=1 | sudo \
+	tee $pkgdir/etc/sysctl.d/50-bubblewrap.conf
+
+	chmod u-s "$pkgdir/usr/bin/bwrap"
+	chmod 0755 "$pkgdir/usr/bin/bwrap"
 }

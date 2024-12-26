@@ -1,10 +1,11 @@
 pkgname=kdsoap-ws-discovery-client
-pkgver=0.2
+pkgver=0.4
 pkgrel=1
+pkgdesc="WS-Discovery client library based on KDSoap"
 arch=('x86_64')
-depends=(qt5 kdsoap)
+depends=(qt6 kdsoap)
 makedepends=(cmake extra-cmake-modules)
-commitid=b1d96db25c58e3df19b9d08efaa4b5847b19e247
+commitid=cc51b4fc7401c9898d42b34cdf0d7abd90f4a447
 durl=(https://invent.kde.org/libraries/$pkgname/-/archive/$commitid)
 source=($durl/$pkgname-$commitid.tar.gz)
 
@@ -17,9 +18,10 @@ prepare() {
 build() {
 	cd $pkgname-$commitid/build
 
-	cmake				\
-	-D CMAKE_INSTALL_PREFIX=/usr	\
-	-D CMAKE_BUILD_TYPE=None	\
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=None \
+	-D QT_MAJOR_VERSION=6 \
 	-Wno-dev ..
 
 	make -j7

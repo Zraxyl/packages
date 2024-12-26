@@ -10,6 +10,7 @@ source=(git+https://github.com/benhoyt/inih.git#tag=${commitid})
 
 prepare() {
 	meson \
+	--prefix=/usr \
 	-D default_library=both \
 	-D distro_install=true \
 	-D with_INIReader=true \

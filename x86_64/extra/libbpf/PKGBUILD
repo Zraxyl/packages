@@ -1,0 +1,20 @@
+pkgname=libbpf
+pkgver=1.5.0
+pkgrel=1
+pkgdesc="Library for loading eBPF programs and reading and manipulating eBPF objects from user-space"
+arch=(x86_64)
+depends=(glibc elfutils zlib)
+makedepends=(base-devel rsync)
+source=(https://github.com/libbpf/libbpf/archive/v$pkgver/$pkgname-$pkgver.tar.gz)
+
+build() {
+	cd $pkgname-$pkgver/src
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver/src
+
+	make DESTDIR=$pkgdir LIBSUBDIR=lib install
+}

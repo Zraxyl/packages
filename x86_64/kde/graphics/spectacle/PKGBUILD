@@ -1,14 +1,25 @@
 pkgname=spectacle
-pkgver=23.04.3
-pkgrel=1
+pkgver=24.08.3
+pkgrel=3
+pkgdesc="KDE screenshot capture utility"
 arch=(x86_64)
-depends=(xcb-util-cursor libkipi purpose knewstuff kpipewire kwayland qt5 kimageannotator)
+depends=(kconfig kconfigwidgets kcoreaddons kdbusaddons kglobalaccel kguiaddons
+	ki18n kio kirigami kjobwidgets knotifications kpipewire kservice opencv
+	kstatusnotifieritem kwidgetsaddons kwindowsystem kxmlgui layer-shell-qt
+	libxcb prison purpose qt6 wayland xcb-util xcb-util-cursor xcb-util-image)
 makedepends=(extra-cmake-modules kdoctools plasma-wayland-protocols)
 source=(https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz)
 
 build() {
-	cmake -B build -S $pkgname-$pkgver \
-	-DBUILD_TESTING=OFF
+	cmake \
+	-B build \
+	-S $pkgname-$pkgver \
+	-D BUILD_TESTING=OFF \
+	-D WITH_OPENCL=ON \
+	-D WITH_OPENGL=ON \
+	-D OpenGL_GL_PREFERENCE=LEGACY \
+	-D CMAKE_CXX_STANDARD=17 \
+	-D WITH_VULKAN=ON
 
 	cmake --build build
 }

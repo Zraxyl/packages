@@ -1,0 +1,33 @@
+pkgname=libappimage
+ever=5
+dver=1.0.4
+pkgver=${dver}.${ever}
+pkgrel=1
+pkgdesc="Reference implementation of the AppImage specification"
+arch=(x86_64)
+depends=(boost cairo glib2 libarchive librsvg squashfuse)
+makedepends=(xdg-utils-cxx wget vim cmake)
+commitid=44e4db94d5c1cc62b7988dff5582ee996875d4f3
+source=(https://github.com/AppImageCommunity/libappimage/archive/$commitid.zip)
+
+prepare() {
+	cmake \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_C_FLAGS="$CFLAGS -ffat-lto-objects" \
+	-DUSE_SYSTEM_XZ=ON \
+	-DUSE_SYSTEM_SQUASHFUSE=ON \
+	-DUSE_SYSTEM_LIBARCHIVE=ON \
+	-DUSE_SYSTEM_BOOST=ON \
+	-DUSE_SYSTEM_XDGUTILS=ON \
+	-DBUILD_TESTING=OFF \
+	-S $pkgname-${commitid} \
+	-B build
+}
+
+build() {
+	cmake --build build
+}
+
+package() {
+	DESTDIR=$pkgdir cmake --install build
+}
