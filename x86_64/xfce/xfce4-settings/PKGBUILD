@@ -1,6 +1,6 @@
 pkgname=xfce4-settings
-pkgver=4.19.2
-xver=4.19
+pkgver=4.20.0
+xver=4.20
 pkgrel=1
 arch=('x86_64')
 depends=(exo garcon gnome-icon-theme lxde-icon-theme libcanberra libnotify

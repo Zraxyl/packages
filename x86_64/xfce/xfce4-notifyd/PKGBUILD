@@ -1,5 +1,5 @@
 pkgname=xfce4-notifyd
-pkgver=0.9.6
+pkgver=0.9.7
 xver=0.9
 pkgrel=1
 arch=('x86_64')
