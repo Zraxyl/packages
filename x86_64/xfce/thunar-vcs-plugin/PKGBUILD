@@ -1,6 +1,6 @@
 pkgname=thunar-vcs-plugin
-pkgver=0.4.0
-xver=0.4
+pkgver=0.3.0
+xver=0.3
 pkgrel=1
 arch=('x86_64')
 depends=(thunar gtk+ glib2 exo libxfce4util git)
