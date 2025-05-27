@@ -1,6 +1,6 @@
 pkgname=libwnck
-pkgver=43.0
-pkgrel=2
+pkgver=43.2
+pkgrel=1
 arch=('x86_64')
 depends=(gtk+ glib2 gobject-introspection startup-notification)
 makedepends=(gtk-doc)

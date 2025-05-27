@@ -1,6 +1,6 @@
 pkgname=libxfce4windowing
-pkgver=4.19.4
-xver=4.19
+pkgver=4.20.1
+xver=4.20
 pkgrel=1
 arch=('x86_64')
 depends=('gdk-pixbuf' 'glib2' 'gtk+' 'libwnck' 'libx11' 'wayland' 'libdisplay-info')
@@ -14,7 +14,7 @@ prepare() {
     ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --enable-gtk-doc \
+    --disable-gtk-doc \
     --enable-wayland \
     --enable-x11 \
     --disable-debug

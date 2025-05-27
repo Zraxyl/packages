@@ -1,7 +1,7 @@
 pkgname=garcon
-pkgver=4.19.1
-xver=4.19
-pkgrel=2
+pkgver=4.20.0
+xver=4.20
+pkgrel=1
 arch=('x86_64')
 depends=(libxfce4ui gtk+)
 makedepends=(gtk-doc)

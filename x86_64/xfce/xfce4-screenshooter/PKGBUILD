@@ -1,5 +1,5 @@
 pkgname=xfce4-screenshooter
-pkgver=1.11.1
+pkgver=1.11.2
 pkgrel=1
 xver=1.11
 arch=('x86_64')

@@ -1,6 +1,6 @@
 pkgname=xfce4-dev-tools
-pkgver=4.19.1
-xver=4.19
+pkgver=4.20.0
+xver=4.20
 pkgrel=1
 arch=('x86_64')
 depends=(glib2 intltool gtk-doc)

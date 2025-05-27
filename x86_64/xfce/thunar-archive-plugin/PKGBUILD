@@ -1,7 +1,7 @@
 pkgname=thunar-archive-plugin
-pkgver=0.5.2
+pkgver=0.5.3
 xver=0.5
-pkgrel=5
+pkgrel=1
 arch=('x86_64')
 depends=(thunar hicolor-icon-theme)
 source=(https://archive.xfce.org/src/thunar-plugins/$pkgname/$xver/$pkgname-$pkgver.tar.bz2)

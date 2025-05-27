@@ -1,5 +1,5 @@
 pkgname=base-desktop-xfce
-pkgver=2024.1
+pkgver=2025.1
 pkgrel=1
 arch=(x86_64)
 depends=(

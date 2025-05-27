@@ -1,5 +1,5 @@
 pkgname=mousepad
-pkgver=0.6.2
+pkgver=0.6.3
 xver=0.6
 pkgrel=1
 arch=('x86_64')

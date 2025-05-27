@@ -1,6 +1,6 @@
 pkgname=ristretto
-pkgver=0.12.1
-xver=0.12
+pkgver=0.13.3
+xver=0.13
 pkgrel=1
 arch=('x86_64')
 depends=(libexif libxfce4ui)

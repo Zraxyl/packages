@@ -1,6 +1,6 @@
 pkgname=xfce4-panel
-pkgver=4.19.4
-xver=4.19
+pkgver=4.20.3
+xver=4.20
 pkgrel=1
 arch=('x86_64')
 depends=(libxfce4ui gtk+ exo garcon libwnck libxfce4windowing libdbusmenu
