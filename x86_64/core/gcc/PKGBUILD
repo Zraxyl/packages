@@ -1,9 +1,10 @@
 pkgname=gcc
-pkgver=14.2.0
-pkgrel=2
+pkgver=15.1.0
+pkgrel=1
 arch=('x86_64')
 options=(!emptydirs !lto !strip)
 depends=(binutils mpfr mpc glibc libxcrypt zstd flex expect isl libffi)
+makedepends=(go)
 source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver/$pkgname-$pkgver.tar.gz
 	gcc-ada-repro.patch)
 

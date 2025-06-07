@@ -1,6 +1,6 @@
 pkgname=coreutils
 pkgver=9.5
-pkgrel=1
+pkgrel=2
 pkgdesc='The basic file, shell and text manipulation utilities of the GNU operating system'
 arch=('x86_64')
 license=('GPL3')
@@ -25,7 +25,6 @@ build() {
 	./configure \
 	--prefix=/usr \
 	--sysconfdir=/etc \
-	--libexecdir=/usr/lib \
 	--with-openssl \
 	--enable-no-install-program=groups,hostname,kill,uptime
 
@@ -37,7 +36,7 @@ package() {
 	make DESTDIR="$pkgdir" install
 
 	# Compatability for hardcoded shit that needs cp, echo, cat, rm at /bin
-	mkdir -p $pkgdir/bin
-	cd $pkgdir/bin
-	cp -f ../usr/bin/* .
+	#mkdir -p $pkgdir/bin
+	#cd $pkgdir/bin
+	#cp -f ../usr/bin/* .
 }

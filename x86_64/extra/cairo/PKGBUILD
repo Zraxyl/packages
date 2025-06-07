@@ -1,10 +1,10 @@
 pkgname=cairo
-pkgver=1.18.2
-pkgrel=1
+pkgver=1.18.4
+pkgrel=3
 arch=('x86_64')
 depends=(libpng fontconfig freetype2 glib2 glibc
 	pixman libx11 libxcb libxext libxrender
-	lzo zlib)
+	libxdmcp lzo zlib)
 makedepends=(meson)
 source=(https://cairographics.org/releases/$pkgname-$pkgver.tar.xz)
 
@@ -12,10 +12,13 @@ build() {
 	cd $pkgname-$pkgver
 	mkdir -p build && cd build
 
-	meson			\
-	--prefix=/usr		\
-	-D spectre=disabled	\
-	-D tee=enabled		\
+	meson \
+	--prefix=/usr \
+	-D spectre=disabled \
+	-D tee=enabled \
+	-D xlib-xcb=enabled \
+	-D dwrite=disabled \
+	-D symbol-lookup=disabled \
 	-D tests=disabled
 
 	meson compile

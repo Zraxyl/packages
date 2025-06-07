@@ -1,8 +1,8 @@
 pkgname=glibc
-pkgver=2.39
-pkgrel=1
+pkgver=2.41
+pkgrel=2
 arch=('x86_64')
-depends=(libxcrypt filesystem lib32-libxcrypt tar xz)
+depends=(libxcrypt filesystem lib32-libxcrypt tar xz coreutils binutils util-linux)
 makedepends=(python3 bison m4 tar xz)
 options=(!strip !lto emptydirs staticlibs)
 backup=(etc/gai.conf

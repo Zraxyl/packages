@@ -1,0 +1,30 @@
+pkgname=fast_float
+pkgver=8.0.2
+pkgrel=1
+pkgdesc="Fast and exact implementation of the C++ from_chars functions for number types: 4x to 10x faster than strtod, part of GCC 12, Chromium, Redis and WebKit/Safari "
+arch=(x86_64)
+depends=(glibc)
+makedepends=(cmake git gcc autoconf)
+source=(https://github.com/fastfloat/fast_float/archive/refs/tags/v$pkgver.tar.gz)
+
+prepare() {
+	mkdir -p build && cd build
+
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-G Ninja \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

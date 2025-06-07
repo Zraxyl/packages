@@ -1,9 +1,9 @@
 pkgname=gdk-pixbuf
-pkgver=2.42.9
+pkgver=2.42.12
 pkgrel=1
 arch=('x86_64')
 depends=(glib2 libjpeg libwebp libpng shared-mime-info libtiff librsvg libavif libjxl)
-makedepends=(python3-pip)
+makedepends=(python3-pip gobject-introspection)
 source=(https://download.gnome.org/sources/$pkgname/2.42/$pkgname-$pkgver.tar.xz
 	gdk-pixbuf-query-loaders.hook)
 install=gdk-pixbuf2.install

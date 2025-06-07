@@ -1,10 +1,10 @@
 pkgname=libadwaita
-pkgver=1.6.0
+pkgver=1.7.2
 pkgrel=1
 arch=('x86_64')
 depends=(gtk4+ pango fribidi glib2 appstream)
-makedepends=(clang llvm vala)
-source=(https://download.gnome.org/sources/$pkgname/1.6/$pkgname-$pkgver.tar.xz)
+makedepends=(clang llvm vala sassc)
+source=(https://download.gnome.org/sources/$pkgname/1.7/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver

@@ -1,0 +1,58 @@
+pkgname=cloudflared
+pkgver=2024.12.2
+pkgrel=1
+arch=(x86_64)
+depends=(glibc)
+makedepends=(go)
+options=('!lto')
+source=(https://github.com/cloudflare/cloudflared/archive/refs/tags/$pkgver.tar.gz)
+
+prepare() {
+	mkdir -p $pkgname-$pkgver/build
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	# define buildtime for use in man page & binary
+	local build_time="$(date -d@"$SOURCE_DATE_EPOCH" +%Y%m%d-%H:%M:%S)"
+
+	# generate man page
+	sed -e "s/\${VERSION}/${pkgver}/" \
+		-e "s/\${DATE}/${build_time}/" \
+		cloudflared_man_template > "build/$pkgname.1"
+
+	# verify go modules
+	go mod verify
+
+	# set Go flags
+	export CGO_CPPFLAGS="${CPPFLAGS}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_CXXFLAGS="${CXXFLAGS}"
+	export GOPATH="${srcdir}"
+
+	# build cloudflared
+	go build -v \
+	-buildmode=pie \
+	-mod=readonly \
+	-modcacherw \
+	-ldflags "-compressdwarf=false \
+	-linkmode external \
+	-extldflags '${LDFLAGS}' \
+		-X main.Version=${pkgver} \
+		-X main.BuildTime=${build_time} \
+		-X github.com/cloudflare/cloudflared/cmd/cloudflared/updater.BuiltForPackageManager=pacman" \
+	-o build \
+	./cmd/...
+
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	# Binary
+	install -vDm755 -t "$pkgdir/usr/bin" "build/$pkgname"
+
+	# Man Pages
+	install -vDm644 -t "$pkgdir/usr/share/man/man1" "build/$pkgname.1"
+}

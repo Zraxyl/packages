@@ -1,7 +1,7 @@
 pkgname=gsettings-desktop-schemas
-pkgver=47.1
-gver=47
-pkgrel=2
+pkgver=48.0
+gver=48
+pkgrel=1
 arch=('x86_64')
 depends=(dconf cantarell-fonts glib2 gobject-introspection)
 source=(https://download.gnome.org/sources/$pkgname/$gver/$pkgname-$pkgver.tar.xz)

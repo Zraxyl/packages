@@ -1,0 +1,33 @@
+pkgname=gnome-tweaks
+pkgver=46.1
+pkgrel=1
+pkgdesc="Graphical interface for advanced GNOME settings"
+arch=(x86_64)
+depends=(dconf glib2 gnome-desktop gsettings-desktop-schemas gtk4+
+	hicolor-icon-theme libadwaita libgudev libnotify pango
+	python3 python3-gobject)
+makedepends=(base-devel)
+source=(https://download.gnome.org/sources/gnome-tweaks/46/gnome-tweaks-$pkgver.tar.xz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

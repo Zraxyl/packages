@@ -1,9 +1,9 @@
 pkgname=fontconfig
-pkgver=2.14.2
+pkgver=2.16.0
 pkgrel=1
 arch=('x86_64')
 depends=(glibc libpng expat zstd bzip2 readline freetype2)
-source=(https://freedesktop.org/software/$pkgname/release/$pkgname-$pkgver.tar.gz
+source=(https://freedesktop.org/software/$pkgname/release/$pkgname-$pkgver.tar.xz
 	40-fontconfig-config.script
 	40-fontconfig-config.hook
 	fontconfig.hook)

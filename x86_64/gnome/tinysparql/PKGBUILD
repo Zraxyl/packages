@@ -1,0 +1,33 @@
+pkgname=tinysparql
+pkgver=3.9.2
+pkgrel=1
+pkgdesc="Low-footprint RDF triple store with SPARQL 1.1 interface"
+arch=(x86_64)
+depends=(avahi icu glib2 json-glib libsoup snowball sqlite3 libxml2)
+makedepends=(gi-docgen gobject-introspection meson vala systemd)
+source=(https://download.gnome.org/sources/tinysparql/3.9/tinysparql-$pkgver.tar.xz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+
+	cd build
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D docs=false \
+	-D man=false \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

@@ -1,32 +1,46 @@
 pkgname=cairomm
 pkgver=1.18.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 depends=(cairo libsigc++)
 makedepends=(boost doxygen)
-source=(https://www.cairographics.org/releases/$pkgname-$pkgver.tar.xz)
+source=(https://www.cairographics.org/releases/$pkgname-$pkgver.tar.xz
+	https://gitlab.freedesktop.org/cairo/cairomm/-/archive/1.14.5/cairomm-1.14.5.tar.gz)
 
 prepare() {
-	cd $pkgname-$pkgver
+	mkdir -p build0 build1
 
-	mkdir -p build
+	# Backwards compatability
+	cd $srcdir/build0
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D build-tests=false \
+	-D boost-shared=true \
+	$srcdir/$pkgname-1.14.5	
+
+	# Base
+	cd $srcdir/build1
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D build-tests=false \
+	-D boost-shared=true \
+	$srcdir/$pkgname-$pkgver
 }
 
 build() {
-	cd $pkgname-$pkgver/build
+	cd $srcdir/build0
+	ninja
 
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
-	-Dbuild-tests=false	\
-	-Dboost-shared=true	\
-	..
-
+	cd $srcdir/build1
 	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver/build
+	cd $srcdir/build0
+	DESTDIR=$pkgdir ninja install
 
+	cd $srcdir/build1
 	DESTDIR=$pkgdir ninja install
 }

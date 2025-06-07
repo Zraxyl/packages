@@ -1,24 +1,34 @@
 pkgname=tcl
-pkgver=8.6.12
-pkgrel=1
+pkgver=9.0.1
+pkgrel=3
 arch=('x86_64')
-depends=(zlib)
+depends=(zlib sqlite3)
 source=(https://downloads.sourceforge.net/sourceforge/tcl/tcl$pkgver-src.tar.gz)
 
 prepare() {
-	cd tcl$pkgver
+	rm -rf tcl$pkgver/pkgs/sqlite3*
 
-	rm -rf pkgs/sqlite3*
+	cd tcl$pkgver/unix
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--enable-threads \
+	--enable-64bit
 }
 
 build() {
 	cd tcl$pkgver/unix
-	./configure --prefix=/usr --enable-threads --enable-64bit
+
+	make
 }
 
 package() {
 	cd tcl$pkgver/unix
 	make INSTALL_ROOT=$pkgdir install install-private-headers
+
+	# Conflicting files ( uff )
+	rm -fv $pkgdir/usr/share/man/man3/Thread.3*
 
 	ln -sf tclsh${pkgver%.*} $pkgdir/usr/bin/tclsh
 	ln -sf libtcl${pkgver%.*}.so $pkgdir/usr/lib/libtcl.so

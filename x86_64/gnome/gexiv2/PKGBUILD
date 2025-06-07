@@ -1,5 +1,5 @@
 pkgname=gexiv2
-pkgver=0.14.3
+pkgver=0.14.5
 pkgrel=1
 pkgdesc="GObject-based wrapper around the Exiv2 library"
 arch=(x86_64)

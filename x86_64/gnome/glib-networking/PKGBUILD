@@ -1,5 +1,5 @@
 pkgname=glib-networking
-pkgver=2.80.0
+pkgver=2.80.1
 ever=2.80
 pkgrel=1
 arch=('x86_64')

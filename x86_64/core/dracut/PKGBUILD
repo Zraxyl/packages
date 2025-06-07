@@ -1,13 +1,14 @@
 pkgname=dracut
 pkgver=059
-pkgrel=3
+pkgrel=4
 pkgdesc="Dracut the event driven initramfs infrastructure"
 url="https://github.com/dracutdevs/dracut"
 arch=('x86_64')
 depends=(cpio sed bash coreutils lvm2 filesystem findutils grep gzip kmod pkgconf
 	procps-ng binutils sed systemd util-linux xz)
 makedepends=(asciidoc)
-commitid="4980bad34775da715a2639b736cba5e65a8a2604"
+#commitid="4980bad34775da715a2639b736cba5e65a8a2604"
+commitid="5d2bda46f4e75e85445ee4d3bd3f68bf966287b9"
 source=($pkgname-$pkgver.tar.gz::https://codeload.github.com/dracutdevs/dracut/zip/${commitid})
 
 build() {
@@ -15,8 +16,7 @@ build() {
 
 	./configure \
 	--prefix=/usr \
-	--sysconfdir=/etc \
-	--libexecdir=/usr/lib
+	--sysconfdir=/etc
 
 	make
 }

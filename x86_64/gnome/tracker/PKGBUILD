@@ -1,35 +1,12 @@
 pkgname=tracker
-pkgver=3.8.0
+pkgver=9.9.9
 pkgrel=1
-pkgdesc="Low-footprint RDF triple store library with SPARQL 1.1 interface."
+pkgdesc="Metapackage that redirects now to tinysparql"
 arch=('x86_64')
-depends=(json-glib libseccomp vala gobject-introspection icu
-	libsoup python3-gobject)
-makedepends=(git gtk-doc)
-source=(https://gitlab.gnome.org/GNOME/tinysparql/-/archive/$pkgver/tinysparql-$pkgver.tar.gz)
-
-prepare() {
-	cd tinysparql-$pkgver
-
-	rm -rf build
-	mkdir -p build
-}
-
-build() {
-	cd tinysparql-$pkgver/build
-
-	meson \
-	--prefix=/usr \
-	--buildtype=release \
-	-D man=false \
-	-D docs=false \
-	..
-
-	ninja
-}
+depends=(tinysparql)
+makedepends=()
+source=()
 
 package() {
-	cd tinysparql-$pkgver/build
-
-	DESTDIR=$pkgdir ninja install
+	echo "Metapackage"
 }

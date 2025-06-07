@@ -1,0 +1,30 @@
+pkgname=xdg-desktop-portal-gnome
+pkgver=48.0
+pkgrel=1
+pkgdesc="Backend for xdg-desktop-portal, that is using GTK and various pieces of GNOME infrastructure"
+arch=(x86_64)
+depends=(gnome-desktop gtk4+ libadwaita xdg-desktop-portal xdg-desktop-portal-gtk)
+makedepends=(base-devel)
+source=(https://download.gnome.org/sources/xdg-desktop-portal-gnome/48/xdg-desktop-portal-gnome-$pkgver.tar.xz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build && cd build
+
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

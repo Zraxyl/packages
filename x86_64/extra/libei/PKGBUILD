@@ -1,6 +1,7 @@
 pkgname=libei
-pkgver=1.1.0
+pkgver=1.4.0
 pkgrel=1
+pkgdesc="Library for Emulated Input"
 arch=(x86_64)
 depends=(libevdev systemd)
 makedepends=(git libxkbcommon meson python3-pip asciidoc docbook-xml docbook-xsl)

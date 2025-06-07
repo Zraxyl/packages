@@ -1,10 +1,10 @@
 pkgname=libgweather
-pkgver=4.2.0
+pkgver=4.4.4
 pkgrel=1
 arch=(x86_64)
 depends=(geocode-glib gtk3+ libsoup python3-gobject)
 makedepends=(gtk-doc)
-source=(https://download.gnome.org/sources/$pkgname/4.2/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/4.4/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	mkdir -p build && cd build

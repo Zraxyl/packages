@@ -1,10 +1,10 @@
 pkgname=libshumate
-pkgver=1.0.5
+pkgver=1.4.0
 pkgrel=1
 arch=(x86_64)
-depends=(gtk4+ libsoup gobject-introspection)
+depends=(gtk4+ libsoup gobject-introspection cairo gdk-pixbuf protobuf-c pango)
 makedepends=(gtk-doc)
-source=(https://download.gnome.org/sources/$pkgname/1.0/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/1.4/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	mkdir -p build && cd build

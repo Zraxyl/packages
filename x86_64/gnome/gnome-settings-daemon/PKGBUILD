@@ -1,12 +1,12 @@
 pkgname=gnome-settings-daemon
-pkgver=44.1
+pkgver=48.1
 pkgrel=1
 arch=('x86_64')
 depends=(alsa-lib colord geoclue fontconfig gcr gnome-desktop lcms
 	libcanberra libgweather libnotify libwacom pulseaudio upower
 	alsa-tools cups networkmanager nss wayland geocode-glib)
 makedepends=(git gtk-doc)
-source=(https://download.gnome.org/sources/$pkgname/44/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/48/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver

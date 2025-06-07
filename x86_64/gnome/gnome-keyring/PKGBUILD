@@ -1,27 +1,28 @@
 pkgname=gnome-keyring
-pkgver=42.1
+pkgver=48.0
 pkgrel=1
 arch=(x86_64)
 depends=(dbus gcr linux-pam libxslt openssh gnupg gobject-introspection)
-makedepends=(gtk-doc)
-source=(https://download.gnome.org/sources/$pkgname/42/$pkgname-$pkgver.tar.xz)
+makedepends=(gtk-doc docbook-xml docbook-xsl)
+source=(https://download.gnome.org/sources/$pkgname/48/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	mkdir -p build && cd build
 
-	./../$pkgname-$pkgver/configure \
+	meson \
 	--prefix=/usr \
-	--sysconfdir=/etc
+	--buildtype=release \
+	../$pkgname-$pkgver
 }
 
 build() {
 	cd build
 
-	make
+	ninja
 }
 
 package() {
 	cd build
 
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir ninja install
 }

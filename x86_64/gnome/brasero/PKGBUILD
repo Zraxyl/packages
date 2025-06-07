@@ -1,0 +1,36 @@
+pkgname=brasero
+pkgver=3.12.3
+pkgrel=1
+pkgdesc="Application used to burn CDs and DVDs on the GNOME Desktop"
+arch=(x86_64)
+depends=(gst-plugins-base libcanberra libnotify glib2 libburn libisoburn libisofs nautilus
+	totem-pl-parser tinysparql gvfs)
+makedepends=(itstool vala autoconf-archive yelp-xsl gnome-common)
+commitid="98342080aa1a05c3543ff45f383681012d4a53c8"
+source=(https://gitlab.gnome.org/GNOME/brasero/-/archive/$commitid/brasero-$commitid.tar.gz)
+
+prepare() {
+	cd $pkgname-$commitid
+	autoreconf -fvi
+	cd ..
+
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	./../$pkgname-$commitid/configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+}
+
+build() {
+	cd build
+
+	make
+}
+
+package() {
+	cd build
+
+	make DESTDIR=$pkgdir install
+}

@@ -1,5 +1,5 @@
 pkgname=bash
-pkgver=5.2.15
+pkgver=5.2.37
 pkgrel=1
 arch=('x86_64')
 depends=(readline glibc ncurses)
@@ -46,8 +46,8 @@ package() {
 	cd ../
 	
 	mkdir -p $pkgdir/bin/
-	mv $pkgdir/usr/bin/bash $pkgdir/bin
-	ln -s bash $pkgdir/bin/sh
+	ln -s /usr/bin/bash $pkgdir/bin/sh
+	ln -sf /usr/bin/bash $pkgdir/bin/bash
 
 	# System
 	mkdir -p $pkgdir/etc

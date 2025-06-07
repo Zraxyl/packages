@@ -1,18 +1,23 @@
 pkgname=tk
-pkgver=8.6.12
-pkgrel=1
+pkgver=9.0.1
+pkgrel=2
 arch=(x86_64)
 depends=(tcl)
 makedepends=(make gcc)
 source=(https://downloads.sourceforge.net/sourceforge/tcl/tk$pkgver-src.tar.gz)
 
-build() {
+prepare() {
 	cd $pkgname$pkgver/unix
 
 	./configure \
 	--prefix=/usr \
+	--sysconfdir=/etc \
 	--enable-threads \
 	--enable-64bit
+}
+
+build() {
+	cd $pkgname$pkgver/unix
 
 	make
 }
@@ -21,6 +26,8 @@ package() {
 	cd $pkgname$pkgver/unix
 
 	make DESTDIR=$pkgdir install
+
+	rm -fv $pkgdir/usr/share/man/man3/Thread.3.gz
 
 	# Linking
 	ln -sf wish${pkgver%.*} "${pkgdir}/usr/bin/wish"

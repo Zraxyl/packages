@@ -1,8 +1,9 @@
 pkgname=accountsservice
 pkgver=23.13.9
-pkgrel=2
+pkgrel=4
+pkgdesc="D-Bus interface for user account query and manipulation"
 arch=('x86_64')
-depends=(glib2 glibc polkit systemd shadow)
+depends=(glibc glib2 libxcrypt systemd polkit shadow)
 makedepends=(gtk-doc gobject-introspection meson docbook-xsl docbook-xml
 	xmlto vala python3-pygments)
 source=(accounts-daemon-restart.hook
@@ -15,7 +16,7 @@ prepare() {
 	rm -rf $pkgname
 	git clone https://gitlab.freedesktop.org/accountsservice/accountsservice.git
 	cd $pkgname
-	git reset --hard 57e491f5e6f3da2d5a949f4f8747c8f4e8ed799d
+	git reset --hard 091513774c7049618dcc180a7345ec2acfdb7b26
 
 	git cherry-pick -n da65bee12d9118fe1a49c8718d428fe61d232339 \
 	ad0365b77b583da06bcd1e8da4c1bed74129895a
@@ -41,4 +42,5 @@ package() {
 
 	mkdir -p $pkgdir/etc/polkit-1/rules.d
 	install -Dt "$pkgdir/usr/share/libalpm/hooks" -m644 $srcdir/*.hook
+	install -d "$pkgdir/usr/share/accountsservice/interfaces"
 }

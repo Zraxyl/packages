@@ -1,7 +1,7 @@
 pkgname=gobject-introspection
-pkgver=1.82.0
-gver=2.82.0
-pkgrel=2
+pkgver=1.83.5
+gver=2.83.5
+pkgrel=1
 arch=('x86_64')
 depends=(glib2 gcc libffi python3)
 makedepends=(git meson glib2 cairo gtk-doc)

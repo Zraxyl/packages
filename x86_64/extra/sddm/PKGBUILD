@@ -1,6 +1,6 @@
 pkgname=sddm
 pkgver=0.21.0
-pkgrel=1
+pkgrel=2
 arch=(x86_64)
 depends=(xauth qt5 qt6 xorg-server base-fonts double-conversion drivers-xorg
 	wayland wayland-protocols mesa glu libglvnd gstreamer-vaapi gst-plugins-good)
@@ -51,7 +51,7 @@ package() {
 	"$pkgdir"/usr/bin/sddm --example-config > "$pkgdir"/usr/lib/sddm/sddm.conf.d/default.conf
 
 	# Config edits
-	sed -r 's|DefaultPath=.*|DefaultPath=/usr/local/sbin:/usr/local/bin:/usr/bin|g' -i "$pkgdir"/usr/lib/sddm/sddm.conf.d/default.conf
+	sed -r 's|DefaultPath=.*|DefaultPath=/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin|g' -i "$pkgdir"/usr/lib/sddm/sddm.conf.d/default.conf
 
 	# Double chmod scripts to be executable!!!
 	# Forgetting that will make sessions unusable

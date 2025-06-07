@@ -1,10 +1,11 @@
 pkgname=upower
-pkgver=1.90.2
+pkgver=1.90.9
 pkgrel=1
+pkgdesc="Power management support for DeviceKit"
 arch=('x86_64')
 depends=(libgudev libusb polkit gobject-introspection)
 makedepends=(gtk-doc python3-gobject python3-pygments asciidoc docbook-xml docbook-xsl)
-commitid=(8dcf54440d7eb58b75d7982bc1c29ee35dccf0c2)
+commitid=(bdbd99b809cde47cfccbd24eea47c3235c043081)
 source=(https://gitlab.freedesktop.org/upower/upower/-/archive/v$pkgver/$pkgname-$pkgver.tar.gz)
 
 prepare() {

@@ -1,10 +1,11 @@
 pkgname=glib2
-pkgver=2.82.0
-pkgrel=2
+pkgver=2.83.5
+pkgrel=1
+pkgdesc="Low-level core library that forms the basis for projects such as GTK and GNOME"
 arch=('x86_64')
 depends=('libffi' 'pcre' 'pcre2' 'util-linux' 'zlib' 'elfutils' 'libxslt' 'libxml2')
 makedepends=('gtk-doc' 'python3-pip' 'dbus' 'gettext' 'git' 'meson' 'docbook-xml' 'docbook-xsl' 'gobject-introspection')
-gvdbcommit=2b42fc75f09dbe1cd1057580b5782b08f2dcb400
+gvdbcommit=4758f6fb7f889e074e13df3f914328f3eecb1fd3
 source=(git+https://gitlab.gnome.org/GNOME/glib.git#tag=$pkgver
 	git+https://gitlab.gnome.org/GNOME/gvdb.git#commit=$gvdbcommit
 	0001-glib-compile-schemas-Remove-noisy-deprecation-warnin.patch
@@ -28,7 +29,7 @@ prepare() {
 }
 
 build() {
-	export PATH=$PATH:~/.local/bin
+	#export PATH=$PATH:~/.local/bin
 	CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
 
 	meson \

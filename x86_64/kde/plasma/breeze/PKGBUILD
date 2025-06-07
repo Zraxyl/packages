@@ -3,7 +3,7 @@ pkgver=6.2.4
 pkgrel=1
 pkgdesc="Artwork, styles and assets for the Breeze visual style for the Plasma Desktop"
 arch=(x86_64)
-depends=(breeze-icons frameworkintegration kcmutils kcolorscheme kconfig
+depends=(breeze-icons kcmutils kcolorscheme kconfig frameworkntegration
 	kcoreaddons kdecoration kguiaddons ki18n kiconthemes kirigami
 	kwidgetsaddons kwindowsystem qt6)
 makedepends=(extra-cmake-modules base-devel)
@@ -12,6 +12,8 @@ source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 build() {
 	CFLAGS+="-w "
 	CXXFLAGS+="-w "
+
+	rm -rf build
 
 	cmake \
 	-B build \

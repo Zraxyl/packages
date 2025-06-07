@@ -1,13 +1,14 @@
 pkgname=libevdev
-pkgver=1.12.0
-pkgrel=3
+pkgver=1.13.4
+pkgrel=1
+pkgdesc="Wrapper library for evdev devices"
 arch=('x86_64')
 makedepends=('python3' 'check' 'valgrind' 'meson')
 source=(https://freedesktop.org/software/$pkgname/$pkgname-$pkgver.tar.xz)
 
 build() {
-        meson $pkgname-$pkgver build	\
-	-D documentation=disabled	\
+        meson $pkgname-$pkgver build \
+	-D documentation=disabled \
 	--prefix=/usr
 
 	meson compile -C build

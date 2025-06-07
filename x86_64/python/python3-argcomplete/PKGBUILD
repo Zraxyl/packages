@@ -1,0 +1,24 @@
+pkgname=python3-argcomplete
+rname=argcomplete
+pkgver=3.5.3
+pkgrel=1
+arch=(x86_64)
+depends=(python3)
+makedepends=(python3-pip)
+source=(git+https://github.com/kislyuk/argcomplete.git#tag=v$pkgver)
+
+prepare() {
+	pip3 install setuptools
+}
+
+build() {
+	cd $rname
+
+	python -m build --wheel --no-isolation
+}
+
+package() {
+	cd $rname
+
+	python -m installer --destdir="$pkgdir" dist/*.whl
+}

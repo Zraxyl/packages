@@ -1,15 +1,15 @@
 pkgname=linux
-pkgver=6.11.4
-rname=6.11.y
+pkgver=6.14.0
+rname=6.14
 pkgdesc="The Linux kernel, modules and headers package"
-rver=6.11
-pkgrel=3
-dirname="${pkgname}-${pkgver}"
+rver=6.14
+pkgrel=1
+dirname="${pkgname}-${rver}"
 arch=('x86_64')
 options=('!strip' 'emptydirs')
 install=linux.install
 makedepends=(rsync bison bc rdfind)
-source=(https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/snapshot/linux-$pkgver.tar.gz
+source=(https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/snapshot/linux-$rver.tar.gz
 	config)
 
 export KBUILD_BUILD_HOST=zraxyl-linux

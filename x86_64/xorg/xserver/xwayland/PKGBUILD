@@ -1,5 +1,5 @@
 pkgname=xwayland
-pkgver=24.1.4
+pkgver=24.1.6
 pkgrel=1
 pkgdesc="run X clients under wayland"
 arch=('x86_64')
@@ -8,8 +8,7 @@ depends=('nettle' 'libepoxy' 'systemd' 'libxfont2'
 	'libei' 'libxtrans' 'libxkbfile' 'libdrm'
 	'mesa' 'systemd' 'wayland' 'dbus' 'xorgproto'
 	'nettle')
-makedepends=('meson' 'font-util' 'wayland-protocols'
-)
+makedepends=('meson' 'font-util' 'wayland-protocols')
 source=(https://x.org/pub/individual/xserver/$pkgname-$pkgver.tar.xz)
 
 prepare() {

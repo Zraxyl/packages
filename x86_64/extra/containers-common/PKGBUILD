@@ -1,11 +1,11 @@
 pkgname=containers-common
-pkgver=0.60.4
+pkgver=0.62.3
 pkgrel=1
-image_pkgver=5.32.2
-podman_pkgver=5.2.3
-skopeo_pkgver=1.16.1
-storage_pkgver=1.55.0
-shortnames_pkgver=2023.02.20
+image_pkgver=5.34.3
+podman_pkgver=5.4.1
+skopeo_pkgver=1.18.0
+storage_pkgver=1.57.2
+shortnames_pkgver=2025.03.19
 arch=('x86_64')
 pkgdesc="Configuration files and manpages for containers"
 makedepends=(go-md2man)

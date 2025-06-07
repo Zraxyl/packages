@@ -1,6 +1,7 @@
 pkgname=ceph
-pkgver=19.2.0
+pkgver=17.2.8
 pkgrel=1
+pkgdesc="Ceph is a distributed object, block, and file storage platform "
 arch=('x86_64')
 depends=("zstd" 'bash' 'bc' 'bzip2' 'c-ares' 'cmake' 'coreutils'
     'cpio' 'curl' 'expat' 'fontconfig' 'fuse2' 'fuse3' 'gcc' 'git' 'glibc' 'gnutls'
@@ -12,19 +13,15 @@ depends=("zstd" 'bash' 'bc' 'bzip2' 'c-ares' 'cmake' 'coreutils'
     'cryptsetup' 'openjdk-17' 'lua' 'thrift')
 makedepends=(python3-pip boost)
 options=('emptydirs' '!lto')
-source=(https://download.ceph.com/tarballs/${pkgname}-${pkgver}.tar.gz
-	https://github.com/ceph/ceph/pull/59644.patch)
+source=(https://download.ceph.com/tarballs/${pkgname}-${pkgver}.tar.gz)
 
 # Ceph is broken and needs time to heal its source code
 # ceph is behind with upstream boost so the code cant be built right now ( 2024.10.01 )
 # So we will create empty metapackage until it gets fixed with newer releases
-export IS_BROKEN=true
+export IS_BROKEN=false
 
 prepare() {
     cd "${pkgname}-${pkgver}"
-
-    # Patches
-    patch -p1 -i ../59644.patch
 
     # Install python3 needed modules ( may need more attention on cleaner dev env's )
     pip3 install setuptools

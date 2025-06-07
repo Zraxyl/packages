@@ -1,53 +1,58 @@
 pkgname=bottle
-pkgver=2024.4
-pkgrel=8
+pkgver=2025.1
+patchver=_002
+pkgrel=1
 arch=('x86_64')
 depends=(zstd bash glibc libarchive curl gpgme libassuan nettle)
 USE_STAGING=yes
-if [ "$USE_STAGING" == "yes" ]; then
-	# Staging
-	commitid=ed71d2cf8dd4c112158db3b35848569262dfe228
-	branch=bottle
-else
-	# Stable
-	commitid=76450251d000de0832889292a26acad560698ace
-	branch=bottle
-fi
-source=(git+https://git.evolinx.eu/evolinx/bottle.git#commit=${commitid})
+source=(https://github.com/Zraxyl/bottle/archive/refs/tags/${pkgver}${patchver}.tar.gz)
 
 build() {
-	cd $pkgname
+	cd $pkgname-${pkgver}${patchver}
 
-	meson \
-	--prefix=/usr \
-	-D doxygen=enabled \
-	-D curl=enabled \
-	-D crypto=openssl \
-	-D gpgme=enabled \
-	-D i18n=true \
-	-D scriptlet-shell=/bin/bash \
-	-D ldconfig=/sbin/ldconfig \
-	-D pkg-ext=.pkg.tar.gz \
-	-D src-ext=.src.tar.gz \
-	build
+	if [ "$USE_STAGING" == "yes" ]; then
+		meson \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		-D is-staging=true \
+		-D doxygen=enabled \
+		-D curl=enabled \
+		-D crypto=openssl \
+		-D gpgme=enabled \
+		-D i18n=true \
+		-D scriptlet-shell=/usr/bin/bash \
+		-D ldconfig=/sbin/ldconfig \
+		-D pkg-ext=.pkg.tar.gz \
+		-D src-ext=.src.tar.gz \
+		build
+	else
+		meson \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		-D is-staging=false \
+		-D doxygen=enabled \
+		-D curl=enabled \
+		-D crypto=openssl \
+		-D gpgme=enabled \
+		-D i18n=true \
+		-D scriptlet-shell=/usr/bin/bash \
+		-D ldconfig=/sbin/ldconfig \
+		-D pkg-ext=.pkg.tar.gz \
+		-D src-ext=.src.tar.gz \
+		build
+	fi
 
 	ninja -C build
 }
 
 package() {
-	cd $pkgname
+	cd $pkgname-${pkgver}${patchver}
 	
 	mkdir -vp $pkgdir
 	export DESTDIR=$pkgdir
 	
 	ninja -C build install
 
-	# copy our own bottle.conf that has proper server list
-	if [ "$USE_STAGING" == "yes" ]; then
-		cp -f ../../bottle.conf.staging $pkgdir/etc/bottle.conf
-	else
-		cp -f ../../bottle.conf.stable $pkgdir/etc/bottle.conf
-	fi
 	mkdir -p $pkgdir/etc/bottle.d
 	touch $pkgdir/etc/bottle.d/mirrorlist
 }

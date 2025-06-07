@@ -1,5 +1,6 @@
 pkgname=gtk4+
-pkgver=4.16.2
+pkgver=4.19.1
+rver=4.19
 pkgrel=1
 pkgdesc="GObject-based multi-platform GUI toolkit"
 url="https://www.gtk.org/"
@@ -10,11 +11,11 @@ depends=(glib2 cairo pango harfbuzz fribidi gdk-pixbuf libpng libtiff libjpeg
          libxdamage libxfixes fontconfig libxinerama cups gobject-introspection
          gstreamer librsvg dconf shared-mime-info desktop-file-utils
          adwaita-icon-theme cantarell-fonts gst-plugins-bad vulkan-icd-loader
-         tracker shaderc)
+         tracker shaderc pango)
 makedepends=(gtk-doc git sassc meson glslang
 	wayland-protocols gi-docgen
 	vulkan-headers spirv-headers)
-source=(https://download.gnome.org/sources/gtk/4.16/gtk-$pkgver.tar.xz
+source=(https://download.gnome.org/sources/gtk/${rver}/gtk-$pkgver.tar.xz
         gtk-update-icon-cache.{hook,script}
         gtk4-querymodules.{hook,script})
 
@@ -32,6 +33,7 @@ build() {
     -D wayland-backend=true
     -D man-pages=false
     -D introspection=enabled
+    --wrap-mode=nofallback
   )
 
   meson gtk-$pkgver build "${meson_options[@]}"

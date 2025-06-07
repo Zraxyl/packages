@@ -15,7 +15,7 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver
 
-	./configure		\
+	./configure \
 	--prefix=/usr
 
 	make

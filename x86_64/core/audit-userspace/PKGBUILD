@@ -1,6 +1,6 @@
 pkgname=audit-userspace
-pkgver=4.0.2
-pkgrel=2
+pkgver=4.0.5
+pkgrel=1
 arch=('x86_64')
 depends=(glibc bash krb5 libcap-ng libcap openldap)
 makedepends=(python3 swig)
@@ -8,7 +8,7 @@ options=(emptydirs)
 source=(https://github.com/linux-audit/$pkgname/archive/refs/tags/v$pkgver.tar.gz
 	audit.tmpfiles
 	# Patches
-	4.0.2-flagtab_h.patch::https://github.com/linux-audit/audit-userspace/commit/6b9b74acba4db9edbab8595474d2323eb7eef51f.patch)
+	audit-4.0.5-executable_paths.patch)
 backup=(
 	etc/libaudit.conf
 	etc/audit/audit-stop.rules
@@ -25,9 +25,8 @@ prepare() {
 
 	cd $pkgname-$pkgver
 
-	# fix weird issue with autotools and an unneeded header file: https://github.com/linux-audit/audit-userspace/issues/390
-	patch -Np1  -i ../4.0.2-flagtab_h.patch
-
+	# Patches
+	patch -Np1  -i ../audit-4.0.5-executable_paths.patch
 
 	# Preconfigure the source
 	autoreconf -fvi
@@ -58,6 +57,9 @@ package() {
 	cd build
 
 	make DESTDIR=$pkgdir install
+
+	# Add config dir
+	install -vdm 755 "$pkgdir/etc/audisp"
 
 	# Add log dir
 	install -vdm 700 "$pkgdir/var/log/$pkgname/"

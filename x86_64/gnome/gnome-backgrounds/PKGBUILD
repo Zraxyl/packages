@@ -1,10 +1,10 @@
 pkgname=gnome-backgrounds
-pkgver=45.0
+pkgver=48.2.1
 pkgrel=1
 arch=('x86_64')
-depends=()
+depends=(libjxl)
 makedepends=(git gtk-doc)
-source=(https://download.gnome.org/sources/$pkgname/45/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/48/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver

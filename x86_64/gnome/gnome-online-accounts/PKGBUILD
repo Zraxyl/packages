@@ -1,11 +1,11 @@
 pkgname=gnome-online-accounts
-pkgver=3.52.0
+pkgver=3.54.3
 pkgrel=1
 arch=('x86_64')
 depends=(gcr json-glib rest webkit2gtk gobject-introspection
 	libsoup krb5 libadwaita)
-makedepends=(vala)
-source=(https://download.gnome.org/sources/gnome-online-accounts/3.52/gnome-online-accounts-$pkgver.tar.xz)
+makedepends=(vala docbook-xsl docbook-xml)
+source=(https://download.gnome.org/sources/gnome-online-accounts/3.54/gnome-online-accounts-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver

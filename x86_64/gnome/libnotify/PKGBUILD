@@ -1,23 +1,27 @@
 pkgname=libnotify
-pkgver=0.7.9
+pkgver=0.8.6
 pkgrel=1
+pkgdesc="Library for sending desktop notifications"
 arch=('x86_64')
-depends=(gtk+)
+depends=(gdk-pixbuf glib2 glibc)
 makedepends=(gobject-introspection gtk-doc notification-daemon)
-source=(https://download.gnome.org/sources/$pkgname/0.7/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/0.8/$pkgname-$pkgver.tar.xz)
 
-build() {
+prepare() {
 	cd $pkgname-$pkgver
 
 	mkdir -p build && cd build
 
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
-	-D gtk_doc=false	\
-	-D man=false		\
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	-D gtk_doc=false \
+	-D man=false \
 	..
+}
 
+build() {
+	cd $pkgname-$pkgver/build
 	ninja
 }
 

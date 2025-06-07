@@ -1,5 +1,5 @@
 pkgname=msgraph
-pkgver=0.2.3
+pkgver=0.3.3
 pkgrel=1
 pkgdesc="A shared library for accessing MS Graph API"
 arch=(x86_64)

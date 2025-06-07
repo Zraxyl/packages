@@ -1,6 +1,6 @@
 pkgname=gvfs
-pkgver=1.56.1
-pkgrel=2
+pkgver=1.57.2
+pkgrel=1
 pkgdesc="Virtual filesystem implementation for GIO"
 arch=('x86_64')
 depends=(dbus fuse2 glib2 libusb libsecret libsoup gcr
@@ -9,7 +9,7 @@ depends=(dbus fuse2 glib2 libusb libsecret libsoup gcr
 	fuse3 libgphoto2 openssh libbluray gsettings-desktop-schemas
 	libgdata python3-gobject msgraph)
 makedepends=(gtk-doc)
-source=(https://download.gnome.org/sources/$pkgname/1.56/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/1.57/$pkgname-$pkgver.tar.xz)
 
 build() {
 	cd $pkgname-$pkgver

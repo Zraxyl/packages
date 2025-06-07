@@ -1,11 +1,11 @@
 pkgname=libsoup
-pkgver=3.6.0
+pkgver=3.6.5
 ever=3.6
 pkgrel=1
 arch=('x86_64')
 depends=(glib-networking nghttp2 krb5 libpsl libxml2 sqlite3)
 # We need clang here as gcc has issues with -R arg
-makedepends=(clang llvm)
+makedepends=(clang llvm vala)
 source=(https://download.gnome.org/sources/$pkgname/$ever/$pkgname-$pkgver.tar.xz)
 
 build() {

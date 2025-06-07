@@ -1,30 +1,40 @@
 pkgname=atkmm
 pkgver=2.36.3
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 depends=('at-spi2-core' 'glibmm' 'libsigc++')
 makedepends=(mm-common)
-source=(https://download.gnome.org/sources/$pkgname/2.36/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/2.36/$pkgname-$pkgver.tar.xz
+	https://download.gnome.org/sources/$pkgname/2.28/$pkgname-2.28.4.tar.xz)
 
 prepare() {
-	cd $pkgname-$pkgver
+	mkdir -p build1 build2
 
-	mkdir -p build
-}
-
-build() {
-	cd $pkgname-$pkgver/build
-
+	cd $srcdir/build1
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
-	..
+	../$pkgname-2.28.4
 
+	cd $srcdir/build2
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd $srcdir/build1
+	ninja
+
+	cd $srcdir/build2
 	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver/build
+	cd $srcdir/build1
+	DESTDIR=$pkgdir ninja install
 
+	cd $srcdir/build2
 	DESTDIR=$pkgdir ninja install
 }

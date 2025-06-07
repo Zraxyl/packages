@@ -1,16 +1,14 @@
 pkgname=docker
-pkgver=27.3.1
+pkgver=28.0.4
 pkgrel=2
 pkgdesc="Pack, ship and run any application as a lightweight container"
 arch=('x86_64')
 depends=(glibc sqlite3 systemd libseccomp libtool runc containerd iptables)
 makedepends=(git go btrfs-progs cmake systemd go-md2man sed)
-TINI_COMMIT=0b44d3665869e46ccbac7414241b8256d6234dc4
-LIBNETWORK_COMMIT=3797618f9a38372e8107d8c06f6ae199e1133ae8
-BUILDX_COMMIT=1de332530f6c21e69ddf8577fbc7adcf0ae7c723
+TINI_COMMIT=de40ad007797e0dcd8b7126f27bb87401d224240
+BUILDX_COMMIT=18ccba072076ddbfb0aeedd6746d7719b0729b58
 source=(git+https://github.com/docker/cli.git#tag=v$pkgver
 	git+https://github.com/moby/moby.git#tag=v$pkgver
-	git+https://github.com/docker/libnetwork.git#commit=$LIBNETWORK_COMMIT
 	git+https://github.com/krallin/tini.git#commit=$TINI_COMMIT
 	git+https://github.com/docker/buildx.git#commit=$BUILDX_COMMIT
 	docker.sysusers)
@@ -35,7 +33,7 @@ build() {
 	export CGO_CXXFLAGS="${CXXFLAGS}"
 	export CGO_LDFLAGS="${LDFLAGS}"
 	export LDFLAGS=''
-	export GOFLAGS='-buildmode=pie -trimpath -mod=readonly -modcacherw -ldflags=-linkmode=external'
+	export GOFLAGS='-buildmode=pie -trimpath -mod=readonly -modcacherw -ldflags=-linkmode=external -ldflags=-compressdwarf=false -ldflags=-B=gobuildid'
 	export GO111MODULE=off
 	export DISABLE_WARN_OUTSIDE_CONTAINER=1
 
@@ -53,10 +51,10 @@ build() {
 		hack/make.sh dynbinary
 	popd &> /dev/null
 
-	echo "[+]: Building docker-proxy"
-	gopath_pushd libnetwork github.com/docker/libnetwork
-	go build github.com/docker/libnetwork/cmd/proxy
-	popd &> /dev/null
+	#echo "[+]: Building docker-proxy"
+	#gopath_pushd moby/libnetwork github.com/docker/libnetwork
+	#go build github.com/docker/libnetwork/cmd/proxy
+	#popd &> /dev/null
 
 	echo "[+]: Building docker-init"
 	gopath_pushd tini github.com/krallin/tini
@@ -77,7 +75,7 @@ build() {
 
 package() {
 	### proxy
-	install -Dm755 libnetwork/proxy "$pkgdir/usr/bin/docker-proxy"
+	install -Dm755 moby/bundles/dynbinary-daemon/docker-proxy "$pkgdir/usr/bin/docker-proxy"
 
 	### init
 	install -Dm755 tini/tini-static "$pkgdir/usr/bin/docker-init"

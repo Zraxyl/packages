@@ -1,34 +1,20 @@
-opkgname=gtk
 pkgname=gtk3
-pkgver=3.99.5
-pkgrel=3
+pkgver=99.99.99
+pkgrel=1
+pkgdesc="Metapackage to gtk3+"
 arch=('x86_64')
-depends=(at-spi2-atk gdk-pixbuf libepoxy pango adwaita-icon-theme
-	hicolor-icon-theme iso-codes libxkbcommon sassc gobject-introspection
-	cairo harfbuzz colord libxinerama libxrandr libxfixes fribidi atk
-	libxcomposite libxdamage libxcursor libxi cups)
-makedepends=(meson wayland wayland-protocols)
-source=(https://download.gnome.org/sources/$opkgname/3.99/$opkgname-$pkgver.tar.xz)
+depends=('gtk3+')
+makedepends=(glibc)
+source=()
 
 prepare() {
-	mkdir -p build
+	echo "Metapackage"
 }
 
 build() {
-	cd build
-
-	meson				\
-	--prefix=/usr			\
-	--sysconfdir=/etc		\
-	-D colord=enabled		\
-	-D gtk_doc=false		\
-	../$opkgname-$pkgver
-
-	meson compile
+	echo "Metapackage"
 }
 
 package() {
-	cd build
-
-	meson install --destdir=$pkgdir
+	echo "Metapackage"
 }

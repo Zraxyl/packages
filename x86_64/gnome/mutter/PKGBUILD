@@ -1,25 +1,38 @@
 pkgname=mutter
-pkgver=45.0
+pkgver=48.3
 pkgrel=1
+pkgdesc="Mutter is the window manager for GNOME"
 arch=('x86_64')
 depends=(gnome-settings-daemon graphene libxcvt libxkbcommon
 	pipewire desktop-file-utils gobject-introspection startup-notification
-	libinput wayland xwayland mesa libei)
-makedepends=(git gtk-doc wayland-protocols)
-source=(https://download.gnome.org/sources/$pkgname/45/$pkgname-$pkgver.tar.xz)
+	libinput wayland xwayland mesa libei libdisplay-info)
+makedepends=(git gtk-doc wayland-protocols python3-pip python3-argcomplete)
+source=(https://download.gnome.org/sources/$pkgname/48/$pkgname-$pkgver.tar.xz)
 
 prepare() {
 	cd $pkgname-$pkgver
 
+	rm -rf build
 	mkdir -p build
+
+	pip3 install docutils
 }
 
 build() {
 	cd $pkgname-$pkgver/build
 
+	export PATH=$PATH:/home/developer/.local/bin
+
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
+	--wrap-mode=nofallback \
+	-D tests=disabled \
+	-D profiler=false \
+	-D docs=false \
+	-D x11=true \
+	-D xwayland=true \
+	-D wayland=true \
 	..
 
 	ninja

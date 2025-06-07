@@ -1,6 +1,7 @@
 pkgname=gnome-desktop
-pkgver=44.0
+pkgver=44.1
 pkgrel=1
+pkgdesc="Provides API shared by several apps on the GNOME desktop using GTK 3"
 arch=(x86_64)
 depends=(gsettings-desktop-schemas gtk3+ gtk4+ iso-codes itstool libseccomp libxml2
 	xkeyboard-config bubblewrap gobject-introspection)

@@ -1,6 +1,7 @@
 pkgname=libgtop
-pkgver=2.41.1
+pkgver=2.41.3
 pkgrel=1
+pkgdesc="Library for collecting system monitoring data"
 arch=(x86_64)
 depends=(glib2 gobject-introspection libxau)
 makedepends=(gtk-doc)

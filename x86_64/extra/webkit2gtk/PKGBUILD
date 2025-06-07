@@ -1,5 +1,5 @@
 pkgname=webkit2gtk
-pkgver=2.47.2
+pkgver=2.48.3
 pkgrel=1
 arch=('x86_64')
 depends=(cairo gtk3+ gtk4+ icu libgudev libsecret libsoup libsoup2 libtasn1 libwebp mesa
@@ -28,6 +28,7 @@ prepare() {
 	-D CMAKE_SKIP_RPATH=ON \
 	-D PORT=GTK \
 	-D USE_LIBHYPHEN=OFF \
+	-D ENABLE_SPEECH_SYNTHESIS=OFF \
 	-D USE_LIBBACKTRACE=OFF \
 	-D USE_SYSTEM_SYSPROF_CAPTURE=NO \
 	-D ENABLE_GAMEPAD=OFF \
@@ -42,6 +43,7 @@ prepare() {
 	-D USE_JPEGXL=ON \
 	-D USE_SOUP2=OFF \
 	-D USE_LIBSECRET=ON \
+	-D USE_FLITE=OFF \
 	-D ENABLE_BUBBLEWRAP_SANDBOX=ON \
 	-Wno-dev \
 	-G Ninja \
@@ -56,6 +58,7 @@ prepare() {
 	-D CMAKE_SKIP_RPATH=ON \
 	-D PORT=GTK \
 	-D USE_LIBHYPHEN=OFF \
+	-D ENABLE_SPEECH_SYNTHESIS=OFF \
 	-D USE_LIBBACKTRACE=OFF \
 	-D USE_SYSTEM_SYSPROF_CAPTURE=NO \
 	-D ENABLE_GAMEPAD=OFF \
@@ -69,6 +72,7 @@ prepare() {
 	-D USE_AVIF=ON \
 	-D USE_JPEGXL=ON \
 	-D USE_SOUP2=OFF \
+	-D USE_FLITE=OFF \
 	-D USE_LIBSECRET=ON \
 	-D ENABLE_BUBBLEWRAP_SANDBOX=ON \
 	-Wno-dev \

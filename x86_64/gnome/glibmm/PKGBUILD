@@ -1,25 +1,39 @@
 pkgname=glibmm
-pkgver=2.78.1
+pkgver=2.84.0
 pkgrel=1
 arch=('x86_64')
 depends=(glib2 libsigc++)
-source=(https://download.gnome.org/sources/$pkgname/2.78/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/2.84/$pkgname-$pkgver.tar.xz
+	https://download.gnome.org/sources/$pkgname/2.66/$pkgname-2.66.8.tar.xz)
 
-build() {
-	cd $pkgname-$pkgver
+prepare() {
+	mkdir -p build1 build2
 
-	mkdir -p build && cd build
-
+	cd $srcdir/build1
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
-	..
+	../$pkgname-2.66.8
 
+	cd $srcdir/build2
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd $srcdir/build1
+	ninja
+
+	cd $srcdir/build2
 	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver/build
+	cd $srcdir/build1
+	DESTDIR=$pkgdir ninja install
 
+	cd $srcdir/build2
 	DESTDIR=$pkgdir ninja install
 }

@@ -1,29 +1,42 @@
 pkgname=libsigc++
 pkgver=3.6.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Typesafe callback system for standard C++"
 arch=(x86_64)
 depends=(gcc)
 makedepends=(meson mm-common)
-source=(https://github.com/libsigcplusplus/libsigcplusplus/releases/download/3.6.0/libsigc++-3.6.0.tar.xz)
+source=(https://github.com/libsigcplusplus/libsigcplusplus/releases/download/$pkgver/libsigc++-$pkgver.tar.xz
+	https://github.com/libsigcplusplus/libsigcplusplus/releases/download/2.12.1/libsigc++-2.12.1.tar.xz)
 
 prepare() {
-	mkdir -p build && cd build
+	rm -rf build build2
+	mkdir -p build build2
 
+	cd $srcdir/build
 	meson \
-        --prefix=/usr \
-        --buildtype=release \
+	--prefix=/usr \
+	--buildtype=release \
+	../$pkgname-2.12.1
+
+	cd $srcdir/build2
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
 	../$pkgname-$pkgver
 }
 
 build() {
-	cd build
+	cd $srcdir/build
+	meson compile
 
+	cd $srcdir/build2
 	meson compile
 }
 
 package() {
-	cd build
+	cd $srcdir/build2
+	meson install --destdir $pkgdir
 
+	cd $srcdir/build
 	meson install --destdir $pkgdir
 }

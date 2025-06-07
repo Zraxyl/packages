@@ -1,40 +1,31 @@
 pkgname=protobuf
-pkgver=3.19.4
-pkgrel=1
+pkgver=31.0
+pkgrel=2
 arch=('x86_64')
-depends=(gcc glibc zlib)
+depends=(gcc glibc zlib abseil-cpp)
 makedepends=(python3-pip unzip)
-source=(https://github.com/protocolbuffers/$pkgname/releases/download/v$pkgver/$pkgname-all-$pkgver.tar.gz)
+source=(https://github.com/protocolbuffers/protobuf/releases/download/v${pkgver}/protobuf-${pkgver}.tar.gz)
 
 prepare() {
-	cd $pkgname-$pkgver
+	rm -rf build
+	mkdir -p build
+	cd build
 
 	pip install setuptools
 
-	autoreconf -fi
+	cmake \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D protobuf_ABSL_PROVIDER=package \
+	-D protobuf_BUILD_TESTS=OFF \
+	-W no-dev \
+	-S ../$pkgname-$pkgver
 }
 
 build() {
-	cd $pkgname-$pkgver
-
-	./configure	\
-	--prefix=/usr
-
-	make
-
-	cd python
-	python setup.py build --cpp_implementation
+	cmake --build build
 }
 
 package() {
-	cd $pkgname-$pkgver
-
-	make DESTDIR=$pkgdir install
-
-	cd python
-
-	python setup.py install --skip-build	\
-			--cpp_implementation	\
-			--optimize=1		\
-			--root="$pkgdir"
+	DESTDIR="$pkgdir" cmake --install build
 }

@@ -1,6 +1,6 @@
 pkgname=filesystem
 pkgver=2
-pkgrel=2
+pkgrel=4
 arch=('x86_64')
 depends=(iana-etc)
 backup=(etc/dircolors.sh
@@ -50,6 +50,7 @@ package() {
 	install -dv -m 1777 $pkgdir/tmp $pkgdir/var/tmp
 	mkdir -pv $pkgdir/usr/{,local/}{bin,include,lib,sbin,src}
 	ln -sf lib $pkgdir/usr/lib64
+	ln -sf /lib/firmware $pkgdir/usr/lib/firmware
 	mkdir -pv $pkgdir/usr/{,local/}share/{color,dict,doc,info,locale,man}
 	mkdir -v  $pkgdir/usr/{,local/}share/{misc,terminfo,zoneinfo}
 	mkdir -v  $pkgdir/usr/libexec

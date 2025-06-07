@@ -1,0 +1,21 @@
+pkgname=cowsay
+pkgver=3.8.4
+pkgrel=1
+arch=(x86_64)
+depends=(perl)
+makedepends=(base-devel)
+source=(https://github.com/cowsay-org/cowsay/archive/refs/tags/v$pkgver.zip)
+
+build() {
+	cd $pkgname-$pkgver
+
+	make prefix=/usr
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install prefix=/usr
+
+	rm -r $pkgdir/usr/etc
+}

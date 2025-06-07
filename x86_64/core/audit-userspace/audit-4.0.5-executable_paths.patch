@@ -1,0 +1,66 @@
+diff --git i/audisp/plugins/af_unix/af_unix.conf w/audisp/plugins/af_unix/af_unix.conf
+index fee180c2..233765a0 100644
+--- i/audisp/plugins/af_unix/af_unix.conf
++++ w/audisp/plugins/af_unix/af_unix.conf
+@@ -6,7 +6,7 @@
+ 
+ active = no
+ direction = out
+-path = /sbin/audisp-af_unix
++path = /usr/sbin/audisp-af_unix
+ type = always
+-args = 0640 /var/run/audispd_events string
++args = 0640 /run/audispd_events string
+ format = binary
+diff --git i/audisp/plugins/remote/au-remote.conf w/audisp/plugins/remote/au-remote.conf
+index d75e6b64..73814875 100644
+--- i/audisp/plugins/remote/au-remote.conf
++++ w/audisp/plugins/remote/au-remote.conf
+@@ -5,7 +5,7 @@
+ 
+ active = no
+ direction = out
+-path = /sbin/audisp-remote
++path = /usr/sbin/audisp-remote
+ type = always
+ #args =
+ format = string
+diff --git i/audisp/plugins/statsd/au-statsd.conf w/audisp/plugins/statsd/au-statsd.conf
+index a1fd4be3..3aa2174d 100644
+--- i/audisp/plugins/statsd/au-statsd.conf
++++ w/audisp/plugins/statsd/au-statsd.conf
+@@ -3,7 +3,7 @@
+ 
+ active = no
+ direction = out
+-path = /sbin/audisp-statsd
++path = /usr/sbin/audisp-statsd
+ type = always 
+ # args =
+ format = string
+diff --git i/audisp/plugins/syslog/syslog.conf w/audisp/plugins/syslog/syslog.conf
+index e8aebdfe..ab12489b 100644
+--- i/audisp/plugins/syslog/syslog.conf
++++ w/audisp/plugins/syslog/syslog.conf
+@@ -8,7 +8,7 @@
+ 
+ active = no
+ direction = out
+-path = /sbin/audisp-syslog
++path = /usr/sbin/audisp-syslog
+ type = always 
+ args = LOG_INFO
+ format = string
+diff --git i/audisp/plugins/zos-remote/audispd-zos-remote.conf w/audisp/plugins/zos-remote/audispd-zos-remote.conf
+index f1c0bbda..c53cd83d 100644
+--- i/audisp/plugins/zos-remote/audispd-zos-remote.conf
++++ w/audisp/plugins/zos-remote/audispd-zos-remote.conf
+@@ -8,7 +8,7 @@
+ 
+ active = no
+ direction = out
+-path = /sbin/audispd-zos-remote
++path = /usr/sbin/audispd-zos-remote
+ type = always 
+ args = /etc/audit/zos-remote.conf
+ format = string

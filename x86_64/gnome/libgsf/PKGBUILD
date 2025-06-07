@@ -1,0 +1,29 @@
+pkgname=libgsf
+pkgver=1.14.53
+pkgrel=1
+pkgdesc="Library used for providing an extensible input/output abstraction layer for structured file formats"
+arch=(x86_64)
+depends=(glib2 libxml2 gdk-pixbuf gtk-doc)
+makedepends=(base-devel)
+source=(https://download.gnome.org/sources/$pkgname/1.14/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

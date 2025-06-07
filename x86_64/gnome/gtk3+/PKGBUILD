@@ -1,7 +1,7 @@
 opkgname=gtk+
 pkgname=gtk3+
 pkgver=3.24.43
-pkgrel=3
+pkgrel=5
 pkgdesc="GObject-based multi-platform GUI toolkit"
 arch=('x86_64')
 install=gtk3.install
@@ -11,12 +11,14 @@ depends=(cairo libxcursor libxinerama libxrandr libxi libepoxy gdk-pixbuf
 	desktop-file-utils mesa cantarell-fonts colord rest cups
 	fribidi iso-codes ibus tracker)
 makedepends=(gobject-introspection gtk-doc git glib2 sassc meson
-	wayland-protocols python3-pygments docbook-xml docbook-xsl xmlto)
+	wayland-protocols python3-pygments docbook-xml docbook-xsl xmlto
+	clang)
 source=(https://download.gnome.org/sources/$opkgname/3.24/$opkgname-$pkgver.tar.xz
 	gtk-query-immodules-3.0.hook
 	la_support.tar.gz.patch)
 
 prepare() {
+	rm -rf build
 	mkdir -p build la_support
 	cp -f la_support.tar.gz.patch la_support.tar.gz
 
@@ -31,12 +33,12 @@ prepare() {
 	--sysconfdir=/etc \
 	-D x11_backend=true \
 	-D wayland_backend=true \
-	-D quartz_backend=true \
 	-D broadway_backend=true \
 	-D tracker3=true \
+	-D introspection=true \
 	-D colord=yes \
 	-D man=true \
-	-D gtk_doc=true \
+	-D gtk_doc=false \
 	../$opkgname-$pkgver
 }
 

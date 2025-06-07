@@ -1,5 +1,5 @@
 pkgname=abseil-cpp
-pkgver=20240722.0
+pkgver=20250512.0
 pkgrel=1
 arch=('x86_64')
 depends=('glibc' 'gcc')
@@ -15,6 +15,7 @@ build() {
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_CXX_STANDARD=17 \
 	-D BUILD_SHARED_LIBS=ON \
+	-D ABSL_BUILD_TESTING=OFF \
 	-D CMAKE_POSITION_INDEPENDENT_CODE=ON
 
 	cd build
