@@ -1,10 +1,11 @@
 pkgname=libssh
-pkgver=0.9.6
+pkgver=0.11.1
 pkgrel=1
+pkgdesc="Library for accessing ssh client services through C libraries"
 arch=('x86_64')
-depends=('zlib' 'openssl')
+depends=('zlib' 'openssl' 'glibc')
 makedepends=('cmake' 'cmocka' 'doxygen' 'python3' 'openssh')
-source=("https://www.libssh.org/files/0.9/$pkgname-$pkgver.tar.xz")
+source=("https://www.libssh.org/files/0.11/$pkgname-$pkgver.tar.xz")
 
 prepare() {
 	  mkdir -p build
@@ -14,9 +15,9 @@ build() {
 	cd build
 
 	cmake ../$pkgname-$pkgver \
-	-DCMAKE_INSTALL_PREFIX=/usr \
-	-DWITH_GSSAPI=OFF \
-	-DUNIT_TESTING=ON
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D WITH_GSSAPI=OFF \
+	-D UNIT_TESTING=ON
 
 	make
 }

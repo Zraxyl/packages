@@ -1,0 +1,58 @@
+pkgname=freerdp
+pkgver=3.15.0
+pkgrel=2
+pkgdesc="FreeRDP package contains libraries and utilities for utilizing the Remote Desktop Protocol"
+arch=(x86_64)
+depends=(ffmpeg icu cairo fuse3 json-c krb5 libusb
+	libxkbcommon wayland cups fdk-aac lame linux-pam pulseaudio
+	gsm pcsc-lite alsa-lib icu libjpeg openjpeg
+
+	libx11 libxcursor libxext libxdamage libxfixes libxkbcommon libxi
+	libxinerama libxkbfile libxrandr libxrender libxtst
+)
+makedepends=(docbook-xsl docbook-xml base-devel xorgproto e2fsprogs)
+source=(https://github.com/freerdp/freerdp/archive/$pkgver/FreeRDP-$pkgver.tar.gz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	cmake -D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_SKIP_INSTALL_RPATH=ON \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D WITH_CAIRO=ON \
+	-D WITH_CLIENT_SDL=OFF \
+	-D WITH_DSP_FFMPEG=ON \
+	-D WITH_FFMPEG=ON \
+	-D WITH_PCSC=ON \
+	-D WITH_WAYLAND=ON \
+	-D WITH_CUPS=ON \
+	-D WITH_PULSE=ON \
+	-D WITH_JPEG=ON \
+	-D WITH_X11=ON \
+	-D WITH_FUSE=ON \
+	-D WITH_ALSA=ON \
+	-D WITH_ICU=ON \
+	-D WITH_CHANNELS=ON \
+	-D WITH_CLIENT_CHANNELS=ON \
+	-D WITH_SERVER=ON \
+	-D WITH_SERVER_CHANNELS=ON \
+	-D WITH_SYSTEMD=ON \
+	-D DOCBOOKXSL_DIR=/usr/share/xml/docbook/xsl-stylesheets-1.79.2 \
+	-W no-dev \
+	-G Ninja \
+	../FreeRDP-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

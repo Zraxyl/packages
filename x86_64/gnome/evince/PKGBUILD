@@ -1,0 +1,41 @@
+pkgname=evince
+pkgver=48.0
+pkgrel=1
+pkgdesc="Document viewer for multiple document formats"
+arch=(x86_64)
+depends=(adwaita-icon-theme gtk4+ gsettings-desktop-schemas libhandy libxml2 openjpeg
+	gnome-keyring glib2 libarchive libsecret poppler cups gnome-desktop gst-plugins-base
+	libtiff texlive)
+makedepends=(itstool vala gtk-doc python3-pip gi-docgen gobject-introspection
+	python3-pygments clang)
+source=(https://download.gnome.org/sources/$pkgname/48/$pkgname-$pkgver.tar.xz)
+
+prepare() {
+	pip3 install setuptools
+	pip3 install jinja2 topography typogrify toml
+	pip3 install markdown markupsafe packaging
+
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	CC=clang \
+	CXX=clang++ \
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

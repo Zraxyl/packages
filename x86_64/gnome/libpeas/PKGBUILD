@@ -1,14 +1,26 @@
 pkgname=libpeas
 pkgver=2.0.7
-pkgrel=1
+pkgrel=2
 arch=(x86_64)
 depends=(gobject-introspection gtk3+ libxml2 python3-gobject vala gjs lua)
 makedepends=(gtk-doc)
-source=(https://download.gnome.org/sources/$pkgname/2.0/$pkgname-$pkgver.tar.xz)
+source=(https://download.gnome.org/sources/$pkgname/2.0/$pkgname-$pkgver.tar.xz
+	https://download.gnome.org/sources/$pkgname/1.36/$pkgname-1.36.0.tar.xz)
 
 prepare() {
-	mkdir -p build && cd build
+	rm -rf build1 build2
+	mkdir -p build1 build2
 
+	cd $srcdir/build1
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	--wrap-mode=nofallback \
+	-D vapi=true \
+	-D lua51=false \
+	../$pkgname-1.36.0
+
+	cd $srcdir/build2
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
@@ -19,13 +31,17 @@ prepare() {
 }
 
 build() {
-	cd build
+	cd $srcdir/build1
+	ninja
 
+	cd $srcdir/build2
 	ninja
 }
 
 package() {
-	cd build
+	cd $srcdir/build1
+	DESTDIR=$pkgdir ninja install
 
+	cd $srcdir/build2
 	DESTDIR=$pkgdir ninja install
 }

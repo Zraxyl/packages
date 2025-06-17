@@ -1,0 +1,32 @@
+pkgname=gnome-weather
+pkgver=48.0
+pkgrel=1
+pkgdesc="GNOME Weather is a small application that allows you to monitor the current weather conditions for your city, or anywhere in the world, and to access updated forecasts provided by various internet services."
+arch=(x86_64)
+depends=(geoclue gjs libadwaita libgweather appstream-glib)
+makedepends=(base-devel docbook-xml docbook-xsl)
+source=(https://download.gnome.org/sources/gnome-weather/48/gnome-weather-$pkgver.tar.xz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

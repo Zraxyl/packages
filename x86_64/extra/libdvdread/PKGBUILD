@@ -1,0 +1,23 @@
+pkgname=libdvdread
+pkgver=6.1.3
+pkgrel=1
+pkgdesc="library which provides a simple foundation for reading DVDs"
+arch=(x86_64)
+depends=(glibc)
+makedepends=(base-devel)
+source=(https://get.videolan.org/libdvdread/$pkgver/libdvdread-$pkgver.tar.bz2)
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure \
+	--prefix=/usr
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

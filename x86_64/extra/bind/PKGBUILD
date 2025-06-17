@@ -1,0 +1,62 @@
+pkgname=bind
+pkgver=9.20.9
+pkgrel=1
+pkgdesc="A complete, highly portable implementation of the DNS protocol"
+arch=(x86_64)
+depends=(bash e2fsprogs glibc icu libedit json-c krb5 libcap libidn2 libnsl
+	libuv libxml2 lmdb openssl readline xz zlib nghttp2 userspace-rcu)
+makedepends=(base-devel)
+source=(https://ftp.isc.org/isc/bind9/$pkgver/bind-$pkgver.tar.xz
+	'tmpfiles.conf'
+        'sysusers.conf'
+        'named.conf'
+        'named.service'
+        'localhost.zone'
+        'localhost.ip6.zone'
+        '127.0.0.zone')
+backup=('etc/named.conf'
+        'var/named/127.0.0.zone'
+        'var/named/localhost.zone'
+        'var/named/localhost.ip6.zone')
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--enable-fixed-rrset \
+	--enable-full-report \
+	--with-openssl \
+	--with-libidn2 \
+	--with-json-c \
+	--with-libxml2 \
+	--with-lmdb
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+
+	cd "$srcdir"
+	install -D -m644 tmpfiles.conf "$pkgdir/usr/lib/tmpfiles.d/$pkgname.conf"
+	install -D -m644 sysusers.conf "$pkgdir/usr/lib/sysusers.d/$pkgname.conf"
+
+	install -D -m644 named.service "$pkgdir/usr/lib/systemd/system/named.service"
+	install -D -m640 -o 0 -g 40 named.conf "$pkgdir/etc/named.conf"
+
+	install -d -m770 -o 0 -g 40 "$pkgdir/var/named"
+	install -m640 -o 0 -g 40 localhost.zone "$pkgdir/var/named"
+	install -m640 -o 0 -g 40 localhost.ip6.zone "$pkgdir/var/named"
+	install -m640 -o 0 -g 40 127.0.0.zone "$pkgdir/var/named"
+}

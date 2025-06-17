@@ -1,0 +1,40 @@
+pkgname=nmap
+pkgver=7.97
+pkgrel=1
+pkgdesc="Nmap is a utility for network exploration and security auditing. It supports ping scanning, port scanning and TCP/IP fingerprinting."
+arch=(x86_64)
+depends=(glibc libpcap libssh2 libssh lua openssl pcre pcre2 zlib
+	python3 python3-gobject)
+makedepends=(base-devel python3-pip)
+source=(https://nmap.org/dist/nmap-$pkgver.tar.bz2)
+
+prepare() {
+	cd $pkgname-$pkgver
+
+	rm -rf liblua libpcap libpcre macosx mwin32 libssh2 libz
+
+	#autoreconf -fvi
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--with-libpcap=/usr \
+	--with-libpcre=/usr \
+	--with-zlib=/usr \
+	--with-libssh=/usr \
+	--with-liblua=/usr \
+	--without-ndiff \
+	--without-zenmap
+}
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}

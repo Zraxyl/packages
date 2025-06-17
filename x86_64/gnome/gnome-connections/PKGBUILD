@@ -1,0 +1,32 @@
+pkgname=gnome-connections
+pkgver=48.0
+pkgrel=1
+pkgdesc="VNC and RDP client for the GNOME Desktop"
+arch=(x86_64)
+depends=(appstream freerdp gtk-vnc libhandy libsecret gtk4+)
+makedepends=(itstool vala gobject-introspection base-devel)
+source=(https://download.gnome.org/sources/gnome-connections/48/gnome-connections-$pkgver.tar.xz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

@@ -1,0 +1,32 @@
+pkgname=gnome-power-manager
+pkgver=43.0
+pkgrel=1
+pkgdesc="GNOME Power Manager package contains a tool used to report on power management on the system"
+arch=(x86_64)
+depends=(gtk3+ upower appstream-glib)
+makedepends=(docbook-xml docbook-xsl base-devel)
+source=(https://download.gnome.org/sources/gnome-power-manager/43/gnome-power-manager-$pkgver.tar.xz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

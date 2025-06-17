@@ -1,6 +1,6 @@
 pkgname=ffmpeg
 pkgver=7.1
-pkgrel=2
+pkgrel=3
 pkgdesc="FFmpeg is a free and open-source software project consisting of a suite of libraries and programs for handling video, audio, and other multimedia files and streams"
 arch=('x86_64')
 depends=(fdk-aac freetype2 lame libtheora
@@ -9,7 +9,7 @@ depends=(fdk-aac freetype2 lame libtheora
     jack2 libdrm libglvnd pulseaudio libva v4l-utils
     libxext sdl2 opencl-icd-loader libaom bzip2 fontconfig
     gsm pipewire libbluray libjxl librsvg libsndfile
-    dav1d)
+    dav1d xvidcore)
 makedepends=(nasm yasm clang vulkan-headers opencl-headers)
 source=(https://ffmpeg.org/releases/ffmpeg-$pkgver.tar.xz
     chromium-av_stream_get_first_dts.patch)

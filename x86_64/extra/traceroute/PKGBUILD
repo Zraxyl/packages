@@ -1,0 +1,22 @@
+pkgname=traceroute
+pkgver=2.1.6
+pkgrel=1
+pkgdesc="Traceroute package contains a program which is used to display the network route that packets take to reach a specified host"
+arch=(x86_64)
+depends=(glibc)
+makedepends=(base-devel)
+source=(https://downloads.sourceforge.net/traceroute/traceroute-$pkgver.tar.gz)
+
+build() {
+	cd $pkgname-$pkgver
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make prefix=/usr DESTDIR=$pkgdir install
+
+	ln -sv -f traceroute $pkgdir/usr/bin/traceroute6
+}

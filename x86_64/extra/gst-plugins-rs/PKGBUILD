@@ -1,0 +1,27 @@
+pkgname=gst-plugins-rs
+pkgver=1.24.10
+pkgrel=1
+pkgdesc="GStreamer plugins written in Rust."
+arch=(x86_64)
+depends=(gtk4+ gstreamer gst-plugins-base)
+makedepends=(rust cargo-c cbindgen)
+source=(https://gitlab.freedesktop.org/gstreamer/$pkgname/-/archive/gstreamer-$pkgver/$pkgname-gstreamer-$pkgver.tar.gz)
+
+#
+# Currently we will only compile certain libs from here ( as we dont have all the needed libs for full package )
+#
+
+build() {
+	cd $pkgname-gstreamer-$pkgver
+
+	# libgstgtk4
+	cd video/gtk4
+	cargo build --release
+}
+
+package() {
+	cd $pkgname-gstreamer-$pkgver
+
+	mkdir -p $pkgdir/usr/lib/gstreamer-1.0
+	install -vm755 target/release/libgstgtk4.so $pkgdir/usr/lib/gstreamer-1.0
+}

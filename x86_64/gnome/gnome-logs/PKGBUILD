@@ -1,0 +1,33 @@
+pkgname=gnome-logs
+pkgver=45.0
+pkgrel=1
+pkgdesc="GNOME Logs package contains a log viewer for the systemd journal"
+arch=(x86_64)
+depends=(gtk4+ gsettings-desktop-schemas libadwaita desktop-file-utils libxslt
+	appstream-glib)
+makedepends=(itstool docbook-xml docbook-xsl)
+source=(https://download.gnome.org/sources/gnome-logs/45/gnome-logs-$pkgver.tar.xz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

@@ -1,0 +1,32 @@
+pkgname=gnome-color-manager
+pkgver=3.36.2
+pkgrel=1
+pkgdesc="GNOME Color Manager is a session framework for the GNOME desktop environment that makes it easy to manage, install and generate color profiles"
+arch=(x86_64)
+depends=(colord gtk4+ lcms desktop-file-utils)
+makedepends=(gtk-doc itstool docbook-xsl docbook-xml)
+source=(https://download.gnome.org/sources/gnome-color-manager/3.36/gnome-color-manager-$pkgver.tar.xz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

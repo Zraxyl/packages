@@ -1,0 +1,38 @@
+pkgname=gtk-vnc
+pkgver=1.5.0
+pkgrel=1
+pkgdesc="The Gtk VNC package contains a VNC viewer widget for GTK+"
+arch=(x86_64)
+depends=(gnutls sasl2 gtk4+ libgcrypt glib2 pulseaudio)
+makedepends=(vala)
+source=(https://download.gnome.org/sources/gtk-vnc/1.5/gtk-vnc-$pkgver.tar.xz
+	001.patch::https://gitlab.gnome.org/GNOME/gtk-vnc/-/commit/d2dfbe92e294870fc84189df7158a75f58fdd6e6.patch)
+
+prepare() {
+	patch -p1 -i $srcdir/001.patch -d $pkgname-$pkgver
+
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	CC=clang \
+	CXX=clang++ \
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	--wrap-mode=nofallback \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

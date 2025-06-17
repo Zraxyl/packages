@@ -1,5 +1,5 @@
 pkgname=base-minimal
-pkgver=2024.4
+pkgver=2025
 pkgrel=1
 pkgdesc="Base minimal metapckage alike pkg to give user/dev needed CLI-System"
 arch=('x86_64')

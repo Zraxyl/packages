@@ -1,21 +1,27 @@
 pkgname=base-desktop-gnome
-pkgver=2023.4
+pkgver=2025
 pkgrel=1
+pkgdesc="Metapackage for basic GNOME Desktop"
 arch=('x86_64')
 depends=(
 	# Login ( suggest sddm as wayland can be launched here + theming )
-	sddm gdm
+	gdm
 
 	# Framework + desktop
 	gtk2+ gtk3+ gtk4+
-	gnome-backgrounds gvfs gexiv2 nautilus gnome-bluetooth gnome-keyring gnome-settings-daemon
-	gnome-control-center mutter gnome-shell gnome-shell-extensions gnome-session
+	dconf gnome-backgrounds gvfs gexiv2 gnome-bluetooth
+	gnome-keyring gnome-settings-daemon tecla gnome-control-center
+	mutter gnome-shell gnome-shell-extensions gnome-session gnome-tweaks
 
 	# Applications
-	nautilus
+	nautilus baobab brasero evince eog
+	file-roller gnome-calculator gnome-color-manager
+	gnome-connections gnome-disk-utility gnome-logs
+	gnome-maps gnome-system-monitor gnome-weather seahorse
+	snapshot firefox
 
 	# Other
-	powerdevil upower wireplumber)
+	powerdevil upower wireplumber xdg-desktop-portal-gnome)
 
 build() {
 	echo "[*]: Its a metapackage"

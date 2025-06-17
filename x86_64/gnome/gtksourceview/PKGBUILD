@@ -1,25 +1,42 @@
 pkgname=gtksourceview
-pkgver=4.8.2
+pkgver=5.16.0
 pkgrel=1
+pkgdesc="Library used for extending the GTK text functions to include syntax highlighting"
 arch=('x86_64')
-depends=('gtk+' 'gobject-introspection' 'libxml2')
-source=(https://download.gnome.org/sources/$pkgname/4.8/$pkgname-$pkgver.tar.xz)
+depends=('gtk4+' 'libxml2' 'pcre2' 'vulkan-icd-loader')
+makedepends=(gobject-introspection vala gi-docgen)
+source=(https://download.gnome.org/sources/$pkgname/5.16/$pkgname-$pkgver.tar.xz
+	https://download.gnome.org/sources/$pkgname/4.8/$pkgname-4.8.4.tar.xz)
+
+prepare() {
+	rm -rf build1 build2
+	mkdir -p build1 build2
+
+	cd $srcdir/build1
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	../$pkgname-4.8.4
+
+	cd $srcdir/build2
+	meson \
+	--prefix=/usr \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
 
 build() {
-	cd $pkgname-$pkgver
+	cd $srcdir/build1
+	ninja
 
-	mkdir build && cd build
-
-	meson			\
-	--prefix=/usr		\
-	--buildtype=release	\
-	..
-
+	cd $srcdir/build2
 	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver/build
+	cd $srcdir/build1
+	DESTDIR=$pkgdir ninja install
 
+	cd $srcdir/build2
 	DESTDIR=$pkgdir ninja install
 }

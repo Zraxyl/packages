@@ -1,0 +1,33 @@
+pkgname=snapshot
+pkgver=48.0.1
+pkgrel=1
+pkgdesc="The Snapshot package contains a program that takes pictures and videos from a Webcam."
+arch=(x86_64)
+depends=(libadwaita gst-plugins-bad gst-plugins-rs pipewire
+	xdg-desktop-portal-gnome xdg-user-dirs)
+makedepends=(rust)
+source=(https://download.gnome.org/sources/snapshot/48/snapshot-$pkgver.tar.xz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

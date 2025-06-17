@@ -1,0 +1,33 @@
+pkgname=gnome-maps
+pkgver=48.3
+pkgrel=1
+pkgdesc="GNOME Maps is a map application for GNOME"
+arch=(x86_64)
+depends=(desktop-file-utils geoclue geocode-glib gjs libadwaita libportal libshumate
+	libgweather rest)
+makedepends=(itstool docbook-xml docbook-xsl base-devel)
+source=(https://download.gnome.org/sources/gnome-maps/48/gnome-maps-$pkgver.tar.xz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

@@ -1,0 +1,31 @@
+pkgname=iputils
+pkgver=20250605
+pkgrel=1
+pkgdesc="Network monitoring tools, including ping"
+arch=(x86_64)
+depends=(glibc libcap libidn2)
+makedepends=(base-devel iproute2 systemd)
+source=(https://github.com/iputils/iputils/releases/download/$pkgver/iputils-$pkgver.tar.xz)
+prepare() {
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

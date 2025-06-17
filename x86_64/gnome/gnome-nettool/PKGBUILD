@@ -1,0 +1,37 @@
+pkgname=gnome-nettool
+pkgver=42.0
+pkgrel=1
+pkgdesc="Graphical interface for various networking tools"
+arch=(x86_64)
+depends=(gtk3+ libgtop bind nmap net-tools traceroute)
+makedepends=(base-devel itstool docbook-xml docbook-xsl)
+source=(https://download.gnome.org/sources/gnome-nettool/42/gnome-nettool-$pkgver.tar.xz
+	001.patch::https://www.linuxfromscratch.org/patches/blfs/svn/gnome-nettool-42.0-ping_and_netstat_fixes-1.patch
+	002.patch::https://gitlab.archlinux.org/archlinux/packaging/packages/gnome-nettool/-/raw/main/fix-build.diff)
+
+prepare() {
+	patch -p1 -i $srcdir/001.patch -d $pkgname-$pkgver
+	patch -p1 -i $srcdir/002.patch -d $pkgname-$pkgver
+
+	rm -rf build
+	mkdir -p build
+	cd build
+
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

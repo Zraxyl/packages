@@ -6,14 +6,26 @@ depends=()
 makedepends=()
 source=()
 
-build() {
-	cd $pkgname-$pkgver
+prepare() {
+	rm -rf build
+	mkdir -p build
+	cd build
 
-	
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--buildtype=release \
+	../$pkgname-$pkgver
+}
+
+build() {
+	cd build
+
+	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver
+	cd build
 
-	
+	DESTDIR=$pkgdir ninja install
 }

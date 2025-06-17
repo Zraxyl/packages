@@ -1,16 +1,15 @@
 pkgname=httpd
-pkgver=2.4.53
+pkgver=2.4.63
 pkgrel=1
 arch=(x86_64)
 depends=(zlib apr-util pcre nghttp2 openssl lua libxml2 curl jansson brotli lynx perl)
 makedepends=(libxml2 lua curl brotli jansson)
 options=(emptydirs)
 source=(https://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2
-	https://github.com/archlinux/svntogit-packages/raw/packages/apache/trunk/openssl-malloc-init.patch
 	apache.tmpfiles.conf
 	httpd.service
 	httpd.sysusers	
-	drunk.layout)
+	zraxyl.layout)
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -20,7 +19,7 @@ prepare() {
 	-e 's#Group daemon#Group http#' \
 	-i docs/conf/httpd.conf.in
 
-	cat "${srcdir}/drunk.layout" >> config.layout
+	cat "${srcdir}/zraxyl.layout" >> config.layout
 
 	# https://github.com/openssl/openssl/issues/2865
 	patch -Np1 -i ../openssl-malloc-init.patch

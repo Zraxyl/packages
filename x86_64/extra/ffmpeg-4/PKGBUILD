@@ -1,6 +1,6 @@
 pkgname=ffmpeg-4
 pkgver=4.4.5
-pkgrel=1
+pkgrel=2
 pkgdesc="FFmpeg is a free and open-source software project consisting of a suite of libraries and programs for handling video, audio, and other multimedia files and streams"
 arch=('x86_64')
 depends=(fdk-aac freetype2 lame libtheora
