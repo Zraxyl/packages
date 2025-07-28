@@ -1,0 +1,20 @@
+pkgname=xfce4-taskmanager
+pkgver=1.6.0
+xver=1.6
+pkgrel=1
+arch=('x86_64')
+url="https://docs.xfce.org/apps/xfce4-taskmanager/start"
+depends=('gtk3' 'libgtop' 'libxfce4ui')
+makedepends=('meson' 'ninja' 'gettext' 'pkgconf')
+source=("https://archive.xfce.org/src/apps/$pkgname/$xver/$pkgname-$pkgver.tar.xz")
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  meson setup build --prefix=/usr
+  meson compile -C build
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  DESTDIR="$pkgdir" meson install -C build
+}

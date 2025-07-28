@@ -1,0 +1,21 @@
+pkgname=xfce4-systemload-plugin
+pkgver=1.4.0
+xver=1.4
+pkgrel=1
+pkgdesc="Plugin to monitor CPU, RAM, and swap usage for the Xfce panel"
+arch=('x86_64')
+url="https://docs.xfce.org/panel-plugins/xfce4-systemload-plugin/start"
+depends=('gtk3' 'libxfce4ui' 'xfce4-panel')
+makedepends=('meson' 'ninja' 'pkgconf' 'gettext')
+source=("https://archive.xfce.org/src/panel-plugins/$pkgname/$xver/$pkgname-$pkgver.tar.xz")
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  meson setup build --prefix=/usr
+  meson compile -C build
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  DESTDIR="$pkgdir" meson install -C build
+}
