@@ -1,0 +1,15 @@
+pkgname=wallpapers-zraxyl
+pkgver=1.0
+pkgrel=1
+pkgdesc="A wallpaper collection from Zraxyl's GitHub repository"
+arch=('x86_64')
+url="https://github.com/Zraxyl/wallpapers"
+license=('MIT')
+depends=()
+makedepends=('git')
+source=("git+https://github.com/Zraxyl/wallpapers.git")
+
+package() {
+  install -d "$pkgdir/usr/share/backgrounds/wallpapers-zraxyl"
+  cp -r "$srcdir/wallpapers/"* "$pkgdir/usr/share/backgrounds/wallpapers-zraxyl/"
+}

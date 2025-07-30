@@ -13,7 +13,7 @@ package() {
     cd "$srcdir/zraxyl-theme-main/share/icons"
 
     install -d "$pkgdir/usr/share/icons"
-    cp -r share/icons/Reversal-cyan{,-dark} "$pkgdir/usr/share/icons/"
+    cp -r Reversal-cyan{,-dark} "$pkgdir/usr/share/icons/"
 
     # Install apply script
     install -Dm755 "$srcdir/zraxyl-icon-apply" "$pkgdir/usr/bin/zraxyl-icon-apply"
