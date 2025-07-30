@@ -1,0 +1,24 @@
+pkgname=zraxyl-icon-theme
+pkgver=1.0
+pkgrel=1
+pkgdesc="ZraxyL Icon Theme - Reversal Cyan (dark and light)"
+arch=('any')
+url="https://github.com/Zraxyl/zraxyl-theme"
+depends=()
+source=("$pkgname-$pkgver.zip::$url/archive/refs/heads/main.zip"
+        "zraxyl-icon-apply"
+        "zraxyl-icon-autostart.desktop")
+
+package() {
+    cd "$srcdir/zraxyl-theme-main/share/icons"
+
+    install -d "$pkgdir/usr/share/icons"
+    cp -r share/icons/Reversal-cyan{,-dark} "$pkgdir/usr/share/icons/"
+
+    # Install apply script
+    install -Dm755 "$srcdir/zraxyl-icon-apply" "$pkgdir/usr/bin/zraxyl-icon-apply"
+
+    # Install autostart entry
+    install -d "$pkgdir/etc/xdg/autostart"
+    install -Dm644 "$srcdir/zraxyl-icon-autostart.desktop" "$pkgdir/etc/xdg/autostart/zraxyl-icon-autostart.desktop"
+}

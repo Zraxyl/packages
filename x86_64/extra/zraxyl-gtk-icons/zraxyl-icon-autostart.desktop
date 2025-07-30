@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=zraxyl-icon-apply
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Apply ZraxyL Icon Theme
+Comment=Applies ZraxyL Reversal-Cyan-Dark icon theme at first login
