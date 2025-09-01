@@ -1,0 +1,21 @@
+pkgname=xfce4-whiskermenu-plugin
+pkgver=2.10.0
+xver=2.10
+pkgrel=1
+arch=('x86_64')
+depends=('accountsservice' 'garcon' 'gtk3' 'gtk-layer-shell' 'xfce4-panel')
+makedepends=('meson' 'ninja')
+source=("https://archive.xfce.org/src/panel-plugins/$pkgname/$xver/$pkgname-$pkgver.tar.xz")
+
+build() {
+        meson $pkgname-$pkgver build \
+        --prefix=/usr \
+        -D default_library=shared
+
+        ninja -C build
+        meson compile -C build
+}
+
+package() {
+  DESTDIR="$pkgdir" meson install -C build
+}

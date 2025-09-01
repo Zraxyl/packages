@@ -1,0 +1,22 @@
+pkgname=xfce4-battery-plugin
+pkgver=1.2.0
+xver=1.2
+pkgrel=1
+arch=('x86_64')
+url="https://docs.xfce.org/panel-plugins/xfce4-battery-plugin/start"
+depends=('xfce4-panel' 'gtk3' 'upower')
+makedepends=('pkgconf' 'intltool' 'gettext' 'meson' 'ninja')
+source=("https://archive.xfce.org/src/panel-plugins/$pkgname/$xver/$pkgname-$pkgver.tar.xz")
+
+build() {
+        meson $pkgname-$pkgver build \
+        --prefix=/usr \
+        -D default_library=shared
+
+        ninja -C build
+        meson compile -C build
+}
+
+package() {
+  DESTDIR="$pkgdir" meson install -C build
+}

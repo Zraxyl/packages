@@ -1,0 +1,22 @@
+pkgname=zraxyl-gtk-theme
+pkgver=1.0
+pkgrel=1
+pkgdesc="ZraxyL-Dark - A dark GTK and window manager theme for the Zraxyl Linux distro"
+arch=('x86_64')
+url="https://github.com/Zraxyl/zraxyl-theme"
+depends=('gtk3')
+source=("https://github.com/Zraxyl/zraxyl-theme/archive/refs/heads/main.zip"
+        "zraxyl-theme-apply"
+        "zraxyl-theme-autostart.desktop"
+)
+
+package() {
+  cd "$srcdir/zraxyl-theme-main/share/themes/"
+  # Install theme
+  install -d "$pkgdir/usr/share/themes"
+  cp -r "$srcdir/zraxyl-theme-main/share/themes/ZraxyL-Dark" "$pkgdir/usr/share/themes/"
+
+install -Dm755 "$srcdir/zraxyl-theme-apply" "$pkgdir/usr/bin/zraxyl-theme-apply"
+install -Dm644 "$srcdir/zraxyl-theme-autostart.desktop" "$pkgdir/etc/xdg/autostart/zraxyl-theme-autostart.desktop"
+
+}

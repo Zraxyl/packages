@@ -1,0 +1,23 @@
+#!/bin/bash
+
+GTK_THEME="ZraxyL-Dark"
+AUTOSTART_FILE="$HOME/.config/autostart/zraxyl-theme-autostart.desktop"
+
+echo ">> Applying ZraxyL GTK theme: $GTK_THEME"
+
+if [[ $XDG_CURRENT_DESKTOP == *XFCE* ]]; then
+    xfconf-query -c xsettings -p /Net/ThemeName -s "$GTK_THEME"
+elif [[ $XDG_CURRENT_DESKTOP == *GNOME* ]]; then
+    gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME"
+elif [[ $XDG_CURRENT_DESKTOP == *KDE* || $XDG_CURRENT_DESKTOP == *PLASMA* ]]; then
+    lookandfeeltool -a org.kde.breeze.desktop 2>/dev/null
+    kwriteconfig5 --file kdeglobals --group General --key ColorScheme "$GTK_THEME"
+    qdbus org.kde.KWin /KWin reconfigure
+else
+    echo ">> Unsupported desktop environment. Please apply GTK theme manually."
+    exit 0
+fi
+
+# Clean up autostart
+[[ -f "$AUTOSTART_FILE" ]] && rm "$AUTOSTART_FILE"
+echo ">> ZraxyL GTK theme applied."

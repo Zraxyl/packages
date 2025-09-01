@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=sh -c 'sleep 5 && zraxyl-theme-apply'
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Apply ZraxyL GTK Theme
+Comment=Applies the ZraxyL GTK theme at login

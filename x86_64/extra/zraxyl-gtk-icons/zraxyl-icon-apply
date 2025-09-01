@@ -1,0 +1,23 @@
+#!/bin/bash
+
+ICON_THEME="Reversal-cyan-dark"
+AUTOSTART_FILE="$HOME/.config/autostart/zraxyl-icon-autostart.desktop"
+
+echo ">> Applying ZraxyL icon theme: $ICON_THEME"
+
+if [[ $XDG_CURRENT_DESKTOP == *XFCE* ]]; then
+    xfconf-query -c xsettings -p /Net/IconThemeName -s "$ICON_THEME"
+elif [[ $XDG_CURRENT_DESKTOP == *GNOME* ]]; then
+    gsettings set org.gnome.desktop.interface icon-theme "$ICON_THEME"
+elif [[ $XDG_CURRENT_DESKTOP == *KDE* || $XDG_CURRENT_DESKTOP == *PLASMA* ]]; then
+    lookandfeeltool -a org.kde.breeze.desktop 2>/dev/null
+    kwriteconfig5 --file kdeglobals --group Icons --key Theme "$ICON_THEME"
+    qdbus org.kde.KWin /KWin reconfigure
+else
+    echo ">> Unsupported desktop environment. Please apply icon theme manually."
+    exit 0
+fi
+
+# Remove autostart entry after applying
+[[ -f "$AUTOSTART_FILE" ]] && rm "$AUTOSTART_FILE"
+echo ">> ZraxyL icon theme applied."

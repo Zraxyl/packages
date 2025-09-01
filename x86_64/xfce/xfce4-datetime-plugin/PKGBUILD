@@ -1,0 +1,26 @@
+pkgname=xfce4-datetime-plugin
+pkgver=0.8.3
+xver=
+pkgrel=1
+pkgdesc="Date and time plugin for the Xfce panel"
+arch=('x86_64')
+url="https://docs.xfce.org/panel-plugins/xfce4-datetime-plugin/start"
+depends=('gtk3' 'libxfce4ui' 'xfce4-panel')
+makedepends=('meson' 'ninja' 'pkgconf' 'gettext')
+source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+build() {
+	cd $pkgname-$pkgver
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
+
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+
+	make DESTDIR=$pkgdir install
+}
