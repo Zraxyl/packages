@@ -3,6 +3,7 @@ pkgdesc="DirectX headers for using D3D12"
 pkgver=1.608.0
 pkgrel=1
 arch=('x86_64')
+depends=(directx-headers)
 makedepends=('meson')
 source=(https://github.com/microsoft/DirectX-Headers/archive/refs/tags/v$pkgver.tar.gz)
 

@@ -1,16 +1,16 @@
 pkgname=glslang
-pkgver=15.0.0
-stools=2024.3
-sheaders=1.3.290.0
+pkgver=15.4.0
+#stools=2024.3
+#sheaders=1.3.290.0
 pkgrel=1
 pkgdesc='OpenGL and OpenGL ES shader front end and validator'
 arch=('x86_64')
 depends=('gcc' 'llvm' 'clang' 'spirv-tools')
 makedepends=('cmake' 'ninja' 'git' 'python3' 'spirv-headers')
 # Get the commits from known_good.json for every release
-source=(${pkgname}-${pkgver}.tar.gz::https://github.com/KhronosGroup/glslang/archive/${pkgver}.tar.gz
-	SPIRV-Tools.tar.gz::https://github.com/KhronosGroup/SPIRV-Tools/archive/refs/tags/v$stools.tar.gz
-	SPIRV-Headers.tar.gz::https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/vulkan-sdk-$sheaders.tar.gz)
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/KhronosGroup/glslang/archive/${pkgver}.tar.gz)
+	#SPIRV-Tools.tar.gz::https://github.com/KhronosGroup/SPIRV-Tools/archive/refs/tags/v$stools.tar.gz
+	#SPIRV-Headers.tar.gz::https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/vulkan-sdk-$sheaders.tar.gz)
 
 #
 # Spirv headers + tools are included here

@@ -3,7 +3,7 @@ pkgname=lib32-$_pkgbasename
 pkgver=5.2.1
 pkgrel=1
 arch=('x86_64')
-depends=($_pkgbasename)
+depends=(giflib)
 makedepends=('xmlto' 'docbook-xsl' 'docbook-xml')
 source=(https://downloads.sourceforge.net/project/giflib/${_pkgbasename}-${pkgver}.tar.gz
         giflib-5.1.9-fix-missing-quantize-API-symbols.patch

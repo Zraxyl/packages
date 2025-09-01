@@ -4,7 +4,7 @@ pkgver=1.1.4
 pkgrel=2
 arch=(x86_64)
 url="https://xorg.freedesktop.org/"
-depends=('lib32-libxext' $_pkgbasename)
+depends=('lib32-libxext' libxinerama)
 makedepends=('util-macros')
 source=(${url}/releases/individual/lib/libXinerama-${pkgver}.tar.bz2)
 

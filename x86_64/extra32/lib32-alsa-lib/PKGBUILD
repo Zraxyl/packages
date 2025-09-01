@@ -1,6 +1,6 @@
 _name=alsa-lib
 pkgname=lib32-alsa-lib
-pkgver=1.2.8
+pkgver=1.2.13
 pkgrel=1
 arch=(x86_64)
 depends=("alsa-lib")

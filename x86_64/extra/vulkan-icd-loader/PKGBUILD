@@ -1,5 +1,5 @@
 pkgname=vulkan-icd-loader
-pkgver=1.4.304
+pkgver=1.4.324
 pkgrel=1
 pkgdesc="Vulkan Installable Client Driver (ICD) Loader"
 arch=(x86_64)
@@ -17,6 +17,7 @@ build() {
 	rm -rf build; mkdir -p build; cd build
 
 	cmake \
+	-D CMAKE_BUILD_TYPE=Release \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D VULKAN_HEADERS_INSTALL_DIR=/usr \
 	-D CMAKE_INSTALL_LIBDIR=/usr/lib \

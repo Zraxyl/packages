@@ -4,7 +4,7 @@ pkgver=1.4.5
 pkgrel=1
 pkgdesc="A Trivial Database similar to GDBM but allows simultaneous commits (32-bit)"
 arch=(x86_64)
-depends=($_pkgbasename)
+depends=(tdb)
 makedepends=(libxslt python3)
 source=(https://www.samba.org/ftp/${_pkgbasename}/${_pkgbasename}-${pkgver}.tar.{gz,asc})
 

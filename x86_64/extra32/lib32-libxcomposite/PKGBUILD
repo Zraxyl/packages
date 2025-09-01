@@ -4,7 +4,7 @@ pkgver=0.4.5
 pkgrel=2
 arch=(x86_64)
 url="https://xorg.freedesktop.org/"
-depends=('lib32-libxfixes' $_pkgbasename)
+depends=('lib32-libxfixes' libxcomposite)
 makedepends=('util-macros')
 source=(${url}/releases/individual/lib/libXcomposite-${pkgver}.tar.bz2)
 

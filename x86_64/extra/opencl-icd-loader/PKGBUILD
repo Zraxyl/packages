@@ -1,9 +1,10 @@
 pkgname=opencl-icd-loader
-pkgver=2022.09.30
+pkgver=2025.07.22
 pkgrel=1
+pkgdesc="The OpenCL ICD Loader project"
 arch=('x86_64')
-depends=(mesa)
-makedepends=(opencl-headers)
+depends=(glibc)
+makedepends=(opencl-headers opencl-clhpp)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/KhronosGroup/OpenCL-ICD-Loader/archive/refs/tags/v${pkgver}.tar.gz")
 
 build() {

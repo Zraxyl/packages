@@ -1,6 +1,7 @@
 pkgname=opencl-headers
-pkgver=2024.05.08
+pkgver=2025.07.22
 pkgrel=1
+pkgdesc="Khronos OpenCL-Headers"
 arch=('x86_64')
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/KhronosGroup/OpenCL-Headers/archive/refs/tags/v${pkgver}.tar.gz")
 

@@ -3,7 +3,7 @@ pkgname=lib32-$_pkgbasename
 pkgver=1.9.4
 pkgrel=1
 arch=(x86_64)
-depends=('lib32-libgpg-error' $_pkgbasename)
+depends=('lib32-libgpg-error' libgcrypt)
 source=(https://gnupg.org/ftp/gcrypt/${_pkgbasename}/${_pkgbasename}-${pkgver}.tar.bz2)
 
 prepare() {

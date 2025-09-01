@@ -20,9 +20,6 @@ prepare() {
 	-i docs/conf/httpd.conf.in
 
 	cat "${srcdir}/zraxyl.layout" >> config.layout
-
-	# https://github.com/openssl/openssl/issues/2865
-	patch -Np1 -i ../openssl-malloc-init.patch
 }
 
 build() {

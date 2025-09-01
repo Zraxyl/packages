@@ -1,6 +1,6 @@
 pkgname=libva
 pkgver=2.22.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Video Acceleration (VA) API for Linux'
 arch=(x86_64)
 url=http://intel.github.io/libva/
@@ -10,7 +10,7 @@ depends=(
 	wayland)
 makedepends=(git mesa meson)
 backup=(etc/libva.conf)
-commitid=217da1c28336d6a7e9c0c4cb8f1c303968a675f1
+commitid=29fbbd8a913b2529cef8e63548093aa25c2669b8
 source=(git+https://github.com/intel/libva.git#tag=${commitid})
 
 build() {

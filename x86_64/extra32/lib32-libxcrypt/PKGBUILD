@@ -1,6 +1,6 @@
 pkgname=lib32-libxcrypt
 pkgver=4.4.36
-pkgrel=1
+pkgrel=2
 pkgdesc='Modern library for one-way hashing of passwords (32-bit)'
 arch=('x86_64')
 depends=('glibc' 'libxcrypt')

@@ -1,8 +1,8 @@
 pkgname=linux
-pkgver=6.14.0
-rname=6.14
+pkgver=6.15.9
+rname=6.15.9
 pkgdesc="The Linux kernel, modules and headers package"
-rver=6.14
+rver=6.15.9
 pkgrel=1
 dirname="${pkgname}-${rver}"
 arch=('x86_64')
@@ -19,19 +19,19 @@ export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EP
 prepare() {
 	cd $dirname
 
-	cp -fv $srcdir/config arch/x86/configs/zraxyl_defconfig
+	#cp -fv $srcdir/config arch/x86/configs/zraxyl_defconfig
 
 	echo "[!]: Cleaning src base"
-	make clean
+	#make clean
 
 	echo "[!]: Running mrproper"
-	make mrproper
+	#make mrproper
 
 	echo "[!]: Getting up default config of zraxyl"
-	make zraxyl_defconfig
+	#make zraxyl_defconfig
 
 	echo "[!]: Running menuconfig"
-	make menuconfig
+	#make menuconfig
 }
 
 build() {

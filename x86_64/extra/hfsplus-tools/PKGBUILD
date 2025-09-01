@@ -1,0 +1,37 @@
+pkgname=hfsplus-tools
+fname=diskdev_cmds
+pkgver=540.1.linux3
+chid=0435afc389b919027b69616ad1b05709 # checksum
+pkgrel=1
+arch=(x86_64)
+depends=(openssl libbsd)
+makedepends=(base-devel)
+source=(https://src.fedoraproject.org/repo/pkgs/$pkgname/${fname}-${pkgver}.tar.gz/$chid/$fname-$pkgver.tar.gz
+        "https://src.fedoraproject.org/rpms/hfsplus-tools/raw/rawhide/f/hfsplus-tools-no-blocks.patch"
+        "https://src.fedoraproject.org/rpms/hfsplus-tools/raw/rawhide/f/hfsplus-tools-learn-to-stdarg.patch"
+        "https://src.fedoraproject.org/rpms/hfsplus-tools/raw/rawhide/f/apsl-2.0.txt"
+        "https://src.fedoraproject.org/rpms/hfsplus-tools/raw/rawhide/f/hfsplus-tools-sysctl.patch"
+        "ldflags_relro.patch")
+
+prepare() {
+	cd $fname-$pkgver
+
+	patch -p1 -i "${srcdir}/hfsplus-tools-no-blocks.patch"
+	patch -p1 -i "${srcdir}/hfsplus-tools-learn-to-stdarg.patch"
+	patch -p0 -i "${srcdir}/ldflags_relro.patch"
+	patch -p1 -i "${srcdir}/hfsplus-tools-sysctl.patch"
+}
+
+build() {
+	cd $fname-$pkgver
+
+	make -f Makefile
+}
+
+package() {
+	cd $fname-$pkgver
+
+	install -m 755 -d "${pkgdir}/usr/sbin"
+	install -m 755 "newfs_hfs.tproj/newfs_hfs" "${pkgdir}/usr/sbin/mkfs.hfsplus"
+	install -m 755 "fsck_hfs.tproj/fsck_hfs" "${pkgdir}/usr/sbin/fsck.hfsplus"
+}

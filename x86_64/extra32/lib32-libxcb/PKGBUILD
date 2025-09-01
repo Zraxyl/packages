@@ -5,7 +5,7 @@ pkgrel=3
 pkgdesc="X11 client-side library (32-bit)"
 arch=(x86_64)
 url="https://xcb.freedesktop.org/"
-depends=('lib32-libxdmcp' 'lib32-libxau' $_pkgbasename 'lib32-xcb-proto')
+depends=('lib32-libxdmcp' 'lib32-libxau' libxcb 'lib32-xcb-proto')
 makedepends=('pkgconf' 'libxslt' 'python3' 'util-macros'
              'autoconf' 'xorgproto' 'xcb-proto')
 license=('custom')

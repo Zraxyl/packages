@@ -18,7 +18,7 @@ post_upgrade() {
 
   # Sleep a bit
   echo "[ ZRAXYL ]: Sleeping a bit..."
-  sleep 10
+  sleep 5
 }
 
 post_install() {

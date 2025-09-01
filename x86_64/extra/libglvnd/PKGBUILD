@@ -1,11 +1,11 @@
 pkgname=libglvnd
 pkgver=1.7.0
-pkgrel=3
+pkgrel=4
 pkgdesc="The GL Vendor-Neutral Dispatch library"
 arch=('x86_64')
 url="https://gitlab.freedesktop.org/glvnd/libglvnd"
 license=('custom:BSD-like')
-depends=(libxext mesa)
+depends=('libxext')
 makedepends=('libxext' 'libx11' 'xorgproto' 'python3' 'meson')
 source=("https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v$pkgver/libglvnd-v$pkgver.tar.gz")
 

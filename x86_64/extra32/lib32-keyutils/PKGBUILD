@@ -6,7 +6,7 @@ pkgrel=1
 pkgdesc='Linux Key Management Utilities (32-bit)'
 arch=('x86_64')
 url='https://www.kernel.org/'
-depends=("${_pkgbasename}")
+depends=("keyutils")
 makedepends=('git')
 source=("git+https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git#tag=${_tag}?signed")
 

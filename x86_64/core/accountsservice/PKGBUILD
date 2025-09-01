@@ -3,7 +3,8 @@ pkgver=23.13.9
 pkgrel=4
 pkgdesc="D-Bus interface for user account query and manipulation"
 arch=('x86_64')
-depends=(glibc glib2 libxcrypt systemd polkit shadow)
+depends=(glibc glib2 libxcrypt
+	systemd polkit shadow)
 makedepends=(gtk-doc gobject-introspection meson docbook-xsl docbook-xml
 	xmlto vala python3-pygments)
 source=(accounts-daemon-restart.hook

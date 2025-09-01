@@ -4,7 +4,7 @@ pkgdesc="A featureful, general-purpose sound server (32-bit client libraries)"
 pkgver=15.0
 pkgrel=1
 arch=(x86_64)
-depends=(lib32-{dbus,libcap,libxtst,libsm,systemd,tdb,libsndfile})
+depends=(lib32-dbus lib32-libcap lib32-libxtst lib32-libsm lib32-systemd lib32-tdb lib32-libsndfile)
 makedepends=(lib32-glib2 git meson valgrind)
 _commit=6329a2498eb038f8a9537888280a62b00a93f68e  # tags/v15.0^0
 source=("git+https://gitlab.freedesktop.org/pulseaudio/pulseaudio.git#commit=$_commit")

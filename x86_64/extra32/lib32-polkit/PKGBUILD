@@ -3,12 +3,10 @@ pkgver=0.120
 pkgrel=1
 arch=(x86_64)
 depends=(
-    lib32-duktape lib32-expat lib32-glib2 lib32-linux-pam lib32-systemd polkit
-)
+    lib32-duktape lib32-expat lib32-glib2 lib32-linux-pam lib32-systemd polkit)
 ltag=a6bedfd09b7bba753de7a107dc471da0db801858
 source=(
-    git+https://gitlab.freedesktop.org/polkit/polkit.git#commit=${ltag}
-)
+    git+https://gitlab.freedesktop.org/polkit/polkit.git#commit=${ltag})
 
 build() {
     export CC='gcc -m32'

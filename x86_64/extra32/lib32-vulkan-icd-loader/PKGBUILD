@@ -4,6 +4,7 @@ pkgrel=1
 arch=(x86_64)
 pkgdesc="Vulkan Installable Client Driver (ICD) Loader (32-bit)"
 url="https://www.khronos.org/vulkan/"
+depends=(vulkan-icd-loader)
 makedepends=('cmake' 'python3' 'lib32-libx11' 'lib32-libxrandr' 'lib32-wayland' 'vulkan-headers')
 source=("vulkan-icd-loader-${pkgver}.tar.gz::https://github.com/KhronosGroup/Vulkan-Loader/archive/v${pkgver}.tar.gz")
 

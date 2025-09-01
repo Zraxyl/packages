@@ -3,7 +3,7 @@ pkgver=3.2.56
 pkgrel=1
 arch=('x86_64')
 depends=('kconfig' 'kcoreaddons' 'kiconthemes' 'ki18n' 'kio' 'solid' 'yaml' 'dracut'
-         'boost' 'qt5' 'polkit-qt' 'plasma-framework' 'yaml-cpp' 'double-conversion'
+         'boost' 'qt5' 'polkit-qt' 'yaml-cpp' 'double-conversion'
          'squashfs-tools' 'libpwquality' 'appstream' 'kpmcore')
 makedepends=('extra-cmake-modules' 'qt5' 'git')
 commitid=29ef9e909df58e025868e1f0eea1c4f0fc30cf3a # cal-evo test

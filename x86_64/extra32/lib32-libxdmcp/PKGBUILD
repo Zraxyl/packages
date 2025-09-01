@@ -6,7 +6,7 @@ pkgdesc="X11 Display Manager Control Protocol library (32-bit)"
 arch=(x86_64)
 url="https://xorg.freedesktop.org/"
 license=('custom')
-depends=($_pkgbasename)
+depends=(libxdmcp)
 makedepends=('util-macros')
 source=(${url}/releases/individual/lib/libXdmcp-${pkgver}.tar.bz2)
 

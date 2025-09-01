@@ -5,7 +5,7 @@ pkgrel=1
 pkgdesc="A low-level cryptographic library (32-bit)"
 arch=('x86_64')
 url="https://www.lysator.liu.se/~nisse/nettle/"
-depends=('lib32-gmp' $_pkgbasename)
+depends=('lib32-gmp' nettle)
 source=(https://ftp.gnu.org/gnu/nettle/$_pkgbasename-$pkgver.tar.gz)
 
 build() {

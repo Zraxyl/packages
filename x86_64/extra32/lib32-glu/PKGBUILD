@@ -4,7 +4,7 @@ pkgrel=1
 arch=('x86_64')
 depends=('lib32-libglvnd' 'glu')
 makedepends=('gcc' 'lib32-libglvnd' 'meson')
-source=(ftp://ftp.freedesktop.org/pub/mesa/glu/glu-$pkgver.tar.xz{,.sig}
+source=(ftp://ftp.freedesktop.org/pub/mesa/glu/glu-$pkgver.tar.xz
         0001-pkgconfig-Depend-on-opengl-when-built-with-libglvnd.patch
         0002-pkgconfig-Drop-unneeded-lines-from-autotools-build.patch
         0003-pkgconfig-meson-build-should-match-autotools-require.patch)

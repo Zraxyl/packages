@@ -2,7 +2,7 @@ pkgname=lib32-libpcap
 pkgver=1.10.1
 pkgrel=1
 arch=('x86_64')
-depends=('glibc' 'lib32-libnl' "libpcap=${pkgver}")
+depends=('glibc' 'lib32-libnl' "libpcap")
 makedepends=('bluez' 'lib32-dbus')
 source=("https://www.tcpdump.org/release/libpcap-${pkgver}.tar.gz")
 

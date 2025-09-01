@@ -1,8 +1,9 @@
 pkgname=mesa
-pkgver=24.3.2
-pkgrel=2
+pkgver=25.2.0
+pkgrel=1
 pkgdesc="Open-source OpenGL drivers"
 arch=('x86_64')
+options=(!lto)
 depends=(# X11
 	'libxcb' 'libx11' 'libxext' 'libxfixes' 'libxshmfence' 'libxrender' 'libxvmc' 'libxxf86vm'
 
@@ -14,29 +15,40 @@ depends=(# X11
 	'libdecor' 'polly')
 makedepends=('meson' 'directx-headers' 'vulkan-headers' 'opencl-headers' 'python3-pip' 'clang' 'cmake' 'byacc'
 	'bison' 'rust' 'cbindgen' 'rust-bindgen' 'wayland-protocols')
-
+source=(https://mesa.freedesktop.org/archive/$pkgname-$pkgver.tar.xz)
 declare -A rust_crates=(
-   equivalent      1.0.1
-   hashbrown       0.14.1
-   indexmap        2.2.6
-   once_cell       1.8.0
-   paste           1.0.14
-   pest            2.7.11
-   pest_derive     2.7.11
-   pest_generator  2.7.11
-   pest_meta       2.7.11
-   proc-macro2     1.0.86
-   quote           1.0.33
-   roxmltree       0.20.0
-   syn             2.0.68
-   ucd-trie        0.1.6
-   unicode-ident   1.0.12
+  bitflags         2.9.1
+  cfg-if           1.0.0
+  equivalent       1.0.1
+  errno            0.3.12
+  hashbrown        0.14.1
+  indexmap         2.2.6
+  libc             0.2.168
+  log              0.4.27
+  once_cell        1.8.0
+  paste            1.0.14
+  pest_derive      2.8.0
+  pest_generator   2.8.0
+  pest_meta        2.8.0
+  pest             2.8.0
+  proc-macro2      1.0.86
+  quote            1.0.35
+  remain           0.2.12
+  roxmltree        0.20.0
+  rustc-hash       2.1.1
+  rustix           1.0.7
+  syn              2.0.87
+  thiserror-impl   2.0.11
+  thiserror        2.0.11
+  ucd-trie         0.1.6
+  unicode-ident    1.0.12
+  zerocopy-derive  0.8.13
+  zerocopy         0.8.13
 )
 
 for rust_crate in "${!rust_crates[@]}"; do
 	rustv="${rust_crates[$rust_crate]}"
-	source=(https://mesa.freedesktop.org/archive/$pkgname-$pkgver.tar.xz
-		$rust_crate-$rustv.tar.gz::https://crates.io/api/v1/crates/$rust_crate/$rustv/download)
+	source+=($rust_crate-$rustv.tar.gz::https://crates.io/api/v1/crates/$rust_crate/$rustv/download)
 done
 
 prepare() {
@@ -44,12 +56,13 @@ prepare() {
 
 	# TODO add our own python3-mako pkg so pip wont be used
 	#echo "[!]: Installing mako with pip"
-	pip3 install mako pyyaml ply
+	pip3 install mako pyyaml ply syn
 
 	echo "$pkgver-zraxyl.$pkgrel" >VERSION
 }
 
 build() {
+	rm -rf build
 	mkdir -p build
 
 	cd build
@@ -60,22 +73,23 @@ build() {
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
+	--wrap-mode=nodownload \
 	-D b_lto=true \
 	-D b_ndebug=true \
 	-D platforms=x11,wayland \
-	-D gallium-drivers=r300,r600,llvmpipe,softpipe,radeonsi,nouveau,virgl,svga,i915,iris,crocus,zink,d3d12 \
-	-D vulkan-drivers=amd,intel,intel_hasvk,swrast,nouveau,virtio \
-	-D vulkan-layers=device-select,intel-nullhw,overlay,screenshot \
+	-D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,llvmpipe,softpipe,iris,crocus,i915,zink,d3d12 \
+	-D vulkan-drivers=amd,gfxstream,intel,intel_hasvk,nouveau,swrast,virtio,microsoft-experimental \
+    -D vulkan-layers=device-select,intel-nullhw,overlay,screenshot,vram-report-limit \
+	-D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
 	-D egl=enabled \
 	-D gallium-extra-hud=true \
-	-D gallium-nine=true \
-	-D gallium-opencl=icd \
 	-D gallium-va=enabled \
+	-D gallium-mediafoundation=disabled \
 	-D gallium-vdpau=enabled \
-	-D gallium-xa=enabled \
 	-D gallium-rusticl=true \
+	-D legacy-x11=dri2 \
 	-D gbm=enabled \
-	-D gles1=enabled \
+	-D gles1=disabled \
 	-D gles2=enabled \
 	-D glvnd=enabled \
 	-D glx=dri \
@@ -83,7 +97,6 @@ build() {
 	-D llvm=enabled \
 	-D shared-llvm=enabled \
 	-D lmsensors=enabled \
-	-D osmesa=true \
 	-D tools=all \
 	-D rust_std=2021 \
 	-D shared-glapi=enabled \
@@ -92,9 +105,6 @@ build() {
 	-D vmware-mks-stats=true \
 	-D valgrind=enabled \
 	../$pkgname-$pkgver/
-
-	# Removed forced codecs as licenses need to be checked what can or not be enabled
-	# -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc
 
 	ninja -j6
 }

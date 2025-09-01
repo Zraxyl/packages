@@ -5,7 +5,7 @@ pkgrel=1
 pkgdesc="A free library for arbitrary precision arithmetic (32-bit)"
 arch=('x86_64')
 url="https://gmplib.org/"
-depends=($_pkgbasename)
+depends=(gmp)
 source=(https://gmplib.org/download/gmp/gmp-${pkgver}.tar.xz)
 
 build() {

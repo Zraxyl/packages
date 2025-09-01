@@ -3,7 +3,7 @@ pkgname=lib32-$_pkgbasename
 pkgver=1.2.1
 pkgrel=1
 arch=('x86_64')
-depends=('lib32-libsm' 'lib32-libx11' $_pkgbasename)
+depends=('lib32-libsm' 'lib32-libx11' libxt)
 makedepends=('util-macros')
 source=(https://xorg.freedesktop.org/releases/individual/lib/libXt-${pkgver}.tar.bz2)
 

@@ -6,8 +6,8 @@ pkgdesc="GObject-based multi-platform GUI toolkit (legacy) (32-bit)"
 arch=('x86_64')
 url="https://www.gtk.org/"
 install=gtk2+.install
-depends=(lib32-{'pango','cairo','gdk-pixbuf'}
-         lib32-lib{xcursor,'xrandr','xi',xinerama,xcomposite,xdamage}
+depends=(lib32-pango lib32-cairo lib32-gdk-pixbuf
+         lib32-libxcursor lib32-libxrandr lib32-libxi lib32-libxinerama lib32-libxcomposite lib32-libxdamage
          gtk2+ lib32-cups lib32-at-spi2-core)
 makedepends=('python3')
 source=(https://download.gnome.org/sources/gtk+/2.24/gtk+-${pkgver}.tar.xz

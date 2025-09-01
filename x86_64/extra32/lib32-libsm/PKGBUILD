@@ -5,7 +5,7 @@ pkgrel=1
 pkgdesc="X11 Session Management library (32-bit)"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
-depends=('lib32-libice' 'lib32-util-linux' $_pkgbasename)
+depends=('lib32-libice' 'lib32-util-linux' libsm)
 makedepends=('util-macros' 'libxtrans')
 source=(${url}/releases/individual/lib/libSM-${pkgver}.tar.bz2)
 

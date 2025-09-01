@@ -1,5 +1,5 @@
 pkgname=libdrm
-pkgver=2.4.124
+pkgver=2.4.125
 pkgrel=1
 pkgdesc="Userspace interface to kernel DRM services"
 arch=('x86_64')
@@ -8,20 +8,25 @@ makedepends=('cairo')
 source=(https://dri.freedesktop.org/$pkgname/$pkgname-$pkgver.tar.xz)
 
 build() {
-        cd $pkgname-$pkgver
+	cd $pkgname-$pkgver
 
 	mkdir -p build && cd build	
 
 	meson \
 	--prefix=/usr \
 	--buildtype=release \
-	-D udev=true
+	-D udev=true \
+	-D etnaviv=disabled \
+    -D freedreno=disabled \
+    -D vc4=disabled \
+    -D valgrind=disabled \
+    -D install-test-programs=true
 
 	ninja
 }
 
 package() {
-	cd $pkgname-$pkgver
-	cd build
+	cd $pkgname-$pkgver/build
+
 	DESTDIR=$pkgdir	ninja install
 }

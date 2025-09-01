@@ -2,6 +2,7 @@ pkgname=lib32-opencl-icd-loader
 rname=opencl-icd-loader
 pkgver=2022.09.30
 pkgrel=1
+depends=(opencl-icd-loader)
 arch=('x86_64')
 source=("${rname}-${pkgver}.tar.gz::https://github.com/KhronosGroup/OpenCL-ICD-Loader/archive/refs/tags/v${pkgver}.tar.gz")
 

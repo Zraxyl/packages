@@ -1,16 +1,17 @@
 pkgname=linux-firmware
-pkgver=20240909
+pkgver=20250805
 pkgrel=1
 arch=('x86_64')
 options=(!strip !debug)
 makedepends=('rdfind' 'findutils' 'diffutils' 'base-devel')
-source=(https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-$pkgver.tar.gz)
+commitid=b6b0b15278c76bbc1b7aaf17e706734d4be28e00 #2025-08-05 13:39:15 +0000
+source=(git+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git#commit=$commitid)
 
 build() {
 	echo "nothing"
 }
 
 package() {
-        cd $pkgname-$pkgver
+        cd $pkgname
         make DESTDIR=$pkgdir install
 }

@@ -3,7 +3,7 @@ rname=glew-1.10
 pkgver=1.10.0
 pkgrel=1
 arch=(x86_64)
-depends=(lib32-libglvnd lib32-libx11 lib32-libxext lib32-libxi lib32-libxmu $rname)
+depends=(lib32-libglvnd lib32-libx11 lib32-libxext lib32-libxi lib32-libxmu glew-1.10)
 makedepends=(gcc make)
 source=(https://downloads.sourceforge.net/glew/glew-$pkgver.tgz)
 

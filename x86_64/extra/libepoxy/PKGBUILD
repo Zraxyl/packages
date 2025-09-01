@@ -1,6 +1,7 @@
 pkgname=libepoxy
 pkgver=1.5.10
-pkgrel=1
+pkgrel=2
+pkgdesc="Epoxy is a library for handling OpenGL function pointer management for you"
 arch=('x86_64')
 depends=(libglvnd libx11 glibc)
 makedepends=(doxygen mesa)

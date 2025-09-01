@@ -7,7 +7,7 @@ pkgrel=1
 pkgdesc='The Open Source toolkit for Secure Sockets Layer and Transport Layer Security (32-bit)'
 arch=('x86_64')
 url='https://www.openssl.org'
-depends=("${_pkgbasename}" "glibc" "lib32-libxcrypt")
+depends=("openssl" "glibc" "lib32-libxcrypt")
 optdepends=('ca-certificates')
 source=("https://www.openssl.org/source/${_pkgbasename}-${_ver}.tar.gz"
 	'ca-dir.patch')

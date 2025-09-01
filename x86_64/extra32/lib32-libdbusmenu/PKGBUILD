@@ -3,6 +3,7 @@ pkgname_orig=libdbusmenu
 pkgver=16.04.0
 pkgrel=2
 arch=('x86_64')
+depends=(libdbusmenu)
 makedepends=('gnome-common' 'gobject-introspection' 'lib32-gtk2+' 'lib32-gtk3+' 'libdbusmenu' 'intltool' 'vala' 'valgrind')
 options=('!emptydirs')
 source=(https://launchpad.net/${pkgname_orig}/${pkgver%.?}/${pkgver}/+download/${pkgname_orig}-${pkgver}.tar.gz)

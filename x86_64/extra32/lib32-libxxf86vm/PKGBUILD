@@ -5,7 +5,7 @@ pkgrel=1
 pkgdesc="X11 XFree86 video mode extension library (32-bit)"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
-depends=('lib32-libxext' $_pkgbasename)
+depends=('lib32-libxext' libxxf86vm)
 makedepends=('util-macros')
 source=(${url}/releases/individual/lib/libXxf86vm-${pkgver}.tar.bz2)
 

@@ -4,7 +4,7 @@ pkgver=3.0.1
 pkgrel=1
 pkgdesc="IPC library used by some GnuPG related software"
 arch=(x86_64)
-depends=('lib32-libgpg-error' $_pkgbasename)
+depends=('lib32-libgpg-error' libassuan)
 source=(https://gnupg.org/ftp/gcrypt/${_pkgbasename}/${_pkgbasename}-${pkgver}.tar.bz2)
 
 prepare() {

@@ -1,11 +1,11 @@
 pkgname=libdmtx
-pkgver=0.7.7
+pkgver=0.7.8
 pkgrel=1
-pkgdesc="A software for reading and writing Data Matrix 2D barcodes"
+pkgdesc='A software for reading and writing Data Matrix 2D barcodes'
 arch=(x86_64)
 depends=(glibc)
 makedepends=(base-devel)
-source=(https://github.com/dmtx/libdmtx/archive/refs/tags/v$pkgver.tar.gz)
+source=(https://github.com/dmtx/libdmtx/archive/refs/tags/v${pkgver}.tar.gz)
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -13,8 +13,7 @@ prepare() {
 	autoreconf -fvi
 
 	./configure \
-	--prefix=/usr \
-	--sysconfdir=/etc
+	--prefix=/usr
 }
 
 build() {
