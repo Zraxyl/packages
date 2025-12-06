@@ -1,9 +1,9 @@
 pkgname=cmake
-pkgver=3.30.3
+pkgver=3.31.10
 pkgrel=1
 arch=('x86_64')
 depends=('curl' 'hicolor-icon-theme' 'expat' 'nghttp2' 'jsoncpp' 'libuv' 'libarchive' 'gcc' 'zstd' 'cppdap')
-source=(https://cmake.org/files/v3.30/$pkgname-$pkgver.tar.gz)
+source=(https://cmake.org/files/v3.31/$pkgname-$pkgver.tar.gz)
 
 build() {
 	cd $pkgname-$pkgver

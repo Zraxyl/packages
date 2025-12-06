@@ -1,5 +1,5 @@
 pkgname=nlohmann-json
-pkgver=3.11.3
+pkgver=3.12.0
 pkgrel=1
 pkgdesc="JSON for Modern C++"
 arch=(x86_64)
@@ -14,6 +14,7 @@ build() {
     -D CMAKE_INSTALL_PREFIX=/usr \
     -D CMAKE_INSTALL_LIBDIR=/usr/lib \
     -D BUILD_TESTING=OFF \
+    -D JSON_BuildTests=OFF \
     -D JSON_MultipleHeaders=ON \
     -S $pkgname \
     -W no-dev

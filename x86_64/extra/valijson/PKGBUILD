@@ -1,0 +1,32 @@
+pkgname=valijson
+pkgver=1.0.6
+pkgrel=1
+pkgdesc="Header-only JSON Schema validation library for C++"
+arch=(x86_64)
+depends=(boost)
+makedepends=(cmake git ninja)
+source=(https://github.com/tristanpenman/valijson/archive/refs/tags/v1.0.6.tar.gz)
+
+prepare() {
+	rm -rf build
+	mkdir -p build
+
+	cmake \
+	-G Ninja \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-S $pkgname-$pkgver \
+	-B build
+}
+
+build() {
+	cd build
+
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

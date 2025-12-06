@@ -1,18 +1,20 @@
 pkgname=openssl
-pkgver=3.0.15
-pkgcomp=1.1.1u
+pkgver=3.5.4
+pkgcomp=1.1.1w
 pkgrel=1
+pkgdesc="The Open Source toolkit for Secure Sockets Layer and Transport Layer Security"
 arch=('x86_64')
 depends=(glibc ca-certificates)
 backup=('etc/ssl/openssl.cnf')
 makedepends=('perl')
 source=(https://github.com/openssl/openssl/releases/download/openssl-$pkgver/openssl-$pkgver.tar.gz
-    https://openssl.org/source/$pkgname-$pkgcomp.tar.gz)
+    https://openssl.org/source/old/1.1.1/$pkgname-$pkgcomp.tar.gz)
 
 prepare() {
     cd $srcdir/$pkgname-$pkgver
 
-    ./config --prefix=/usr \
+    ./config \
+    --prefix=/usr \
     --openssldir=/etc/ssl \
     --libdir=lib \
     shared \
@@ -21,8 +23,8 @@ prepare() {
     zlib-dynamic
 
     cd $srcdir/$pkgname-$pkgcomp
-
-    ./config --prefix=/usr \
+    ./config \
+    --prefix=/usr \
     --openssldir=/etc/ssl \
     --libdir=lib \
     shared \
@@ -44,6 +46,7 @@ package() {
 
     make DESTDIR=$pkgdir MANDIR=/usr/share/man MANSUFFIX=ssl install
 
+    # TODO: This needs to be dealt with soon!!!
     # Install compatability layer for packages that still depend on older libs
     cp -f $srcdir/$pkgname-$pkgcomp/lib{ssl.so.1.1,crypto.so.1.1} $pkgdir/usr/lib/
 }

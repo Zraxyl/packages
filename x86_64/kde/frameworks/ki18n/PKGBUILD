@@ -1,11 +1,12 @@
 pkgname=ki18n
-pkgver=6.8.0
+pkgver=6.20.0
+rver=6.20
 pkgrel=1
 pkgdesc="Advanced internationalization framework"
 arch=('x86_64')
 depends=(qt6 iso-codes)
-makedepends=(cmake extra-cmake-modules clang qt5 python3-pip)
-durl=https://download.kde.org/stable/frameworks/6.8
+makedepends=(cmake extra-cmake-modules clang python3-pip)
+durl=https://download.kde.org/stable/frameworks/$rver
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

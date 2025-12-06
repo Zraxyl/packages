@@ -1,10 +1,12 @@
 pkgname=libc++
-pkgver=16.0.5
+pkgver=21.1.5
 pkgrel=1
+pkgdesc="LLVM C++ standard library"
 arch=(x86_64)
 depends=(llvm gcc)
 makedepends=(clang ninja cmake python3)
-source=(https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/llvm-project-$pkgver.src.tar.xz)
+psource="https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver"
+source=($psource/llvm-project-$pkgver.src.tar.xz)
 
 prepare() {
 	mkdir -p build
@@ -12,6 +14,7 @@ prepare() {
 	cmake \
 	-G Ninja \
 	-B build \
+	-S llvm-project-$pkgver.src/runtimes \
 	-D CMAKE_BUILD_TYPE=Release \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_C_COMPILER=clang \
@@ -19,7 +22,8 @@ prepare() {
 	-D LLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
 	-D LLVM_EXTERNAL_LIT=/usr/bin/lit \
 	-D LLVM_ENABLE_PIC=ON \
-	llvm-project-$pkgver.src/runtimes
+	-D LIBCXX_INSTALL_MODULES=ON \
+	-D LIBCXXABI_USE_LLVM_UNWINDER=OFF
 }
 
 build() {

@@ -1,10 +1,11 @@
 pkgname=extra-cmake-modules
-pkgver=6.8.0
+pkgver=6.20.0
+rver=6.20
 pkgrel=1
 arch=('x86_64')
-durl=https://download.kde.org/stable/frameworks/6.8
+durl=https://download.kde.org/stable/frameworks/$rver
 depends=(cmake make)
-makdedepends=(python3-sphinx python3-requests qt5 qt6)
+makdedepends=(python3-sphinx python3-requests qt6)
 source=("${durl}/${pkgname}-${pkgver}.tar.xz")
 
 prepare() {

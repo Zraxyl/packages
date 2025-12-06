@@ -1,6 +1,7 @@
 pkgname=lldb
-pkgver=18.1.8
+pkgver=21.1.5
 pkgrel=1
+pkgdesc="Next generation, high-performance debugger"
 arch=(x86_64)
 depends=(llvm clang python3)
 makedepends=(llvm cmake ninja swig python3-pip)
@@ -21,6 +22,8 @@ prepare() {
 build() {
 	cd build
 
+	CC=clang \
+	CXX=clang++ \
 	cmake ../$pkgname -G  \
 	Ninja \
     -D CMAKE_BUILD_TYPE=Release \

@@ -1,0 +1,62 @@
+pkgname=pyside
+pkgver=6.10.1
+pkgrel=1
+pkgdesc="Enables the use of Qt6 APIs in Python applications"
+arch=(x86_64)
+depends=(qt6 clang libxml2 libxslt llvm python3)
+makedepends=(base-devel)
+source=(git+https://code.qt.io/pyside/pyside-setup#tag=v$pkgver
+	fix-header-install-dir.patch)
+
+prepare() {
+	# Patching
+	cd ${pkgname}-setup
+	git revert -n c9d602ab4afa5c9834c4674a742dc9bab7f4b326 05e328476f2d6ef8a0f3f44aca1e5b1cdb7499fc
+	patch -p1 -i ../fix-header-install-dir.patch
+	cd ..
+
+	rm -rf build
+	mkdir -p build
+
+	CC=clang \
+	CXX=clang++ \
+	CPP=clang++ \
+	cmake \
+	-B build \
+	-S pyside-setup \
+	-G Ninja \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=None \
+	-D SHIBOKEN_PYTHON_LIBRARIES=`pkgconf python3-embed --libs` \
+	-D BUILD_TESTS=OFF \
+	-D FORCE_LIMITED_API=no \
+	-D NO_QT_TOOLS=yes
+}
+
+build() {
+	cd build
+
+	PYTHONPATH="$PWD"/sources \
+	ninja
+}
+
+package() {
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+
+	cd ../${pkgname}-setup
+	export PATH="/usr/libexec/qt6/bin:$PATH"
+	python setup.py egg_info --build-type=shiboken6
+	python setup.py egg_info --build-type=shiboken6-generator
+	_pythonpath=`python -c "from sysconfig import get_path; print(get_path('platlib'))"`
+	cp -r shiboken6*.egg-info "$pkgdir"/$_pythonpath
+
+	python setup.py egg_info --build-type=pyside6
+	_pythonpath=`python -c "from sysconfig import get_path; print(get_path('platlib'))"`
+	cp -r PySide6.egg-info "$pkgdir"/$_pythonpath
+
+	echo "export LD_PRELOAD="`python -c "from sysconfig import get_config_var; print(get_config_var('LDLIBRARY'))"` > pyside6-designer
+	echo "exec designer6 \$@" >> pyside6-designer
+	install -Dm755 pyside6-designer -t "$pkgdir"/usr/bin
+}

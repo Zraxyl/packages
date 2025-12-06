@@ -1,6 +1,6 @@
 pkgname=pulseaudio-qt
-pkgver=1.6.1
-pkgrel=2
+pkgver=1.7.0
+pkgrel=1
 pkgdesc="Qt bindings for libpulse"
 arch=('x86_64')
 depends=(pulseaudio qt6)

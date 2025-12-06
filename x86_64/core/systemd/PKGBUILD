@@ -1,16 +1,17 @@
 pkgname=systemd
-pkgver=251.20
-pkgrel=6
+pkgver=258.2
+pkgrel=2
+pkgdesc="Systemd System and Service Manager"
 arch=('x86_64')
 depends=('acl' 'gperf' 'lz4' 'xz' 'linux-pam' 'elfutils'
 	'kmod' 'libcap' 'libidn2' 'libgcrypt'
 	'libxslt' 'util-linux'
-	'shadow' 'gnu-efi'
+	'shadow' 'gnu-efi' 'qrencode'
 	'libxkbcommon' 'cryptsetup'
 	'bash-completion' 'p11-kit'
-	'gnutls')
+	'gnutls' 'filesystem' 'bottle')
 makedepends=('meson' 'docbook-xsl' 'git' 'rsync' 'intltool' 'python3-pip' 'gperf')
-source=("https://github.com/systemd/systemd-stable/archive/refs/tags/v${pkgver}.tar.gz"
+source=("https://github.com/systemd/systemd/archive/refs/tags/v${pkgver}.tar.gz"
 	'zraxyl.conf'
 	'loader.conf'
 	'systemd-user.pam'
@@ -39,9 +40,9 @@ backup=(etc/pam.d/systemd-user
 prepare() {
 	pip3 install setuptools
 
-	pip3 install jinja2
+	pip3 install jinja2 pyelftools
 
-	cd $pkgname-stable-$pkgver
+	cd $pkgname-$pkgver
 
 	# Patches
 	cp -fv ${srcdir}/filesystems-gperf.gperf src/basic/
@@ -56,7 +57,7 @@ prepare() {
 }
 
 build() {
-	cd $pkgname-stable-$pkgver
+	cd $pkgname-$pkgver
 	mkdir -p build && cd build
 
 	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:$PATH
@@ -70,14 +71,17 @@ build() {
 	--sbindir=/usr/sbin \
 	--libdir=/usr/lib \
 	--buildtype=release \
-	-D blkid=true \
+	-D blkid=enabled \
+	-D resolve=false \
+	-D nss-resolve=disabled \
+	-D standalone-binaries=true \
 	-D mode=release \
-	-D default-hierarchy=unified \
 	-D install-tests=false \
 	-D tests=false \
 	-D dns-servers='1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com 2606:4700:4700::1001#cloudflare-dns.com' \
 	-D docdir=/usr/share/doc/systemd \
 	-D pamlibdir=/usr/lib/security \
+	-D bootloader=enabled \
 	-D dbuspolicydir=/usr/share/dbus-1/system.d \
 	-D sbat-distro='zraxyl' \
 	-D sbat-distro-summary='Zraxyl'\
@@ -97,7 +101,7 @@ package() {
 	install -D -m0644 zraxyl.conf "$pkgdir"/usr/share/systemd/bootctl/initrd-zraxyl.conf
 	install -D -m0644 loader.conf "$pkgdir"/usr/share/systemd/bootctl/loader.conf
 
-	cd $pkgname-stable-$pkgver/build
+	cd $pkgname-$pkgver/build
 
 	LANG=en_US.UTF-8 ninja
 	LANG=en_US.UTF-8 DESTDIR=$pkgdir ninja install

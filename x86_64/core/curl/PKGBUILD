@@ -1,19 +1,32 @@
 pkgname=curl
-pkgver=8.10.1
+pkgver=8.17.0
 pkgrel=1
+pkgdesc="command line tool and library for transferring data with URLs"
 arch=('x86_64')
-depends=(ca-certificates nghttp2 brotli libidn2 gnutls libpsl openssl zlib zstd)
+depends=(ca-certificates nghttp2 brotli libidn2
+	gnutls libpsl openssl zlib zstd libssh2)
 source=(https://curl.haxx.se/download/$pkgname-$pkgver.tar.xz)
 
 prepare() {
+	pip install patchelf
+
 	# We also want gnutls libs for steam ( possibly for other pkg's too )
 	cp -rf $pkgname-$pkgver $pkgname-$pkgver-gnutls
 
 	cd $srcdir/$pkgname-$pkgver
 	./configure \
 	--prefix=/usr \
+	--disable-ldap \
+	--disable-ldaps \
+	--disable-manual \
+	--enable-ipv6 \
+	--enable-websockets \
+	--with-gssapi \
+	--with-libssh2 \
 	--enable-threaded-resolver \
 	--with-openssl \
+	--with-openssl-quic \
+	--enable-versioned-symbols \
 	--with-ca-bundle=/etc/ssl/cert.pem
 
 	cd $srcdir/$pkgname-$pkgver-gnutls
@@ -35,6 +48,8 @@ build() {
 package() {
 	cd $srcdir/$pkgname-$pkgver
 
+	export PATH="~/.local/bin:$PATH"
+
 	make DESTDIR=$pkgdir install
 
 	cd $srcdir/$pkgname-$pkgver-gnutls
@@ -45,6 +60,7 @@ package() {
 
 	mv "${tmpdir1}"/usr/lib/libcurl{,-gnutls}.so.4.8.0
 	mv "${tmpdir1}"/usr/lib/libcurl{,-gnutls}.a
+	patchelf --set-soname 'libcurl-gnutls.so.4' "${tmpdir1}"/usr/lib/libcurl-gnutls.so.4.8.0
 	rm -f "${tmpdir1}"/usr/lib/libcurl.{a,so,la}*
 
 	for version in 3 4 4.0.0 4.1.0 4.2.0 4.3.0 4.4.0 4.5.0 4.6.0 4.7.0; do

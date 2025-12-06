@@ -1,5 +1,5 @@
 pkgname=qca
-pkgver=2.3.9
+pkgver=2.3.10
 pkgrel=1
 pkgdesc="Qt Cryptographic Architecture"
 arch=(x86_64)
@@ -10,6 +10,7 @@ source=(https://download.kde.org/stable/qca/$pkgver/qca-$pkgver.tar.xz)
 
 prepare() {
 	cmake \
+	-G Ninja \
 	-B build-qt5 \
 	-S qca-$pkgver \
 	-D CMAKE_INSTALL_PREFIX=/usr \
@@ -19,6 +20,7 @@ prepare() {
 	-D QCA_MAN_INSTALL_DIR=/usr/share/man
 
 	cmake \
+	-G Ninja \
 	-B build-qt6 \
 	-S qca-$pkgver \
 	-D CMAKE_INSTALL_PREFIX=/usr \

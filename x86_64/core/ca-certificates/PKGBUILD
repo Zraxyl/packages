@@ -1,12 +1,27 @@
 pkgname=ca-certificates
-pkgver=20240702
-rver="2024-07-02"
-pkgrel=1
+pkgver=20251202
+pkgrel=2
+pkgdesc="Common CA certificates"
 arch=('x86_64')
-source=(cacert.pem::https://curl.se/ca/cacert-$rver.pem)
+depends=(bash coreutils findutils p11-kit)
+source=(
+	40-update-ca-trust.hook
+	update-ca-trust)
 
-package() {	
-	install -Dm644 $pkgdir/../../cacert.pem $pkgdir/etc/ssl/cert.pem
-	install -Dm644 $pkgdir/../../cacert.pem $pkgdir/etc/ssl/ca-bundle.pem
-	install -Dm644 $pkgdir/../../cacert.pem $pkgdir/etc/ssl/certs/ca-certificates.crt
+
+package() {
+	local etcdir="$pkgdir/etc/$pkgname"
+	local ssldir="$pkgdir/etc/ssl"
+	local usrdir="$pkgdir/usr/share/$pkgname"
+
+	install -Dt "$pkgdir/usr/bin" update-ca-trust
+	install -Dt "$pkgdir/usr/share/libalpm/hooks" -m644 *.hook
+
+	install -d {"$etcdir","$usrdir"}/trust-source/{anchors,blocklist}
+	install -d $ssldir/certs/java/cacerts
+
+	# Comp mode
+	ln -sr "$etcdir/extracted/tls-ca-bundle.pem" "$ssldir/cert.pem"
+	ln -sr "$etcdir/extracted/tls-ca-bundle.pem" "$ssldir/certs/ca-certificates.crt"
+	ln -sr "$etcdir/extracted/tls-ca-bundle.pem" "$ssldir/certs/ca-bundle.crt"
 }

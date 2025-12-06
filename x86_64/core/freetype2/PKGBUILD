@@ -1,27 +1,41 @@
 pkgname=freetype2
-pkgver=2.13.3
+pkgver=2.14.1
 pkgrel=1
 arch=('x86_64')
 depends=(zlib bzip2 bash libpng harfbuzz brotli)
-source=(https://downloads.sourceforge.net/freetype/freetype-$pkgver.tar.xz)
+source=(https://downloads.sourceforge.net/freetype/freetype-$pkgver.tar.xz
+	freetype2.sh
+	0001-Enable-table-validation-modules.patch
+	0002-Enable-subpixel-rendering.patch
+	0003-Enable-long-PCF-family-names.patch)
 
-build() {
-	cd freetype-$pkgver
+prepare() {
+	# Patching
+	patch -Np1 -i ../0001-Enable-table-validation-modules.patch
+	patch -Np1 -i ../0002-Enable-subpixel-rendering.patch
+	patch -Np1 -i ../0003-Enable-long-PCF-family-names.patch
 
-	sed -ri "s:.*(AUX_MODULES.*valid):\1:" modules.cfg
+	# Configure
+	rm -rf build
+	mkdir -p build
 
-        sed -r "s:.*(#.*SUBPIXEL_RENDERING) .*:\1:" \
-            -i include/freetype/config/ftoption.h
-
-        ./configure \
+	meson \
 	--prefix=/usr \
 	--sysconfdir=/etc \
-	--enable-freetype-config
+	-D freetype2:error_strings=true \
+	-D freetype2:harfbuzz=dynamic
+}
 
-        make
+build() {
+	cd build
+
+	meson compile
 }
 
 package() {
-	cd freetype-$pkgver
-        make DESTDIR=$pkgdir install
+	cd build
+
+	meson install --destdir=$pkgdir
+
+	install -Dm644 freetype2.sh -t "$pkgdir/etc/profile.d"
 }

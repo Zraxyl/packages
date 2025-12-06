@@ -1,5 +1,5 @@
 pkgname=directx-headers
-pkgver=1.614.1
+pkgver=1.618.2
 pkgrel=1
 pkgdesc="DirectX headers for using D3D12"
 arch=('x86_64')

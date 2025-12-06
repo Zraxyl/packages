@@ -1,12 +1,13 @@
 pkgname=frameworkintegration
-pkgver=6.8.0
+pkgver=6.20.0
+rver=6.20
 pkgrel=1
 pkgdesc="Framework providing components to allow applications to integrate with a KDE Workspace"
 arch=('x86_64')
 depends=(kcolorscheme kconfig ki18n kiconthemes knewstuff knotifications
 	kwidgetsaddons qt6 appstream packagekit-qt)
 makedepends=(cmake extra-cmake-modules doxygen)
-durl=https://download.kde.org/stable/frameworks/6.8
+durl=https://download.kde.org/stable/frameworks/$rver
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

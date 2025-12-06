@@ -22,3 +22,9 @@
 
 # Also ignore this
 **/key
+
+# Keep these files
+!/*.patch
+!/*.desktop
+!/PKGBUILD
+

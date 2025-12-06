@@ -1,6 +1,6 @@
 pkgname=polkit-qt
 pkgver=0.200.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Polkit-Qt provides an API to PolicyKit in the Qt environment"
 arch=('x86_64')
 depends=(polkit qt5 qt6)

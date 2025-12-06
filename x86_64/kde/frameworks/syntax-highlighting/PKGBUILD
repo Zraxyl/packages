@@ -1,11 +1,12 @@
 pkgname=syntax-highlighting
-pkgver=6.8.0
+pkgver=6.20.0
+rver=6.20
 pkgrel=1
 pkgdesc="Syntax highlighting engine for structured text and code"
 arch=('x86_64')
 depends=(qt6)
 makedepends=(cmake extra-cmake-modules doxygen)
-durl=https://download.kde.org/stable/frameworks/6.8
+durl=https://download.kde.org/stable/frameworks/$rver
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

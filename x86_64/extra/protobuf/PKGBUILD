@@ -1,6 +1,7 @@
 pkgname=protobuf
-pkgver=31.0
-pkgrel=2
+pkgver=33.1
+pkgrel=1
+pkgdesc="Protocol Buffers - Google's data interchange format"
 arch=('x86_64')
 depends=(gcc glibc zlib abseil-cpp)
 makedepends=(python3-pip unzip)

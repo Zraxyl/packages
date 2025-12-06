@@ -1,6 +1,6 @@
 pkgname=clang
-pkgver=18.1.8
-pkgrel=2
+pkgver=21.1.5
+pkgrel=0
 makedepends=('cmake' 'libffi' 'python3' 'llvm' 'python3-sphinx')
 depends=('llvm' 'compiler-rt' 'gcc' 'python3')
 arch=('x86_64')

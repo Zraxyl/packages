@@ -1,5 +1,5 @@
 pkgname=automake
-pkgver=1.16.4
+pkgver=1.18.1
 pkgrel=1
 arch=('x86_64')
 source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz)
@@ -7,11 +7,17 @@ source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz)
 build() {
         cd $pkgname-$pkgver
 
-        ./configure --prefix=/usr
+        ./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--bindir=/usr/bin \
+	--sbindir=/usr/sbin
+
         make
 }
 
 package() {
 	cd $pkgname-$pkgver
+
         make DESTDIR=$pkgdir install
 }

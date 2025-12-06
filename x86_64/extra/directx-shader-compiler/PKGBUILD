@@ -1,5 +1,5 @@
 pkgname=directx-shader-compiler
-pkgver=1.8.2407
+pkgver=1.8.2505.1
 rname="DirectXShaderCompiler-$pkgver"
 pkgrel=1
 pkgdesc='A compiler for HLSL to DXIL (DirectX Intermediate Language)'

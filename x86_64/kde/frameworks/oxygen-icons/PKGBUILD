@@ -1,6 +1,6 @@
 pkgname=oxygen-icons
 pkgver=6.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="The Oxygen Icon Theme"
 arch=('x86_64')
 makedepends=(qt6 cmake extra-cmake-modules)

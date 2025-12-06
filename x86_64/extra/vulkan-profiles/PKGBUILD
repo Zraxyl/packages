@@ -1,0 +1,29 @@
+pkgname=vulkan-profiles
+pkgver=1.4.335
+pkgrel=1
+pkgdesc="The Vulkan Profiles Toolset is a collection of tools delivered with the Vulkan SDK for Vulkan application developers to leverage Vulkan Profiles while developing a Vulkan application"
+arch=('x86_64')
+depends=('jsoncpp' 'vulkan-utility-libraries' 'valijson')
+makedepends=('cmake' 'vulkan-headers' 'git')
+source=(https://github.com/KhronosGroup/Vulkan-Profiles/archive/v${pkgver}.tar.gz)
+
+build() {
+	cd Vulkan-Profiles-$pkgver
+
+	rm -rf build && mkdir -p build && cd build
+
+	cmake \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_BUILD_TYPE=Release \
+	-D BUILD_TESTS=OFF \
+	-D UPDATE_DEPS=ON \
+	..
+
+	make
+}
+
+package() {
+	cd Vulkan-Profiles-$pkgver/build
+
+	make DESTDIR=$pkgdir install
+}

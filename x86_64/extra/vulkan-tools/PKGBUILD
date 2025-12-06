@@ -1,5 +1,5 @@
 pkgname=vulkan-tools
-pkgver=1.4.304
+pkgver=1.4.335
 pkgrel=1
 pkgdesc="Vulkan Utilities and Tools"
 arch=(x86_64)

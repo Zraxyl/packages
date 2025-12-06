@@ -1,11 +1,12 @@
 pkgname=modemmanager-qt
-pkgver=6.8.0
+pkgver=6.20.0
+rver=6.20
 pkgrel=1
 pkgdesc="Qt wrapper for ModemManager DBus API"
 arch=('x86_64')
 depends=(modemmanager qt6)
 makedepends=(cmake extra-cmake-modules doxygen)
-durl=https://download.kde.org/stable/frameworks/6.8
+durl=https://download.kde.org/stable/frameworks/$rver
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

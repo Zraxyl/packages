@@ -1,12 +1,13 @@
 pkgname=ktexttemplate
-pkgver=6.8.0
+pkgver=6.20.0
+rver=6.20
 pkgrel=1
 pkgdesc="Library to allow application developers to separate the structure of documents from the data they contain"
 arch=('x86_64')
 pkgdesc='Advanced embeddable text editor'
 depends=(qt6)
 makedepends=(cmake extra-cmake-modules git)
-durl=https://download.kde.org/stable/frameworks/6.8
+durl=https://download.kde.org/stable/frameworks/$rver
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

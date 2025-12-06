@@ -1,12 +1,13 @@
 pkgname=knewstuff
-pkgver=6.8.0
+pkgver=6.20.0
+rver=6.20
 pkgrel=1
 pkgdesc="Support for downloading application assets from the network"
 arch=('x86_64')
 depends=(karchive kconfig kcoreaddons ki18n kpackage kwidgetsaddons qt6
 	syndication kirigami attica)
 makedepends=(cmake extra-cmake-modules doxygen)
-durl=https://download.kde.org/stable/frameworks/6.8
+durl=https://download.kde.org/stable/frameworks/$rver
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

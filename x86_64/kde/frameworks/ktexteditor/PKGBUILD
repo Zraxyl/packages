@@ -1,5 +1,6 @@
 pkgname=ktexteditor
-pkgver=6.8.0
+pkgver=6.20.0
+rver=6.20
 pkgrel=1
 pkgdesc="Advanced embeddable text editor"
 arch=('x86_64')
@@ -8,7 +9,7 @@ depends=(editorconfig-core-c karchive kauth kcodecs kcolorscheme kcompletion
 	kconfig kconfigwidgets kcoreaddons kguiaddons ki18n kio kitemviews
 	kparts kwidgetsaddons kxmlgui qt6 sonnet syntax-highlighting)
 makedepends=(cmake extra-cmake-modules git)
-durl=https://download.kde.org/stable/frameworks/6.8
+durl=https://download.kde.org/stable/frameworks/$rver
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

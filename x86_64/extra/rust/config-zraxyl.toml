@@ -1,21 +1,30 @@
-profile = "user"
+profile = "dist"
 
-change-id = 127866
+change-id = 146435
 
 [target.x86_64-unknown-linux-gnu]
 llvm-config = "/usr/bin/llvm-config"
 
 [llvm]
+download-ci-llvm = false
 link-shared = true
 
 [build]
 target = [
   "x86_64-unknown-linux-gnu",
 ]
-
+description = "Zraxyl - $pkgname - $pkgver-$pkgrel"
 locked-deps = true
 vendor = true
-tools = ["cargo", "clippy", "rustfmt", "analysis", "src", "rust-analyzer-proc-macro-srv"]
+tools = [
+  "cargo",
+  "clippy",
+  "rustdoc",
+  "rustfmt",
+  "rust-analyzer-proc-macro-srv",
+  "analysis",
+  "src",
+]
 sanitizers = true
 profiler = true
 docs = false
@@ -26,19 +35,21 @@ libdir = "/usr/lib"
 bindir = "/usr/bin"
 
 [rust]
+codegen-units = 1
 codegen-units-std = 1
-debuginfo-level = 1
+debuginfo-level = 2
 debuginfo-level-std = 2
 channel = "stable"
-description = "Zraxyl"
 rpath = false
 frame-pointers = true
 lld = false
 use-lld = "external"
+llvm-bitcode-linker = false
 deny-warnings = false
 backtrace-on-ice = true
-remap-debuginfo = true
-jemalloc = true
+remap-debuginfo = false
+lto = "fat"
 
 [dist]
-compression-formats = ["xz"]
+compression-formats = ["gz"]
+compression-profile = "fast"

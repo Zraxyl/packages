@@ -1,20 +1,26 @@
 pkgname=llvm
-pkgver=18.1.8
-pkgrel=3
+pkgver=21.1.5
+pkgrel=0
 depends=(libffi zstd libxml2 ncurses perl zlib libedit python3)
 makedepends=('cmake' 'ninja' 'python3-pip')
 arch=('x86_64')
 psource=https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver
 source=($psource/$pkgname-$pkgver.src.tar.xz
 	$psource/cmake-$pkgver.src.tar.xz
+	$psource/third-party-$pkgver.src.tar.xz
 	llvm-config.h)
 
 prepare() {
+	rm -rf $pkgname-$pkgver.src/build
+	rm -rf cmake
+	rm -rf third-party
+
 	cd $pkgname-$pkgver.src
 	mkdir -p build
 	
 	cd ..
 	mv cmake-$pkgver.src cmake
+	mv third-party-$pkgver.src third-party
 }
 
 build() {

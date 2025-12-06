@@ -1,6 +1,7 @@
 pkgname=protobuf-c
 pkgver=1.5.2
-pkgrel=1
+pkgrel=2
+pkgdesc="Protocol Buffers implementation in C"
 arch=('x86_64')
 depends=(protobuf)
 makedepends=(gcc)
@@ -9,8 +10,9 @@ source=(https://github.com/protobuf-c/protobuf-c/releases/download/v$pkgver/$pkg
 build() {
 	cd $pkgname-$pkgver
 
-	./configure	\
-	--prefix=/usr
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc
 
 	make
 }

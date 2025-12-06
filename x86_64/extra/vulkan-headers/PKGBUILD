@@ -1,5 +1,5 @@
 pkgname=vulkan-headers
-pkgver=1.4.324
+pkgver=1.4.335
 pkgrel=1
 pkgdesc="Vulkan header files and API registry"
 arch=('x86_64')

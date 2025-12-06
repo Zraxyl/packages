@@ -1,27 +1,30 @@
 pkgname=autoconf-archive
-pkgver=2021.02.19
+pkgver=2024.10.16
 pkgrel=1
 pkgdesc="A collection of freely re-usable Autoconf macros"
 arch=('x86_64')
 url="https://www.gnu.org/software/autoconf-archive/"
 depends=('autoconf')
-source=("https://ftpmirror.gnu.org/${pkgname}/${pkgname}-${pkgver}.tar.xz"{,.sig}
-        "revert.patch::https://github.com/autoconf-archive/autoconf-archive/commit/59008cc7f85e1982eb298e1c424c2e6ad5942c4a.patch")
+source=("https://ftpmirror.gnu.org/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
 prepare() {
-    cd "${pkgname}-${pkgver}"
-    patch -Np1 < "$srcdir/revert.patch" 
+	cd "${pkgname}-${pkgver}"
+
+	./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--bindir=/usr/bin \
+	--sbindir=/usr/sbin
 }
 
 build() {
-    cd ${pkgname}-${pkgver}
+	cd ${pkgname}-${pkgver}
 
-    ./configure --prefix=/usr
-    make
+	make
 }
 
 package() {
-    cd ${pkgname}-${pkgver}
+	cd ${pkgname}-${pkgver}
 
-    make DESTDIR="${pkgdir}" install
+	make DESTDIR="${pkgdir}" install
 }

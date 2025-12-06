@@ -1,26 +1,18 @@
 pkgname=binutils
-pkgver=2.41
+pkgver=2.45.1
 pkgrel=1
 arch=('x86_64')
 depends=(glibc zlib readline elfutils flex isl gettext
     zstd jansson)
 makedepends=(bc git)
 backup=('etc/gprofng.rc')
-source=(https://ftp.gnu.org/gnu/binutils/$pkgname-$pkgver.tar.xz
-    https://gitlab.archlinux.org/archlinux/packaging/packages/binutils/-/raw/main/gold-warn-unsupported.patch)
+source=(https://ftp.gnu.org/gnu/binutils/$pkgname-$pkgver.tar.xz)
 
 prepare() {
     cd $pkgname-$pkgver
 
     # Turn off development mode (-Werror, gas run-time checks, date in sonames)
     sed -i '/^development=/s/true/false/' bfd/development.sh
-
-    # Creds @Fedora / @Arch
-    # Change the gold configuration script to only warn about
-    # unsupported targets.  This allows the binutils to be built with
-    # BPF support enabled.
-    patch -Np1 -i "${srcdir}"/gold-warn-unsupported.patch
-
 }
 
 build() {
@@ -32,23 +24,30 @@ build() {
     ../configure \
     --prefix=/usr \
     --enable-cet \
-    --enable-jansson \
+    --enable-colored-disassembly \
+    --enable-default-execstack=no \
+    --enable-deterministic-archives \
     --enable-gold \
+    --enable-install-libiberty \
+    --enable-jansson \
     --enable-ld=default \
     --enable-new-dtags \
+    --enable-pgo-build=lto \
     --enable-plugins \
     --enable-shared \
-    --enable-gold \
     --enable-threads \
     --enable-relro \
     --enable-targets=all \
     --with-pic \
-    --enable-colored-disassembly \
-    --enable-default-execstack=no \
-    --enable-deterministic-archives \
+    --disable-gdb \
+    --disable-gdbserver \
+    --disable-libdecnumber \
+    --disable-readline \
+    --disable-sim \
     --disable-werror \
     --enable-64-bit-bfd \
     --with-system-zlib \
+    --with-debuginfod \
     --enable-multilib \
     --with-lib-path=/lib:/lib64:/usr/lib:/usr/lib32:/opt/lib
 
@@ -67,7 +66,6 @@ package() {
 
     # install PIC version of libiberty
     install -m644 libiberty/pic/libiberty.a "${pkgdir}"/usr/lib
-
 
     # Remove unwanted files
     rm -f "${pkgdir}"/usr/share/man/man1/{dlltool,windres,windmc}*

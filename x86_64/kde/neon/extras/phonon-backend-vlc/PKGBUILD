@@ -1,8 +1,8 @@
 pkgname=phonon-backend-vlc
 pkgver=0.12.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
-depends=(phonon vlc qt6 qt5)
+depends=(vlc qt6 qt5)
 makedepends=(base-devel extra-cmake-modules)
 source=(https://download.kde.org/stable/phonon/phonon-backend-vlc/$pkgver/phonon-backend-vlc-$pkgver.tar.xz)
 

@@ -1,11 +1,12 @@
 pkgname=kwindowsystem
-pkgver=6.8.0
+pkgver=6.20.0
+rver=6.20
 pkgrel=1
 pkgdesc="Access to the windowing system"
 arch=('x86_64')
 depends=(qt6 libx11 libxcb libxfixes wayland xcb-util-keysyms)
 makedepends=(cmake extra-cmake-modules plasma-wayland-protocols)
-durl=https://download.kde.org/stable/frameworks/6.8
+durl=https://download.kde.org/stable/frameworks/$rver
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {
@@ -18,17 +19,18 @@ build() {
 	cd $pkgname-$pkgver/build
 
 	cmake \
+	-G Ninja \
 	-D CMAKE_INSTALL_PREFIX=/usr \
 	-D CMAKE_BUILD_TYPE=Release \
 	-Wno-dev ..
 
-	make -j7
+	ninja
 }
 
 package() {
 	cd $pkgname-$pkgver/build
 
-	make DESTDIR=$pkgdir install
+	DESTDIR=$pkgdir ninja install
 
 	# Hacky way but its how i deal with it for now
 	mkdir -p $pkgdir/usr/lib64 && mkdir -p $pkgdir/usr/lib && touch $pkgdir/usr/lib64/ignore
