@@ -1,11 +1,11 @@
 pkgname=kinfocenter
-pkgver=6.2.4
+pkgver=6.5.3
 pkgrel=1
 pkgdesc="A utility that provides information about a computer system"
 arch=(x86_64)
 depends=(glu iproute2 kauth kcmutils kconfig kcoreaddons kdeclarative ki18n
 	kio kirigami kservice pulseaudio libusb mesa qt6 solid systemsettings
-	vulkan-tools)
+	vulkan-tools pipewire)
 makedepends=(extra-cmake-modules kdoctools)
 source=(https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz)
 

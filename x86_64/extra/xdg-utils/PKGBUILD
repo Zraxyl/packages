@@ -1,6 +1,6 @@
 pkgname=xdg-utils
 pkgver=1.2.1
-pkgrel=1
+pkgrel=2
 pkgdesc="ommand line tools that assist applications with a variety of desktop integration tasks"
 arch=('x86_64')
 depends=(file bash)

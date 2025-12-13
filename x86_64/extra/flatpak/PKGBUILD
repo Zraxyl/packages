@@ -1,5 +1,5 @@
 pkgname=flatpak
-pkgver=1.15.12
+pkgver=1.16.1
 pkgrel=1
 url="https://flatpak.org"
 pkgdesc="Linux application sandboxing and distribution framework (formerly xdg-app)"

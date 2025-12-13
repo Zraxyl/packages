@@ -1,0 +1,15 @@
+post_install() {
+	systemctl --global enable xdg-user-dirs.service
+}
+
+pre_upgrade() {
+	systemctl --global disable xdg-user-dirs-update.service
+}
+
+post_upgrade() {
+	systemctl --global enable xdg-user-dirs.service
+}
+
+pre_remove() {
+	systemctl --global disable xdg-user-dirs.service
+}

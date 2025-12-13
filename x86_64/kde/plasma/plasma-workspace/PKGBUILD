@@ -1,5 +1,5 @@
 pkgname=plasma-workspace
-pkgver=6.2.4
+pkgver=6.5.3
 pkgrel=1
 pkgdesc="KDE Plasma Workspace"
 arch=('x86_64')
@@ -15,7 +15,7 @@ depends=(accountsservice appstream dbus fontconfig freetype2 icu kactivitymanage
 	libcanberra libice libkexiv2 libksysguard libplasma libsm libx11 libxcb
 	libxcrypt libxcursor libxfixes libxft libxtst phonon plasma-activities
 	plasma-activities-stats plasma5support prison qt6 libqalculate
-	solid systemd wayland xcb-util xcb-util-image xmessage xrdb xwayland zlib
+	solid systemd wayland xcb-util xcb-util-image xmessage xwayland zlib
 	baloo networkmanager-qt xdg-desktop-portal-gtk polkit-qt)
 makedepends=(extra-cmake-modules kdoctools plasma-wayland-protocols
 	kunitconversion)

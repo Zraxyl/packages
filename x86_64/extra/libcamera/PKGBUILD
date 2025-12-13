@@ -1,12 +1,13 @@
 pkgname=libcamera
-pkgver=0.3.1
+pkgver=0.6.0
 pkgrel=1
+pkgdesc="A complex camera support library for Linux, Android, and ChromeOS"
+url="https://libcamera.org/"
 arch=(x86_64)
-depends=(glibc)
+depends=(glibc gnutls libunwind yaml libyuv)
 makedepends=(doxygen git glib2 gst-plugins-base libdrm
-libjpeg libtiff meson qt5 qt6 sdl2 systemd python3-pip)
-commitid=c4e222e3d47fc87935981060de528e3243dc020b
-source=(git+https://git.libcamera.org/$pkgname/$pkgname.git#tag=$commitid)
+libjpeg libtiff meson qt6 sdl2 systemd python3-pip)
+source=(git+https://git.libcamera.org/$pkgname/$pkgname.git#tag=v$pkgver)
 
 prepare() {
 	mkdir -p build

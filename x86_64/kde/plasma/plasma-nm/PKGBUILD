@@ -1,5 +1,5 @@
 pkgname=plasma-nm
-pkgver=6.2.4
+pkgver=6.5.3
 pkgrel=1
 pkgdesc="Plasma applet written in QML for managing network connections"
 arch=(x86_64)

@@ -5,7 +5,7 @@ pkgdesc="Epoxy is a library for handling OpenGL function pointer management for 
 arch=('x86_64')
 depends=(libglvnd libx11 glibc)
 makedepends=(doxygen mesa)
-source=(https://github.com/anholt/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.xz)
+source=(https://github.com/anholt/libepoxy/archive/refs/tags/$pkgver.tar.gz)
 
 prepare() {
 	mkdir -p $pkgname-$pkgver/build

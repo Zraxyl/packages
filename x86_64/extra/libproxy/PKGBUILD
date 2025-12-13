@@ -1,5 +1,5 @@
 pkgname=libproxy
-pkgver=0.5.8
+pkgver=0.5.12
 pkgrel=1
 arch=(x86_64)
 depends=(curl duktape glib2 glibc gcc)

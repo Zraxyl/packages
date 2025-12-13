@@ -1,6 +1,6 @@
 pkgname=xdg-utils-cxx
 pkgver=1.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Implementation of the FreeDesktop specifications to be used in C++ projects"
 arch=(x86_64)
 depends=(glibc xdg-utils)
@@ -9,8 +9,9 @@ source=(https://github.com/azubieta/xdg-utils-cxx/archive/refs/tags/v$pkgver.tar
 
 prepare() {
 	cmake \
-	-DCMAKE_INSTALL_PREFIX=/usr \
-	-DCMAKE_CXX_FLAGS="${CXXFLAGS} -fPIC -ffat-lto-objects" \
+	-D CMAKE_INSTALL_PREFIX=/usr \
+	-D CMAKE_CXX_FLAGS="${CXXFLAGS} -fPIC -ffat-lto-objects" \
+	-D CMAKE_POLICY_VERSION_MINIMUM=3.5 \
 	-S $pkgname-$pkgver \
 	-B build
 }

@@ -1,33 +1,32 @@
 pkgname=xdg-user-dirs
-pkgver=0.18
-pkgrel=2
+pkgver=0.19
+pkgrel=1
 pkgdesc='Manage user directories like ~/Desktop and ~/Music'
 arch=('x86_64')
 depends=(bash systemd)
 makedepends=(docbook-xsl git)
-commitid=(2a63d3f0ffb76135790bb1168a3270a599904380)
-source=(git+https://gitlab.freedesktop.org/xdg/xdg-user-dirs.git#commit=$commitid)
+source=(https://gitlab.freedesktop.org/xdg/xdg-user-dirs/-/archive/v0.19/xdg-user-dirs-v0.19.tar.gz)
+install=${pkgname}.install
 
 prepare() {
-	cd $pkgname
+	rm -rf build
+	mkdir -p build
 
-	NOCONFIGURE=1 ./autogen.sh
+	meson \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	$pkgname-v$pkgver \
+	build
 }
 
 build() {
-	cd $pkgname
+	cd build
 
-	./configure \
-	--prefix=/usr \
-	--sysconfdir=/etc
-
-	make
+	ninja
 }
 
 package() {
-	cd $pkgname
+	cd build
 
-	make DESTDIR=$pkgdir install
-
-	install -Dt "$pkgdir/usr/lib/systemd/user" -m644 xdg-user-dirs.service
+	DESTDIR=$pkgdir ninja install
 }

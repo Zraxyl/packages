@@ -1,5 +1,5 @@
 pkgname=kwin
-pkgver=6.2.4
+pkgver=6.5.3
 pkgrel=1
 pkgdesc="An easy to use, but flexible, composited Window Manager"
 arch=(x86_64)
@@ -7,8 +7,8 @@ depends=(breeze kauth kcmutils kcolorscheme kconfig kconfigwidgets kcoreaddons
 	kcrash kdbusaddons kdeclarative kdecoration kglobalaccel kglobalacceld
 	kguiaddons ki18n kidletime kirigami kitemmodels knewstuff knotifications
 	kpackage kquickcharts kscreenlocker kservice ksvg kwayland kwidgetsaddons
-	kwindowsystem kxmlgui lcms libcanberra libdisplay-info libdrm libei
-	libepoxy libinput pipewire libplasma libx11 libxcb libxcvt libxi
+	kwindowsystem kxmlgui knighttime lcms libcanberra libdisplay-info libdrm
+	libei libepoxy libinput pipewire libplasma libx11 libxcb libxcvt libxi
 	libxkbcommon mesa plasma-activities qt6 wayland systemd
 	xcb-util-cursor xcb-util-keysyms xcb-util-wm)
 makedepends=(extra-cmake-modules qt5 kdoctools krunner)
@@ -18,7 +18,8 @@ install=$pkgname.install
 build() {
 	cmake -B build -S $pkgname-$pkgver \
 	-D CMAKE_INSTALL_LIBEXECDIR=lib \
-	-D BUILD_TESTING=OFF
+	-D BUILD_TESTING=OFF \
+	-D KWIN_BUILD_X11=ON
 
 	cmake --build build
 }

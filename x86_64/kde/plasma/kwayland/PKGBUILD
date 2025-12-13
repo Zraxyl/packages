@@ -1,11 +1,11 @@
 pkgname=kwayland
-pkgver=6.2.4
+pkgver=6.5.3
 pkgrel=1
 pkgdesc="Qt-style Client and Server library wrapper for the Wayland libraries"
 arch=('x86_64')
 depends=(qt6)
 makedepends=(wayland-protocols plasma-wayland-protocols cmake extra-cmake-modules)
-durl=https://download.kde.org/stable/plasma/6.2.4
+durl=https://download.kde.org/stable/plasma/$pkgver
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

@@ -1,5 +1,5 @@
 pkgname=ksanecore
-pkgver=24.08.3
+pkgver=25.08.3
 pkgrel=1
 pkgdesc="Library providing logic to interface scanners"
 arch=('x86_64')

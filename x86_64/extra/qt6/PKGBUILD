@@ -2,7 +2,7 @@ pkgname=qt6
 pkgver=6.10.1
 rver=6.10
 pkgdesc="A cross-platform application and UI framework"
-pkgrel=4
+pkgrel=5
 arch=('x86_64')
 depends=(xorg-server xwayland alsa-lib cups glib2 harfbuzz icu libjpeg libpng
 	libtiff libwebp libxkbcommon mesa pcre2 sqlite3 wayland
@@ -14,16 +14,16 @@ depends=(xorg-server xwayland alsa-lib cups glib2 harfbuzz icu libjpeg libpng
 	libsm libice xinput
 	xcb-util-cursor xcb-util-image xcb-util-keysyms
 	xcb-util-renderutil xcb-util-wm)
-makedepends=(extra-cmake-modules perl clang protobuf protobuf-c)
+makedepends=(extra-cmake-modules perl clang protobuf protobuf-c wayland-protocols)
 source=(
 	# Main single tarball
 	https://download.qt.io/official_releases/qt/$rver/$pkgver/single/qt-everywhere-src-$pkgver.tar.xz
 	# Src is cloned by prepare so things keep origin url and etc
 	# Final desktop entries
-	assistant-qt6.desktop
-	designer-qt6.desktop
-	linguist-qt6.desktop
-	qdbusviewer-qt6.desktop)
+	assistant-qt6.desktop.txt
+	designer-qt6.desktop.txt
+	linguist-qt6.desktop.txt
+	qdbusviewer-qt6.desktop.txt)
 
 prepare() {
 	cd qt-everywhere-src-$pkgver
@@ -97,8 +97,8 @@ package() {
 		$pkgdir/usr/share/pixmaps/qdbusviewer-qt6.png
 	install -dm755 $pkgdir/usr/share/applications
 
-	cp $srcdir/assistant-qt6.desktop $pkgdir/usr/share/applications/
-	cp $srcdir/designer-qt6.desktop $pkgdir/usr/share/applications/
-	cp $srcdir/linguist-qt6.desktop $pkgdir/usr/share/applications/
-	cp $srcdir/qdbusviewer-qt6.desktop $pkgdir/usr/share/applications/
+	cp $srcdir/assistant-qt6.desktop.txt $pkgdir/usr/share/applications/assistant-qt6.desktop
+	cp $srcdir/designer-qt6.desktop.txt $pkgdir/usr/share/applications/designer-qt6.desktop
+	cp $srcdir/linguist-qt6.desktop.txt $pkgdir/usr/share/applications/linguist-qt6.desktop
+	cp $srcdir/qdbusviewer-qt6.desktop.txt $pkgdir/usr/share/applications/qdbusviewer-qt6.desktop
 }

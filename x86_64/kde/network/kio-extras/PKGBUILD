@@ -1,5 +1,5 @@
 pkgname=kio-extras
-pkgver=24.08.3
+pkgver=25.08.3
 pkgrel=1
 pkgdesc="Additional components to increase the functionality of KIO"
 arch=('x86_64')
@@ -25,6 +25,7 @@ build() {
 	-D CMAKE_BUILD_TYPE=Release \
 	-D LIBAPPIMAGE_LIBRARIES=libappimage.so \
 	-D QT_MAJOR_VERSION=6 \
+	-D CMAKE_POLICY_VERSION_MINIMUM=3.5 \
 	-D INTERFACE_QT_MAJOR_VERSION=6 \
 	-Wno-dev ..
 

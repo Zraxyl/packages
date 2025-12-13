@@ -1,14 +1,17 @@
 pkgname=libportal
 pkgver=0.9.1
-pkgrel=1
+pkgrel=2
 pkgdesc="GIO-style async APIs for most Flatpak portals"
 arch=(x86_64)
 depends=(glib2 gobject-introspection gtk2+ gtk3+ gtk4+ qt5 qt6)
 makedepends=(meson gi-docgen vala gobject-introspection)
-source=(https://github.com/flatpak/libportal/releases/download/$pkgver/libportal-$pkgver.tar.xz)
+source=(https://github.com/flatpak/libportal/releases/download/$pkgver/libportal-$pkgver.tar.xz
+	001.patch::https://github.com/flatpak/libportal/commit/796053d2eebe4532aad6bd3fd80cdf3b197806ec.patch)
 
 prepare() {
 	cd $pkgname-$pkgver
+
+	patch -p1 < ../001.patch
 
 	meson \
 	--prefix=/usr \

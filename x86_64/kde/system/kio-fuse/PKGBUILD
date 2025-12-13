@@ -1,6 +1,7 @@
 pkgname=kio-fuse
-pkgver=5.1.0
+pkgver=5.1.1
 pkgrel=1
+pkgdesc="FUSE interface for KIO"
 arch=('x86_64')
 depends=(fuse3 kcoreaddons kio qt6)
 makedepends=(extra-cmake-modules)

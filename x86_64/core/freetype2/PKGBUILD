@@ -11,9 +11,11 @@ source=(https://downloads.sourceforge.net/freetype/freetype-$pkgver.tar.xz
 
 prepare() {
 	# Patching
+	cd freetype-$pkgver
 	patch -Np1 -i ../0001-Enable-table-validation-modules.patch
 	patch -Np1 -i ../0002-Enable-subpixel-rendering.patch
 	patch -Np1 -i ../0003-Enable-long-PCF-family-names.patch
+	cd ..
 
 	# Configure
 	rm -rf build
@@ -23,7 +25,9 @@ prepare() {
 	--prefix=/usr \
 	--sysconfdir=/etc \
 	-D freetype2:error_strings=true \
-	-D freetype2:harfbuzz=dynamic
+	-D freetype2:harfbuzz=dynamic \
+	freetype-$pkgver \
+	build
 }
 
 build() {
@@ -37,5 +41,5 @@ package() {
 
 	meson install --destdir=$pkgdir
 
-	install -Dm644 freetype2.sh -t "$pkgdir/etc/profile.d"
+	install -Dm644 ../freetype2.sh -t "$pkgdir/etc/profile.d"
 }

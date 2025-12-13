@@ -1,11 +1,11 @@
 pkgname=pipewire
-pkgver=1.2.3
+pkgver=1.5.84
 pkgrel=1
 arch=(x86_64)
 depends=(pulseaudio alsa-lib libusb gst-plugins-base dbus sdl2 ncurses
 	libcanberra libsndfile bluez webrtc-audio-processing libx11 libxfixes
-	rtkit jack2 libcamera ffmpeg)
-makedepends=(git meson doxygen vulkan-headers python3-pip valgrind wireplumber)
+	rtkit jack2 libcamera ffmpeg wayland modemmanager)
+makedepends=(git meson doxygen vulkan-headers python3-pip valgrind wireplumber wayland-protocols)
 source=(https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/$pkgver/pipewire-$pkgver.tar.gz
 	# Extra patches
 	#meson_build.diff
@@ -38,6 +38,7 @@ build() {
 	-D libcamera=enabled \
 	-D ffmpeg=enabled \
 	-D vulkan=enabled \
+	-D bluez5-backend-native-mm=enabled \
 	-D udevrulesdir=/usr/lib/udev/rules.d \
 	-D roc=disabled \
 	-D session-managers=[]

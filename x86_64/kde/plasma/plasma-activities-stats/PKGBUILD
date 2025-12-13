@@ -1,11 +1,11 @@
 pkgname=plasma-activities-stats
-pkgver=6.2.4
+pkgver=6.5.3
 pkgrel=1
 pkgdesc="Core components for KDE Activities"
 arch=('x86_64')
 depends=(kconfig plasma-activities qt6)
 makedepends=(cmake boost extra-cmake-modules)
-durl=https://download.kde.org/stable/plasma/6.2.4
+durl=https://download.kde.org/stable/plasma/$pkgver
 source=($durl/$pkgname-$pkgver.tar.xz)
 
 prepare() {

@@ -1,11 +1,11 @@
 pkgname=kdsoap-ws-discovery-client
 pkgver=0.4
-pkgrel=1
+pkgrel=2
 pkgdesc="WS-Discovery client library based on KDSoap"
 arch=('x86_64')
 depends=(qt6 kdsoap)
 makedepends=(cmake extra-cmake-modules)
-commitid=cc51b4fc7401c9898d42b34cdf0d7abd90f4a447
+commitid=83a46ce3f8afaaef108dd73e122390382c872edf
 durl=(https://invent.kde.org/libraries/$pkgname/-/archive/$commitid)
 source=($durl/$pkgname-$commitid.tar.gz)
 

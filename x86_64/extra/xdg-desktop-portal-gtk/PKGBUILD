@@ -1,6 +1,6 @@
 pkgname=xdg-desktop-portal-gtk
 pkgver=1.15.3
-pkgrel=1
+pkgrel=2
 pkgdesc="A backend implementation for xdg-desktop-portal using GTK"
 arch=(x86_64)
 depends=(gsettings-desktop-schemas gtk3+ glib2 gdk-pixbuf fontconfig)
